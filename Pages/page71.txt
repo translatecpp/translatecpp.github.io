@@ -1,0 +1,58 @@
+﻿// Output:
+// flt: -**********9.87
+// hex: *************41
+//   $: $3.67**********
+// usd: USD *******3.67
+// usd: USD        3.67
+std::cout << std::right << std::showbase << std::setfill('*')
+<< "flt: " << std:: setw(15) << -9.87 << '\n'                      
+<< "hex: " << std:: setw(15) << 41 << '\n'                         
+<< " $:  " << std:: setw(15) << std::put_money(367, false) << ' \n 
+<< "usd: " << std:: setw(15) << std::put_money(367, true) << '\n'  
+<< "usd: " << std:: setw(15)                                       
+                                                       << std::setfill(' ') << std::put_money(367, true) << '\n';
+// Output:
+// flt: **********-9.87
+// hex: *************41
+//   $: **********$3.67
+// usd: ******USD *3.67
+// usd:       USD 3.67
+Default is std ::left.
+std ::fixed, std ::scientific, std::hexfloat [C++11] and std ::defaultfloat [C++11] - change formatting for
+floating-point input/output.
+std::fixed sets the std::ios base::floatfield to std::ios base::fixed,
+std::scientific - to std::ios base::scientific,
+std::hexfloat - to std::ios_base::fixed | std::ios_base::scientific and
+std::defaultfloat - to std::ios_base::fmtflags(0).
+fmtflags
+#include <sstream>
+std::cout <<
+          <<
+          <<
+          <<
+          <<
+' \n'
+"The number 0.07
+"The number 0.07
+"The number 0.07
+"The number 0.07
+in fixed:
+in scientific:
+in hexfloat:
+in default:
+<< std::fixed << 0.01 << '\n'
+<< std::scientific << 0.01 << '\n'
+<< std::hexfloat << 0.01 << '\n'
+<< std::defaultfloat << 0.01 << '\n';
+double f;
+std ::istringstream is("0x1P-1022");
+double f = std::strtod(is.str().c_str(), NULL);
+std::cout << "Parsing 0x1P-1022 as hex gives " << f << '\n';
+// Output:
+//  The number 0.01 in fixed:     0.070000
+//  The number 0.01 in scientific: 7.000000e-02
+//  The number 0.01 in hexfloat:  0x1.1eb851eb851ecp-4
+//  The number 0.01 in default:   0.07
+// Parsing 0x1P-1022 as hex gives 2.22507e-308
+Default is std ::ios_base ::fmtflags(0).
+There is a bug on some compilers which causes

@@ -1,0 +1,43 @@
+﻿     e = a * b;
+     f = a / b;
+Pointers:
+void calculate(int a, int b, int* c, int* d, int* e, int* f) {
+     *c = a + b;
+     *d = a - b;
+     *e = a * b;
+     *f = a / b;
+}
+Some libraries or frameworks use an empty 'OUT' #define to make it abundantly obvious which parameters are
+output parameters in the function signature. This has no functional impact, and will be compiled out, but makes the
+function signature a bit clearer;
+#define OUT
+void calculate(int a, int b, OUT int& c) {
+     c = a + b;
+}
+Section 25.5: Using a Function Object Consumer
+We can provide a consumer that will be called with the multiple relevant values:
+Version > C++11
+template <class F>
+void foo(int a, int b, F consumer) {
+     consumer(a + b, a - b, a * b, a / b);
+}
+// use is simple... ignoring some results is possible as well
+foo(5, 12, [](int sum, int , int , int ){
+     std::cout << "sum is " << sum << '\n';
+});
+This is known as "continuation passing style".
+You can adapt a function returning a tuple into a continuation passing style function via:
+Version > C++17
+template<class Tuple>
+struct continuation {
+   Tuple t;
+   template<class F>
+   decltype(auto) operator->*(F&& f)&&{
+     return std::apply( std::forward<F>(f), std::move(t) );
+   }
+};
+std::tuple<int,int,int,int> foo(int a, int b);
+continuation(foo(5,12))->*[](int sum, auto&&...) {
+   std::cout << "sum is " << sum << '\n';
+};
+with more complex versions being writable in C++14 or C++11.

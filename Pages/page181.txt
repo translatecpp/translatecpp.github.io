@@ -1,0 +1,42 @@
+﻿that uses it as Something ::MyHelper instead of specifying it by name will usually still work without any
+modifications. In this manner, we minimise the amount of code that needs to be modified when the underlying
+implementation is changed, such that the type name only needs to be changed in one location.
+This can also be combined with decltype, if one so desires.
+class SomethingElse {
+     AnotherComplexType<bool, int, SomeThirdClass> helper;
+   public:
+     typedef decltype(helper) MyHelper;
+   private:
+     InternalVariable<MyHelper> ivh;
+     // ...
+   public:
+     MyHelper& get_helper() const { return helper; }
+     // ...
+};
+In this situation, changing the implementation of SomethingElse ::helper will automatically change the typedef for
+us, due to decltype. This minimises the number of modifications necessary when we want to change helper, which
+minimises the risk of human error.
+As with everything, however, this can be taken too far. If the typename is only used once or twice internally and
+zero times externally, for example, there's no need to provide an alias for it. If it's used hundreds or thousands of
+times throughout a project, or if it has a long enough name, then it can be useful to provide it as a typedef instead
+of always using it in absolute terms. One must balance forwards compatibility and convenience with the amount of
+unnecessary noise created.
+This can also be used with template classes, to provide access to the template parameters from outside the class.
+template<typename T>
+class SomeClass {
+     // ...
+   public:
+     typedef T MyParam;
+     MyParam getParam() { return static_cast<T>(42); }
+};
+template<typename T>
+typename T::MyParam some_func(T& t) {
+return t.getParam();
+}
+SomeClass<int> si;
+int i = some_func(si);
+This is commonly used with containers, which will usually provide their element type, and other helper types, as
+member type aliases. Most of the containers in the C++ standard library, for example, provide the following 12
+helper types, along with any other special types they might need.
+template<typename T>
+class SomeContainer {

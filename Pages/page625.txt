@@ -1,0 +1,37 @@
+﻿Again watch the tabs. This new Makefile ensures that you only recompile changed files, minimizing compile time.
+Documentation
+For more on make, see the official documentation by the Free Software Foundation, the stackoverflow
+documentation and dmckee's elaborate answer on stackoverflow.
+Section 130.3: Building with SCons
+You can build the cross-platform "Hello World" C++ code, using Scons - A Python-language software construction
+tool.
+First, create a file called SConstruct (note that SCons will look for a file with this exact name by default). For now,
+the file should be in a directory right along your hello.cpp. Write in the new file the line
+  Program('hello.cpp')
+Now, from the terminal, run scons. You should see something like
+$ scons
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+g++ -o hello.o -c hello.cpp
+g++ -o hello hello.o
+scons: done building targets.
+(although the details will vary depending on your operating system and installed compiler).
+The Environment and Glob classes will help you further configure what to build. E.g., the SConstruct file
+env=Environment(CPPPATH='/usr/include/boost/',
+     CPPDEFINES=[],
+     LIBS=[],
+     SCONS_CXX_STANDARD="c++11"
+     )
+env.Program('hello', Glob('src/*.cpp'))
+builds the executable hello, using all cpp files in src. Its CPPPATH is /usr/include/boost and it specifies the C++11
+standard.
+Section 130.4: Autotools (GNU)
+Introduction
+The Autotools are a group of programs that create a GNU Build System for a given software package. It is a suite of
+tools that work together to produce various build resources, such as a Makefile (to be used with GNU Make). Thus,
+Autotools can be considered a de facto build system generator.
+Some notable Autotools programs include:
+    •  Autoconf
+    •  Automake (not to be confused with make)
+In general, Autotools is meant to generate the Unix-compatible script and Makefile to allow the following command

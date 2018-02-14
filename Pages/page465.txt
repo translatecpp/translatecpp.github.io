@@ -1,0 +1,52 @@
+﻿Active promise, unused:
+   int test()
+     {
+         std::promise<int> pr;
+         auto fut = pr.get_future(); //blocks indefinitely!
+         return 0;
+     }
+Double retrieval:
+int test()
+{
+     std::promise<int> pr;
+     auto fut1 = pr.get_future();
+     try{
+         auto fut2 = pr.get_future();
+         return 0;
+     }
+     catch(const std::future_error& e)
+     {
+         cout << e.what() << endl;
+promise or packaged_task."
+return -1;
+     }
+     return fut2.get();
+}
+Setting std::promise value twice:
+int test()
+{
+     std::promise<int> pr;
+     auto fut = pr.get_future();
+     try{
+         std::promise<int> pr2(std::move(pr));
+         pr2.set_value(10);
+         pr2.set_value(10); // second attempt to set promise throws exception
+     }
+     catch(const std::future_error&
+     {
+         cout << e.what() << endl;
+set."
+         return -1;
+     }
+     return fut.get();
+}
+Section 88.6: std::future and std::async
+In the following naive parallel merge sort example, std ::async is used to launch multiple parallel merge_sort tasks.
+std ::future is used to wait for the results and synchronize them:
+#include <iostream>
+using namespace std;
+e)
+                                                             // Error: "The state of the promise has already been
+// second attempt to get future
+// Error: "The future has already been retrieved from the
+void merge(int low,int mid,int high, vector<int>&num)

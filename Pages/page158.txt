@@ -1,0 +1,12 @@
+﻿between one or the other. Thankfully, cv-qualifiers can be used in conjunction with ref-qualifiers, allowing const
+correctness rules to be followed.
+struct RefCV {
+     void   func()  &              {}
+     void   func()  &&             {}
+     void   func()  const&         {}
+     void   func()  const&&        {}
+     void   func()  volatile&      {}
+     void   func()  volatile&&     {}
+     void func() const volatile& {}
+     void func() const volatile&& {}
+};

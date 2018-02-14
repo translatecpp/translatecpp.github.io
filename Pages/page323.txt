@@ -1,0 +1,27 @@
+﻿   // For earlier version, point to the element preceding your insertion
+   sut.insert(it, 30);
+   // inserting a range of values
+   std::set<int> sut2;
+   sut2.insert(20);
+   sut2.insert(30);
+   sut2.insert(45);
+   std::set<int>::iterator itStart = sut2.begin();
+   std::set<int>::iterator itEnd = sut2.end();
+   sut.insert (itStart, itEnd); // second iterator is excluded from insertion
+   std::cout << std::endl << "Set under test contains:" << std::endl;
+   for (it = sut.begin(); it != sut.end(); ++it)
+   {
+     std::cout << *it << std::endl;
+   }
+   return 0;
+}
+Output will be:
+# 23 has been inserted!
+# 23 already present in set!
+Set under test contains:
+5
+7
+12
+20
+23
+30

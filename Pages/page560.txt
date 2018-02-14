@@ -1,0 +1,13 @@
+﻿     int get_int() const {
+         if(type == IS_INT)
+              return value.as_int;
+         else
+              return (int)value.as_float;
+     }
+     float get_float() const {
+         if(type == IS_FLOAT)
+              return value.as_float;
+         else
+              return (float)value.as_int;
+     }
+};

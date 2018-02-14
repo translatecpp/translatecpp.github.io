@@ -1,0 +1,30 @@
+﻿Arrays are elements of the same type placed in adjoining memory locations. The elements can be individually
+referenced by a unique identifier with an added index.
+This allows you to declare multiple variable values of a specific type and access them individually without needing
+to declare a variable for each value.
+Section 9.1: Array initialization
+An array is just a block of sequential memory locations for a specific type of variable. Arrays are allocated the same
+way as normal variables, but with square brackets appended to its name [] that contain the number of elements
+that fit into the array memory.
+The following example of an array uses the typ int, the variable name arrayOfInts, and the number of elements
+[ 5 ] that the array has space for:
+int arrayOfInts[5];
+An array can be declared and initialized at the same time like this
+int arrayOfInts[5] = {10, 20, 30, 40, 50};
+When initializing an array by listing all of its members, it is not necessary to include the number of elements inside
+the square brackets. It will be automatically calculated by the compiler. In the following example, it's 5:
+int arrayOfInts[] = {10, 20, 30, 40, 50};
+It is also possible to initialize only the first elements while allocating more space. In this case, defining the length in
+brackets is mandatory. The following will allocate an array of length 5 with partial initialization, the compiler
+initializes all remaining elements with the standard value of the element type, in this case zero.
+int arrayOfInts[5] = {10,20}; // means 10, 20, 0, 0, 0
+Arrays of other basic data types may be initialized in the same way.
+char arrayOfChars[5]; // declare the array and allocate the memory, don't initialize
+char arrayOfChars[5] = { 'a', 'b', 'c', 'd', 'e' } ; //declare and initialize
+double arrayOfDoubles[5] = {1.14159, 2.14159, 3.14159, 4.14159, 5.14159};
+string arrayOfStrings[5] = { "C++", "is", "super", "duper", "great!"};
+It is also important to take note that when accessing array elements, the array's element index(or position) starts
+from 0.
+int array[5] = { 10/*Element no.0*/, 20/*Element no.1*/, 30, 40, 50/*Element no.4*/};
+std::cout << array[4]; //outputs 50
+std::cout << array[0]; //outputs 10

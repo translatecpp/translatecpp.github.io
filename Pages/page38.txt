@@ -1,0 +1,52 @@
+﻿std::advance(first, 1);
+first = std::next(first);
+std::advance(first, -1);
+first = std::next(first, 20);
+forward
+first = std::prev(first, 5);
+backward
+auto dist = std::distance(my_vector.begin(),
+// advance the iterator 1 position
+// returns iterator to the next element
+// advance the iterator 1 position backwards
+// returns iterator to the element 20 position
+// returns iterator to the element 5 position
+first); //
+returns distance between two iterators.
+Note, second argument of std::distance should be reachable from the first one(or, in other words first should be
+less or equal than second).
+Even though you can perform arithmetic operators with iterators, not all operations are defined for all types of
+iterators. a = b + 3; would work for Random Access Iterators, but wouldn't work for Forward or Bidirectional
+Iterators, which still can be advanced by 3 position with something like b = a; ++b; ++b; ++b;. So it is
+recommended to use special functions in case you are not sure what is iterator type (for example, in a template
+function accepting iterator).
+Iterator Concepts
+The C++ standard describes several different iterator concepts. These are grouped according to how they behave in
+the sequences they refer to. If you know the concept an iterator models (behaves like), you can be assured of the
+behavior of that iterator regardless of the sequence to which it belongs. They are often described in order from the
+most to least restrictive (because the next iterator concept is a step better than its predecessor):
+    •  Input Iterators : Can be dereferenced only once per position. Can only advance, and only one position at a
+      time.
+    •  Forward Iterators : An input iterator that can be dereferenced any number of times.
+    •  Bidirectional Iterators : A forward iterator that can also advance backwards one position at a time.
+    •  Random Access Iterators : A bidirectional iterator that can advance forwards or backwards any number of
+      positions at a time.
+    •  Contiguous Iterators (since C++17) : A random access iterator that guaranties that underlying data is
+      contiguous in memory.
+Algorithms can vary depending on the concept modeled by the iterators they are given. For example, although
+random_shuffle can be implemented for forward iterators, a more efficient variant that requires random access
+iterators could be provided.
+Iterator traits
+Iterator traits provide uniform interface to the properties of iterators. They allow you to retrieve value, difference,
+pointer, reference types and also category of iterator:
+template<class Iter>
+Iter find(Iter first, Iter last, typename std::iterator_traits<Iter>::value_type val) {
+while (first != last) {
+if (*first == val)
+return first;
+          ++first;
+      }
+      return last;
+}
+Category of iterator can be used to specialize algorithms:
+template<class BidirIt>

@@ -1,0 +1,48 @@
+﻿};
+void const_incorrect_function(Example& one, Example* two) {
+     one.func();
+     two->func();
+}
+void const_correct_function(const Example& one, const Example* two) {
+     one.func();
+     two->func();
+}
+int main() {
+     Example a, b;
+     const_incorrect_function(a, &b);
+     const_correct_function(a, &b);
+}
+// Output:
+3
+3
+5
+5
+While the effects of this are less immediately visible than those of const correct class design (in that const-correct
+functions and const-incorrect classes will cause compilation errors, while const-correct classes and const-incorrect
+functions will compile properly), const correct functions will catch a lot of errors that const incorrect functions
+would let slip through, such as the one below. [Note, however, that a const-incorrect function will cause
+compilation errors if passed a const instance when it expected a non-const one.]
+// Read value from vector, then compute & return a value.
+// Caches return values for speed.
+template<typename T>
+const T& bad_func(std::vector<T>& v, Helper<T>& h) {
+     // Cache values, for future use.
+     // Once a return value has been calculated, it's cached & its index is registered.
+     static std::vector<T> vals = {};
+     int v_ind = h.get_index();                 // Current working index for v.
+     int vals_ind = h.get_cache_index(v_ind); // Will be -1 if cache index isn't registered.
+     if (vals.size() && (vals_ind != -1) && (vals_ind < vals.size()) && !(h.needs_recalc())) {
+         return vals[h.get_cache_index(v_ind)];
+     }
+     T temp = v[v_ind];
+     temp -= h.poll_device();
+     temp *= h.obtain_random();
+     temp += h.do_tedious_calculation(temp, v[h.get_last_handled_index()]);
+     // We're feeling tired all of a sudden, and this happens.
+     if (vals_ind != -1) {
+         vals[vals_ind] = temp;
+     } else {
+         v.push_back(temp); // Oops. Should've been accessing vals.
+         vals_ind = vals.size() - 1;
+         h.register_index(v_ind, vals_ind);
+     }

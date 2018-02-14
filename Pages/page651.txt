@@ -1,0 +1,42 @@
+﻿// Generates executable "main.exe".
+To rename or relocate the executable, use one of the following:
+cl /o name main.cpp
+// Generates executable named "name.exe".
+cl /o folder\ main.cpp
+// Generates executable named "main.exe", in folder "%cd%\folder".
+cl /o folder\name main.cpp
+// Generates executable named "name.exe", in folder "%cd%\folder".
+cl /Fename main.cpp
+// Same as "/o name".
+cl /Fefolder\ main.cpp
+// Same as "/o folder\".
+cl /Fefolder\name main.cpp
+// Same as "/o folder\name".
+Both /o and /Fe pass their parameter (let's call it o-param) to link as /OUT :o-param, appending the appropriate
+extension (generally .exe or .dll) to "name" o-params as necessary. While both /o and /Fe are to my knowledge
+identical in functionality, the latter is preferred for Visual Studio. /o is marked as deprecated, and appears to mainly
+be provided for programmers more familiar with GCC or Clang.
+Note that while the space between /o and the specified folder and/or name is optional, there cannot be a space
+between /Fe and the specified folder and/or name.
+Similarly, to produce an optimised executable (for use in production), use:
+cl /O1 main.cpp
+// Optimise for executable size. Produces small programs, at the possible expense of slower
+// execution.
+cl /O2 main.cpp
+// Optimise for execution speed. Produces fast programs, at the possible expense of larger
+// file size.
+cl /GL main.cpp other.cpp
+// Generates special object files used for whole-program optimisation, which allows CL to
+// take every module (translation unit) into consideration during optimisation.
+// Passes the option "/LTCG" (Link-Time Code Generation) to LINK, telling it to call CL during
+// the linking phase to perform additional optimisations. If linking is not performed at this
+// time, the generated object files should be linked with "/LTCG".
+// Can be used with other CL optimisation options.
+Finally, to produce a platform-specific optimized executable (for use in production on the machine with the
+specified architecture), choose the appropriate command prompt or VCVARSALL parameter for the target platform.
+link should detect the desired platform from the object files; if not, use the /MACHINE option to explicitly specify the
+target platform.
+// If compiling for x64, and LINK doesn't automatically detect target platform:
+cl main.cpp /link /machine:X64
+Any of the above will produce an executable with the name specified by /o or /Fe, or if neither is provided, with a
+name identical to the first source or object file specified to the compiler.

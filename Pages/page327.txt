@@ -1,0 +1,46 @@
+﻿Section 61.2: Create a parameter pack consisting of integers
+std ::integer_sequence itself is about holding a sequence of integers which can be turned into a parameter pack.
+Its primary value is the possibility to create "factory" class templates creating these sequences:
+#include <iostream>
+#include <initializer_list>
+#include <utility>
+template <typename T, T... I>
+void print_sequence(std::integer_sequence<T, I...>) {
+     std::initializer_list<bool>{ bool(std::cout << I << ' ')... };
+     std ::cout << '\n';
+}
+template <int Offset, typename T, T... I>
+void print_offset_sequence(std::integer_sequence<T, I...>) {
+     print_sequence(std::integer_sequence<T, T(I + Offset)...>());
+}
+int main() {
+     // explicitly specify sequences:
+     print_sequence(std::integer_sequence<int, 1, 2, 3>());
+     print_sequence(std::integer_sequence<char, 'f', 'o', 'o'>());
+     // generate sequences:
+     print_sequence(std::make_index_sequence<10>());
+     print_sequence(std::make_integer_sequence<short, 10>());
+     print_offset_sequence<'A'>(std::make_integer_sequence<char, 26>());
+}
+The print_sequence() function template uses an std ::initializer_list<bool> when expanding the integer
+sequence to guarantee the order of evaluation and not creating an unused [array] variable.
+Section 61.3: Turn a sequence of indices into copies of an
+element
+Expanding the parameter pack of indices in a comma expression with a value creates a copy of the value for each of
+the indices. Sadly, gcc and clang think the index has no effect and warn about it (gcc can be silenced by casting the
+index to void):
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <iterator>
+#include <string>
+#include <utility>
+template <typename T, std::size_t... I>
+std::array<T, sizeof...(I)> make_array(T const& value, std::index_sequence<I...>) {
+     return std::array<T, sizeof...(I)>{ (I, value)... };
+}
+template <int N, typename T>
+std::array<T, N> make_array(T const& value) {
+     return make_array(value, std ::make_index_sequence<N>());
+}
+int main() {

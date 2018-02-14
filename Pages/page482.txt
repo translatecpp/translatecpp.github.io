@@ -1,0 +1,36 @@
+﻿Chapter 91: Explicit type conversions
+An expression can be explicitly converted or cast to type T using dynamic_cast<T>, static_cast<T>,
+reinterpret_cast<T>, or const_cast<T>, depending on what type of cast is intended.
+C++ also supports function-style cast notation, T(expr), and C-style cast notation, (T)expr.
+Section 91.1: C-style casting
+C-Style casting can be considered 'Best effort' casting and is named so as it is the only cast which could be used in
+C. The syntax for this cast is (NewType)variable.
+Whenever this cast is used, it uses one of the following c++ casts (in order):
+    • const_cast<NewType>(variable)
+    • static_cast<NewType>(variable)
+    • const_cast<NewType>(static_cast<const NewType>(variable))
+    • reinterpret_cast<const NewType>(variable)
+    • const_cast<NewType>(reinterpret_cast<const NewType>(variable))
+Functional casting is very similar, though as a few restrictions as the result of its syntax: NewType(expression). As a
+result, only types without spaces can be cast to.
+It's better to use new c++ cast, because s more readable and can be spotted easily anywhere inside a C++ source
+code and errors will be detected in compile-time, instead in run-time.
+As this cast can result in unintended reinterpret_cast, it is often considered dangerous.
+Section 91.2: Casting away constness
+A pointer to a const object can be converted to a pointer to non-const object using the const_cast keyword. Here
+we use const_cast to call a function that is not const-correct. It only accepts a non-const char* argument even
+though it never writes through the pointer:
+void bad_strlen(char*);
+const char* s = "hello, world!";
+bad_strlen(s);                   // compile error
+bad_strlen(const_cast<char*>(s)); // OK, but it's better to make bad_strlen accept const char*
+const_cast to reference type can be used to convert a const-qualified lvalue into a non-const-qualified value.
+const_cast is dangerous because it makes it impossible for the C++ type system to prevent you from trying to
+modify a const object. Doing so results in undefined behavior.
+const int x = 123;
+int& mutable_x = const_cast<int&>(x);
+mutable_x = 456; // may compile, but produces *undefined behavior*
+Section 91.3: Base to derived conversion
+A pointer to base class can be converted to a pointer to derived class using static_cast. static_cast does not do
+any run-time checking and can lead to undefined behaviour when the pointer does not actually point to the desired
+type.

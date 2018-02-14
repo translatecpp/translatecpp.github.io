@@ -1,0 +1,45 @@
+﻿T a = ...;
+T b(a);
+assert(b == a);
+But for auto_ptr, this is not the case. As a result, it is not safe to put auto_ptrs in containers.
+Section 34.6: Casting std::shared_ptr pointers
+It is not possible to directly use static_cast, const_cast, dynamic_cast and reinterpret_cast on
+std ::shared_ptr to retrieve a pointer sharing ownership with the pointer being passed as argument. Instead, the
+functions std::static_pointer_cast, std::const_pointer_cast, std::dynamic_pointer_cast and
+std:: reinterpret_pointer_cast should be used:
+struct Base { virtual ~Base() noexcept {}; };
+struct Derived: Base {};
+auto derivedPtr(std::make_shared<Derived>());
+auto basePtr(std ::static_pointer_cast<Base>(derivedPtr));
+auto constBasePtr(std::const_pointer_cast<Base const>(basePtr));
+auto constDerivedPtr(std::dynamic_pointer_cast<Derived const>(constBasePtr));
+Note that std:: reinterpret_pointer_cast is not available in C++11 and C++14, as it was only proposed by N3920
+and adopted into Library Fundamentals TS in February 2014. However, it can be implemented as follows:
+template <typename To, typename From>
+inline std::shared_ptr<To> reinterpret_pointer_cast(
+std::shared_ptr<From> const & ptr) noexcept
+{ return std::shared_ptr<To>(ptr, reinterpret_cast<To *>(ptr.get())); }
+Section 34.7: Writing a smart pointer: value_ptr
+A value_ptr is a smart pointer that behaves like a value. When copied, it copies its contents. When created, it
+creates its contents.
+// Like std::default_delete:
+template<class T>
+struct default_copier {
+   // a copier must handle a null T const* in and return null:
+   T* operator()(T const* tin)const {
+     if (!tin) return nullptr;
+     return new T(*tin);
+   }
+   void operator()(void* dest, T const* tin)const {
+     if (!tin) return;
+     return new(dest) T(*tin);
+   }
+};
+// tag class to handle empty case:
+struct empty_ptr_t {};
+constexpr empty_ptr_t empty_ptr{};
+// the value pointer type itself:
+template<class T, class Copier=default_copier<T>, class Deleter=std::default_delete<T>,
+   class Base=std::unique_ptr<T, Deleter>
+>
+struct value_ptr:Base, private Copier {

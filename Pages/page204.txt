@@ -1,0 +1,50 @@
+﻿     }
+     complex &operator /= (const value_t &s)
+     {
+          this->x /= s;
+          this->y /= s;
+          return *this;
+     }
+     complex &operator /= (const complex &other)
+     {
+          (*this) = (*this) / other;
+          return *this;
+     }
+     complex(const value_t &x, const value_t &y)
+     : x{x}
+     , y{y}
+     {}
+     template<typename other_value_t>
+     explicit complex(const complex<other_value_t> &other)
+     : x{static_cast<const value_t &>(other.x)}
+     , y{static_cast<const value_t &>(other.y)}
+     {}
+     complex &operator = (const complex &) = default;
+     complex &operator = (complex &&) = default;
+     complex(const complex &) = default;
+     complex(complex &&) = default;
+     complex() = default;
+};
+// Absolute value squared
+template<typename value_t>
+value_t absqr(const complex<value_t> &z)
+{ return z.x*z.x + z.y*z.y; }
+//-----------------------------------------------------------------
+// operator - (negation)
+//-----------------------------------------------------------------
+template<typename value_t>
+complex<value_t> operator - (const complex<value_t> &z)
+{ return {-z.x, -z.y}; }
+//-----------------------------------------------------------------
+// operator +
+//-----------------------------------------------------------------
+template<typename left_t,typename right_t>
+auto operator + (const complex<left_t> &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a.x + b.x)>>
+{ return{a.x + b.x, a.y + b.y}; }
+template<typename left_t,typename right_t>
+auto operator + (const left_t &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a + b.x)>>
+{ return{a + b.x, b.y}; }
+template<typename left_t,typename right_t>
+auto operator + (const complex<left_t> &a, const right_t &b)

@@ -1,0 +1,44 @@
+﻿which is similar in form to a function parameter declaration: the parameter name may be omitted, and the ellipsis
+... is allowed, which matches any type. The exception handler will only handle the exception if its declaration is
+compatible with the type of the exception. For more details, see catching exceptions.
+try {
+     std::vector<int> v(N);
+     // do something
+} catch (const std::bad_alloc&) {
+     std::cout << "failed to allocate memory for vector!" << std::endl;
+} catch (const std::runtime_error& e) {
+     std::cout << "runtime error: " << e.what() << std::endl;
+} catch (...) {
+     std::cout << "unexpected exception!" << std::endl;
+     throw;
+}
+Section 16.4: throw
+   1.  When throw occurs in an expression with an operand, its effect is to throw an exception, which is a copy of
+      the operand.
+       void print_asterisks(int count) {
+           if (count < 0) {
+               throw std::invalid_argument("count cannot be negative!");
+           }
+           while (count--) { putchar('*'); }
+       }
+   2.  When throw occurs in an expression without an operand, its effect is to rethrow the current exception. If
+      there is no current exception, std ::terminate is called.
+       try {
+            // something risky
+       } catch (const std::bad_alloc&) {
+            std::cerr << "out of memory" << std::endl;
+       } catch (...) {
+            std::cerr << "unexpected exception" << std::endl;
+            // hope the caller knows how to handle this exception
+            throw;
+       }
+    3. When throw occurs in a function declarator, it introduces a dynamic exception specification, which lists the
+      types of exceptions that the function is allowed to propagate.
+       // this function might propagate a std::runtime_error,
+       // but not, say, a std::logic_error
+       void risky() throw(std::runtime_error);
+       // this function can't propagate any exceptions
+       void safe() throw();
+      Dynamic exception specifications are deprecated as of C++11.
+Note that the first two uses of throw listed above constitute expressions rather than statements. (The type of a
+throw expression is void.) This makes it possible to nest them within expressions, like so:

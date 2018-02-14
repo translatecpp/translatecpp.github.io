@@ -1,0 +1,42 @@
+﻿register_callback(my_callback,
+                   reinterpret_cast<void*>(x)); // hopefully this doesn't lose information...
+Section 91.5: Conversion by explicit constructor or explicit
+conversion function
+A conversion that involves calling an explicit constructor or conversion function can't be done implicitly. We can
+request that the conversion be done explicitly using static_cast. The meaning is the same as that of a direct
+initialization, except that the result is a temporary.
+class C {
+     std::unique_ptr<int> p;
+   public:
+     explicit C(int* p) : p(p) {}
+};
+void f(C c);
+void g(int* p) {
+     f(p);                //  error: C::C(int*) is explicit
+     f(static_cast<C>(p)); // ok
+     f(C(p));             //  equivalent to previous line
+     C c(p); f(c);        //  error: C is not copyable
+}
+Section 91.6: Implicit conversion
+static_cast can perform any implicit conversion. This use of static_cast can occasionally be useful, such as in
+the following examples:
+    • When passing arguments to an ellipsis, the "expected" argument type is not statically known, so no implicit
+       conversion will occur.
+       const double x = 3.14;
+       printf("%d\n", static_cast<int>(x)); // prints 3
+       // printf("%d\n", x); // undefined behaviour; printf is expecting an int here
+       // alternative:
+       // const int y = x; printf("%d\n", y);
+      Without the explicit type conversion, a double object would be passed to the ellipsis, and undefined
+       behaviour would occur.
+    • A derived class assignment operator can call a base class assignment operator like so:
+       struct Base { /* ... */ };
+       struct Derived : Base {
+                                               Derived& operator=(const Derived& other) {
+                                               static_cast<Base&>(*this) = other;
+               // alternative:
+               // Base& this_base_ref = *this; this_base_ref = other;
+           }
+       };
+Section 91.7: Enum conversions
+static_cast can convert from an integer or floating point type to an enumeration type (whether scoped or

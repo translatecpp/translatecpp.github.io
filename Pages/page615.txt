@@ -1,0 +1,49 @@
+﻿// getField() and doNothing() can be called on const ConstCorrectCVQ instances.
+void const_correct_func(const ConstCorrectCVQ& c) {
+     Field f = c.getField();
+     c.do_nothing();
+}
+We can then combine this with Const Correct Function Parameters, causing the class to be fully const-correct.
+class ConstCorrect {
+     Field fld;
+   public:
+     ConstCorrect(const Field& f);
+// Modifies instance. Doesn't modify parameter.
+const Field& getField() const;
+void setField(const Field& f);
+// Doesn't modify. Exposes member as const reference,
+// preventing indirect modification.
+// Modifies instance. Doesn't modify parameter.
+    void doSomething(int i);
+    void doNothing() const;
+};
+// Modifies. Doesn't modify parameter (passed by value).
+// Doesn't modify.
+ConstCorrect::ConstCorrect(const Field& f) : fld(f) {}
+Field& ConstCorrect::getField() const { return fld; }
+void ConstCorrect::setField(const Field& f) { fld = f; }
+void ConstCorrect::doSomething(int i) {
+fld.insert_value(i);
+}
+void ConstCorrect::doNothing() const {}
+This can also be combined with overloading based on constness, in the case that we want one behaviour if the
+instance is const, and a different behaviour if it isn't; a common use for this is constainers providing accessors that
+only allow modification if the container itself is non-const.
+class ConstCorrectContainer {
+     int arr[5];
+   public:
+     // Subscript operator provides read access if instance is const, or read/write access
+     // otherwise.
+            int& operator[](size_t index)         { return arr[index]; }
+     const int& operator[](size_t index) const { return arr[index]; }
+     // ...
+};
+This is commonly used in the standard library, with most containers providing overloads to take constness into
+account.
+Section 128.3: Const Correct Function Parameters
+In a const-correct function, all passed-by-reference parameters are marked as const unless the function directly or
+indirectly modifies them, preventing the programmer from inadvertently changing something they didn't mean to
+change. This allows the function to take both const and non-cv-qualified instances, and in turn, causes the
+instance's this to be of type const T* when a member function is called, where T is the class' type.
+struct Example {
+     void func()     { std::cout << 3 << std::endl; }

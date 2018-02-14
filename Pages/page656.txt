@@ -1,0 +1,4 @@
+﻿3. Select "Console application" and click "Go":
+4.  Click "Next", select "C++", click "Next", select a name for your project and choose a folder to save it in, click
+   "Next" and then click "Finish".
+5.  Now you can edit and compile your code. A default code that prints "Hello world!" in the console is already

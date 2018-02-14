@@ -1,0 +1,26 @@
+﻿// Our assumption was incorrect.
+// Function fails to compile, due to 'this' losing qualifiers in c.set_val().
+void bad_parameter(const ConstMemberFunctions& c) {
+c. set_val(18);
+}
+While it is possible to circumvent const correctness, and by extension break these guarantees, this must be done
+intentionally by the programmer (just like breaking encapsulation with Machiavelli, above), and is likely to cause
+undefined behaviour.
+class DealBreaker : public ConstMemberFunctions {
+   public:
+     DealBreaker(int v = 0);
+     // A foreboding name, but it's const...
+     void no_guarantees() const;
+}
+DealBreaker::DealBreaker(int v /* = 0 */) : ConstMemberFunctions(v) {}
+// Our assumption was incorrect.
+// const_cast removes const-ness, making the compiler think we know what we're doing.
+void DealBreaker::no_guarantees() const {
+     const_cast<DealBreaker*>(this)->set_val(823);
+}
+// ...
+const DealBreaker d(50);
+d.no_guarantees(); // Undefined behaviour: d really IS const, it may or may not be modified.
+However, due to this requiring the programmer to very specifically tell the compiler that they intend to ignore
+constness, and being inconsistent across compilers, it is generally safe to assume that const correct code will
+refrain from doing so unless otherwise specified.

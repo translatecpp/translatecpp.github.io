@@ -1,0 +1,43 @@
+﻿Section 78.1: A basic example illustrating expression
+templates
+An expression template is a compile-time optimization technique used mostly in scientific computing. It's main
+purpose is to avoid unnecessary temporaries and optimize loop calculations using a single pass (typically when
+performing operations on numerical aggregates). Expression templates were initially devised in order to circumvent
+the inefficiencies of naive operator overloading when implementing numerical Array or Matrix types. An equivalent
+terminology for expression templates has been introduced by Bjarne Stroustrup, who calls them "fused operations"
+in the latest version of his book, "The C++ Programming Language".
+Before actually diving into expression templates, you should understand why you need them in the first place. To
+illustrate this, consider the very simple Matrix class given below:
+template <typename T, std::size_t COL, std::size_t ROW>
+class Matrix {
+public:
+     using value_type = T;
+     Matrix() : values(COL * ROW) {}
+     static size_t cols() { return COL; }
+     static size_t rows() { return ROW; }
+     const T& operator()(size_t x, size_t y) const { return values[y * COL + x]; }
+     T& operator()(size_t x, size_t y) { return values[y * COL + x]; }
+private:
+     std::vector<T> values;
+};
+template <typename T, std::size_t COL, std::size_t ROW>
+Matrix<T, COL, ROW>
+operator+(const Matrix<T, COL, ROW>& lhs, const Matrix<T, COL, ROW>& rhs)
+{
+      Matrix<T, COL, ROW> result;
+      for (size_t y = 0; y != lhs.rows(); ++y) {
+          for (size_t x = 0; x != lhs.cols(); ++x) {
+              result(x, y) = lhs(x, y) + rhs(x, y);
+          }
+      }
+      return result;
+}
+Given the previous class definition, you can now write Matrix expressions such as:
+const  std::size_t  cols =  2000;
+const  std::size_t  rows =  1000;
+Matrix<double, cols, rows> a, b, c;
+// initialize a, b & c
+for (std::size_t y = 0; y != rows; ++y) {
+      for (std::size_t x = 0; x != cols; ++x) {
+          a(x, y) =     1.0;
+          b(x, y) = 2.0;

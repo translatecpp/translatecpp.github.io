@@ -1,0 +1,43 @@
+﻿Output
+centipede (has 100 legs)
+spider (has 8 legs)
+bug (has 6 legs)
+cat (has 4 legs)
+horse (has 4 legs)
+chicken (has 2 legs)
+fish (has 0 legs)
+Section 67.3: Sorting sequence containers by overloaded less
+operator
+If no ordering function is passed, std ::sort will order the elements by calling operator< on pairs of elements,
+which must return a type contextually convertible to bool (or just bool). Basic types (integers, floats, pointers etc)
+have already build in comparison operators.
+We can overload this operator to make the default sort call work on user-defined types.
+// Include sequence containers
+#include <vector>
+#include <deque>
+#include <list>
+// Insert sorting algorithm
+#include <algorithm>
+class Base {
+  public:
+     // Constructor that set variable to the value of v
+     Base(int v): variable(v) {
+     }
+     // Use variable to provide total order operator less
+     //'this' always represents the left-hand side of the compare.
+     bool operator<(const Base &b) const {
+     return this->variable < b.variable;
+     }
+     int variable;
+};
+int main() {
+     std::vector <Base> vector;
+     std::deque <Base> deque;
+     std::list <Base> list;
+     // Create 2 elements to sort
+     Base a(10);
+     Base b(5);
+     // Insert them into backs of containers
+     vector.push_back(a);
+     vector.push_back(b);
+     deque.push_back(a);

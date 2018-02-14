@@ -1,0 +1,50 @@
+﻿Examine the following more complete example:
+#include <iostream>
+class Student
+{
+public:
+     char& GetScore(bool midterm)
+     {
+         return const_cast<char&>(const_cast<const Student*>(this)->GetScore(midterm));
+     }
+     const char& GetScore(bool midterm) const
+     {
+         if (midterm)
+         {
+              return midtermScore;
+         }
+         else
+         {
+              return finalScore;
+         }
+     }
+private:
+     char midtermScore;
+     char finalScore;
+};
+int main()
+{
+     // non-const object
+     Student a;
+     // We can assign to the reference. Non-const version of GetScore is called
+     a.GetScore(true) = 'B';
+     a.GetScore(false) = 'A';
+     // const object
+     const Student b(a);
+     // We still can call GetScore method of const object,
+     // because we have overloaded const version of GetScore
+     std::cout << b.GetScore(true) << b.GetScore(false) << '\n';
+}
+Section 18.2: Const member functions
+Member functions of a class can be declared const, which tells the compiler and future readers that this function
+will not modify the object:
+class MyClass
+{
+private:
+     int myInt_;
+public:
+     int myInt() const { return myInt_; }
+     void setMyInt(int myInt) { myInt_ = myInt; }
+};
+In a const member function, the this pointer is effectively a const MyClass * instead of a MyClass *. This means
+that you cannot change any member variables within the function; the compiler will emit a warning. So setMyInt

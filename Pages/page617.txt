@@ -1,0 +1,44 @@
+﻿     return vals[vals_ind];
+// Const correct version. Is identical to above version, so most of it shall be skipped.
+template<typename T>
+const T& good_func(const std::vector<T>& v, Helper<T>& h) {
+     // ...
+     // We're feeling tired all of a sudden, and this happens.
+     if (vals_ind != -1) {
+          vals[vals_ind] = temp;
+     } else {
+          v.push_back(temp); // Error: discards qualifiers.
+          vals_ind = vals.size() - 1;
+          h. register_index(v_ind, vals_ind);
+     }
+     return vals[vals_ind];
+}
+Section 128.4: Const Correctness as Documentation
+One of the more useful things about const correctness is that it serves as a way of documenting code, providing
+certain guarantees to the programmer and other users. These guarantees are enforced by the compiler due to
+constness, with a lack of constness in turn indicating that code doesn't provide them.
+const CV-Qualified Member Functions:
+    •  Any member function which is const can be assumed to have intent to read the instance, and:
+          ° Shall not modify the logical state of the instance they are called on. Therefore, they shall not modify
+            any member variables of the instance they are called on, except mutable variables.
+          ° Shall not call any other functions that would modify any member variables of the instance, except
+            mutable variables.
+    •  Conversely, any member function which isn't const can be assumed to have intent to modify the instance,
+     and:
+          ° May or may not modify logical state.
+          o May or may not call other functions which modify logical state.
+This can be used to make assumptions about the state of the object after any given member function is called, even
+without seeing the definition of that function:
+// ConstMemberFunctions.h
+class ConstMemberFunctions {
+     int val;
+     mutable int cache;
+     mutable bool state_changed;
+   public:
+     // Constructor clearly changes logical state. No assumptions necessary.
+     ConstMemberFunctions(int v = 0);
+     // We can assume this function doesn't change logical state, and doesn't call
+     // set_val(). It may or may not call squared_calc() or bad_func().
+     int calc() const;
+     // We can assume this function doesn't change logical state, and doesn't call
+     // set_val(). It may or may not call calc() or bad_func().

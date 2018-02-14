@@ -1,0 +1,44 @@
+﻿};
+CVAccess cva;
+cva.func();    // Good.
+cva.func_c(); // Good.
+cva.func_v(); // Good.
+cva.func_cv(); // Good.
+const CVAccess c_cva;
+c_cva.func(); // Error.
+c_cva.func_c(); // Good.
+c_cva.func_v(); // Error.
+c_cva.func_cv(); // Good.
+volatile CVAccess v_cva;
+v_cva.func(); // Error.
+v_cva.func_c(); // Error.
+v_cva.func_v(); // Good.
+v_cva.func_cv(); // Good.
+const volatile CVAccess cv_cva;
+cv_cva.func(); // Error.
+cv_cva.func_c(); // Error.
+cv_cva.func_v(); // Error.
+cv_cva.func_cv(); // Good.
+Section 33.5: this Pointer Ref-Qualifiers
+Version > C++11
+Similarly to this cv-qualifiers, we can also apply ref-qualifiers to *this. Ref-qualifiers are used to choose between
+normal and rvalue reference semantics, allowing the compiler to use either copy or move semantics depending on
+which are more appropriate, and are applied to *this instead of this.
+Note that despite ref-qualifiers using reference syntax, this itself is still a pointer. Also note that ref-qualifiers don't
+actually change the type of *this; it's just easier to describe and understand their effects by looking at them as if
+they did.
+                                                 struct RefQualifiers {
+                                                 std ::string s;
+      RefQualifiers(const std::string& ss = "The nameless one.") : s(ss) {}
+      // Normal version.
+      void func() &   { std::cout << "Accessed on normal instance "        << s << std::endl; }
+      // Rvalue version.
+      void func() && { std::cout << "Accessed on temporary instance " << s << std::endl; }
+      const std::string& still_a_pointer() &     { return this->s; }
+      const std::string& still_a_pointer() && { this->s = "Bob"; return this->s; }
+};
+// ...
+RefQualifiers rf("Fred");
+rf.func();                 // Output: Accessed on normal instance Fred
+RefQualifiers{}.func(); // Output: Accessed on temporary instance The nameless one
+A member function cannot have overloads both with and without ref-qualifiers; the programmer has to choose

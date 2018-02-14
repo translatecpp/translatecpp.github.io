@@ -1,0 +1,38 @@
+﻿Section 67.6: Sorting built-in arrays
+The sort algorithm sorts a sequence defined by two iterators. This is enough to sort a built-in (also known as c-
+style) array.
+Version > C++11
+int arr1[] = {36, 24, 42, 60, 59};
+// sort numbers in ascending order
+sort(std::begin(arr1), std::end(arr1));
+// sort numbers in descending order
+sort(std::begin(arr1), std::end(arr1), std::greater<int>());
+Prior to C++11, end of array had to be "calculated" using the size of the array:
+Version < C++11
+// Use a hard-coded number for array size
+sort(arr1, arr1 + 5);
+// Alternatively, use an expression
+const size_t arr1_size = sizeof(arr1) / sizeof(*arr1);
+sort(arr1, arr1 + arr1_size);
+Section 67.7: Sorting sequence containers with specifed
+ordering
+If the values in a container have certain operators already overloaded, std ::sort can be used with specialized
+functors to sort in either ascending or descending order:
+Version > C++11
+#include <vector>
+#include <algorithm>
+#include <functional>
+std::vector<int> v = {5,1,2,4,3};
+//sort in ascending order (1,2,3,4,5)
+std::sort(v.begin(), v.end(), std::less<int>());
+// Or just:
+std::sort(v.begin(), v.end());
+//sort in descending order (5,4,3,2,1)
+std::sort(v.begin(), v.end(), std::greater<int>());
+//Or just:
+std ::sort(v.rbegin(), v.rend());
+Version > C++14
+In C++14, we don't need to provide the template argument for the comparison function objects and instead let the
+object deduce based on what it gets passed in:
+std::sort(v.begin(), v.end(), std::less<>());      // ascending order
+std::sort(v.begin(), v.end(), std::greater<>()); // descending order

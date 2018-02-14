@@ -1,0 +1,34 @@
+﻿       false.
+    •  operator !=:
+       If str1.length() ! = str2.length() or one character pair doesn't match, returns true, otherwise it returns
+       false.
+    •  operator< or operators
+       Finds the first different character pair, compares them then returns the boolean result.
+    •  operator<= or operator>=:
+       Finds the first different character pair, compares them then returns the boolean result.
+Note: The term character pair means the corresponding characters in both strings of the same positions. For
+better understanding, if two example strings are strl and str2, and their lengths are n and m respectively, then
+character pairs of both strings means each str1[i] and str2[i] pairs where i = 0, 1, 2,..., max(n,m). If for any i
+where the corresponding character does not exist, that is, when i is greater than or equal to n or m, it would be
+considered as the lowest value.
+Here is an example of using <:
+std::string strl = "Barr";
+std::string str2 = "Bar";
+assert(str2 < strl);
+The steps are as follows:
+    1.  Compare the first characters, 'B' == 'B' - move on.
+    2.  Compare the second characters, 'a' == 'a' - move on.
+    3.  Compare the third characters, 'r' == 'r' - move on.
+    4.  The str2 range is now exhausted, while the strl range still has characters. Thus, str2 < strl.
+Section 48.6: Trimming characters at start/end
+This example requires the headers <algorithm>, <locale>, and <utility>.
+Version > C++11
+To trim a sequence or string means to remove all leading and trailing elements (or characters) matching a certain
+predicate. We first trim the trailing elements, because it doesn't involve moving any elements, and then trim the
+leading elements. Note that the generalizations below work for all types of std ::basic_string (e.g. std ::string
+and std ::wstring), and accidentally also for sequence containers (e.g. std ::vector and std:: list).
+template <typename Sequence, // any basic_string, vector, list etc.
+            typename Pred> // a predicate on the element (character) type
+Sequence& trim(Sequence& seq, Pred pred) {
+     return trim_start(trim_end(seq, pred), pred);
+}

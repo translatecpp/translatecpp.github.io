@@ -1,0 +1,41 @@
+﻿           float f;
+           IntLLInt jmmj;
+       };
+         // Large_2 has 8-byte alignment.
+           // alignof(IntLLInt) == alignof(long long) == 8
+           // alignof(float) == 4
+           // Therefore, alignof(Large_2) == 8.
+         // sizeof(Large_2) == 56 (24 (IntLLInt) + 4 (float) + 4 (padding) + 24 (IntLLInt))
+Version > C++11
+    • If strict alignment is forced with alignas, padding will be used to force the type to meet the specified
+      alignment, even when it would otherwise be smaller. For example, with the definition below, Chars<5> will
+      have three (or possibly more) padding bytes inserted at the end so that its total size is 8. It is not possible for
+      a class with an alignment of 4 to have a size of 5 because it would be impossible to make an array of that
+      class, so the size must be "rounded up" to a multiple of 4 by inserting padding bytes.
+       // This type shall always be aligned to a multiple of 4. Padding shall be inserted as
+       // needed.
+       // Chars<1>..Chars<4> are 4 bytes, Chars<5>..Chars<8> are 8 bytes, etc.
+       template<size_t SZ>
+       struct alignas(4) Chars { char arr[SZ]; };
+       static_assert(sizeof(Chars<1>) == sizeof(Chars<4>), "Alignment is strict.\n");
+    •  If two non-static members of a class have the same access specifier, then the one that comes later in
+      declaration order is guaranteed to come later in the object representation. But if two non-static members
+      have different access specifiers, their relative order within the object is unspecified.
+    •  It is unspecified what order the base class subobjects appear in within an object, whether they occur
+      consecutively, and whether they appear before, after, or between member subobjects.
+Section 95.2: Arithmetic types
+Narrow character types
+The unsigned char type uses all bits to represent a binary number. Therefore, for example, if unsigned char is 8
+bits long, then the 256 possible bit patterns of a char object represent the 256 different values {0, 1, ..., 255}. The
+number 42 is guaranteed to be represented by the bit pattern 00101010.
+The signed char type has no padding bits, i.e., if signed char is 8 bits long, then it has 8 bits of capacity to
+represent a number.
+Note that these guarantees do not apply to types other than narrow character types.
+Integer types
+The unsigned integer types use a pure binary system, but may contain padding bits. For example, it is possible
+(though unlikely) for unsigned int to be 64 bits long but only be capable of storing integers between 0 and 232 - 1,
+inclusive. The other 32 bits would be padding bits, which should not be written to directly.
+The signed integer types use a binary system with a sign bit and possibly padding bits. Values that belong to the
+common range of a signed integer type and the corresponding unsigned integer type have the same
+representation. For example, if the bit pattern 0001010010101011 of an unsigned short object represents the value
+5291, then it also represents the value 5291 when interpreted as a short object.

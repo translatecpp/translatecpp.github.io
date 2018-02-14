@@ -1,0 +1,16 @@
+﻿     void DoSomething()
+     {
+          std::shared_ptr< Widget > self = shared_from_this();
+          someEvent -> Register( self );
+     }
+private:
+};
+int main()
+{
+     auto w = std::make_shared< Widget >();
+     w -> DoSomething();
+}
+If you use shared_from_this() on an object not owned by a shared_ptr, such as a local automatic object or a
+global object, then the behavior is undefined. Since C++17 it throws std ::bad_alloc instead.
+Using shared_from_this() from a constructor is equivalent to using it on an object not owned by a shared_ptr,
+because the objects is possessed by the shared_ptr after the constructor returns.

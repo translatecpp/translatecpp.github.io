@@ -1,0 +1,38 @@
+﻿Section 35.1: Class basics
+A class is a user-defined type. A class is introduced with the class, struct or union keyword. In colloquial usage, the
+term "class" usually refers only to non-union classes.
+A class is a collection of class members, which can be:
+    • member variables (also called "fields"),
+    • member functions (also called "methods"),
+    • member types or typedefs (e.g. "nested classes"),
+    • member templates (of any kind: variable, function, class or alias template)
+The class and struct keywords, called class keys, are largely interchangeable, except that the default access
+specifier for members and bases is "private" for a class declared with the class key and "public" for a class declared
+with the struct or union key (cf. Access modifiers).
+For example, the following code snippets are identical:
+struct Vector
+{
+     int x;
+     int y;
+     int z;
+};
+// are equivalent to
+class Vector
+{
+public:
+     int x;
+     int y;
+     int z;
+};
+By declaring a class' a new type is added to your program, and it is possible to instantiate objects of that class by
+Vector my_vector;
+Members of a class are accessed using dot-syntax.
+my_vector.x = 10;
+my_vector.y = my_vector.x + 1; // my_vector.y = 11;
+my_vector.z = my_vector.y - 4; // my:vector.z = 7;
+Section 35.2: Final classes and structs
+Version > C++11
+Deriving a class may be forbidden with final specifier. Let's declare a final class:
+class A final {
+};
+Now any attempt to subclass it will cause a compilation error:

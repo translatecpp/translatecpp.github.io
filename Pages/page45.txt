@@ -1,0 +1,42 @@
+﻿Chapter 12: Loops
+A loop statement executes a group of statements repeatedly until a condition is met. There are 3 types of primitive
+loops in C++: for, while, and do...while.
+Section 12.1: Range-Based For
+Version > C++11
+for loops can be used to iterate over the elements of a iterator-based range, without using a numeric index or
+directly accessing the iterators:
+vector<float> v = {0.4f, 12.5f, 16.234f};
+for(auto val: v)
+{
+     std::cout << val << " ";
+}
+std::cout << std::endl;
+This will iterate over every element in v, with val getting the value of the current element. The following statement:
+for (for-range-declaration : for-range-initializer ) statement
+is equivalent to:
+{
+     auto&& ___range = for-range-initializer;
+     auto ___begin = begin-expr, ___end = end-expr;
+     for (;  begin !=  end; ++ begin) {
+          for-range-declaration = *___begin;
+          statement
+     }
+}
+Version > C++17
+{
+     auto&& ___range = for-range-initializer;
+     auto ___begin = begin-expr;
+     auto ___end = end-expr; // end is allowed to be a different type than begin in C++17
+     for (;  begin !=  end; ++ begin) {
+          for-range-declaration = *___begin;
+          statement
+     }
+}
+This change was introduced for the planned support of Ranges TS in C++20.
+In this case, our loop is equivalent to:
+{
+      auto&& __range = v;
+      auto __begin = v.begin(), ____end = v.end();
+      for (; __begin != ___end; ++___begin) {
+          auto val = *___begin;
+          std::cout << val << " ";

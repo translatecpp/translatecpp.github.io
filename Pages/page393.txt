@@ -1,0 +1,40 @@
+﻿template<std::size_t I>
+void print_indexes_upto() {
+   index_over(index<I>)([](auto i){
+     std::cout << i << '\n'; // here i is a compile-time constant
+   });
+}
+which is much shorter, and keeps logic in the code that uses it.
+Live example to play with.
+Section 73.10: Generalized capture
+Version > C++14
+Lambdas can capture expressions, rather than just variables. This permits lambdas to store move-only types:
+auto p = std::make_unique<T>(...);
+auto lamb = [p = std::move(p)]() //Overrides capture-by-value of 'p'.
+{
+   p->SomeFunc();
+};
+This moves the outer p variable into the lambda capture variable, also called p. lamb now owns the memory
+allocated by make_unique. Because the closure contains a type that is non-copyable, this means that lamb is itself
+non-copyable. But it can be moved:
+auto lamb_copy = lamb; //Illegal
+auto lamb_move = std::move(lamb); //legal.
+Now lamb_move owns the memory.
+Note that std ::function<> requires that the values stored be copyable. You can write your own move-only-
+requiring std ::function, or you could just stuff the lambda into a shared_ptr wrapper:
+auto shared_lambda = [](auto&& f){
+   return [spf = std::make_shared<std::decay_t<decltype(f)>>(decltype(f)(f))]
+   (auto&&...args)->decltype(auto) {
+     return (*spf)(decltype(args)(args)...);
+   };
+};
+auto lamb_shared = shared_lambda(std::move(lamb_move));
+takes our move-only lambda and stuffs its state into a shared pointer then returns a lambda that can be copied,
+and then stored in a std ::function or similar.
+Generalized capture uses auto type deduction for the variable's type. It will declare these captures as values by
+default, but they can be references as well:
+int a = 0;
+auto lamb = [&v = a](int add) //Note that 'a' and 'v' have different names
+{
+   v += add; //Modifies 'a'
+};

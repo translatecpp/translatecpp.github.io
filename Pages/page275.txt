@@ -1,0 +1,44 @@
+﻿Since C++11 the cbegin() and cend() methods allow you to obtain a constant iterator for a vector, even if the vector
+is non-const. A constant iterator allows you to read but not modify the contents of the vector which is useful to
+enforce const correctness:
+Version > C++11
+// forward iteration
+for (auto pos = v.cbegin(); pos != v.cend(); ++pos) {
+    // type of pos is vector<T>::const_iterator
+    // *pos = 5; // Compile error - can't write via const iterator
+}
+// reverse iteration
+for (auto pos = v.crbegin(); pos != v.crend(); ++pos) {
+    // type of pos is vector<T>::const_iterator
+    // *pos = 5; // Compile error - can't write via const iterator
+}
+// expects Functor::operand()(T&)
+for_each(v.begin(), v.end(), Functor());
+// expects Functor::operand()(const T&)
+for_each(v.cbegin(), v.cend(), Functor())
+Version > C++17
+as const extends this to range iteration:
+for (auto const& e : std::as_const(v)) {
+   std::cout << e << '\n' ;
+}
+This is easy to implement in earlier versions of C++:
+Version > C++14
+template <class T>
+constexpr std::add_const_t<T>& as_const(T& t) noexcept {
+   return t;
+}
+A Note on Efficiency
+Since the class std ::vector is basically a class that manages a dynamically allocated contiguous array, the same
+principle explained here applies to C++ vectors. Accessing the vector's content by index is much more efficient
+when following the row-major order principle. Of course, each access to the vector also puts its management
+content into the cache as well, but as has been debated many times (notably here and here), the difference in
+performance for iterating over a std ::vector compared to a raw array is negligible. So the same principle of
+efficiency for raw arrays in C also applies for C++'s std ::vector.
+Section 50.5: vector<bool>: The Exception To So Many, So
+Many Rules
+The standard (section 23.3.7) specifies that a specialization of vector<bool> is provided, which optimizes space by
+packing the bool values, so that each takes up only one bit. Since bits aren't addressable in C++, this means that
+several requirements on vector are not placed on vector<bool>:
+    • The data stored is not required to be contiguous, so a vector<bool> can't be passed to a C API which expects
+      a bool array.
+    • at(), operator [ ], and dereferencing of iterators do not return a reference to bool. Rather they return a

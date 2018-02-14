@@ -1,0 +1,38 @@
+﻿lamb(20); //'a' becomes 20.
+Generalize capture does not need to capture an external variable at all. It can capture an arbitrary expression:
+auto lamb = [p = std::make_unique<T>(...)]()
+{
+      p->SomeFunc();
+}
+This is useful for giving lambdas arbitrary values that they can hold and potentially modify, without having to
+declare them externally to the lambda. Of course, that is only useful if you do not intend to access those variables
+after the lambda has completed its work.
+Section 73.11: Conversion to function pointer
+If a lambda's capture list is empty, then the lambda has an implicit conversion to a function pointer that takes the
+same arguments and returns the same return type:
+auto sorter = [](int lhs, int rhs) -> bool {return lhs < rhs;};
+using func_ptr = bool(*)(int, int);
+func_ptr sorter_func = sorter; // implicit conversion
+Such a conversion may also be enforced using unary plus operator:
+func_ptr sorter_func2 = +sorter; // enforce implicit conversion
+Calling this function pointer behaves exactly like invoking operator() on the lambda. This function pointer is in no
+way reliant on the source lambda closure's existence. It therefore may outlive the lambda closure.
+This feature is mainly useful for using lambdas with APIs that deal in function pointers, rather than C++ function
+objects.
+Version > C++14
+Conversion to a function pointer is also possible for generic lambdas with an empty capture list. If necessary,
+template argument deduction will be used to select the correct specialization.
+auto sorter = [](auto lhs, auto rhs) { return lhs < rhs; };
+using func_ptr = bool(*)(int, int);
+func_ptr sorter_func = sorter; // deduces int, int
+// note however that the following is ambiguous
+// func_ptr sorter_func2 = +sorter;
+Section 73.12: Porting lambda functions to C++03 using
+functors
+Lambda functions in C++ are syntactic sugar that provide a very concise syntax for writing functors. As such,
+equivalent functionality can be obtained in C++03 (albeit much more verbose) by converting the lambda function
+into a functor:
+// Some dummy types:
+struct T1 {int dummy;};
+struct T2 {int dummy;};
+struct R {int dummy;};

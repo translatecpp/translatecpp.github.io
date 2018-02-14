@@ -1,0 +1,42 @@
+﻿// Code using a lambda function (requires C++11)
+R use_lambda(T1 val, T2 ref) {
+   // Use auto because the type of the lambda is unknown.
+   auto lambda = [val, &ref](int arg1, int arg2) -> R {
+     /* lambda-body */
+     return R();
+   };
+   return lambda(12, 27);
+}
+// The functor class (valid C++03)
+// Similar to what the compiler generates for the lambda function.
+class Functor {
+   // Capture list.
+   T1 val;
+   T2& ref;
+public:
+   // Constructor
+   inline Functor(T1 val, T2& ref) : val(val), ref(ref) {}
+   // Functor body
+   R operator()(int arg1, int arg2) const {
+     /* lambda-body */
+     return R();
+   }
+};
+// Equivalent to use_lambda, but uses a functor (valid C++03).
+R use_functor(T1 val, T2 ref) {
+   Functor functor(val, ref);
+   return functor(12, 27);
+}
+// Make this a self-contained example.
+int main() {
+   T1 t1 ;
+   T2 t2;
+   use_functor(t1,t2);
+   use_lambda(t1,t2);
+   return 0;
+}
+If the lambda function is mutable then make the functor's call-operator non-const, i.e.:
+R operator()(int arg1, int arg2) /*non-const*/ {
+   /* lambda-body */
+   return R();
+}

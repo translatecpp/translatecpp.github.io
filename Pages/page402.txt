@@ -1,0 +1,41 @@
+﻿     X(cat) \
+     X(racoon)
+// class Animal {
+// public:
+// void say();
+// };
+#define X(name) Animal name;
+LIST
+#undef X
+int main() {
+#define X(name) name.say();
+                                                                                                              LIST
+                                                                                                              #undef X
+      return 0;
+}
+which is expanded by the preprocessor into the following:
+Animal dog;
+Animal cat;
+Animal racoon;
+int main() {
+      dog.say();
+      cat.say();
+      racoon.say();
+      return 0;
+}
+As lists become bigger (let's say, more than 100 elements), this technique helps to avoid excessive copy-pasting.
+Source: https://en.wikipedia.org/wiki/X Macro
+See also: X-macros
+If defining a seamingly irrelevant X before using LIST is not to your liking, you can pass a macro name as an
+argument as well:
+#define LIST(MACRO) \
+      MACRO(dog) \
+      MACRO(cat) \
+      MACRO(racoon)
+Now, you explicitly specify which macro should be used when expanding the list, e.g.
+#define FORWARD_DECLARE_ANIMAL(name) Animal name;
+LIST(FORWARD_DECLARE_ANIMAL)
+If each invocation of the MACRO should take additional parameters - constant with respect to the list, variadic macros
+can be used
+//a walkaround for Visual studio
+#define EXPAND(x) x

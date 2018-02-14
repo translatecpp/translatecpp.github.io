@@ -1,0 +1,55 @@
+﻿This also holds true for override.
+struct VB {
+      virtual void f(); // "virtual" goes here.
+      void g();
+};
+/* virtual */ void VB::f() {} // Not here.
+virtual void VB::g() {} // Error.
+If a base class overloads a virtual function, only overloads that are explicitly specified as virtual will be virtual.
+struct BOverload {
+      virtual void func() {}
+      void func(int) {}
+};
+struct DOverload : BOverload {
+      void func() override {}
+      void func(int) {}
+};
+// ...
+BOverload* bo = new DOverload;
+bo->func(); // Calls DOverload::func().
+bo->func(1); // Calls BOverload::func(int).
+For more information, see the relevant topic.
+Section 42.5: Const Correctness
+One of the primary uses for this cv-qualifiers is const correctness. This is the practice of guaranteeing that only
+accesses that need to modify an object are able to modify the object, and that any (member or non-member)
+function that doesn't need to modify an object doesn't have write access to that object (whether directly or
+indirectly). This prevents unintentional modifications, making code less errorprone. It also allows any function that
+doesn't need to modify state to be able to take either a const or non-const object, without needing to rewrite or
+overload the function.
+const correctness, due to its nature, starts at the bottom up: Any class member function that doesn't need to
+change state is declared as const, so that it can be called on const instances. This, in turn, allows passed-by-
+reference parameters to be declared const when they don't need to be modified, which allows functions to take
+either const or non-const objects without complaining, and const-ness can propagate outwards in this manner.
+Due to this, getters are frequently const, as are any other functions that don't need to modify logical state.
+class ConstIncorrect {
+     Field fld;
+public:
+ConstIncorrect(const Field& f) : fld(f) {}     // 
+const Field& get_field()       { return fld; } // 
+void set_field(const Field& f) 4---            // 
+                               II                 
+                               ■a                 
+                               i---i              
+                               4-                 
+void do_something(int i) {                     // 
+   fld.insert_value(i);                           
+}                                                 
+void do_nothing() {         }                  // 
+};
+Modifies.
+Doesn't modify;
+Modifies.
+Modifies.
+Doesn't modify;
+should be const.
+should be const.

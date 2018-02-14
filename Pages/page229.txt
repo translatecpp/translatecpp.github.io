@@ -1,0 +1,44 @@
+﻿Section 42.1: Non-static Member Functions
+A class or struct can have member functions as well as member variables. These functions have syntax mostly
+similar to standalone functions, and can be defined either inside or outside the class definition; if defined outside
+the class definition, the function's name is prefixed with the class' name and the scope (::) operator.
+class CL {
+   public:
+     void definedInside() {}
+     void definedOutside();
+};
+void CL::definedOutside() {}
+These functions are called on an instance (or reference to an instance) of the class with the dot (.) operator, or a
+pointer to an instance with the arrow (->) operator, and each call is tied to the instance the function was called on;
+when a member function is called on an instance, it has access to all of that instance's fields (through the this
+pointer), but can only access other instances' fields if those instances are supplied as parameters.
+struct ST {
+     ST(const std::string& ss = "Wolf", int ii = 359) : s(ss), i(ii) { }
+     int get_i() const { return i; }
+     bool compare_i(const ST& other) const { return (i == other.i); }
+   private:
+     std::string s;
+     int i;
+};
+ST st1;
+ST st2("Species", 8472);
+int i = st1.get_i(); // Can access st1.i, but not st2.i.
+bool b = st1.compare_i(st2); // Can access st1 & st2.
+These functions are allowed to access member variables and/or other member functions, regardless of either the
+variable or function's access modifiers. They can also be written out-of-order, accessing member variables and/or
+calling member functions declared before them, as the entire class definition must be parsed before the compiler
+can begin to compile a class.
+class Access {
+   public:
+     Access(int i_ = 8088, int j_ = 8086, int k_ = 6502) : i(i_), j(j_), k(k_) {}
+     int i;
+     int get_k() const { return k; }
+     bool private_no_more() const { return i_be_private(); }
+   protected:
+   int j;
+     int get_i() const { return i; }
+   private:
+   int k;
+     int get_j() const { return j; }
+     bool i_be_private() const { return ((i > j) && (k < j)); }
+};

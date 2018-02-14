@@ -1,0 +1,40 @@
+﻿    •  The initialization and increment statements can perform operations unrelated to the condition statement, or
+      nothing at all - if you wish to do so. But for readability reasons, it is best practice to only perform operations
+      directly relevant to the loop.
+    •  A variable declared in the initialization statement is visible only inside the scope of the for loop and is
+      released upon termination of the loop.
+    •  Don't forget that the variable which was declared in the initialization statement can be modified during
+      the loop, as well as the variable checked in the condition.
+Example of a loop which counts from 0 to 10:
+for (int counter = 0; counter <= 10; ++counter)
+{
+      std::cout << counter << '\n';
+}
+// counter is not accessible here (had value 11 at the end)
+Explanation of the code fragments:
+    •  int counter = 0 initializes the variable counter to 0. (This variable can only be used inside of the for loop.)
+    •  counter <= 10 is a Boolean condition that checks whether counter is less than or equal to 10. If it is true,
+      the loop executes. If it is false, the loop ends.
+    •  ++counter is an increment operation that increments the value of counter by 1 ahead of the next condition
+      check.
+By leaving all statements empty, you can create an infinite loop:
+// infinite loop
+for (;;)
+      std::cout << "Never ending!\n";
+The while loop equivalent of the above is:
+// infinite loop
+while (true)
+      std::cout << "Never ending!\n";
+However, an infinite loop can still be left by using the statements break, goto, or return or by throwing an
+exception.
+The next common example of iterating over all elements from an STL collection (e.g., a vector) without using the
+<algorithm> header is:
+std::vector<std::string> names = {"Albert Einstein", "Stephen Hawking", "Michael Ellis"};
+for(std::vector<std::string>::iterator it = names.begin(); it != names.end(); ++it) {
+std::cout << *it << std::endl;
+}
+Section 12.3: While loop
+A while loop executes statements repeatedly until the given condition evaluates to false. This control statement is
+used when it is not known, in advance, how many times a block of code is to be executed.
+For example, to print all the numbers from 0 up to 9, the following code can be used:
+int i = 0;

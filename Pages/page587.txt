@@ -1,0 +1,43 @@
+﻿example:
+template<class T, class ... Rest>
+void g(T &&p, Rest &&...rs)
+{
+   // ... handle p
+   if constexpr (sizeof...(rs) > 0)
+     g(rs...);  // never instantiated with an empty argument list
+}
+In addition, variables and functions that are odr-used only inside discarded statements are not required to be
+defined, and discarded return statements are not used for function return type deduction.
+if constexpr is distinct from #ifdef. #ifdef conditionally compiles code, but only based on conditions that can be
+evaluated at preprocessing time. For example, #ifdef could not be used to conditionally compile code depending
+on the value of a template parameter. On the other hand, if constexpr cannot be used to discard syntactically
+invalid code, while #ifdef can.
+if constexpr(false) {
+     foobar; // error; foobar has not been declared
+     std::vector<int> v("hello, world"); // error; no matching constructor
+}
+Section 119.3: constexpr functions
+A function that is declared constexpr is implicitly inline and calls to such a function potentially yield constant
+expressions. For example, the following function, if called with constant expression arguments, yields a constant
+expression too:
+Version > C++11
+constexpr int Sum(int a, int b)
+{
+      return a + b;
+}
+Thus, the result of the function call may be used as an array bound or a template argument, or to initialize a
+constexpr variable:
+Version > C++11
+int main()
+{
+      constexpr int S = Sum(10,20);
+      int Array[S];
+      int Array2[Sum(20,30)]; // 50 array size, compile time
+}
+Note that if you remove constexpr from function's return type specification, assignment to S will not work, as S is a
+constexpr variable, and must be assigned a compile-time const. Similarly, size of array will also not be a constant-
+expression, if function Sum is not constexpr.
+Interesting thing about constexpr functions is that you may also use it like ordinary functions:
+                                                     Version > C++11
+                                                     int a = 20;
+auto sum = Sum(a, abs(-20));

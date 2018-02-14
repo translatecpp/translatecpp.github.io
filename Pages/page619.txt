@@ -1,0 +1,50 @@
+﻿This can be used to make assumptions about the state of the parameters after being passed to any given function,
+even without seeing the definition of that function.
+// function_parameter.h
+// We can assume that c isn't modified (and c.set_val() isn't called), and isn't passed
+// to non_qualified_function_parameter(). If passed to one_const_one_not(), it is the first
+// parameter.
+void const_function_parameter(const ConstMemberFunctions& c);
+// We can assume that c is modified and/or c.set_val() is called, and may or may not be passed
+// to any of these functions. If passed to one_const_one_not, it may be either parameter.
+void non_qualified_function_parameter(ConstMemberFunctions& c);
+// We can assume that:
+   // l is not modified, and l.set_val() won't be called.
+   // l may or may not be passed to const_function_parameter().
+   // r is modified, and/or r.set_val() may be called.
+   // r may or may not be passed to either of the preceding functions.
+void one_const_one_not(const ConstMemberFunctions& l, ConstMemberFunctions& r);
+// We can assume that c isn't modified (and c.set_val() isn't called), and isn't passed
+// to non_qualified_function_parameter(). If passed to one_const_one_not(), it is the first
+// parameter.
+void bad_parameter(const ConstMemberFunctions& c);
+Due to const rules, these assumptions will in fact be enforced by the compiler.
+// function_parameter.cpp
+// Our assumption was correct.
+void const_function_parameter(const ConstMemberFunctions& c) {
+     std::cout << "With the current value, the output is: " << c.calc() << '\n'
+               << "If squared, it's: " << c.squared_calc()
+               << std ::endl;
+}
+// Our assumption was correct.
+void non_qualified_function_parameter(ConstMemberFunctions& c) {
+     c. set_val(42);
+     std::cout << "For the value 42, the output is: " << c.calc() << '\n'
+               << "If squared, it's: " << c.squared_calc()
+               << std ::endl;
+}
+// Our assumption was correct, in the ugliest possible way.
+// Note that const correctness doesn't prevent encapsulation from intentionally being broken,
+// it merely prevents code from having write access when it doesn't need it.
+void one_const_one_not(const ConstMemberFunctions& l, ConstMemberFunctions& r) {
+     // Let's just punch access modifiers and common sense in the face here.
+     struct Machiavelli {
+     int val;
+         int unimportant;
+         bool state_changed;
+     };
+     reinterpret_cast<Machiavelli&>(r).val = l.calc();
+     reinterpret_cast<Machiavelli&>(r).state_changed = true;
+     const_function_parameter(l);
+     const_function_parameter( r);
+}

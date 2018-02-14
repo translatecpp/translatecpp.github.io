@@ -1,0 +1,46 @@
+﻿void init()
+{
+   x = 2;
+   y = 3;
+   ready.store(true, std::memory_order_release);
+}
+void use()
+{
+   if (ready.load(std::memory_order_acquire))
+     std ::cout << x + y;
+}
+Here init() performs atomic store-release operation. This not only stores the value true into ready, but also tells
+the compiler that it cannot move this operation before write operations that are sequenced before it.
+The use() function does an atomic load-acquire operation. It reads the current value of ready and also forbids the
+compiler from placing read operations that are sequenced after it to happen before the atomic load-acquire.
+These atomic operations also cause the compiler to put whatever hardware instructions are needed to inform the
+CPU to refrain from the unwanted reorderings.
+Because the atomic store-release is to the same memory location as the atomic load-acquire, the memory model
+stipulates that if the load-acquire operation sees the value written by the store-release operation, then all writes
+performed by init()'s thread prior to that store-release will be visible to loads that use()'s thread executes after its
+load-acquire. That is if use() sees ready==true, then it is guaranteed to see x==2 and y==3.
+Note that the compiler and the CPU are still allowed to write to y before writing to x, and similarly the reads from
+these variables in use() can happen in any order.
+Section 116.2: Fence example
+The example above can also be implemented with fences and relaxed atomic operations:
+int x, y;
+std::atomic<bool> ready{false};
+void init()
+{
+   x = 2;
+   y = 3;
+   atomic_thread_fence(std::memory_order_release);
+   ready.store(true, std::memory_order_relaxed);
+}
+void use()
+{
+   if (ready.load(std::memory_order_relaxed))
+   {
+     atomic_thread_fence(std::memory_order_acquire);
+     std::cout << x + y;
+   }
+}
+If the atomic load operation sees the value written by the atomic store then the store happens before the load, and
+so do the fences: the release fence happens before the acquire fence making the writes to x and y that precede the
+release fence to become visible to the std ::cout statement that follows the acquire fence.
+A fence might be beneficial if it can reduce the overall number of acquire, release or other synchronization

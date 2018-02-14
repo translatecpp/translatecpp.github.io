@@ -1,0 +1,23 @@
+﻿long double area(long double radius) {
+     const long double pi = 3.1415926535897932385L;
+     return pi*radius*radius;
+}
+Version > C++11
+When the long specifier occurs twice, as in long long, it denotes a signed integer type that is at least as long as
+long, and whose range includes at least -9223372036854775807 to +9223372036854775807, inclusive (that is, -
+(2A63 - 1) to +(2A63 - 1)).
+// support files up to 2 TiB
+const long long max_file_size = 2LL << 40;
+Section 22.10: short
+Denotes a signed integer type that is at least as long as char, and whose range includes at least -32767 to +32767,
+inclusive. This type can also be written as short int.
+// (during the last year)
+short hours_worked(short days_worked) {
+return 8*days_worked;
+}
+Section 22.11: bool
+An integer type whose value can be either true or false.
+bool is_even(int x) {
+     return x%2 == 0;
+}
+const bool b = is_even(47); // false

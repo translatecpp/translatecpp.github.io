@@ -1,0 +1,13 @@
+﻿Without the possessive quantifier the regex engine has to go back and test every combination of .* and either 3 or
+4 characters to see if it can find a matchable combination. With the possessive quantifier the regex starts where
+the 2nd possessive quantifier left off, the '0' character, and the regex engine tries to adjust the .* to allow \d{3,4}
+to match; when it can't the regex just fails, no back tracking is done to see if earlier .* adjustment could have
+allowed a match.
+Section 70.7: Splitting a string
+std::vector<std::string> split(const std::string &str, std::string regex)
+{
+     std::regex r{ regex };
+     std::sregex_token_iterator start{ str.begin(), str.end(), r, -1 }, end;
+     return std::vector<std::string>(start, end);
+}
+split("Some string\t with whitespace ", "\\s+"); // "Some", "string", "with", "whitespace"

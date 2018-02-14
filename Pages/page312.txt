@@ -1,0 +1,45 @@
+﻿Section 57.1: Create pseudo-method pointers
+This is an advanced example.
+You can use variant for light weight type erasure.
+template<class F>
+struct pseudo_method {
+   F f;
+   // enable C++17 class type deduction:
+   pseudo_method( F&& fin ):f(std::move(fin)) {}
+   // Koenig lookup operator->*, as this is a pseudo-method it is appropriate:
+   template<class Variant> // maybe add SFINAE test that LHS is actually a variant.
+   friend decltype(auto) operator->*( Variant&& var, pseudo_method const& method ) {
+   // var->*method returns a lambda that perfect forwards a function call,
+     // behaving like a method pointer basically:
+     return [&](auto&&...args)->decltype(auto) {
+       // use visit to get the type of the variant:
+       return std::visit(
+         [&](auto&& self)->decltype(auto) {
+          // decltype(x)(x) is perfect forwarding in a lambda:
+          return method.f( decltype(self)(self), decltype(args)(args)... );
+         },
+         std::forward<Var>(var)
+       );
+     };
+   }
+};
+this creates a type that overloads operator->* with a Variant on the left hand side.
+// C++17 class type deduction to find template argument of 'print' here.
+// a pseudo-method lambda should take 'self' as its first argument, then
+// the rest of the arguments afterwards, and invoke the action:
+pseudo_method print = [](auto&& self, auto&&...args)->decltype(auto) {
+return decltype(self)(self).print( decltype(args)(args)... );
+};
+Now if we have 2 types each with a print method:
+struct A {
+   void print( std::ostream& os ) const {
+      os << "A";
+   }
+};
+struct B {
+   void print( std::ostream& os ) const {
+      os << "B";
+   }
+};
+note that they are unrelated types. We can:
+std::variant<A,B> var = A{};

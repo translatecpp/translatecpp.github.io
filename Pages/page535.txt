@@ -1,0 +1,42 @@
+﻿Section 105.4: Exact match
+An overload without conversions needed for parameter types or only conversions needed between types that are
+still considered exact matches is preferred over an overload that requires other conversions in order to call.
+void f(int x);
+void f(double x);
+f(42); // calls f(int)
+When an argument binds to a reference to the same type, the match is considered to not require a conversion even
+if the reference is more cv-qualified.
+void f(int& x);
+void f(double x);
+int x = 42;
+f(x); // argument type is int; exact match with int&
+void g(const int& x);
+void g(int x);
+g(x); // ambiguous; both overloads give exact match
+For the purposes of overload resolution, the type "array of T" is considered to match exactly with the type "pointer
+to T", and the function type T is considered to match exactly with the function pointer type T*, even though both
+require conversions.
+void f(int* p);
+void f(void* p);
+void g(int* p);
+void g(int (&p)[100]);
+int a[100];
+f(a); // calls f(int*); exact match with array-to-pointer conversion
+g(a); // ambiguous; both overloads give exact match
+Section 105.5: Overloading on constness and volatility
+Passing a pointer argument to a T* parameter, if possible, is better than passing it to a const T* parameter.
+struct Base {};
+struct Derived : Base {};
+void f(Base* pb);
+void f(const Base* pb);
+void f(const Derived* pd);
+void f(bool b);
+Base b;
+f(&b); // f(Base*) is better than f(const Base*)
+Derived d;
+f(&d); // f(const Derived*) is better than f(Base*) though;
+        // constness is only a "tie-breaker" rule
+Likewise, passing an argument to a T& parameter, if possible, is better than passing it to a const T& parameter,
+even if both have exact match rank.
+void f(int& r);
+void f(const int& r);

@@ -1,0 +1,29 @@
+﻿     virtual const char* func1() = 0;
+     virtual void func2() = 0;
+protected:
+     API() {}
+     API(const API&) = delete;
+     API& operator=(const API&) = delete;
+};
+class WindowsAPI : public API
+{
+public:
+     virtual const char* func1() override { /* Windows code */ }
+     virtual void func2() override { /* Windows code */ }
+};
+class LinuxAPI : public API
+{
+public:
+     virtual const char* func1() override { /* Linux code */ }
+     virtual void func2() override { /* Linux code */ }
+};
+API& API::instance() {
+#if PLATFORM == WIN32
+     static WindowsAPI instance;
+#elif PLATFORM = LINUX
+     static LinuxAPI instance;
+#endif
+     return instance;
+}
+In this example, a simple compiler switch binds the API class to the appropriate subclass. In this way, API can be
+accessed without being coupled to platform-specific code.

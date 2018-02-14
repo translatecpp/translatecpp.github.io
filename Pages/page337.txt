@@ -1,0 +1,34 @@
+﻿For the sake of this example, let's define the median of a sequence of length n as the element that would be in
+position ?n / 2?. For example, the median of a sequence of length 5 is the 3rd smallest element, and so is the
+median of a sequence of length 6.
+To use this function to find the median, we can use the following. Say we start with
+std::vector<int> v{5, 1, 2, 3, 4};
+std::vector<int>::iterator b = v.begin();
+std::vector<int>::iterator e = v.end();
+std::vector<int>::iterator med = b;
+std::advance(med, v.size() / 2);
+// This makes the 2nd position hold the median.
+std::nth_element(b, med, e);
+// The median is now at v[2].
+To find the pth quantile, we would change some of the lines above:
+const std::size_t pos = p * std::distance(b, e);
+std::advance(nth, pos);
+and look for the quantile at position pos.
+Section 63.8: std::count
+template <class InputIterator, class T>
+typename iterator_traits<InputIterator>::difference_type
+count (InputIterator first, InputIterator last, const T& val);
+Effects
+Counts the number of elements that are equal to val
+Parameters
+first => iterator pointing to the beginning of the range
+last => iterator pointing to the end of the range
+val => The occurrence of this value in the range will be counted
+Return
+The number of elements in the range that are equal(==) to val.
+Example
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+int main(int argc, const char * argv[]) {

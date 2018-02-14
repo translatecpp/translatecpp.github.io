@@ -1,0 +1,36 @@
+﻿Section 50.12: Reducing the Capacity of a Vector
+A std ::vector automatically increases its capacity upon insertion as needed, but it never reduces its capacity after
+element removal.
+// Initialize a vector with 100 elements
+std::vector<int> v(100);
+// The vector's capacity is always at least as large as its size
+auto const old_capacity = v.capacity();
+// old_capacity >= 100
+// Remove half of the elements
+v.erase(v.begin() + 50, v.end());  // Reduces the size from 100 to 50 (v.size() == 50),
+                                    // but not the capacity (v.capacity() == old_capacity)
+To reduce its capacity, we can copy the contents of a vector to a new temporary vector. The new vector will have the
+minimum capacity that is needed to store all elements of the original vector. If the size reduction of the original
+vector was significant, then the capacity reduction for the new vector is likely to be significant. We can then swap
+the original vector with the temporary one to retain its minimized capacity:
+std::vector<int>(v).swap(v);
+Version > C++11
+In C++11 we can use the shrink_to_fit() member function for a similar effect:
+v.shrink_to_fit();
+Note: The shrink_to_fit() member function is a request and doesn't guarantee to reduce capacity.
+Section 50.13: Vector size and capacity
+Vector size is simply the number of elements in the vector:
+   1. Current vector size is queried by size() member function. Convenience empty() function returns true if size
+     is 0:
+       vector<int> v = { 1, 2, 3 }; // size is 3
+       const vector<int>::size_type size = v.size();
+       cout << size << endl; // prints 3
+       cout << boolalpha << v.empty() << endl; // prints false
+    2. Default constructed vector starts with a size of 0:
+       vector<int> v; // size is 0
+       cout << v.size() << endl; // prints 0
+    3. Adding N elements to vector increases size by N (e.g. by push_back(), insert() or resize() functions).
+    4. Removing N elements from vector decreases size by N (e.g. by pop_back(), erase() or clear() functions).
+    5. Vector has an implementation-specific upper limit on its size, but you are likely to run out of RAM before
+       reaching it:
+       vector<int> v;

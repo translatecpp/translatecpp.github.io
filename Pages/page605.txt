@@ -1,0 +1,9 @@
+﻿struct powerDouble<base, 1>
+{
+     static const int intermediateValue = base;
+     constexpr static double value = base;
+};
+int main()
+{
+     std::cout << powerDouble<2,-3>::value;
+}

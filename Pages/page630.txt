@@ -1,0 +1,44 @@
+﻿One of the hardest things to do in C and C++ is resource management. Thankfully, in C++, we have many ways to go
+about designing resource management in our programs. This article hopes to explain some of the idioms and
+methods used to manage allocated resources.
+Section 132.1: Resource Acquisition Is Initialization
+Resource Acquisition Is Initialization (RAII) is a common idiom in resource management. In the case of dynamic
+memory, it uses smart pointers to accomplish resource management. When using RAII, an acquired resource is
+immediately given ownership to a smart pointer or equivalent resource manager. The resource is only accessed
+through this manager, so the manager can keep track of various operations. For example, std ::auto_ptr
+automatically frees its corresponding resource when it falls out of scope or is otherwise deleted.
+#include <memory>
+#include <iostream>
+using namespace std;
+int main() {
+    {
+        auto_ptr ap(new int(5)); // dynamic memory is the resource
+    cout << *ap << endl; // prints 5
+    } // auto_ptr is destroyed, its resource is automatically freed
+}
+Version > C++11
+std ::auto_ptr's main problem is that it can't copied without transferring ownership:
+#include <memory>
+#include <iostream>
+using namespace std;
+int main() {
+     auto_ptr ap1(new int(5));
+     cout << *ap1 << endl; // prints 5
+     auto_ptr ap2(ap1); // copy ap2 from ap1; ownership now transfers to ap2
+     cout << *ap2 << endl; // prints 5
+     cout << ap1 == nullptr << endl; // prints 1; ap1 has lost ownership of resource
+}
+Because of these weird copy semantics, std ::auto_ptr can't be used in containers, among other things. The
+reason it does this is to prevent deleting memory twice: if there are two auto_ptrs with ownership of the same
+resource, they both try to free it when they're destroyed. Freeing an already freed resource can generally cause
+problems, so it is important to prevent it. However, std ::shared_ptr has a method to avoid this while not
+transferring ownership when copying:
+#include <memory>
+#include <iostream>
+using namespace std;
+int main() {
+     shared_ptr sp2;
+     {
+         shared_ptr sp1(new int(5)); // give ownership to sp1
+         cout << *sp1 << endl; // prints 5
+         sp2 = sp1; // copy sp2 from sp1; both have ownership of resource

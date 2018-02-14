@@ -1,0 +1,34 @@
+﻿    • std::cout << "Hello World!" << std::endl; prints "Hello World!" to the standard output stream:
+          ° std is a namespace, and :: is the scope resolution operator that allows look-ups for objects by name
+            within a namespace.
+            There are many namespaces. Here, we use :: to show we want to use cout from the std namespace.
+            For more information refer to Scope Resolution Operator - Microsoft Documentation.
+          ° std ::cout is the standard output stream object, defined in iostream, and it prints to the standard
+            output (stdout).
+          ° << is, in this context, the stream insertion operator, so called because it inserts an object into the
+            stream object.
+            The standard library defines the << operator to perform data insertion for certain data types into
+            output streams. stream << content inserts content into the stream and returns the same, but
+            updated stream. This allows stream insertions to be chained: std::cout << "Foo" << " Bar"; prints
+            "FooBar" to the console.
+          ° "Hello World!" is a character string literal, or a "text literal." The stream insertion operator for
+            character string literals is defined in file iostream.
+          o std::endl is a special I/O stream manipulator object, also defined in file iostream. Inserting a
+            manipulator into a stream changes the state of the stream.
+            The stream manipulator std ::endl does two things: first it inserts the end-of-line character and then it
+            flushes the stream buffer to force the text to show up on the console. This ensures that the data
+            inserted into the stream actually appear on your console. (Stream data is usually stored in a buffer and
+            then "flushed" in batches unless you force a flush immediately.)
+            An alternate method that avoids the flush is:
+             std::cout << "Hello World!\n";
+            where \n is the character escape sequence for the newline character.
+          ° The semicolon (;) notifies the compiler that a statement has ended. All C++ statements and class
+            definitions require an ending/terminating semicolon.
+Section 1.2: Comments
+A comment is a way to put arbitrary text inside source code without having the C++ compiler interpret it with any
+functional meaning. Comments are used to give insight into the design or method of a program.
+There are two types of comments in C++:
+Single-Line Comments
+The double forward-slash sequence // will mark all text until a newline as a comment:
+int main()
+{

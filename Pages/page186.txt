@@ -1,0 +1,41 @@
+﻿Outer::Inner oi; // Good.
+Outer::Inner_ oi; // Error.
+ImOut          oi;  // Good.
+As with other classes, nested classes can both derive from or be derived from by other classes.
+struct Base {};
+struct Outer {
+      struct Inner : Base {};
+};
+struct Derived : Outer::Inner {};
+This can be useful in situations where the enclosing class is derived from by another class, by allowing the
+programmer to update the nested class as necessary. This can be combined with a typedef to provide a consistent
+name for each enclosing class' nested class:
+class BaseOuter {
+     struct BaseInner_ {
+         virtual void do_something() {}
+         virtual void do_something_else();
+     } b_in;
+   public:
+     typedef BaseInner_ Inner;
+     virtual ~BaseOuter() = default;
+     virtual Inner& getInner() { return b_in; }
+};
+void BaseOuter::BaseInner_::do_something_else() {}
+// ---
+class DerivedOuter : public BaseOuter {
+     // Note the use of the qualified typedef; BaseOuter::BaseInner_ is private.
+     struct DerivedInner_ : BaseOuter::Inner {
+     void do_something() override {}
+     void do_something_else() override;
+     } d_in;
+   public:
+     typedef DerivedInner_ Inner;
+     BaseOuter::Inner& getInner() override { return d_in; }
+};
+void DerivedOuter::DerivedInner_::do_something_else() {}
+// ...
+// Calls BaseOuter::BaseInner_::do_something();
+BaseOuter* b = new BaseOuter;
+BaseOuter::Inner& bin = b->getInner();
+bin.do_something();
+b->getInner().do_something();

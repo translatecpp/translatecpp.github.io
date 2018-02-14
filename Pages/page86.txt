@@ -1,0 +1,8 @@
+﻿execution environment. (However, returning from main destroys automatic local variables, while calling std ::exit
+directly does not.)
+int main(int argc, char** argv) {
+     if (argc < 2) {
+          std::cout << "Missing argument\n";
+          return EXIT_FAILURE; // equivalent to: exit(EXIT_FAILURE);
+     }
+}

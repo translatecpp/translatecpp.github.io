@@ -1,0 +1,34 @@
+﻿What is undefined behavior (UB)? According to the ISO C++ Standard (§1.3.24, N4296), it is "behavior for which this
+International Standard imposes no requirements."
+This means that when a program encounters UB, it is allowed to do whatever it wants. This often means a crash,
+but it may simply do nothing, make demons fly out of your nose, or even appear to work properly!
+Needless to say, you should avoid writing code that invokes UB.
+Section 104.1: Reading or writing through a null pointer
+int *ptr = nullptr;
+*ptr = 1; // Undefined behavior
+This is undefined behavior, because a null pointer does not point to any valid object, so there is no object at *ptr
+to write to.
+Although this most often causes a segmentation fault, it is undefined and anything can happen.
+Section 104.2: Using an uninitialized local variable
+int a;
+std::cout << a; // Undefined behavior!
+This results in undefined behavior, because a is uninitialised.
+It is often, incorrectly, claimed that this is because the value is "indeterminate", or "whatever value was in that
+memory location before". However, it is the act of accessing the value of a in the above example that gives
+undefined behaviour. In practice, printing a "garbage value" is a common symptom in this case, but that is only one
+possible form of undefined behaviour.
+Although highly unlikely in practice (since it is reliant on specific hardware support) the compiler could equally well
+electrocute the programmer when compiling the code sample above. With such a compiler and hardware support,
+such a response to undefined behaviour would markedly increase average (living) programmer understanding of
+the true meaning of undefined behaviour - which is that the standard places no constraint on the resultant
+behaviour.
+Version > C++14
+Using an indeterminate value of unsigned char type does not produce undefined behavior if the value is used as:
+    • the second or third operand of the ternary conditional operator;
+    • the right operand of the built-in comma operator;
+    • the operand of a conversion to unsigned char;
+    • the right operand of the assignment operator, if the left operand is also of type unsigned char;
+    • the initializer for an unsigned char object;
+or if the value is discarded. In such cases, the indeterminate value simply propagates to the result of the
+expression, if applicable.
+Note that a static variable is always zero-initialized (if possible):

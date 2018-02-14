@@ -1,0 +1,41 @@
+﻿To run this from the command-line, do the following:
+$ cd ~/Path/to/project
+$ make
+$ ls
+app main.cpp Makefile
+$ ./app
+Hello World!
+$ make clean
+$ ls
+main.cpp Makefile
+Incremental builds
+When you start having more files, make becomes more useful. What if you edited a.cpp but not b.cpp? Recompiling
+b.cpp would take more time.
+With the following directory structure:
++--  src
+|  +--  a.cpp
+|  +--  a.hpp
+|  +--  b.cpp
+|  +--  b.hpp
++-- Makefile
+This would be a good Makefile:
+Makefile
+CXX=g++
+CXXFLAGS=-Wall -Wextra -pedantic
+EXE=app
+SRCS_GLOB=src/*.cpp
+SRCS=$(wildcard $(SRCS_GLOB))
+OBJS=$(SRCS:.cpp=.o)
+all: $(EXE)
+$(EXE): $(OBJS)
+     @$(CXX) -o $@ $(OBJS)
+depend: .depend
+.depend: $(SRCS)
+     @-rm -f ./.depend
+     @$(CXX) $(CXXFLAGS) -MM $A>>./.depend
+clean:
+     -rm -f $(EXE)
+     -rm $(OBJS)
+     -rm *~
+     -rm .depend
+include .depend

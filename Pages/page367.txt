@@ -1,0 +1,49 @@
+﻿values it can support, which is, as specified in § 3.9.1.3, inherited from the C standard, in §5.2.4.2.1. The minimum
+size of each type can be roughly inferred from this range, by determining the minimum number of bits required;
+note that for any given platform, any type's actual supported range may be larger than the minimum. Note that for
+signed types, ranges correspond to one's complement, not the more commonly used two's complement; this is to
+allow a wider range of platforms to comply with the standard.
+Type                                Minimum range                     Minimum bits required 
+signed char              -127 to 127 (-(27 - 1) to (27 - 1))                              8 
+unsigned char                  0 to 255 (0 to 28 - 1)                                     8 
+signed short         -32,767 to 32,767 (-(215 - 1) to (215 - 1))                         16 
+unsigned short               0 to 65,535 (0 to 216 - 1)                                  16 
+signed int           -32,767 to 32,767 (-(215 - 1) to (215 - 1))                         16 
+unsigned int                 0 to 65,535 (0 to 216 - 1)                                  16 
+signed long     -2,147,483,647 to 2,147,483,647 (-(231 - 1) to (231 -                1)) 32 
+unsigned long             0 to 4,294,967,295 (0 to 232 - 1)                              32 
+Version > C++11                                                                             
+Type                                                    Minimum range                       
+signed long long
+unsigned long long
+-9,223,372,036,854,775,807 to 9,223,372,036,854,775,807 (-(263 - 1) to
+                                                          (263 - 1))
+                                        0 to 18,446,744,073,709,551,615 (0 to 264 - 1)
+                                                                                                    Minimum bits
+                                                                                                    required
+64
+64
+As each type is allowed to be greater than its minimum size requirement, types may differ in size between
+implementations. The most notable example of this is with the 64-bit data models LP64 and LLP64, where LLP64
+systems (such as 64-bit Windows) have 32-bit ints and longs, and LP64 systems (such as 64-bit Linux) have 32-bit
+ints and 64-bit longs. Due to this, integer types cannot be assumed to have a fixed width across all platforms.
+Version > C++11
+If integer types with fixed width are required, use types from the <cstdint> header, but note that the standard
+makes it optional for implementations to support the exact-width types int8_t, int16_t, int32_t, int64_t,
+intptr_t, uint8_t, uint16_t, uint32_t, uint64_t and uintptr_t.
+Version > C++11
+Size of char16_t and char32_t
+The sizes of char16_t and char32_t are implementation-defined, as specified in § 5.3.3.1, with the stipulations
+given in § 3.9.1.5: •
+    • char16_t is large enough to represent any UTF-16 code unit, and has the same size, signedness, and
+      alignment as uint_least16_t; it is thus required to be at least 16 bits in size.
+    • char32_t is large enough to represent any UTF-32 code unit, and has the same size, signedness, and
+      alignment as uint least32 t: it is thus required to be at least 32 bits in size.
+Size of bool
+The size of bool is implementation defined, and may or may not be 1.
+Size of wchar t
+wchar_t, as specified in § 3.9.1.5, is a distinct type, whose range of values can represent every distinct code unit of
+the largest extended character set among the supported locales. It has the same size, signedness, and alignment as
+one of the other integral types, which is known as its underlying type. This type's size is implementation-defined, as
+specified in § 5.3.3.1, and may be, for example, at least 8, 16, or 32 bits; if a system supports Unicode, for example,
+wchar_t is required to be at least 32 bits (an exception to this rule is Windows, where wchar_t is 16 bits for

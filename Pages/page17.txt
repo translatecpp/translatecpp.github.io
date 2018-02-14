@@ -1,0 +1,12 @@
+﻿int i  = 3-3/1%3;      //  equal to: 3 /  1 = 3 3 % 3 = 0 3 - 0  = 3
+int l  = 3-(3/1)%3;    //  equal to: 3 /  1 = 3 3 % 3 = 0 3 - 0  = 3
+int m  = 3-(3/(1 %3)); //  equal to: 1 %  3 = 1 3 / 1 = 3 3 - 3  = 0
+Section 4.4: Logical AND and OR operators
+These operators have the usual precedence in C++: AND before OR.
+// You can drive with a foreign license for up to 60 days
+bool can_drive = has_domestic_license || has_foreign_license && num_days <= 60;
+This code is equivalent to the following:
+// You can drive with a foreign license for up to 60 days
+bool can_drive = has_domestic_license || (has_foreign_license && num_days <= 60);
+Adding the parenthesis does not change the behavior, though, it does make it easier to read. By adding these
+parentheses, no confusion exist about the intent of the writer.

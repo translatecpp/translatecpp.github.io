@@ -1,0 +1,38 @@
+﻿Chapter 142: C++ Debugging and Debug-
+prevention Tools & Techniques
+A lot of time from C++ developers is spent debugging. This topic is meant to assist with this task and give inspiration
+for techniques. Don't expect an extensive list of issues and solutions fixed by the tools or a manual on the
+mentioned tools.
+Section 142.1: Static analysis
+Static analysis is the technique in which on checks the code for patterns linked to known bugs. Using this technique
+is less time consuming than a code review, though, its checks are only limited to those programmed in the tool.
+Checks can include the incorrect semi-colon behind the if-statement (if (var);) till advanced graph algorithms
+which determine if a variable is not initialized.
+Compiler warnings
+Enabling static analysis is easy, the most simplistic version is already build-in in your compiler:
+    •  clang++ -Wall -Weverything -Werror ...
+    •  g++ -Wall -Weverything -Werror ...
+    •  cl.exe /W4 /WX ...
+If you enable these options, you will notice that each compiler will find bugs the others don't and that you will get
+errors on techniques which might be valid or valid in a specific context. while (staticAtomicBool); might be
+acceptable even if while (localBool); ain't.
+So unlike code review, you are fighting a tool which understands your code, tells you a lot of useful bugs and
+sometimes disagrees with you. In this last case, you might have to suppress the warning locally.
+As the options above enable all warnings, they might enable warnings you don't want. (Why should your code be
+C++98 compatible?) If so, you can simply disable that specific warning:
+    •  clang++ -Wall -Weverything -Werror -Wno-errortoaccept ...
+    •  g++ -Wall -Weverything -Werror -Wno-errortoaccept ...
+    •  cl.exe /W4 /WX /wd<no of warning>...
+Where compiler warnings assist you during development, they slow down compilation quite a bit. That is why you
+might not always want to enable them by default. Either you run them by default or you enable some continuous
+integration with the more expensive checks (or all of them).
+External tools
+If you decide to have some continuous integration, the use of other tools ain't such a stretch. A tool like clang-tidy
+has an list of checks which covers a wide range of issues, some examples: •
+    • Actual bugs
+          ° Prevention of slicing
+          ° Asserts with side effects
+    • Readability checks
+          ° Misleading indentation
+          ° Check identifier naming
+    • Modernization checks

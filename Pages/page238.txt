@@ -1,0 +1,46 @@
+﻿Chapter 45: Namespaces
+Used to prevent name collisions when using multiple libraries, a namespace is a declarative prefix for functions,
+classes, types, etc.
+Section 45.1: What are namespaces?
+A C++ namespace is a collection of C++ entities (functions, classes, variables), whose names are prefixed by the
+name of the namespace. When writing code within a namespace, named entities belonging to that namespace
+need not be prefixed with the namespace name, but entities outside of it must use the fully qualified name. The
+fully qualified name has the format <namespace> ::<entity>. Example:
+namespace Example
+{
+  const int test = 5;
+  const int test2 = test + 12; //Works within 'Example' namespace
+}
+const int test3 = test + 3; //Fails; 'test' not found outside of namespace.
+const int test3 = Example::test + 3; //Works; fully qualified name used.
+Namespaces are useful for grouping related definitions together. Take the analogy of a shopping mall. Generally a
+shopping mall is split up into several stores, each store selling items from a specific category. One store might sell
+electronics, while another store might sell shoes. These logical separations in store types help the shoppers find the
+items they're looking for. Namespaces help c++ programmers, like shoppers, find the functions, classes, and
+variables they're looking for by organizing them in a logical manner. Example:
+namespace Electronics
+{
+     int TotalStock;
+     class Headphones
+     {
+          // Description of a Headphone (color, brand, model number, etc.)
+     };
+     class Television
+     {
+          // Description of a Television (color, brand, model number, etc.)
+     };
+}
+namespace Shoes
+{
+     int TotalStock;
+     class Sandal
+          // Description of a Sandal (color, brand, model number, etc.)
+     };
+     class Slipper
+     {
+          // Description of a Slipper (color, brand, model number, etc.)
+     };
+         {
+}
+There is a single namespace predefined, which is the global namespace that has no name, but can be denoted by
+::. Example:

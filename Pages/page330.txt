@@ -1,0 +1,40 @@
+﻿Chapter 63: Standard Library Algorithms
+Section 63.1: std::next_permutation
+template< class Iterator >
+bool next_permutation( Iterator first, Iterator last );
+template< class Iterator, class Compare >
+bool next_permutation( Iterator first, Iterator last, Compare cmpFun );
+Effects:
+Sift the data sequence of the range [first, last) into the next lexicographically higher permutation. If cmpFun is
+provided, the permutation rule is customized.
+Parameters:
+first- the beginning of the range to be permutated, inclusive
+last - the end of the range to be permutated, exclusive
+Return Value:
+Returns true if such permutation exists.
+Otherwise the range is swaped to the lexicographically smallest permutation and return false.
+Complexity:
+O(n), n is the distance from first to last.
+Example:
+std::vector< int > v { 1, 2, 3 };
+do
+{
+    for( int i = 0; i < v.size(); i += 1 )
+    {
+        std ::cout << v[i];
+    }
+    std::cout << std::endl;
+}while( std::next_permutation( v.begin(), v.end() ) );
+print all the permutation cases of 1,2,3 in lexicographically-increasing order.
+output:
+123
+132
+213
+231
+312
+321
+Section 63.2: std::for_each
+template<class InputIterator, class Function>
+     Function for_each(InputIterator first, InputIterator last, Function f);
+Effects:
+Applies f to the result of dereferencing every iterator in the range [first, last) starting from first and

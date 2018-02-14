@@ -1,0 +1,38 @@
+﻿Note that during expansion,_VA_ARGS__ can be placed anywhere in the definition, and will be expanded correctly.
+#define VARIADIC2(POne, PTwo, PThree, ...) POne(PThree, __VA_ARGS__, PTwo)
+VARIADIC2(some_func, 3, 8, 6, 9);
+// Compiler sees:
+some_func(8, 6, 9, 3);
+In the case of a zero-argument variadic parameter, different compilers will handle the trailing comma differently.
+Some compilers, such as Visual Studio, will silently swallow the comma without any special syntax. Other compilers,
+such as GCC, require you to place ## immediately before_VA_ARGS_. Due to this, it is wise to conditionally define
+variadic macros when portability is a concern.
+// In this example, COMPILER is a user-defined macro specifying the compiler being used.
+#if      COMPILER == "VS"
+     #define VARIADIC3(Name, Param, ...) Name(Param, _____VA_ARGS___)
+#elif    COMPILER == "GCC"
+     #define VARIADIC3(Name, Param, ...) Name(Param, ##_____VA_ARGS___)
+#endif /* COMPILER */
+Section 75.5: Predefined macros
+Predefined macros are those that the compiler defines (in contrast to those user defines in the source file). Those
+macros must not be re-defined or undefined by user.
+The following macros are predefined by the C++ standard:
+    •  __LINE__contains the line number of the line this macro is used on, and can be changed by the #line
+      directive.
+    •  FILE contains the filename of the file this macro is used in, and can be changed by the #line directive.
+    •  DATE contains date (in "Mmm dd yyyy" format) of the file compilation, where Mmm is formatted as if
+      obtained by a call to std ::asctime().
+    •  __TIME__contains time (in "hh:mm:ss" format) of the file compilation.
+    •  __cplusplus is defined by (conformant) C++ compilers while compiling C++ files. Its value is the standard
+      version the compiler is fully conformant with, i.e. 199711L for C++98 and C++03, 201103L for C++11 and
+      201402L for C++14 standard.
+Version > c++11
+    •  __STDC_HOSTED__is defined to 1 if the implementation is hosted, or 0 if it is freestanding.
+Version > c++17
+    •  __STDCPP_DEFAULT_NEW_ALIGNMENT___contains a size_t literal, which is the alignment used for a call to
+      alignment-unaware operator new.
+Additionally, the following macros are allowed to be predefined by implementations, and may or may not be
+present:
+    •___STDC__has implementation-dependent meaning, and is usually defined only when compiling a file as C, to
+      signify full C standard compliance. (Or never, if the compiler decides not to support this macro.)
+Version > c++11

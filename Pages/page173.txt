@@ -1,0 +1,43 @@
+﻿base class Plus2Base, such as FortyTwo:
+struct Plus2Base {
+     int value() noexcept { return calculateValue() + 2; }
+protected: /* Methods: */
+     virtual int calculateValue() noexcept = 0;
+};
+struct FortyTwo: Plus2Base {
+protected: /* Methods: */
+     int calculateValue() noexcept final override { return 40; }
+};
+Note that the friend keyword can be used to add access exceptions to functions or types for accessing protected
+and private members.
+The public, protected, and private keywords can also be used to grant or limit access to base class subobjects.
+See the Inheritance example.
+Section 35.4: Inheritance
+Classes/structs can have inheritance relations.
+If a class/struct B inherits from a class/struct A, this means that B has as a parent A. We say that B is a derived
+class/struct from A, and A is the base class/struct.
+struct A
+{
+public:
+     int p1;
+protected:
+int p2;
+private:
+int p3;
+};
+//Make B inherit publicly (default) from A
+struct B : A
+{
+};
+There are 3 forms of inheritance for a class/struct:
+     •  public
+     •  private
+     •  protected
+Note that the default inheritance is the same as the default visibility of members: public if you use the struct
+keyword, and private for the class keyword.
+It's even possible to have a class derive from a struct (or vice versa). In this case, the default inheritance is
+controlled by the child, so a struct that derives from a class will default to public inheritance, and a class that
+derives from a struct will have private inheritance by default.
+public inheritance:
+struct B : public A // or just 'struct B : A'
+{

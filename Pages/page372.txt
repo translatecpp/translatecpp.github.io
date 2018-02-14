@@ -1,0 +1,44 @@
+﻿Chapter 72: Exceptions
+Section 72.1: Catching exceptions
+A try/catch block is used to catch exceptions. The code in the try section is the code that may throw an exception,
+and the code in the catch clause(s) handles the exception.
+#include <iostream>
+#include <string>
+#include <stdexcept>
+int main() {
+   std::string str("foo");
+   try {
+       str.at(10); // access element, may throw std::out_of_range
+   } catch (const std ::out_of_range& e) {
+       // what() is inherited from std::exception and contains an explanatory message
+       std::cout << e.what();
+   }
+}
+Multiple catch clauses may be used to handle multiple exception types. If multiple catch clauses are present, the
+exception handling mechanism tries to match them in order of their appearance in the code:
+std::string str("foo");
+try {
+     str.reserve(2); // reserve extra capacity, may throw std::length_error
+str.at(10); // access element, may throw std::out_of_range
+} catch (const std::length_error& e) {
+std::cout << e.what();
+} catch (const std::out_of_range& e) {
+     std::cout << e.what();
+}
+Exception classes which are derived from a common base class can be caught with a single catch clause for the
+common base class. The above example can replace the two catch clauses for std ::length_error and
+std ::out_of_range with a single clause for std :exception:
+std::string str("foo");
+try {
+     str.reserve(2); // reserve extra capacity, may throw std::length_error
+str.at(10); // access element, may throw std::out_of_range
+} catch (const std::exception& e) {
+std::cout << e.what();
+}
+Because the catch clauses are tried in order, be sure to write more specific catch clauses first, otherwise your
+exception handling code might never get called:
+try {
+     /* Code throwing exceptions omitted. */
+} catch (const std::exception& e) {
+     /* Handle all exceptions of type std::exception. */
+} catch (const std::runtime_error& e) {

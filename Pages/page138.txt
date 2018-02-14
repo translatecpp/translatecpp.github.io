@@ -1,0 +1,6 @@
+﻿   Value &operator=(const Value &val) = default;
+   //Will perform an element-wise move.
+   Value(Value &&val) noexcept = default;
+   //Will perform an element-wise move.
+   Value &operator=(Value &&val) noexcept = default;
+};

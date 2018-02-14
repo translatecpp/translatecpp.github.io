@@ -1,0 +1,42 @@
+﻿Section 58.1: std::setprecision
+When used in an expression out << setprecision(n) or in >> setprecision(n), sets the precision parameter of
+the stream out or in to exactly n. Parameter of this function is integer, which is new value for precision.
+Example:
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <limits>
+int main()
+{
+     const long double pi = std::acos(-1.L);
+     std::cout << "default precision (6): " << pi << '\n'
+              << "std::precision(10):   " << std::setprecision(10) << pi << '\n'
+              << "max precision:        "
+              << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
+              << pi << '\n';
+}
+//Output
+//default precision (6): 3.14159
+//std::precision(10):  3.141592654
+//max precision:       3.141592653589793239
+Section 58.2: std::setfill
+When used in an expression out << setfill(c) sets the fill character of the stream out to c.
+Note: The current fill character may be obtained with std ::ostream ::fill.
+Example:
+#include <iostream>
+#include <iomanip>
+int main()
+{
+     std::cout << "default fill: " << std::setw(10) << 42 << '\n'
+           << "setfill('*'): " << std::setfill('*')
+                              << std::setw(10) << 42 << '\n';
+}
+//output::
+//default fill:        42
+//setfill('*'): ********42
+Section 58.3: std::setiosflags
+When used in an expression out << setiosflags(mask) or in >> setiosflags(mask), sets all format flags of the
+stream out or in as specified by the mask.
+List of all std ::ios_base ::fmtflags :
+    • dec - use decimal base for integer I/O
+    • oct - use octal base for integer I/O

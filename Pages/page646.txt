@@ -1,0 +1,56 @@
+﻿Ctrl+Shift+X
+Ctrl+X
+9. Select C++ File and name the file main.cpp, then click Add:
+Win32 Application Wizard - MyFirstProcjram
+Application Settings
+Application type:
+Add common 'saosr f es for:
+Overview
+  :■ Windows application
+□ ATL
+Application Settings
+* Console application
+□ MFC
+                                                                                                                                                  DLL
+    Static library
+nnitinna nntinns
+
+
+Export symbols
+V] Precompiled header
+M Security Development Lifecycle [SDL)
+checks
+Finish
+Canoe
+< Previous
+Next >
+8. Right click on folder Source File then -> Add --> New Item :
+Solution Explorer
+9® A0
+Search Solution Explorer (Ctrl+S)
+                                                                                                                                                            Solution 'MyFirstProgram' (1 project)
+SJ MyFirstProgram
+References
+lg External Dependencies
+T Header Files
+_ Resource Files
+                                                                                                                                                                             Source Files
+     Add
+ft** Class Wizard...
+     Scope to This
+     New Solution Explorer View
+<56 Cut
+[5 Copy
+a\ Paste
+X Delete
+O Rename
+f* Properties
+New Item...
+Existing Item...
+New Filter
+Existing Items From Folder
+Class...
+Resource...
+Ctrl-*-Shift-*-A
+Shift-*-Alt-*-A
+w.lt+Enter

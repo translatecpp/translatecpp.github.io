@@ -1,0 +1,36 @@
+﻿Section 106.1: Move semantics
+Move semantics are a way of moving one object to another in C++. For this, we empty the old object and place
+everything it had in the new object.
+For this, we must understand what an rvalue reference is. An rvalue reference (T&& where T is the object type) is not
+much different than a normal reference (T&, now called lvalue references). But they act as 2 different types, and so,
+we can make constructors or functions that take one type or the other, which will be necessary when dealing with
+move semantics.
+The reason why we need two different types is to specify two different behaviors. Lvalue reference constructors are
+related to copying, while rvalue reference constructors are related to moving.
+To move an object, we will use std ::move(obj). This function returns an rvalue reference to the object, so that we
+can steal the data from that object into a new one. There are several ways of doing this which are discussed below.
+Important to note is that the use of std ::move creates just an rvalue reference. In other words the statement
+std::move(obj) does not change the content of obj, while auto obj2 = std::move(obj) (possibly) does.
+Section 106.2: Using std::move to reduce complexity from
+O(n2) to O(n)
+C++11 introduced core language and standard library support for moving an object. The idea is that when an
+object o is a temporary and one wants a logical copy, then its safe to just pilfer o's resources, such as a dynamically
+allocated buffer, leaving o logically empty but still destructible and copyable.
+The core language support is mainly
+    • the rvalue reference type builder &&, e.g., std ::string&& is an rvalue reference to a std ::string, indicating
+      that that referred to object is a temporary whose resources can just be pilfered (i.e. moved)
+    • special support for a move constructor T ( T&& ), which is supposed to efficiently move resources from the
+      specified other object, instead of actually copying those resources, and
+    • special support for a move assignment operator auto operator=(T&&) -> T&, which also is supposed to
+      move from the source.
+The standard library support is mainly the std ::move function template from the <utility> header. This function
+produces an rvalue reference to the specified object, indicating that it can be moved from, just as if it were a
+temporary.
+For a container actual copying is typically of O(n) complexity, where n is the number of items in the container, while
+moving is O(1), constant time. And for an algorithm that logically copies that container n times, this can reduce the
+complexity from the usually impractical O(n2) to just linear O(n).
+In his article "Containers That Never Change" in Dr. Dobbs journal in September 19 2013, Andrew Koenig presented
+an interesting example of algorithmic inefficiency when using a style of programming where variables are
+immutable after initialization. With this style loops are generally expressed using recursion. And for some
+algorithms such as generating a Collatz sequence, the recursion requires logically copying a container:
+// Based on an example by Andrew Koenig in his Dr. Dobbs Journal article

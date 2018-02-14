@@ -1,0 +1,16 @@
+﻿#define something something_else
+directive. This tells the preprocessor that as it goes along the file, it should replace every occurrence of something
+with something_else. It can also make things similar to functions, but that probably counts as advanced C++.
+The something_else is not needed, but if you define something as nothing, then outside preprocessor directives, all
+occurrences of something will vanish.
+This actually is useful, because of the #if,#else and #ifdef directives. The format for these would be the following:
+#if something==true
+//code
+#else
+//more code
+#endif
+#ifdef thing_that_you_want_to_know_if_is_defined
+//code
+#endif
+These directives insert the code that is in the true bit, and deletes the false bits. this can be used to have bits of
+code that are only included on certain operating systems, without having to rewrite the whole code.

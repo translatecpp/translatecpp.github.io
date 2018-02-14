@@ -1,0 +1,41 @@
+﻿Mode Meaning For                          Description
+app   append   Output       Appends data at the end of the file.
+binary binary Input/Output Input and output is done in binary.
+in    input    Input        Opens the file for reading.
+out   output   Output       Opens the file for writing.
+trunc truncate Input/Output Removes contents of the file when opening.
+ate   at end   Input        Goes to the end of the file when opening.
+Note: Setting the binary mode lets the data be read/written exactly as-is; not setting it enables the translation of
+the newline ' \n' character to/from a platform specific end of line sequence.
+For example on Windows the end of line sequence is CRLF ("\r\n").
+Write: "\n" => "\r\n"
+Read:"\r\n" => "\n"
+Section 13.5: Reading an ASCII file into a std::string
+std::ifstream f("file.txt");
+if (f)
+{
+   std::stringstream buffer;
+   buffer << f.rdbuf();
+   f.close();
+   // The content of "file.txt" is available in the string 'buffer.str()'
+}
+The rdbuf), method returns a pointer to a streambuf that can be pushed into buffer via the
+stringstream::operator<< member function.
+Another possibility (popularized in Effective STL by Scott Meyers) is:
+std::ifstream f("file.txt");
+if (f)
+{
+   std::string str((std::istreambuf_iterator<char>(f)),
+                    std ::istreambuf_iterator<char>());
+   // Operations on 'str'...
+}
+This is nice because requires little code (and allows reading a file directly into any STL container, not only strings)
+but can be slow for big files.
+NOTE: the extra parentheses around the first argument to the string constructor are essential to prevent the most
+vexing parse problem.
+Last but not least:
+std::ifstream f("file.txt");
+if (f)
+{
+   f.seekg(0, std ::ios::end);
+   const auto size = f.tellg();

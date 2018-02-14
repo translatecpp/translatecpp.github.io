@@ -1,0 +1,47 @@
+﻿     int squared_calc() const;
+     // We can assume this function doesn't change logical state, and doesn't call
+     // set_val(). It may or may not call calc() or squared_calc().
+     void bad_func() const;
+     // We can assume this function changes logical state, and may or may not call
+     // calc(), squared_calc(), or bad_func().
+     void set_val(int v);
+};
+Due to const rules, these assumptions will in fact be enforced by the compiler.
+// ConstMemberFunctions.cpp
+ConstMemberFunctions::ConstMemberFunctions(int v /* = 0*/)
+   : cache(0), val(v), state_changed(true) {}
+// Our assumption was correct.
+int ConstMemberFunctions::calc() const {
+if (state_changed) {
+cache = 3 * val;
+state_changed = false;
+     }
+     return cache;
+}
+// Our assumption was correct.
+int ConstMemberFunctions::squared_calc() const {
+return calc() * calc();
+}
+// Our assumption was incorrect.
+// Function fails to compile, due to 'this' losing qualifiers.
+void ConstMemberFunctions::bad_func() const {
+set_val(863);
+}
+// Our assumption was correct.
+void ConstMemberFunctions::set_val(int v) {
+if (v != val) {
+val = v;
+          state_changed = true;
+     }
+}
+const Function Parameters:
+    •  Any function with one or more parameters which are const can be assumed to have intent to read those
+      parameters, and:
+          ° Shall not modify those parameters, or call any member functions that would modify them.
+          ° Shall not pass those parameters to any other function which would modify them and/or call any
+            member functions that would modify them.
+    •  Conversely, any function with one or more parameters which aren't const can be assumed to have intent to
+      modify those parameters, and:
+          ° May or may not modify those parameters, or call any member functions which whould modify them.
+          ° May or may not pass those parameters to other functions which would modify them and/or call any
+            member functions that would modify them.

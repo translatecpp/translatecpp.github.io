@@ -1,0 +1,42 @@
+﻿John Doe 25 4 6 1987
+Jane Doe 15 5 24 1976
+Then you can use the following code to read that data from the file:
+// Define variables.
+std::ifstream is("foo.txt");
+std::string firstname, lastname;
+int age, bmonth, bday, byear;
+// Extract firstname, lastname, age, bday month, bday day, and bday year in that order.
+// Note: '>>' returns false if it reached EOF (end of file) or if the input data doesn't
+// correspond to the type of the input variable (for example, the string "foo" can't be
+// extracted into an 'int' variable).
+while (is >> firstname >> lastname >> age >> bmonth >> bday >> byear)
+      // Process the data that has been read.
+The stream extraction operator >> extracts every character and stops if it finds a character that can't be stored or if
+it is a special character:
+    • For string types, the operator stops at a whitespace () or at a newline (\n).
+    • For numbers, the operator stops at a non-number character.
+This means that the following version of the file foo.txt will also be successfully read by the previous code:
+John
+Doe 25
+4 6 1987
+Jane
+Doe
+15 5
+24
+1976
+The stream extraction operator >> always returns the stream given to it. Therefore, multiple operators can be
+chained together in order to read data consecutively. However, a stream can also be used as a Boolean expression
+(as shown in the while loop in the previous code). This is because the stream classes have a conversion operator
+for the type bool. This bool() operator will return true as long as the stream has no errors. If a stream goes into an
+error state (for example, because no more data can be extracted), then the bool() operator will return false.
+Therefore, the while loop in the previous code will be exited after the input file has been read to its end.
+If you wish to read an entire file as a string, you may use the following code:
+// Opens 'foo.txt'.
+std::ifstream is("foo.txt");
+std::string whole_file;
+// Sets position to the end of the file.
+is.seekg(0, std::ios::end);
+// Reserves memory for the file.
+whole_file.reserve(is.tellg());
+// Sets position to the start of the file.
+is.seekg(0, std::ios::beg);

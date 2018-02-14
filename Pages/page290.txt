@@ -1,0 +1,43 @@
+﻿Example:
+std::map<std::string, size_t> fruits_count;
+std ::string fruit;
+while(std::cin >> fruit){
+      // insert an element with 'fruit' as key and '1' as value
+      // (if the key is already stored in fruits_count, insert does nothing)
+      auto ret = fruits_count.insert({fruit, 1});
+      if(!ret.second){             // 'fruit' is already in the map
+         ++ret.first->second; // increment the counter
+      }
+}
+Time complexity for an insertion operation is O(log n) because std ::map are implemented as trees.
+Version > C++11
+A pair can be constructed explicitly using make_pair() and emplace():
+std::map< std::string , int > runs;
+runs.emplace("Babe Ruth", 714);
+runs.insert(make_pair("Barry Bonds", 762));
+If we know where the new element will be inserted, then we can use emplace_hint() to specify an iterator hint. If
+the new element can be inserted just before hint, then the insertion can be done in constant time. Otherwise it
+behaves in the same way as emplace ():
+std::map< std::string , int > runs;
+auto it = runs.emplace("Barry Bonds", 762); // get iterator to the inserted element
+// the next element will be before "Barry Bonds", so it is inserted before 'it'
+runs.emplace_hint(it, "Babe Ruth", 714);
+Section 51.3: Searching in std::map or in std::multimap
+There are several ways to search a key in std ::map or in std ::multimap.
+    • To get the iterator of the first occurrence of a key, the find() function can be used. It returns end() if the key
+      does not exist.
+         std::multimap< int , int > mmp{ {1, 2}, {3, 4}, {6, 5}, {8, 9}, {3, 4}, {6, 7} };
+         auto it = mmp.find(6);
+         if(it!=mmp.end())
+             std::cout << it->first << ", " << it->second << std::endl; //prints: 6, 5
+         else
+             std::cout << "Value does not exist!" << std::endl;
+         it = mmp.find(66);
+         if(it!=mmp.end())
+             std::cout << it->first << ", " << it->second << std::endl;
+         else
+             std::cout << "Value does not exist!" << std::endl; // This line would be executed.
+    • Another way to find whether an entry exists in std ::map or in std ::multimap is using the count() function,
+      which counts how many values are associated with a given key. Since std ::map associates only one value
+      with each key, its count() function can only return 0 (if the key is not present) or 1 (if it is). For
+      std ::multimap, count() can return values greater than 1 since there can be several values associated with

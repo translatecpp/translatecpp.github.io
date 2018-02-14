@@ -1,0 +1,39 @@
+﻿}
+         }
+Note that auto val declares a value type, which will be a copy of a value stored in the range (we are copy-initializing
+it from the iterator as we go). If the values stored in the range are expensive to copy, you may want to use const
+auto &val. You are also not required to use auto; you can use an appropriate typename, so long as it is implicitly
+convertible from the range's value type.
+If you need access to the iterator, range-based for cannot help you (not without some effort, at least).
+If you wish to reference it, you may do so:
+vector<float> v = {0.4f, 12.5f, 16.234f};
+for(float &val: v)
+{
+      std::cout << val << " ";
+}
+You could iterate on const reference if you have const container:
+const vector<float> v = {0.4f, 12.5f, 16.234f};
+for(const float &val: v)
+{
+      std::cout << val << " ";
+}
+One would use forwarding references when the sequence iterator returns a proxy object and you need to operate
+on that object in a non-const way. Note: it will most likely confuse readers of your code.
+vector<bool> v(10);
+for(auto&& val: v)
+{
+      val = true;
+}
+The "range" type provided to range-based for can be one of the following:
+    • Language arrays:
+       float arr[] = {0.4f, 12.5f, 16.234f};
+       for(auto val: arr)
+       {
+            std::cout << val << " ";
+       }
+      Note that allocating a dynamic array does not count:
+       float *arr = new float[3]{0.4f, 12.5f, 16.234f};
+       for(auto val: arr) //Compile error.
+       {
+            std::cout << val << " ";
+       }

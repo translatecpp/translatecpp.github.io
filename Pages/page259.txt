@@ -1,0 +1,32 @@
+﻿std::string newstr = str.substr(15, 3); // "and"
+Note that you can also call substr with no arguments, in this case an exact copy of the string is returned
+std::string str = "Hello foo, bar and world!";
+std::string newstr = str.substr(); // "Hello foo, bar and world!"
+Section 48.10: Accessing a character
+There are several ways to extract characters from a std ::string and each is subtly different.
+std::string str("Hello world!");
+operator[](n)
+Returns a reference to the character at index n.
+std ::string ::operator[ ] is not bounds-checked and does not throw an exception. The caller is responsible for
+asserting that the index is within the range of the string:
+char c = str[6]; // 'w'
+at(n)
+Returns a reference to the character at index n.
+std ::string ::at is bounds checked, and will throw std::out_of_range if the index is not within the range of the
+string:
+char c = str.at(7); // 'o'
+Version > C++11
+Note: Both of these examples will result in undefined behavior if the string is empty.
+front()
+Returns a reference to the first character:
+char c = str.front(); // 'H'
+back()
+Returns a reference to the last character:
+char c = str.back(); // '!'
+Section 48.11: Checking if a string is a prefix of another
+Version > C++14
+In C++14, this is easily done by std::mismatch which returns the first mismatching pair from two ranges:
+std::string prefix = "foo";
+std::string string = "foobar";
+                           bool isPrefix = std::mismatch(prefix.begin(), prefix.end(),
+                           string.begin(), string.end()).first == prefix.end();

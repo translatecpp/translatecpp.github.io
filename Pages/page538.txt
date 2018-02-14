@@ -1,0 +1,41 @@
+﻿void f(int B::*p);
+void f(int C::*p);
+int A::*p = &A::m;
+f(p); // calls f(int B::*)
+Section 105.8: Steps of Overload Resolution
+The steps of overload resolution are:
+   1. Find candidate functions via name lookup. Unqualified calls will perform both regular unqualified lookup as
+      well as argument-dependent lookup (if applicable).
+   2. Filter the set of candidate functions to a set of viable functions. A viable function for which there exists an
+      implicit conversion sequence between the arguments the function is called with and the parameters the
+      function takes.
+       void f(char);             // (1)
+       void f(int ) = delete; //    (2)
+       void f();                 // (3)
+       void f(int&            ); // (4)
+       f(4); // 1,2 are viable (even though 2 is deleted!)
+             // 3 is not viable because the argument lists don't match
+             // 4 is not viable because we cannot bind a temporary to
+             // a non-const lvalue reference
+   3.  Pick the best viable candidate. A viable function F1 is a better function than another viable function F2 if the
+       implicit conversion sequence for each argument in F1 is not worse than the corresponding implicit
+       conversion sequence in F2, and...:
+       3.1. For some argument, the implicit conversion sequence for that argument in F1 is a better conversion
+       sequence than for that argument in F2, or
+       void f(int );   // (1)
+       void f(char ); // (2)
+       f(4);  // call (1), better conversion sequence
+       3.2. In a user-defined conversion, the standard conversion sequence from the return of F1 to the destination
+       type is a better conversion sequence than that of the return type of F2, or
+       struct A
+       {
+           operator int();
+           operator double();
+       } a;
+       int i = a; // a.operator int() is better than a.operator double() and a conversion
+       float f = a; // ambiguous
+       3.3. In a direct reference binding, F1 has the same kind of reference by F2 is not, or
+       struct A
+       {
+           operator X&();   // #1
+           operator X&&(); // #2

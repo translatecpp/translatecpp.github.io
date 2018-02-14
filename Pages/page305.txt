@@ -1,0 +1,34 @@
+﻿Section 53.6: 'function' overhead
+std ::function can cause significant overhead. Because std — function has [value semantics][1], it must copy or
+move the given callable into itself. But since it can take callables of an arbitrary type, it will frequently have to
+allocate memory dynamically to do this.
+Some function implementations have so-called "small object optimization", where small types (like function
+pointers, member pointers, or functors with very little state) will be stored directly in the function object. But even
+this only works if the type is noexcept move constructible. Furthermore, the C++ standard does not require that all
+implementations provide one.
+Consider the following:
+//Header file
+using MyPredicate = std::function<bool(const MyValue &, const MyValue &)>;
+void SortMyContainer(MyContainer &C, const MyPredicate &pred);
+//Source file
+void SortMyContainer(MyContainer &C, const MyPredicate &pred)
+{
+      std::sort(C.begin(), C.end(), pred);
+}
+A template parameter would be the preferred solution for SortMyContainer, but let us assume that this is not
+possible or desirable for whatever reason. SortMyContainer does not need to store pred beyond its own call. And
+yet, pred may well allocate memory if the functor given to it is of some non-trivial size.
+function allocates memory because it needs something to copy/move into; function takes ownership of the
+callable it is given. But SortMyContainer does not need to own the callable; it's just referencing it. So using function
+here is overkill; it may be efficient, but it may not.
+There is no standard library function type that merely references a callable. So an alternate solution will have to be
+found, or you can choose to live with the overhead.
+Also, function has no effective means to control where the memory allocations for the object come from. Yes, it
+has constructors that take an allocator, but [many implementations do not implement them correctly... or even at
+all][2].
+Version > C++17
+The function constructors that take an allocator no longer are part of the type. Therefore, there is no way to
+manage the allocation.
+Calling a function is also slower than calling the contents directly. Since any function instance could hold any
+callable, the call through a function must be indirect. The overhead of calling function is on the order of a virtual
+function call.

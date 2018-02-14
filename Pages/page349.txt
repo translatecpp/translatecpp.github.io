@@ -1,0 +1,40 @@
+﻿Chapter 67: Sorting
+Section 67.1: Sorting and sequence containers
+std ::sort, found in the standard library header algorithm, is a standard library algorithm for sorting a range of
+values, defined by a pair of iterators. std ::sort takes as the last parameter a functor used to compare two values;
+this is how it determines the order. Note that std ::sort is not stable.
+The comparison function must impose a Strict, Weak Ordering on the elements. A simple less-than (or greater-than)
+comparison will suffice.
+A container with random-access iterators can be sorted using the std ::sort algorithm:
+Version > C++11
+#include <vector>
+#include <algorithm>
+std::vector<int> MyVector = {3, 1, 2}
+//Default comparison of <
+std::sort(MyVector.begin(), MyVector.end());
+std ::sort requires that its iterators are random access iterators. The sequence containers std ::list and
+std ::forward_list (requiring C++11) do not provide random access iterators, so they cannot be used with
+std ::sort. However, they do have sort member functions which implement a sorting algorithm that works with
+their own iterator types.
+Version > C++11
+#include <list>
+#include <algorithm>
+std::list<int> MyList = {3, 1, 2}
+//Default comparison of <
+//Whole list only.
+MyList.sort();
+Their member sort functions always sort the entire list, so they cannot sort a sub-range of elements. However,
+since list and forward_list have fast splicing operations, you could extract the elements to be sorted from the
+list, sort them, then stuff them back where they were quite efficiently like this:
+void sort_sublist(std::list<int>& mylist, std::list<int>::const_iterator start,
+std::list<int>::const_iterator end) {
+     //extract and sort half-open sub range denoted by start and end iterator
+     std::list<int> tmp;
+     tmp.splice(tmp.begin(), list, start, end);
+     tmp.sort();
+     //re-insert range at the point we extracted it from
+     list.splice(end, tmp);
+}
+Section 67.2: sorting with std::map (ascending and
+descending)
+This example sorts elements in ascending order of a key using a map. You can use any type, including class,

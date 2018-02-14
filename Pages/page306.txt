@@ -1,0 +1,43 @@
+﻿std ::forward_list is a container that supports fast insertion and removal of elements from anywhere in the
+container. Fast random access is not supported. It is implemented as a singly-linked list and essentially does not
+have any overhead compared to its implementation in C. Compared to std:: list this container provides more
+space efficient storage when bidirectional iteration is not needed.
+Section 54.1: Example
+#include <forward_list>
+#include <string>
+#include <iostream>
+template<typename T>
+std::ostream& operator<<(std::ostream& s, const std::forward_list<T>& v) {
+    s.put('[');
+    char comma[3] = {'\0', ' ', '\0'};
+    for (const auto& e : v) {
+    s << comma << e;
+    comma[0] = ',';
+    }
+    return s << ']';
+}
+int main()
+{
+     // c++11 initializer list syntax:
+std: :forward_ _list<std: :string> words1 {"the", "frogurt", "is", "also", "cursed"} 
+std: :cout <<  "words1:   " << words1 << '\n';                                       
+     // words2 == words1
+     std ::forward_list<std::string> words2(words1.begin(), words1.end());
+     std::cout << "words2: " << words2 << '\n';
+     // words3 == words1
+     std::forward_list<std::string> words3(words1);
+     std::cout << "words3: " << words3 << '\n';
+     // words4 is {"Mo", "Mo", "Mo", "Mo", "Mo"}
+     std::forward_list<std::string> words4(5, "Mo");
+     std::cout << "words4: " << words4 << '\n';
+}
+Output:
+words1: [the, frogurt, is, also, cursed]
+words2: [the, frogurt, is, also, cursed]
+words3: [the, frogurt, is, also, cursed]
+words4: [Mo, Mo, Mo, Mo, Mo]
+Section 54.2: Methods
+Method name                        Definition
+operator= assigns values to the container
+assign        assigns values to the container
+get_allocator returns the associated allocator

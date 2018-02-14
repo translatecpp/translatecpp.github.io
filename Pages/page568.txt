@@ -1,0 +1,46 @@
+﻿      }
+   private:
+      Email m_email;
+};
+EmailBuilder Email::make()
+{
+     return EmailBuilder();
+}
+// Bonus example!
+std::ostream& operator <<(std::ostream& stream, const Email& email)
+{
+     stream << email.to_string();
+     return stream;
+}
+int main()
+{
+     Email mail = Email::make().from("me@mail.com")
+                                 .to("you@mail.com")
+                                 .subject("C++ builders")
+                                 .body("I like this API, don't you?");
+     cout << mail << endl;
+}
+For older versions of C++, one may just ignore the std ::move operation and remove the && from the conversion
+operator (although this will create a temporary copy).
+The builder finishes its work when it releases the built email by the operator Email&&(). In this example, the
+builder is a temporary object and returns the email before being destroyed. You could also use an explicit
+operation like Email EmailBuilder::build() {...} instead of the conversion operator.
+Pass the builder around
+A great feature the Builder Pattern provides is the ability to use several actors to build an object together. This is
+done by passing the builder to the other actors that will each one give some more information to the built object.
+This is specially powerful when you are building some sort of query, adding filters and other specifications.
+void add_addresses(EmailBuilder& builder)
+{
+     builder.from("me@mail.com")
+             . to("you@mail.com");
+}
+void compose_mail(EmailBuilder& builder)
+{
+     builder.subject("I know the subject")
+             .body("And the body. Someone else knows the addresses.");
+}
+int main()
+{
+     EmailBuilder builder;
+     add_addresses(builder);
+     compose_mail(builder);

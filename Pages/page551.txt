@@ -1,0 +1,35 @@
+﻿auto v = mult(3);
+std::cout << v[0]; // some value that could be, but almost certainly is not, 3.
+The reason is that operator* on valarray gives you a proxy object that refers to the valarray as a means of lazy
+evaluation. By using auto, you're creating a dangling reference. Instead of mult had returned a
+std ::valarray<int>, then the code would definitely print 3.
+Section 108.5: auto, const, and references
+The auto keyword by itself represents a value type, similar to int or char. It can be modified with the const
+keyword and the & symbol to represent a const type or a reference type, respectively. These modifiers can be
+combined.
+In this example, s is a value type (its type will be inferred as std ::string), so each iteration of the for loop copies a
+string from the vector into s.
+std::vector<std::string> strings = { "stuff", "things", "misc" };
+for(auto s : strings) {
+     std::cout << s << std::endl;
+}
+If the body of the loop modifies s (such as by calling s.append(" and stuff")), only this copy will be modified, not
+the original member of strings.
+On the other hand, if s is declared with auto& it will be a reference type (inferred to be std ::string&), so on each
+iteration of the loop it will be assigned a reference to a string in the vector:
+for(auto& s : strings) {
+     std::cout << s << std::endl;
+}
+In the body of this loop, modifications to s will directly affect the element of strings that it references.
+Finally, if s is declared const auto&, it will be a const reference type, meaning that on each iteration of the loop it
+will be assigned a const reference to a string in the vector:
+for(const auto& s : strings) {
+     std::cout << s << std::endl;
+}
+Within the body of this loop, s cannot be modified (i.e. no non-const methods can be called on it).
+When using auto with range-based for loops, it is generally good practice to use const auto& if the loop body will
+not modify the structure being looped over, since this avoids unnecessary copies.
+Section 108.6: Trailing return type
+auto is used in the syntax for trailing return type:
+auto main() -> int {}
+which is equivalent to

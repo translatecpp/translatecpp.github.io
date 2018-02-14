@@ -1,0 +1,24 @@
+﻿              if (pet.name == name) {
+                  return pet;
+              }
+          }
+          return std::nullopt;
+     }
+};
+int main() {
+     Person john;
+     john.name = "John";
+     Animal fluffy;
+     fluffy.name = "Fluffy";
+     john.pets.push_back(fluffy);
+     Animal furball;
+     furball.name = "Furball";
+     john.pets.push_back(furball);
+     std::optional<Animal> whiskers = john.pet_with_name("Whiskers");
+     if (whiskers) {
+          std::cout << "John has a pet named Whiskers." << std::endl;
+     }
+     else {
+          std::cout << "Whiskers must not belong to John." << std::endl;
+     }
+}

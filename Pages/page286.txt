@@ -1,0 +1,42 @@
+﻿           1 2 3 4 5
+int main(int argc, char* argv[]) {
+     // convert main arguments into a vector of strings.
+     std::vector<std::string> args(argv, argv + argc);
+}
+A C++11 initializer_list<> can also be used to initialize the vector at once
+initializer_list<int> arr = { 1,2,3,4,5 };
+vector<int> vec1 {arr};
+for (auto & i : vec1)
+     cout << i << endl;
+Section 50.17: Functions Returning Large Vectors
+Version > C++11
+In C++11, compilers are required to implicitly move from a local variable that is being returned. Moreover, most
+compilers can perform copy elision in many cases and elide the move altogether. As a result of this, returning large
+objects that can be moved cheaply no longer requires special handling:
+#include <vector>
+#include <iostream>
+// If the compiler is unable to perform named return value optimization (NRVO)
+// and elide the move altogether, it is required to move from v into the return value.
+std::vector<int> fillVector(int a, int b) {
+std::vector<int> v;
+v.reserve(b-a+1);
+for (int i = a; i <= b; i++) {
+v.push_back(i);
+     }
+     return v; // implicit move
+}
+int main() { // declare and fill vector
+     std::vector<int> vec = fillVector(1, 10);
+     // print vector
+     for (auto value : vec)
+          std::cout << value << " "; // this will print "1 2 3 4 5 6 7 8 9 10 "
+     std::cout << std::endl;
+     return 0;
+}
+Version < C++11
+Before C++11, copy elision was already allowed and implemented by most compilers. However, due to the absence
+of move semantics, in legacy code or code that has to be compiled with older compiler versions which don't
+implement this optimization, you can find vectors being passed as output arguments to prevent the unneeded
+copy:
+#include <vector>
+#include <iostream>

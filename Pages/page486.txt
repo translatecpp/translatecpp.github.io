@@ -1,0 +1,48 @@
+﻿Section 91.8: Derived to base conversion for pointers to
+members
+A pointer to member of derived class can be converted to a pointer to member of base class using static_cast.
+The types pointed to must match.
+If the operand is a null pointer to member value, the result is also a null pointer to member value.
+Otherwise, the conversion is only valid if the member pointed to by the operand actually exists in the destination
+class, or if the destination class is a base or derived class of the class containing the member pointed to by the
+operand. static_cast does not check for validity. If the conversion is not valid, the behaviour is undefined.
+struct A {};
+struct B { int x; };
+struct C : A, B { int y; double z; };
+int B: :*p1 = &B::x;                                                                           
+int C: Gi¬                                     // ok; implicit conversion                      
+       ll                                                                                      
+       CM                                                                                      
+       CL                                                                                      
+       *                                                                                       
+int B: :*p3 = p2;                              // error                                        
+int B: :*p4 = static_cast<int B::*>(p2);       // ok; p4 is equal to p1                        
+int A: :*p5 = static_cast<int A::*>(p2);       // undefined; p2 points to x, which is a member 
+                                               // of the unrelated class B                     
+double C::*p6 = &C::z;                                                                         
+double A::*p7 = static_cast<double A::*>(p6);  // ok, even though A doesn't  contain z         
+int A: :*p8 = static_cast<int A::*>(p6);       // error: types don't match                     
+Section 91.9: void* to T*
+In C++, void* cannot be implicitly converted to T* where T is an object type. Instead, static_cast should be used to
+perform the conversion explicitly. If the operand actually points to a T object, the result points to that object.
+Otherwise, the result is unspecified.
+Version > C++11
+Even if the operand does not point to a T object, as long as the operand points to a byte whose address is properly
+aligned for the type T, the result of the conversion points to the same byte.
+// allocating an array of 100 ints, the hard way
+int* a = malloc(100*sizeof(*a));                     // error; malloc returns void*
+int* a = static_cast<int*>(malloc(100*sizeof(*a))); // ok
+// int* a = new int[100];                            // no cast needed
+// std::vector<int> a(100);                          // better
+const char c = '!';
+const void* p1 = &c;
+const char* p2 = p1 ;
+const char* p3 = static_cast<const char*>(p1);
+const int* p4 = static_cast<const int*>(p1);
+char* p5 = static_cast<char*>(p1);
+// error
+// ok; p3 points to c
+// unspecified in C++03;
+// possibly unspecified in C++11 if
+// alignof(int) > alignof(char)
+// error: casting away constness

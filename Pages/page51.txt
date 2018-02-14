@@ -1,0 +1,43 @@
+﻿     std ::cout << i;
+     ++i; // Increment counter
+     if (i > 5)
+     {
+         break;
+     }
+}
+while (true);
+std::cout << std::endl; // End of line; 0 1 2 3 4 5 is printed to the console
+A trivial do-while loop is also occasionally used to write macros that require their own scope (in which case the
+trailing semicolon is omitted from the macro definition and required to be provided by the user):
+#define BAD_MACRO(x) f1(x); f2(x); f3(x);
+// Only the call to f1 is protected by the condition here
+if (cond) BAD_MACRO(var);
+#define GOOD_MACRO(x) do { f1(x); f2(x); f3(x); } while(0)
+// All calls are protected here
+if (cond) GOOD_MACRO(var);
+Section 12.5: Loop Control statements : Break and Continue
+Loop control statements are used to change the flow of execution from its normal sequence. When execution
+leaves a scope, all automatic objects that were created in that scope are destroyed. The break and continue are
+loop control statements.
+The break statement terminates a loop without any further consideration.
+for (int i = 0; i < 10; i++)
+{
+      if (i == 4)
+          break; // this will immediately exit our loop
+      std::cout << i << '\n';
+}
+The above code will print out:
+1
+2
+3
+The continue statement does not immediately exit the loop, but rather skips the rest of the loop body and goes to
+the top of the loop (including checking the condition).
+for (int i = 0; i < 6; i++)
+{
+     if (i % 2 == 0) // evaluates to true if i is even
+          continue; // this will immediately go back to the start of the loop
+     /* the next line will only be reached if the above "continue" statement
+     does not execute */
+     std::cout << i << " is an odd number\n";
+}
+The above code will print out:

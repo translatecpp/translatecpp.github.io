@@ -1,0 +1,47 @@
+﻿};
+Section 85.4: Strategies for lock classes: std::try_to_lock,
+std::adopt_lock, std::defer_lock
+When creating a std::unique_lock, there are three different locking strategies to choose from: std ::try_to_lock,
+std::defer_lock and std ::adopt_lock
+   1. std ::try_to_lock allows for trying a lock without blocking:
+{
+     std::atomic_int temp {0};
+     std::mutex _mutex;
+     std ::thread t( [&](){
+          while( temp!= -1){
+              std ::this_thread ::sleep_for(std::chrono::seconds(5));
+              std::unique_lock<std::mutex> lock( _mutex, std::try_to_lock);
+              if(lock.owns_lock()){
+                  //do something
+                  temp=0;
+              }
+          }
+     });
+     while ( true )
+     {
+          std ::this_thread ::sleep_for(std::chrono::seconds(1));
+          std::unique_lock<std::mutex> lock( _mutex, std::try_to_lock);
+          if(lock.owns_lock()){
+          if (temp < INT_MAX){
+                  ++temp;
+              }
+              std::cout << temp << std::endl;
+          }
+     }
+}
+   2.  std::defer_lock allows for creating a lock structure without acquiring the lock. When locking more than one
+      mutex, there is a window of opportunity for a deadlock if two function callers try to acquire the locks at the
+      same time:
+{
+     std::unique_lock<std::mutex> lock1(_mutex1, std::defer_lock);
+     std::unique_lock<std::mutex> lock2(_mutex2, std::defer_lock);
+     lock1.lock()
+     lock2.lock(); // deadlock here
+     std::cout << "Locked! << std::endl;
+     //...
+}
+With the following code, whatever happens in the function, the locks are acquired and released in appropriate
+order:
+    {
+        std::unique_lock<std::mutex> lock1(_mutex1, std::defer_lock);
+        std::unique_lock<std::mutex> lock2(_mutex2, std::defer_lock);

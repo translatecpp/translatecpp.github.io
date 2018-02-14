@@ -1,0 +1,41 @@
+﻿Section 15.3: Input stream manipulators
+std::ws - consumes leading whitespaces in input stream. It different from std ::skipws.
+#include <sstream>
+std::string str;
+std::istringstream(" \v\n\r\t Wow!There is no whitespaces!") >> std::ws >> str;
+std::cout << str;
+// Output: Wow!There is no whitespaces!
+std::get_money(mon[. intll) [C++11]. In an expression in >> std::get_money(mon, intl) parses the character
+input as a monetary value, as specified by the std ::money get facet of the locale currently imbued in in, and stores
+the value in mon (of long double or std ::basic_string type). Manipulator expects required international currency
+strings if intl is true, expects optional currency symbols otherwise.
+#include <sstream>
+#include <locale>
+std::istringstream in("$1,234.56 2.22 USD 3.33");
+long double v1, v2;
+std::string v3;
+in.imbue(std::locale("en_US.UTF-8"));
+in >> std::get_money(v1) >> std::get_money(v2) >> std::get_money(v3. true);
+if (in) {
+     std::cout << std::quoted(in.str()) << " parsed as: "
+               << v1 << ". " << v2 << ". " << v3 << '\n';
+}
+// Output:
+// "$1.234.56 2.22 USD 3.33" parsed as: 123456. 222. 333
+std::get time(tmb, fmt) [C++11] - parses a date/time value stored in tmb of specified format fmt.
+tmb - valid pointer to the const std ::tm* object where the result will be stored.
+fmt - pointer to a null-terminated string const CharT* specifying the conversion format.
+#include <sstream>
+#include <locale>
+std::tm t = {};
+std::istringstream ss("2011-Februar-18 23:12:34");
+ss.imbue(std::locale("de_DE.utf-8"));
+ss >> std::get_time(&t, "%Y-%b-%d %H:%M:%S");
+if (ss.fail()) {
+     std::cout << "Parse failed\n";
+}
+else {
+     std::cout << std::put_time(&t, "%c") << '\n';
+}
+// Possible output:
+// Sun Feb 18 23:12:34 2011

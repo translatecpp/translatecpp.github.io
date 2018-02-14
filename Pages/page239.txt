@@ -1,0 +1,45 @@
+﻿void bar() {
+     // defined in global namespace
+}
+namespace foo {
+     void bar() {
+          // defined in namespace foo
+     }
+     void barbar() {
+          bar(); // calls foo::bar()
+          ::bar(); // calls bar() defined in global namespace
+     }
+}
+Section 45.2: Argument Dependent Lookup
+When calling a function without an explicit namespace qualifier, the compiler can choose to call a function within a
+namespace if one of the parameter types to that function is also in that namespace. This is called "Argument
+Dependent Lookup", or ADL:
+namespace Test
+{
+   int call(int i);
+   class SomeClass {...};
+   int call_too(const SomeClass &data);
+}
+call(5); //Fails. Not a qualified function name.
+Test::SomeClass data;
+call_too(data); //Succeeds
+call fails because none of its parameter types come from the Test namespace. call_too works because
+SomeClass is a member of Test and therefore it qualifies for ADL rules.
+When does ADL not occur
+ADL does not occur if normal unqualified lookup finds a class member, a function that has been declared at block
+scope, or something that is not of function type. For example:
+void foo();
+namespace N {
+struct X {};
+     void foo(X   ) { std::cout << '1';  }
+     void qux(X   ) { std::cout << '2';  }
+}
+struct C {
+     void foo()   {}
+     void bar()   {
+          foo(N::X{}); // error: ADL is disabled and C::foo() takes no arguments
+     }
+};
+void bar() {
+     extern void foo(); // redeclares ::foo
+     foo(N::X{});        // error: ADL is disabled and ::foo() doesn't take any arguments

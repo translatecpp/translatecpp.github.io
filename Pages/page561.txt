@@ -1,0 +1,46 @@
+﻿Chapter 112: Design pattern
+implementation in C++
+On this page, you can find examples of how design patterns are implemented in C++. For the details on these
+patterns, you can check out the design patterns documentation.
+Section 112.1: Adapter Pattern
+Convert the interface of a class into another interface clients expect. Adapter (or Wrapper) lets classes work
+together that couldn't otherwise because of incompatible interfaces. Adapter pattern's motivation is that we can
+reuse existing software if we can modify the interface.
+   1. Adapter pattern relies on object composition.
+   2. Client calls operation on Adapter object.
+   3. Adapter calls Adaptee to carry out the operation.
+   4. In STL, stack adapted from vector: When stack executes push(), underlying vector does vector::push_back().
+Example:
+#include <iostream>
+// Desired interface (Target)
+class Rectangle
+{
+   public:
+     virtual void draw() = 0;
+};
+// Legacy component (Adaptee)
+class LegacyRectangle
+{
+   public:
+     LegacyRectangle(int x1, int y1, int x2, int y2) {
+         x1_ = x1 ;
+         y1_ = y1;
+         x2_ = x2;
+         y2_ = y2;
+         std::cout << "LegacyRectangle(x1,y1,x2,y2)\n";
+     }
+     void oldDraw() {
+         std::cout << "LegacyRectangle: oldDraw(). \n";
+     }
+   private:
+     int x1_;
+     int y1_;
+     int x2_;
+     int y2_;
+};
+// Adapter wrapper
+class RectangleAdapter: public Rectangle, private LegacyRectangle
+{
+   public:
+     RectangleAdapter(int x, int y, int w, int h):
+       LegacyRectangle(x, y, x + w, y + h) {

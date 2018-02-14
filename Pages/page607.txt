@@ -1,0 +1,24 @@
+﻿// Functor which find a person by name
+struct FindPersonByName {
+     FindPersonByName(const std::string &name) : _name(name) {}
+     // Overloaded method which will get called
+     bool operator()(const Person &person) const {
+     return person.name == _name;
+     }
+private:
+     std::string _name;
+};
+std::vector<Person> v; // Assume this contains data
+std::vector<Person>::iterator iFind =
+     std::find_if(v.begin(), v.end(), FindPersonByName("Foobar"));
+// ...
+As functors have their own identity, they cannot be put in a typedef and these have to be accepted via template
+argument. The definition of std ::find_if can look like:
+template<typename Iterator, typename Predicate>
+Iterator find_if(Iterator begin, Iterator end, Predicate &predicate) {
+for (Iterator i = begin, i != end, ++i)
+if (predicate(*i))
+return i;
+return end;
+}
+From C++17 on, the calling of the predicate can be done with invoke: std ::invoke(predicate, *i).

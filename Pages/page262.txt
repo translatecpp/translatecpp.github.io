@@ -1,0 +1,45 @@
+﻿There is also append(), which is pretty much like +=:
+std::string app = "test and ";
+app.append("test"); // "test and test"
+Section 48.15: Converting between character encodings
+Converting between encodings is easy with C++11 and most compilers are able to deal with it in a cross-platform
+manner through <codecvt> and <locale> headers.
+#include <iostream>
+#include <codecvt>
+#include <locale>
+#include <string>
+using namespace std;
+int main() {
+     // converts between wstring and utf8 string
+     wstring_convert<codecvt_utf8_utf16<wchar_t>> wchar_to_utf8;
+     // converts between u16string and utf8 string
+     wstring_convert<codecvt_utf8_utf16<char16_t>, char16_t> utf16_to_utf8;
+     wstring wstr = L"foobar";
+     string utf8str = wchar_to_utf8.to_bytes(wstr);
+     wstring wstr2 = wchar_to_utf8.from_bytes(utf8str);
+     wcout << wstr << endl;
+     cout << utf8str << endl;
+     wcout << wstr2 << endl;
+     u16string u16str = u"foobar";
+     string utf8str2 = utf16_to_utf8.to_bytes(u16str);
+     u16string u16str2 = utf16_to_utf8.from_bytes(utf8str2);
+     return 0;
+}
+Mind that Visual Studio 2015 provides supports for these conversion but a bug in their library implementation
+requires to use a different template for wstring_convert when dealing with char16_t:
+using utf16_char = unsigned short;
+wstring_convert<codecvt_utf8_utf16<utf16_char>, utf16_char> conv_utf8_utf16;
+void strings::utf16_to_utf8(const std::u16string& utf16, std::string& utf8)
+{
+   std::basic_string<utf16_char> tmp;
+   tmp.resize(utf16.length());
+   std::copy(utf16.begin(), utf16.end(), tmp.begin());
+   utf8 = conv_utf8_utf16.to_bytes(tmp);
+}
+void strings::utf8_to_utf16(const std::string& utf8, std::u16string& utf16)
+{
+   std::basic_string<utf16_char> tmp = conv_utf8_utf16.from_bytes(utf8);
+   utf16.clear();
+   utf16.resize(tmp.length());
+   std::copy(tmp.begin(), tmp.end(), utf16.begin());
+}

@@ -1,0 +1,43 @@
+﻿struct X {
+     virtual void f() { std::cout << "X::f()\n"; }
+};
+struct Y : X {
+     // Y::f() will not override X::f() because it has a different signature,
+     // but the compiler will accept the code (and silently ignore Y::f()).
+     virtual void f(int a) { std::cout << a << "\n"; }
+};
+With override:
+#include <iostream>
+struct X {
+     virtual void f() { std::cout << "X::f()\n"; }
+};
+struct Y : X {
+     // The compiler will alert you to the fact that Y::f() does not
+     // actually override anything.
+     virtual void f(int a) override { std::cout << a << "\n"; }
+};
+Note that override is not a keyword, but a special identifier which only may appear in function signatures. In all
+other contexts override still may be used as an identifier:
+void foo() {
+     int override = 1 ; // OK.
+     int virtual = 2;  // Compilation error: keywords can't be used as identifiers.
+}
+Section 39.3: Virtual vs non-virtual member functions
+With virtual member functions:
+#include <iostream>
+struct X {
+     virtual void f() { std::cout << "X::f()\n"; }
+};
+struct Y : X {
+     // Specifying virtual again here is optional
+     // because it can be inferred from X::f().
+     virtual void f() { std::cout << "Y::f()\n"; }
+};
+void call(X& a) {
+     a.f();
+}
+int main() {
+     X x;
+     Y y;
+     call(x); // outputs "X::f()"
+     call(y); // outputs "Y::f()"

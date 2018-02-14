@@ -1,0 +1,49 @@
+﻿//Ok
+const char* copyoftext = t;
+Section 37.4: Complex Numbers Revisited
+The code below implements a very simple complex number type for which the underlying field is automatically
+promoted, following the language's type promotion rules, under application of the four basic operators (+, -, *, and
+/) with a member of a different field (be it another complex<T> or some scalar type).
+This is intended to be a holistic example covering operator overloading alongside basic use of templates.
+#include <type_traits>
+namespace not_std{
+using std::decay_t;
+//------------------------------------------------------------------
+// complex< value_t >
+//------------------------------------------------------------------
+template<typename value_t>
+struct complex
+{
+     value_t x;
+     value_t y;
+     complex &operator += (const value_t &x)
+     {
+          this->x += x;
+          return *this;
+     }
+     complex &operator += (const complex &other)
+     {
+          this->x += other.x;
+          this->y += other.y;
+          return *this;
+     }
+     complex &operator -= (const value_t &x)
+     {
+          this->x -= x;
+          return *this;
+     }
+     complex &operator -= (const complex &other)
+     {
+          this->x -= other.x;
+          this->y -= other.y;
+          return *this;
+     }
+     complex &operator *= (const value_t &s)
+     {
+          this->x *= s;
+          this->y *= s;
+          return *this;
+     }
+     complex &operator *= (const complex &other)
+     {
+          (*this) = (*this) * other;

@@ -1,0 +1,36 @@
+﻿Section 6.3: & - bitwise AND
+int  a = 6;     //   0110b (0x06)
+int  b = 10;    //   1010b (0x0a)
+int  c = a & b; //   0010b (0x02)
+std::cout << "a =   " << a  << ", b = " << b << ", c = " << c << std::endl;
+Output
+a = 6, b = 10, c = 2
+Why
+A bit wise AND operates on the bit level and uses the following Boolean truth table:
+TRUE    AND TRUE  =  TRUE
+TRUE    AND FALSE = FALSE
+FALSE   AND FALSE = FALSE
+When the binary value for a (0110) and the binary value for b (1010) are AND'ed together we get the binary value of
+0010:
+int a = 0 1 1 0
+int b = 1 0 1 0 &
+int c = 0 0 1 0
+The bit wise AND does not change the value of the original values unless specifically assigned to using the bit wise
+assignment compound operator &=:
+int a = 5;  // 0101b   (0x05)
+a &= 10;    // a = 0101b & 1010b
+Section 6.4: << - left shift
+int a = 1;        // 0001b
+int b = a << 1; // 0010b
+std::cout << "a = " << a << ", b = " << b << std::endl;
+Output
+a = 1, b = 2
+Why
+The left bit wise shift will shift the bits of the left hand value (a) the number specified on the right (1), essentially
+padding the least significant bits with 0's, so shifting the value of 5 (binary 0000 0101) to the left 4 times (e.g. 5 <<
+4) will yield the value of 80 (binary 0101 0000). You might note that shifting a value to the left 1 time is also the same
+as multiplying the value by 2, example:
+int a = 7;
+while (a < 200) {
+     std::cout << "a = " << a << std::endl;
+     a <<= 1;

@@ -1,0 +1,43 @@
+﻿Chapter 16: Flow Control
+Section 16.1: case
+Introduces a case label of a switch statement. The operand must be a constant expression and match the switch
+condition in type. When the switch statement is executed, it will jump to the case label with operand equal to the
+condition, if any.
+char c = getchar();
+bool confirmed;
+switch (c) {
+case 'y':
+    confirmed = true;
+   break;
+   case 'n':
+    confirmed = false;
+   break;
+   default:
+    std::cout << "invalid response!\n";
+    abort();
+}
+Section 16.2: switch
+According to the C++ standard,
+      The switch statement causes control to be transferred to one of several statements depending on the
+      value of a condition.
+The keyword switch is followed by a parenthesized condition and a block, which may contain case labels and an
+optional default label. When the switch statement is executed, control will be transferred either to a case label
+with a value matching that of the condition, if any, or to the default label, if any.
+The condition must be an expression or a declaration, which has either integer or enumeration type, or a class type
+with a conversion function to integer or enumeration type.
+char c = getchar();
+bool confirmed;
+switch (c) {
+case 'y':
+     confirmed = true;
+   break;
+   case 'n':
+     confirmed = false;
+   break;
+   default:
+     std::cout << "invalid response!\n";
+     abort();
+}
+Section 16.3: catch
+The catch keyword introduces an exception handler, that is, a block into which control will be transferred when an
+exception of compatible type is thrown. The catch keyword is followed by a parenthesized exception declaration,

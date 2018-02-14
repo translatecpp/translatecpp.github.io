@@ -1,0 +1,41 @@
+﻿this situation, the containing class is referred to as the "enclosing class". The nested class definition is considered to
+be a member of the enclosing class, but is otherwise separate.
+struct Outer {
+      struct Inner { };
+};
+From outside of the enclosing class, nested classes are accessed using the scope operator. From inside the
+enclosing class, however, nested classes can be used without qualifiers:
+struct Outer {
+      struct Inner { };
+      Inner in;
+};
+// ...
+Outer o;
+Outer::Inner i = o.in;
+As with a non-nested class/struct, member functions and static variables can be defined either within a nested
+class, or in the enclosing namespace. However, they cannot be defined within the enclosing class, due to it being
+considered to be a different class than the nested class.
+// Bad.
+struct Outer {
+      struct Inner {
+          void do_something();
+      };
+     void Inner::do_something() {}
+};
+// Good.
+struct Outer {
+     struct Inner {
+          void do_something();
+     };
+};
+void Outer::Inner::do_something() {}
+As with non-nested classes, nested classes can be forward declared and defined later, provided they are defined
+before being used directly.
+class Outer {
+     class Inner1;
+     class Inner2;
+     class Inner1 {};
+     Inner1 in1;
+     Inner2* in2p;
+   public:
+     Outer();

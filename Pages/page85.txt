@@ -1,0 +1,42 @@
+﻿          goto STEP
+       }
+    cout << "value of num : " << num << endl;
+    num = num + 1;
+  }while( num < 10 );
+output:
+value  of num  : 1
+value  of num  : 3
+value  of num  : 5
+value  of num  : 7
+value  of num  : 9
+whenever the condition num%2==0 is satisfied the goto sends the execution control to the beginning of the do-while
+loop.
+The exit function:
+exit is a function defined in cstdlib. The purpose of exit is to terminate the running program with an specific exit
+code. Its prototype is:
+void exit (int exit code);
+cstdlib defines the standard exit codes EXIT_SUCCESS and EXIT_FAILURE.
+Section 16.12: return
+Returns control from a function to its caller.
+If return has an operand, the operand is converted to the function's return type, and the converted value is
+returned to the caller.
+int f() {
+      return 42;
+}
+int x = f(); // x is 42
+int g() {
+      return 3.14;
+}
+int y = g(); // y is 3
+If return does not have an operand, the function must have void return type. As a special case, a void-returning
+function can also return an expression if the expression has type void.
+void f(int x) {
+      if (x < 0) return;
+      std::cout << sqrt(x);
+}
+int g() { return 42; }
+void h() {
+      return f(); // calls f, then returns
+      return g(); // ill-formed
+}
+When main returns, std ::exit is implicitly called with the return value, and the value is thus returned to the

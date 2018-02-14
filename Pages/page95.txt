@@ -1,0 +1,21 @@
+﻿int main() {
+    std::cout << power<int, 4, 2>::value << std::endl;
+}
+Section 17.9: Generic Min/Max with variable argument count
+Version > C++11
+It's possible to write a generic function (for example min) which accepts various numerical types and arbitrary
+argument count by template meta-programming. This function declares a min for two arguments and recursively
+for more.
+template <typename T1, typename T2>
+auto min(const T1 &a, const T2 &b)
+-> typename std::common_type<const T1&, const T2&>::type
+{
+     return a < b ? a : b;
+}
+template <typename T1, typename T2, typename ... Args>
+auto min(const T1 &a, const T2 &b, const Args& ... args)
+-> typename std::common_type<const T1&, const T2&, const Args& ...>::type
+{
+     return min(min(a, b), args...);
+}
+auto minimum = min(4, 5.8f, 3, 1.8, 3, 1.1, 9);

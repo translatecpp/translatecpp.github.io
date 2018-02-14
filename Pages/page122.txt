@@ -1,0 +1,19 @@
+﻿      In this example, we have declared that f4, f5, and f6 cannot propagate exceptions. (Although an exception
+      can be thrown during execution of f6, it is caught and not allowed to propagate out of the function.) We have
+      declared that f2 may propagate an exception. When the noexcept specifier is omitted, it is equivalent to
+      noexcept(false), so we have implicitly declared that f1 and f3 may propagate exceptions, even though
+      exceptions cannot actually be thrown during the execution of f3.
+Version > C++17
+Whether or not a function is noexcept is part of the function's type: that is, in the example above, f1, f2, and f3
+have different types from f4, f5, and f6. Therefore, noexcept is also significant in function pointers, template
+arguments, and so on.
+void g1() {}
+void g2() noexcept {}
+void (*p1)() noexcept
+void (*p2)() noexcept
+void (*p3)() = &g1 ;
+void (*p4)() = &g2;
+&g1; // ill- -formed, since g1 is not noexcept 
+&g2; // ok;  types match                       
+     // ok;  types match                       
+     // ok;  implicit conversion               

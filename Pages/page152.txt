@@ -1,0 +1,45 @@
+﻿Also note that while in a constructor, the type of the object is the type which that constructor constructs. This holds
+true even if the object is declared as a derived type. For example, in the below example, ctd_good and ctd_bad are
+type CtorThisBase inside CtorThisBase(), and type CtorThis inside CtorThis(), even though their canonical type
+is CtorThisDerived. As the more-derived classes are constructed around the base class, the instance gradually
+goes through the class hierarchy until it is a fully-constructed instance of its intended type.
+class CtorThisBase {
+      short s;
+   public:
+      CtorThisBase() : s(516) {}
+};
+class CtorThis : public CtorThisBase {
+     int i, j, k;
+   public:
+     // Good constructor.
+     CtorThis() : i(s + 42), j(this->i), k(j) {}
+     // Bad constructor.
+     CtorThis(int ii) : i(ii), j(this->k), k(b ? 51 : -51) {
+          virt_func();
+     }
+     virtual void virt_func() { i += 2; }
+};
+class CtorThisDerived : public CtorThis {
+      bool b;
+   public:
+      CtorThisDerived()          : b(true) {}
+      CtorThisDerived(int ii) : CtorThis(ii), b(false) {}
+      void virt_func() override { k += (2 * i); }
+};
+// ...
+CtorThisDerived ctd_good;
+CtorThisDerived ctd_bad(3);
+With these classes and member functions:
+    •  In the good constructor, for ctd_good:
+           ° CtorThisBase is fully constructed by the time the CtorThis constructor is entered. Therefore, s is in a
+             valid state while initialising i, and can thus be accessed.
+           ° i is initialised before j(this->i) is reached. Therefore, i is in a valid state while initialising j, and can
+             thus be accessed.
+           ° j is initialised before k(j) is reached. Therefore, j is in a valid state while initialising k, and can thus be
+             accessed.
+    •  In the bad constructor, for ctd_bad:
+           ° k is initialised after j(this->k) is reached. Therefore, k is in an invalid state while initialising j, and
+             accessing it causes undefined behaviour.
+           ° CtorThisDerived is not constructed until after CtorThis is constructed. Therefore, b is in an invalid
+             state while initialising k, and accessing it causes undefined behaviour.
+           ° The object ctd_bad is still a CtorThis until it leaves CtorThis(), and will not be updated to use

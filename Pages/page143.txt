@@ -1,0 +1,17 @@
+﻿          return *this;
+     int data;
+};
+int main()
+{
+    Foo foo(2); //Foo(int data) / Normal Constructor called
+    Foo foo2 = foo; //Copy Constructor Called
+    cout << foo2.data << endl;
+    Foo foo3(42);
+    foo3=foo; //Assignment Constructor Called
+    cout << foo3.data << endl;
+}
+Output:
+2
+2
+Here you can see we first call the copy constructor by executing the line Foo foo2 = foo; . Since we didn't initialize
+it previously. And then next we call the assignment operator on foo3 since it was already initialized foo3=foo;

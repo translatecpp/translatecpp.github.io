@@ -1,0 +1,16 @@
+﻿Section 57.3: Constructing a 'std::variant'
+This does not cover allocators.
+struct A {};
+struct B { B()=default; B(B const&)=default; B(int){}; };
+struct C { C()=delete; C(int) {}; C(C const&)=default; };
+struct D { D( std::initializer_list<int> ) {}; D(D const&)=default; D()=default; };
+std::variant<A,B> var_ab0; // contains a A()
+std::variant<A,B> var_ab1 = 7; // contains a B(7)
+std::variant<A,B> var_ab2 = var_ab1; // contains a B(7)
+std::variant<A,B,C> var_abc0{ std::in_place_type<C>, 7 }; // contains a C(7)
+std::variant<C> var_c0; // illegal, no default ctor for C
+std::variant<A,D> var_ad0( std::in_place_type<D>, {1,3,3,4} ); // contains D{1,3,3,
+std::variant<A,D> var_ad1( std::in_place_index<0> ); // contains A{}
+std::variant<A,D> var_ad2( std::in_place_index<1>, {1,3,3,4} ); // contains D{1,3,3
+4}
+,4}

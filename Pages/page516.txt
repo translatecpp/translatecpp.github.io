@@ -1,0 +1,46 @@
+﻿    • detected_or: alias of a struct with value_t which is is_detected, and type which is Op<Args...> or Default
+      depending of validity of Op<Args...>
+which can be implemented using std ::void_t for SFINAE as following:
+Version > C++17
+namespace detail {
+     template <class Default, class AlwaysVoid,
+                template<class...> class Op, class... Args>
+     struct detector
+     {
+         using value_t = std::false_type;
+         using type = Default;
+     };
+     template <class Default, template<class...> class Op, class... Args>
+     struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
+     {
+          using value_t = std::true_type;
+          using type = Op<Args...>;
+     };
+} // namespace detail
+// special type to indicate detection failure
+struct nonesuch {
+     nonesuch() = delete;
+     ~nonesuch() = delete;
+     nonesuch(nonesuch const&) = delete;
+     void operator=(nonesuch const&) = delete;
+};
+template <template<class...> class Op, class... Args>
+using is_detected =
+     typename detail::detector<nonesuch, void, Op, Args...>::value_t;
+template <template<class...> class Op, class... Args>
+using detected_t = typename detail::detector<nonesuch, void, Op, Args...>::type;
+template <class Default, template<class...> class Op, class... Args>
+using detected_or = detail::detector<Default, void, Op, Args...>;
+Traits to detect presence of method can then be simply implemented:
+typename <typename T, typename ...Ts>
+using foo_type = decltype(std::declval<T>().foo(std::declval<Ts>()...));
+struct C1 {};
+struct C2 {
+     int foo(char) const;
+};
+template <typename T>
+using has_foo_char = is_detected<foo_type, T, char>;
+static_assert(!has_foo_char<C1 >::value, "Unexpected");
+static_assert(has_foo_char<C2>::value, "Unexpected");
+static_assert(std::is_same<int, detected_t<foo_type, C2, char>>::value,
+                "Unexpected");

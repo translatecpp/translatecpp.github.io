@@ -1,0 +1,39 @@
+﻿// Output: First line.
+// Second line. Still second line.
+std::setfill(c) - changes the fill character to c. Often used with std ::setw.
+std::cout << "\nDefault fill: " << std::setw(10) << 79 << '\n'
+           << "setfill('#'): " << std::setfill('#')
+           << std::setw(10) << 42 << '\n';
+// Output:
+// Default fill:          79
+// setfill('#'): ########79
+std::put monev(mon[. intll) [C++11]. In an expression out << std::put_money(mon, intl), converts the
+monetary value mon (of long double or std ::basic_string type) to its character representation as specified by the
+std ::monev put facet of the locale currently imbued in out. Use international currency strings if intl is true, use
+currency symbols otherwise.
+long double money = 123.45;
+// or std::string money = "123.45";
+std ::cout.imbue(std::locale("en_US.utf8"));
+std::cout << std::showbase << "en_US: " << std::put_money(money)
+           << " or " << std::put_money(money. true) << '\n';
+// Output: en_US: $1.23 or USD 1.23
+std ::cout.imbue(std::locale("ru_RU.utf8"));
+std::cout << "ru_RU: " << std::put_money(money)
+           << " or " << std::put_money(money. true) << '\n';
+// Output: ru_RU: 1.23 ??? or 1.23 RUB
+std::cout.imbue(std::locale("ja_JP.utf8"));
+std::cout << "ja_JP: " << std::put_money(money)
+           << " or " << std::put_money(money. true) << '\n';
+// Output: ja_JP: ?123 or JPY 123
+std::put time(tmb, fmt) [C++11] - formats and outputs a date/time value to std::tm according to the specified
+format fmt.
+tmb - pointer to the calendar time structure const std ::tm* as obtained from localtime() or gmtime().
+fmt - pointer to a null-terminated string const CharT* specifying the format of conversion.
+#include <ctime>
+std::time_t t = std::time(nullptr);
+std::tm tm = *std::localtime(&t);
+std::cout.imbue(std::locale("ru_RU.utf8"));
+std::cout << "\nru_RU: " << std::put_time(&tm. "%c %Z") << '\n';
+// Possible output:
+// ru_RU: ?? 04 ??? 2017 15:08:35 UTC
+For more information see the link above.

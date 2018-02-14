@@ -1,0 +1,42 @@
+﻿does_something_special_with_pointer (T t) {
+     //Do something special
+}
+There are also various traits which transform types, such as std ::add_pointer and std ::underlying_type. These
+traits generally expose a single type member type which contains the transformed type. For example,
+std ::add_pointer<int>::type is int*.
+Section 93.3: Type relations with std::is_same<T, T>
+Version > C++11
+The std ::is_same<T, T> type relation is used to compare two types. It will evaluate as boolean, true if the types
+are the same and false if otherwise.
+e.g.
+// Prints true on most x86 and x86_64 compilers.
+std::cout << std::is_same<int, int32_t>::value << "\n";
+// Prints false on all compilers.
+std::cout << std::is_same<float, int>::value << "\n";
+// Prints false on all compilers.
+std::cout << std::is_same<unsigned int, int>::value << "\n";
+The std ::is_same type relation will also work regardless of typedefs. This is actually demonstrated in the first
+example when comparing int == int32_t however this is not entirely clear.
+e.g.
+// Prints true on all compilers.
+typedef int MyType
+std::cout << std::is_same<int, MyType>::value <<  "\n";
+Using std:: is_same to warn when improperly using a templated class or function.
+When combined with a static assert the std:: is_same template can be valuable tool in enforcing proper usage of
+templated classes and functions.
+e.g. A function that only allows input from an int and a choice of two structs.
+#include <type_traits>
+struct foo {
+int member;
+   // Other variables
+};
+struct bar {
+    char member;
+};
+template<typename T>
+int AddStructMember(T var1, int var2) {
+   // If type T != foo || T != bar then show error message.
+   static_assert(std::is_same<T, foo>::value ||
+   std::is_same<T, bar>::value,
+     "This function does not support the specified type.");
+   return var1.member + var2;

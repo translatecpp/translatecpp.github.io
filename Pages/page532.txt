@@ -1,0 +1,26 @@
+﻿{
+public:
+     transaction(){ log_it(); }
+     virtual void log_it() const = 0;
+};
+class sell_transaction : public transaction
+{
+public:
+     virtual void log_it() const { /* Do something */ }
+};
+Suppose we create a sell_transaction object:
+sell_transaction s;
+This implicitly calls the constructor of sell_transaction, which first calls the constructor of transaction. When the
+constructor of transaction is called though, the object is not yet of the type sell_transaction, but rather only of
+the type transaction.
+Consequently, the call in transaction ::transaction() to log_it, won't do what might seem to be the intuitive
+thing - namely call sell_transaction ::log_it.
+    • If log_it is pure virtual, as in this example, the behaviour is undefined.
+    • If log_it is non-pure virtual, transaction ::log_it will be called.
+Section 104.26: Function call through mismatched function
+pointer type
+In order to call a function through a function pointer, the function pointer's type must exactly match the function's
+type. Otherwise, the behaviour is undefined. Example:
+int f();
+void (*p)() = reinterpret_cast<void(*)()>(f);
+p(); // undefined

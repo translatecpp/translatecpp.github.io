@@ -1,0 +1,45 @@
+﻿unsigned int predecessor(unsigned int x) {
+     return (x > 0) ? (x - 1) : (throw std::invalid_argument("0 has no predecessor"));
+}
+Section 16.5: default
+In a switch statement, introduces a label that will be jumped to if the condition's value is not equal to any of the
+case labels' values.
+char c = getchar();
+bool confirmed;
+switch (c) {
+case 'y':
+     confirmed = true;
+   break;
+   case 'n':
+     confirmed = false;
+   break;
+   default:
+     std::cout << "invalid response!\n";
+     abort();
+}
+Version > C++11
+Defines a default constructor, copy constructor, move constructor, destructor, copy assignment operator, or move
+assignment operator to have its default behaviour.
+class Base {
+     // ...
+     // we want to be able to delete derived classes through Base*,
+     // but have the usual behaviour for Base's destructor.
+     virtual ~Base() = default;
+};
+Section 16.6: try
+The keyword try is followed by a block, or by a constructor initializer list and then a block (see here). The try block is
+followed by one or more catch blocks. If an exception propagates out of the try block, each of the corresponding
+catch blocks after the try block has the opportunity to handle the exception, if the types match.
+std::vector<int> v(N);     // if an exception is thrown here,
+                            // it will not be caught by the following catch block
+try {
+     std::vector<int> v(N); // if an exception is thrown here,
+                            // it will be caught by the following catch block
+     // do something with v
+} catch (const std::bad_alloc&) {
+     // handle bad_alloc exceptions from the try block
+}
+Section 16.7: if
+Introduces an if statement. The keyword if must be followed by a parenthesized condition, which can be either an
+expression or a declaration. If the condition is truthy, the substatement after the condition will be executed.
+int x;

@@ -1,0 +1,9 @@
+﻿{
+     listNode *ptr=this->head,*next=NULL;
+     while(ptr!=NULL)
+     {
+          next=ptr->next;
+          delete(ptr);
+          ptr=next;
+     }
+}

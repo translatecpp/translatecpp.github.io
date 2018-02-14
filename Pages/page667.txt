@@ -1,0 +1,35 @@
+﻿int main() {
+     auto vectorToSort = createSemiRandomData();
+     sortVector(std::ref(vectorToSort));
+     printVector(vectorToSort);
+     return 0;
+  }
+Regardless of the coding styles you prefer and use, having a consistent coding (and formatting) style will help you
+understanding the code.
+Looking at the code above, one can identify a couple of improvements to improve readability and debuggability:
+The use of separate functions for separate actions
+The use of separate functions allow you to skip over some functions in the debugger if you ain't interested in the
+details. In this specific case, you might not be interested in the creation or printing of the data and only want to step
+into the sorting.
+Another advantage is that you need to read less code (and memorize it) while stepping through the code. You now
+only need to read 3 lines of code in main() in order to understand it, instead of the whole function.
+The third advantage is that you simply have less code to look at, which helps a trained eye in spotting this bug
+within seconds.
+Using consistent formatting/constructions
+The use of consistent formatting and constructions will remove clutter from the code making it easier to focus on
+the code instead of text. A lot of discussions have been fed on the 'right' formatting style. Regardless of that style,
+having a single consistent style in the code will improve familiarity and make it easier to focus on the code.
+As formatting code is time consuming task, it is recommended to use a dedicated tool for this. Most IDEs have at
+least some kind of support for this and can do formatting more consistent than humans.
+You might note that the style is not limited to spaces and newlines as we no longer mix the free-style and the
+member functions to get begin/end of the container. (v.begin() vs std ::end(v)).
+Point attention to the important parts of your code.
+Regardless of the style you determine to choose, the above code contains a couple of markers which might give you
+a hint on what might be important: •
+    • A comment stating optimized, this indicates some fancy techniques
+    • Some early returns in sortVector() indicate that we are doing something special
+    • The std:: ref() indicates that something is going on with the sortVector()
+Conclusion
+Having clean code will help you understanding the code and will reduce the time you need to debug it. In the
+second example, a code reviewer might even spot the bug at first glance, while the bug might be hidden in the
+details in the first one. (PS: The bug is in the compare with 2.)

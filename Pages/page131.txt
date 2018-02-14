@@ -1,0 +1,39 @@
+﻿Some explanations:
+    •  You can define or override any of the virtual functions of the parent class. The fact that a function was virtual
+      in the parent class makes it virtual in the derived class. No need to tell the compiler the keyword virtual
+      again. But it's recommended to add the keyword override at the end of the function declaration, in order to
+      prevent subtle bugs caused by unnoticed variations in the function signature.
+    •  If all the pure virtual functions of the parent class are defined you can instantiate objects for this class, else it
+      will also become an abstract class.
+    •  You are not obliged to override all the virtual functions. You can keep the version of the parent if it suits your
+      need.
+Example of instantiation
+int main() {
+     Square square(Point(10.0, 0.0), 6); // we know it's a square, the compiler also
+     square.describe_object();
+     std::cout << "Surface: " << square.get_surface() << std::endl;
+     Circle circle(Point(0.0, 0.0), 5);
+     Shape *ps = nullptr; // we don't know yet the real type of the object
+     ps = &circle;         // it's a circle, but it could as well be a square
+     ps->describe_object();
+     std::cout << "Surface: " << ps->get_surface() << std::endl;
+}
+Section 26.2: Safe downcasting
+Suppose that you have a pointer to an object of a polymorphic class:
+Shape *ps;                        // see example on defining a polymorphic class
+ps = get_a_new_random_shape(); // if you don't have such a function yet, you
+                                   // could just write ps = new Square(0.0,0.0, 5);
+a downcast would be to cast from a general polymorphic Shape down to one of its derived and more specific shape
+like Square or Circle.
+Why to downcast ?
+Most of the time, you would not need to know which is the real type of the object, as the virtual functions allow you
+to manipulate your object independently of its type:
+std::cout << "Surface: " << ps->get_surface() << std::endl;
+If you don't need any downcast, your design would be perfect.
+However, you may need sometimes to downcast. A typical example is when you want to invoke a non virtual
+function that exist only for the child class.
+Consider for example circles. Only circles have a diameter. So the class would be defined as :
+class Circle: public Shape { // for Shape, see example on defining a polymorphic class
+Point center;
+double radius;
+public:

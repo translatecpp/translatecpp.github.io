@@ -1,0 +1,33 @@
+﻿     void accept(IShapeVisitor& visitor) const override { visitor.visit(*this); }
+     // ...
+};
+struct Square : IShape
+{
+     // ...
+     // Each shape has to implement this method the same way
+     void accept(IShapeVisitor& visitor) const override { visitor.visit(*this); }
+     // ...
+};
+Each child type of IShape needs to implement the same function the same way. That's a lot of extra typing. Instead,
+we can introduce a new type in the hierarchy that does this for us:
+template <class Derived>
+struct IShapeAcceptor : IShape {
+     void accept(IShapeVisitor& visitor) const override {
+         // visit with our exact type
+         visitor.visit(*static_cast<Derived const*>(this));
+     }
+};
+And now, each shape simply needs to inherit from the acceptor:
+struct Circle : IShapeAcceptor<Circle>
+{
+     Circle(const Point& center, double radius) : center(center), radius(radius) {}
+     Point center;
+     double radius;
+};
+struct Square : IShapeAcceptor<Square>
+{
+     Square(const Point& topLeft, double sideLength) : topLeft(topLeft), sideLength(sideLength) {}
+     Point topLeft;
+     double sideLength;
+};
+No duplicate code necessary.

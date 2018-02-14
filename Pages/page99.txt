@@ -1,0 +1,2 @@
+﻿//Error: Cannot assign to const pointer
+pC = &b;

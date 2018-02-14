@@ -1,0 +1,41 @@
+﻿However, each function argument is completely evaluated, and the calling object is guaranteed evaluated before
+any function arguments are.
+struct from_int {
+   from_int(int x) { std::cout << "from_int (" << x << ")\n"; }
+};
+int make_int(int x){ std::cout << "make_int (" << x << ")\n"; return x; }
+void foo(from_int a, from_int b) {
+}
+void bar(from_int a, from_int b) {
+}
+auto which_func(bool b){
+   std::cout << b?"foo":"bar" << "\n";
+   return b?foo:bar;
+}
+int main(int argc, char const*const* argv) {
+   which_func( true )( make_int(1), make_int(2) );
+}
+this must print:
+bar
+make_int(1)
+from_int(1)
+make_int(2)
+from_int(2)
+or
+bar
+make_int(2)
+from_int(2)
+make_int(1)
+from_int(1)
+it may not print bar after any of the make or from's, and it may not print:
+bar
+make_int(2)
+make_int(1)
+from_int(2)
+from_int(1)
+or similar. Prior to C++17 printing bar after make_ints was legal, as was doing both make_ints prior to doing any
+from_ints.
+Section 121.3: Result of some reinterpret_cast conversions
+The result of a reinterpret_cast from one function pointer type to another, or one function reference type to
+another, is unspecified. Example:
+int f();

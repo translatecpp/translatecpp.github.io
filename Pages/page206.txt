@@ -1,0 +1,51 @@
+﻿auto operator / (const left_t &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a / b.x)>>
+{
+     const auto s = a/absqr(b);
+     return {
+          b.x * s,
+          -b.y * s
+          };
+}
+template<typename left_t, typename right_t>
+auto operator / (const complex<left_t> &a, const right_t &b)
+-> complex<decay_t<decltype(a.x / b)>>
+{ return {a.x / b, a.y / b}; }
+}// namespace not_std
+int main(int argc, char **argv)
+{
+     using namespace not_std;
+     complex<float> fz{4.0f, 1.0f};
+     // makes a complex<double>
+     auto dz = fz * 1.0;
+     // still a complex<double>
+     auto idz = 1.0f/dz;
+     // also a complex<double>
+     auto one = dz * idz;
+     // a complex<double> again
+     auto one_again = fz * idz;
+     // Operator tests, just to make sure everything compiles.
+     complex<float> a{1.0f, -2.0f};
+     complex<double> b{3.0, -4.0};
+// All  of these   are 
+auto c0 =  a +  b;     
+auto c1 =  a -  b;     
+auto c2 =  a *  b;     
+auto c3 =  a /  b;     
+// All  of these   are 
+auto d0 =  a +  1;     
+auto d1 =  1 +  a;     
+auto d2 =  a -  1;     
+auto d3 =  1 -  a;     
+auto d4 =  a *  1;     
+auto d5 =  1 *  a;     
+auto d6 =  a /  1;     
+auto d7 =  1 /  a;     
+// All  of these   are 
+auto e0 =  b +  1;     
+auto e1 =  1 +  b;     
+auto e2 =  b -  1;     
+auto e3 =  1 -  b;     
+complex<double>
+complex<float>
+complex<double>

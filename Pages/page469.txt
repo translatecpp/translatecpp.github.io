@@ -1,0 +1,20 @@
+﻿int main() {
+     //atomic template used to store non-atomic objects
+     std::atomic<int> shared = 0;
+     //create a thread that may run parallel to the 'main' thread
+     //the thread will run the function 'add' defined above with paramters a = 1, b = 100, result =
+&shared
+     //analogous to 'add(1,100, &shared);'
+     std::thread addingThread(add, 1, 10000, &shared);
+     //print the value of 'shared' to console
+     //main will keep repeating this until the addingThread becomes joinable
+     while (!addingThread.joinable()) {
+         //safe way to read the value of shared atomically for thread safe read
+         std::cout << shared.load() << std::endl;
+     }
+     //rejoin the thread at the end of execution for cleaning purposes
+     addingThread.join();
+     return 0;
+}
+The above example is safe because all store() and load() operations of the atomic data type protect the
+encapsulated int from simultaneous access.

@@ -1,0 +1,44 @@
+﻿in the specialisation as the base-case structure has no data to get):
+template<typename T, typename ... Rest>
+struct DataStructure<T, Rest ...>
+{
+     template<size_t idx>
+     auto get()
+     {
+          return GetHelper<idx, DataStructure<T,Rest...>>::get(*this);
+     }
+};
+As you can see this get member function is itself templated - this time on the index of the member that is needed
+(so usage can be things like data.get<1>(), similar to std::tuple). The actual work is done by a static function in a
+helper class, GetHelper. The reason we can't define the required functionality directly in DataStructure's get is
+because (as we will shortly see) we would need to specialise on idx - but it isn't possible to specialise a template
+member function without specialising the containing class template. Note also the use of a C++14-style auto here
+makes our lives significantly simpler as otherwise we would need quite a complicated expression for the return
+type.
+So on to the helper class. This time we will need an empty forward declaration and two specialisations. First the
+declaration:
+template<size_t idx, typename T>
+struct GetHelper;
+Now the base-case (when idx==0). In this case we just return the first member:
+template<typename T, typename ... Rest>
+struct GetHelper<0, DataStructure<T, Rest ... >>
+{
+      static T get(DataStructure<T, Rest...>& data)
+      {
+          return data.first;
+      }
+};
+In the recursive case, we decrement idx and invoke the GetHelper for the rest member:
+template<size_t idx, typename T, typename ... Rest>
+struct GetHelper<idx, DataStructure<T, Rest ... >>
+{
+      static auto get(DataStructure<T, Rest...>& data)
+      {
+          return GetHelper<idx-1, DataStructure<Rest ...>>::get(data.rest);
+      }
+};
+To work through an example, suppose we have DataStructure<int, float> data and we need data.get<1>().
+This invokes GetHelper<1, DataStructure<int, float>> ::get(data) (the 2nd specialisation), which in turn
+invokes GetHelper<0, DataStructure<float>>::get(data. rest), which finally returns (by the 1st specialisation as
+now idx is 0) data. rest.first.
+So that's it! Here is the whole functioning code, with some example use in the main function:

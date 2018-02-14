@@ -1,0 +1,17 @@
+﻿int result = removeFrom(1000, 5, 10, 15); //'result' is 1000 - 5 - 10 - 15 = 970
+Section 110.3: Folding over a comma
+It is a common operation to need to perform a particular function over each element in a parameter pack. With
+C++11, the best we can do is:
+template <class... Ts>
+void print_all(std::ostream& os, Ts const&... args) {
+     using expander = int[];
+     (void)expander{0,
+          (void(os << args), 0)...
+     };
+}
+But with a fold expression, the above simplifies nicely to:
+template <class... Ts>
+void print_all(std::ostream& os, Ts const&... args) {
+     (void(os << args), ...);
+}
+No cryptic boilerplate required.

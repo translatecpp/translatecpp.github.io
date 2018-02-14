@@ -1,0 +1,45 @@
+﻿Chapter 21: Type Keywords
+Section 21.1: class
+  1. Introduces the definition of a class type.
+       class foo {
+       int x;
+       public:
+           int get_x();
+           void set_x(int new_x);
+       };
+   2.  Introduces an elaborated type specifier, which specifies that the following name is the name of a class type. If
+   the class name has been declared already, it can be found even if hidden by another name. If the class name
+   has not been declared already, it is forward-declared.
+       class foo; // elaborated type specifier -> forward declaration
+       class bar {
+       public:
+           bar(foo& f);
+       };
+       void baz();
+       class baz; // another elaborated type specifer; another forward declaration
+                   // note: the class has the same name as the function void baz()
+       class foo {
+           bar b;
+           friend class baz; // elaborated type specifier refers to the class,
+                              // not the function of the same name
+         public:
+           foo();
+       };
+    3. Introduces a type parameter in the declaration of a template.
+       template <class T>
+       const T& min(const T& x, const T& y) {
+           return b < a ? b : a;
+       }
+   4.  In the declaration of a template template parameter, the keyword class precedes the name of the
+       parameter. Since the argument for a template template parameter can only be a class template, the use of
+       class here is redundant. However, the grammar of C++ requires it.
+       template <template <class T> class U>
+       //                             aaaaa "class" used in this sense here;
+       //                                   U is a template template parameter
+       void f() {
+           U<int> ::do_it();
+           U<double>::do_it();
+       }
+   5.  Note that sense 2 and sense 3 may be combined in the same declaration. For example:
+       template <class T>
+       class foo {

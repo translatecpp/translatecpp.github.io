@@ -1,0 +1,40 @@
+﻿auto func = [c = 0]() mutable {++c; std::cout << c;};
+If used together with the return type, mutable comes before it.
+auto func = [c = 0]() mutable -> int {++c; std::cout << c; return c;};
+An example to illustrate the usefulness of lambdas
+Before C++11:
+Version < C++11
+// Generic functor used for comparison
+struct islessthan
+{
+     islessthan(int threshold) : _threshold(threshold) {}
+     bool operator()(int value) const
+     {
+         return value < _threshold;
+     }
+private:
+     int _threshold;
+};
+// Declare a vector
+const int arr[] = { 1, 2, 3, 4, 5 };
+std::vector<int> vec(arr, arr+5);
+// Find a number that's less than a given input (assume this would have been function input)
+int threshold = 10;
+std::vector<int>::iterator it = std::find_if(vec.begin(), vec.end(), islessthan(threshold));
+Since C++11:
+Version > C++11
+// Declare a vector
+std::vector<int> vec{ 1, 2, 3, 4, 5 };
+// Find a number that's less than a given input (assume this would have been function input)
+int threshold = 10;
+auto it = std::find_if(vec.begin(), vec.end(), [threshold](int value) { return value < threshold;
+});
+Section 73.2: Specifying the return type
+For lambdas with a single return statement, or multiple return statements whose expressions are of the same type,
+the compiler can deduce the return type:
+// Returns bool, because "value > 10" is a comparison which yields a Boolean result
+auto l = [](int value) {
+return value > 10;
+}
+For lambdas with multiple return statements of different types, the compiler can't deduce the return type:
+// error: return types must match if lambda has unspecified return type

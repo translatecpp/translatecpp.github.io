@@ -1,0 +1,20 @@
+﻿file4.txt
+Wogger Wabbit
+2
+6.2
+Bilbo Baggins
+111
+81.3
+Mary Poppins
+29
+154.8
+Output:
+name: Wogger Wabbit
+age: 2 years
+height: 6.2lbs
+name: Bilbo Baggins
+age: 111 years
+height: 81.3lbs
+name: Mary Poppins
+age: 29 years
+height: 154.8lbs

@@ -1,0 +1,43 @@
+﻿automatically considered a friend of the nested class, neither will friends of the enclosing class be considered
+friends of the nested class.
+class Outer {
+     friend void barge_out(Outer& out, Inner& in);
+     class Inner {
+         friend void barge_in(Outer& out, Inner& in);
+         int i;
+     };
+      int o;
+};
+void barge_in(Outer& out, Outer::Inner& in) {
+     int i = in.i; // Good.
+     int o = out.o; // Error: int Outer::o is private.
+}
+void barge_out(Outer& out, Outer::Inner& in) {
+     int i = in.i; // Error: int Outer::Inner::i is private.
+     int o = out.o; // Good.
+}
+As with all other class members, nested classes can only be named from outside the class if they have public
+access. However, you are allowed to access them regardless of access modifier, as long as you don't explicitly name
+them.
+class Outer {
+     struct Inner {
+          void func() { std::cout << "I have no private taboo.\n"; }
+     };
+   public:
+      static Inner make_Inner() { return Inner(); }
+};
+// ...
+Outer::Inner oi; // Error: Outer::Inner is private.
+auto oi = Outer::make_Inner(); // Good.
+oi.func();                       // Good.
+Outer::make_Inner().func(); // Good.
+You can also create a type alias for a nested class. If a type alias is contained in the enclosing class, the nested type
+and the type alias can have different access modifiers. If the type alias is outside the enclosing class, it requires that
+either the nested class, or a typedef thereof, be public.
+class Outer {
+     class Inner_ {};
+   public:
+     typedef Inner_ Inner;
+};
+typedef Outer::Inner ImOut; // Good.
+typedef Outer::Inner_ ImBad; // Error.

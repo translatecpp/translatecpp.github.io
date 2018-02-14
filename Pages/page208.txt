@@ -1,0 +1,44 @@
+﻿We simply have to create the proper append_t token and do an ADL-friendly named_invoke of the proper signature,
+and everything hooks up and works.
+For a more complex example, suppose you want to have element-wise multiplication of elements of a std::array:
+template<class=void, std::size_t...Is>
+auto indexer( std::index_sequence<Is...> ) {
+return [](auto&& f) {
+     return f( std::integral_constant<std::size_t, Is>{}... );
+   };
+}
+template<std::size_t N>
+auto indexer() { return indexer( std::make_index_sequence<N>{} ); }
+namespace my_ns {
+   struct e_times_t : named_operator::make_operator<e_times_t> {};
+   constexpr e_times_t e_times{};
+   template<class L, class R, std::size_t N,
+     class Out=std::decay_t<decltype( std::declval<L const&>()*std::declval<R const&>() )>
+   >
+   std::array<Out, N> named_invoke( std::array<L, N> const& lhs, e_times_t, std::array<R, N> const&
+rhs ) {
+     using result_type = std::array<Out, N>;
+     auto index_over_N = indexer<N>();
+     return index_over_N([&](auto...is)->result_type {
+     return {{
+          (lhs[is] * rhs[is])...
+        }};
+     });
+   }
+}
+live example.
+This element-wise array code can be extended to work on tuples or pairs or C-style arrays, or even variable length
+containers if you decide what to do if the lengths don't match.
+You could also an element-wise operator type and get lhs *element_wise< ' + '>* rhs.
+Writing a *dot* and *cross* product operators are also obvious uses.
+The use of * can be extended to support other delimiters, like +. The delimeter precidence determines the
+precidence of the named operator, which may be important when translating physics equations over to C++ with
+minimal use of extra ()s.
+With a slight change in the library above, we can support ->*then* operators and extend std ::function prior to
+the standard being updated, or write monadic ->*bind*. It could also have a stateful named operator, where we
+carefully pass the Op down to the final invoke function, permitting:
+named_operator<'*'> append = [](auto lhs, auto&& rhs) {
+   using std::begin; using std::end;
+   lhs.insert( end(lhs), begin(rhs), end(rhs) );
+   return std::move(lhs);
+};

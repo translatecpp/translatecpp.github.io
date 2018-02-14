@@ -1,0 +1,48 @@
+﻿     public:
+          proxy_row_vector(C& _vec, std::size_t _r_ind, std::size_t _cols)
+          : vec(_vec), row_index(_r_ind), cols(_cols) {}
+          const_reference operator[](std::size_t _col_index) const {
+          return vec[row_index*cols + _col_index];
+          }
+          reference operator[](std::size_t _col_index) {
+              return vec[row_index*cols + _col_index];
+          }
+     private:
+          C& vec;
+          std::size_t row_index; // row index to access
+          std::size_t cols; // number of columns in matrix
+     };
+     using const_proxy = proxy_row_vector<const std::vector<T>>;
+using proxy = proxy_row_vector<std::vector<T>>;
+public:
+     matrix() : mtx(), rows(0), cols(0) {}
+     matrix(std::size_t _rows, std::size_t _cols)
+         : mtx(_rows*_cols), rows(_rows), cols(_cols) {}
+     // call operator[] followed by another [] call to access matrix elements
+const_proxy operator[](std::size_t _row_index) const {
+return const_proxy(mtx, _row_index, cols);
+     }
+     proxy operator[](std::size_t _row_index) {
+         return proxy(mtx, _row_index, cols);
+     }
+private:
+     std::vector<T> mtx;
+     std::size_t rows;
+     std::size_t cols;
+};
+Section 37.3: Conversion operators
+You can overload type operators, so that your type can be implicitly converted into the specified type.
+The conversion operator must be defined in a class/struct:
+operator T() const { /* return something */ }
+Note: the operator is const to allow const objects to be converted.
+Example:
+struct Text
+{
+     std ::string text;
+     // Now Text can be implicitly converted into a const char*
+     /*explicit*/ operator const char*() const { return text.data(); }
+     // AAAAAAA
+     // to disable implicit conversion
+};
+Text t;
+t.text = "Hello world!";

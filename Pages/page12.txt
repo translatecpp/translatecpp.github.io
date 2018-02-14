@@ -1,0 +1,34 @@
+﻿     •  hex-literal
+It is the character sequence 0x or the character sequence 0X followed by one or more hexadecimal digits (0, 1, 2, 3,
+4, 5, 6, 7, 8, 9, a, A, b, B, c, C, d, D, e, E, f, F)
+int x = 0x2a; int X = 0X2A;
+     •  binary-literal (since C++14)
+It is the character sequence 0b or the character sequence 0B followed by one or more binary digits (0, 1)
+int b = 0b101010; // C++14
+Integer-suffix, if provided, may contain one or both of the following (if both are provided, they may appear in any
+order:
+    •      unsigned-suffix (the character u or the character U)
+unsigned int u_1 = 42u;
+    •  long-suffix (the character l or the character L) or the long-long-suffix (the character sequence ll or the
+      character sequence LL) (since C++11)
+The following variables are also initialized to the same value:
+unsigned   long long 11 = 18446744073709550592ull; // C++11
+unsigned   long long l2 = 18'446'744'073'709'550'592llu; // C++14
+unsigned   long long l3 = 1844'6744'0737'0955'0592uLL; // C++14
+unsigned   long long l4 = 184467'440737'0'95505'92LLU; // C++14
+Notes
+Letters in the integer literals are case-insensitive: 0xDeAdBaBeU and 0XdeadBABEu represent the same number
+(one exception is the long-long-suffix, which is either ll or LL, never lL or Ll)
+There are no negative integer literals. Expressions such as -1 apply the unary minus operator to the value
+represented by the literal, which may involve implicit type conversions.
+In C prior to C99 (but not in C++), unsuffixed decimal values that do not fit in long int are allowed to have the type
+unsigned long int.
+When used in a controlling expression of #if or #elif, all signed integer constants act as if they have type
+std::intmax_t and all unsigned integer constants act as if they have type std::uintmax_t.
+Section 2.3: true
+A keyword denoting one of the two possible values of type bool.
+bool ok =  true  
+if (!f())  {     
+   ok =    false 
+   goto    end;  
+}                

@@ -1,0 +1,54 @@
+﻿        vtable->move_assign(ptr.get(), o.ptr.get());
+        return *this;
+     }
+     auto tmp = std::move(o);
+     swap(*this, tmp);
+     return *this;
+   }
+   regular_type(regular_type const& o):
+     vtable(o.vtable),
+     ptr(o.vtable?o.vtable->clone(o.ptr.get()):dtor_unique_ptr{nullptr, [](void*){}})
+   {
+     if (!ptr && vtable) vtable = nullptr;
+   }
+   regular_type& operator=(regular_type const& o) {
+     if (o.vtable == vtable) {
+        vtable->copy_assign(ptr.get(), o.ptr.get());
+        return *this;
+     }
+     auto tmp = o;
+     swap(*this, tmp);
+     return *this;
+   }
+   std::size_t hash() const {
+     if (!vtable) return 0;
+     return vtable->hash(ptr.get());
+   }
+   template<class T,
+     std::enable_if_t< !std::is_same<std::decay_t<T>, regular_type>{}, int>* =nullptr
+   >
+   regular_type(T&& t) {
+     emplace<std::decay_t<T>>(std::forward<T>(t));
+   }
+};
+                                                   namespace std {
+                                                   template<>
+   struct hash<regular_type> {
+     std::size_t operator()( regular_type const& r )const {
+        return r.hash();
+     }
+   };
+   template<>
+   struct less<regular_type> {
+     bool operator()( regular_type const& lhs, regular_type const& rhs ) const {
+        return lhs.before(rhs);
+     }
+   };
+}
+live example.
+Such a regular type can be used as a key for a std ::map or a std ::unordered_map that accepts anything regular for a
+key, like:
+std::map<regular_type, std::any>
+would be basically a map from anothing regular, to anything copyable.
+Unlike any, my regular_type does no small object optimization nor does it support getting the original data back.
+Getting the original type back isn't hard.

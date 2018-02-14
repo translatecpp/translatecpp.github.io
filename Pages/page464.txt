@@ -1,0 +1,42 @@
+﻿                {
+             promise.set_value(func());
+             // Note: Will not work with std::promise<void>. Needs some meta-template programming
+which is out of scope for this example.
+         }
+         catch(...)
+         {
+             promise.set_exception(std::current_exception());
+         }
+     }, std:: move(promise))).detach();
+     return future;
+}
+Section 88.4: std::packaged_task and std::future
+std ::packaged_task bundles a function and the associated promise for its return type:
+template<typename F>
+auto async_deferred(F&& func) -> std::future<decltype(func())>
+{
+     auto task = std::packaged_task<decltype(func())()>(std::forward<F>(func));
+     auto future = task.get_future();
+     std ::thread(std::move(task)).detach();
+     return std::move(future);
+}
+The thread starts running immediately. We can either detach it, or have join it at the end of the scope. When the
+function call to std::thread finishes, the result is ready.
+Note that this is slightly different from std ::async where the returned std ::future when destructed will actually
+block until the thread is finished.
+Section 88.5: std::future_error and std::future_errc
+If constraints for std::promise and std::future are not met an exception of type std::future_error is thrown.
+The error code member in the exception is of type std::future_errc and values are as below, along with some test
+cases:
+enum class future_errc {
+     broken_promise             = /* the task is no  longer shared */,
+     future_already_retrieved   = /* the answer was already retrieved */,
+     promise_already_satisfied  = /* the answer was stored already */,
+     no_state                   = /* access to a promise in non-shared state */
+};
+Inactive promise:
+int test()
+{
+     std::promise<int> pr;
+     return 0; // returns ok
+}

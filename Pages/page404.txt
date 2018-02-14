@@ -1,0 +1,41 @@
+﻿// Compiler sees:
+double area = (3.14159265358979*(5)*(5))
+Due to this, function-like macro parameters are often enclosed within parentheses, as in AREA() above. This is to
+prevent any bugs that can occur during macro expansion, specifically bugs caused by a single macro parameter
+being composed of multiple actual values.
+#define BAD_AREA(r) PI * r * r
+double bad_area = BAD_AREA(5 + 1.6);
+// Compiler sees:
+double bad_area = 3.14159265358979 * 5 + 1.6 * 5 + 1.6;
+double good_area = AREA(5 + 1.6);
+// Compiler sees:
+double good_area = (3.14159265358979*(5 + 1.6)*(5 + 1.6));
+Also note that due to this simple expansion, care must be taken with the parameters passed to macros, to prevent
+unexpected side effects. If the parameter is modified during evaluation, it will be modified each time it is used in
+the expanded macro, which usually isn't what we want. This is true even if the macro encloses the parameters in
+parentheses to prevent expansion from breaking anything.
+int oops = 5;
+double incremental_damage = AREA(oops++);
+// Compiler sees:
+double incremental_damage = (3.14159265358979*(oops++)*(oops++));
+Additionally, macros provide no type-safety, leading to hard-to-understand errors about type mismatch.
+As programmers normally terminate lines with a semicolon, macros that are intended to be used as standalone
+lines are often designed to "swallow" a semicolon; this prevents any unintended bugs from being caused by an
+extra semicolon.
+#define IF_BREAKER(Func) Func();
+if (some_condition)
+     // Oops.
+     IF_BREAKER(some_func);
+else
+     std::cout << "I am accidentally an orphan." << std::endl;
+In this example, the inadvertent double semicolon breaks the if...else block, preventing the compiler from
+matching the else to the if. To prevent this, the semicolon is omitted from the macro definition, which will cause it
+to "swallow" the semicolon immediately following any usage of it.
+#define IF_FIXER(Func) Func()
+if (some_condition)
+     IF_FIXER(some_func);
+else
+     std::cout << "Hooray! I work again!" << std::endl;
+Leaving off the trailing semicolon also allows the macro to be used without ending the current statement, which
+can be beneficial.
+#define DO_SOMETHING(Func, Param) Func(Param, 2)

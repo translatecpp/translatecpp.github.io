@@ -1,0 +1,43 @@
+﻿}
+<<
+END-DUMP
+\n"
+Example c: Enable a premium feature in a separate product build (note: this is illustrative. it is often a better idea to
+allow a feature to be unlocked without the need to reinstall an application)
+void MainWindow::OnProcessButtonClick()
+{
+#ifndef _PREMIUM
+     CreatePurchaseDialog("Buy App Premium", "This feature is available for our App Premium users.
+Click the Buy button to purchase the Premium version at our website");
+     return;
+#endif
+     //...actual feature logic here
+}
+Some common tricks:
+Defining symbols at invocation time:
+The preprocessor can be called with predefined symbols (with optional initialisation). For example this command
+(gcc -E runs only the preprocessor)
+gcc -E -DOPTIMISE_FOR_OS_X -DTESTING_MODE=1 Sample.cpp
+processes Sample.cpp in the same way as it would if #define OPTIMISE_FOR_OS_X and #define TESTING_MODE 1
+were added to the top of Sample.cpp.
+Ensuring a macro is defined:
+If a macro isn't defined and its value is compared or checked, the preprocessor almost always silently assumes the
+value to be 0. There are a few ways to work with this. One approach is to assume that the default settings are
+represented as 0, and any changes (e.g. to the app build profile) needs to be explicitly done (e.g.
+ENABLE_EXTRA_DEBUGGING=0 by default, set -DENABLE_EXTRA_DEBUGGING=1 to override). Another approach is
+make all definitions and defaults explicit. This can be achieved using a combination of #ifndef and #error
+directives:
+#ifndef (ENABLE_EXTRA_DEBUGGING)
+// please include DefaultDefines.h if not already included.
+#    error "ENABLE_EXTRA_DEBUGGING is not defined"
+#else
+#    if ( 1 == ENABLE_EXTRA_DEBUGGING )
+   //code
+#    endif
+#endif
+Section 75.3: X-macros
+An idiomatic technique for generating repeating code structures at compile time.
+An X-macro consists of two parts: the list, and the execution of the list.
+Example:
+#define LIST \
+     X(dog) \

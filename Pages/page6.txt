@@ -1,0 +1,39 @@
+﻿    •  Note: popular function definitions may be hidden in other included files (often for convenience and reuse
+      across many files). This is a common use of header files.
+Function Declaration
+A function declaration is declares the existence of a function with its name and type signature to the compiler.
+The syntax is as the following:
+int add2(int i); // The function is of the type (int) -> (int)
+In the example above, the int add2(int i) function declares the following to the compiler:
+    •  The return type is int.
+    •  The name of the function is add2.
+    •  The number of arguments to the function is 1:
+          ° The first argument is of the type int.
+          ° The first argument will be referred to in the function's contents by the name i.
+The argument name is optional; the declaration for the function could also be the following:
+int add2(int); // Omitting the function arguments' name is also permitted.
+Per the one-definition rule, a function with a certain type signature can only be declared or defined once in an
+entire C++ code base visible to the C++ compiler. In other words, functions with a specific type signature cannot be
+re-defined -- they must only be defined once. Thus, the following is not valid C++:
+int add2(int i); // The compiler will note that add2 is a function (int) -> int
+int add2(int j); // As add2 already has a definition of (int) -> int, the compiler
+// will regard this as an error.
+If a function returns nothing, its return type is written as void. If it takes no parameters, the parameter list should
+be empty.
+void do_something(); // The function takes no parameters, and does not return anything.
+                       // Note that it can still affect variables it has access to.
+Function Call
+A function can be called after it has been declared. For example, the following program calls add2 with the value of
+2 within the function of main:
+#include <iostream>
+int add2(int i);     // Declaration of add2
+// Note: add2 is still missing a DEFINITION.
+// Even though it doesn't appear directly in code,
+// add2's definition may be LINKED in from another object file.
+int main()
+{
+     std::cout << add2(2) << "\n";    // add2(2) will be evaluated at this point,
+                                           // and the result is printed.
+     return 0;
+}
+Here, add2(2) is the syntax for a function call.

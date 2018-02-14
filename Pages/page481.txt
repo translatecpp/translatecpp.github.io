@@ -1,0 +1,49 @@
+﻿   }
+   boost::any& as_any()&{return *this;}
+   boost::any&& as_any()&&{return std::move(*this);}
+   boost::any const& as_any()const&{return *this;}
+   super_any_t()=default;
+   super_any_t(super_any_t&& o):
+     boost::any( std::move( o.as_any() ) ),
+     vtable(o)
+   {}
+   super_any_t(super_any_t const& o):
+     boost::any( o.as_any() ),
+     vtable(o)
+   {}
+   template<class S,
+     std::enable_if_t< std::is_same<std::decay_t<S>, super_any_t>{}, int> =0
+   >
+   super_any_t( S&& o ):
+     boost::any( std::forward<S>(o).as_any() ),
+     vtable(o)
+   {}
+   super_any_t& operator=(super_any_t&&)=default;
+   super_any_t& operator=(super_any_t const&)=default;
+   template<class T,
+     std::enable_if_t< !std::is_same<std::decay_t<T>, super_any_t>{}, int>* =nullptr
+   >
+   super_any_t& operator=( T&& t ) {
+     ((boost::any&)*this) = std::forward<T>(t);
+     using dT=std::decay_t<T>;
+     this->change_type( tag<dT> );
+     return *this;
+   }
+};
+Because we store the any_methods as const objects, this makes making a super_any a bit easier:
+template<class...Ts>
+using super_any = super_any_t< std::remove_cv_t<Ts>... >;
+Test code:
+const auto print = make_any_method<void(std::ostream&)>([](auto&& p, std::ostream& t){ t << p <<
+"\n"; });
+const auto wprint = make_any_method<void(std::wostream&)>([](auto&& p, std::wostream& os ){ os << p
+<< L"\n"; });
+int main()
+{
+   super_any<decltype(print), decltype(wprint)> a = 7;
+   super_any<decltype(print), decltype(wprint)> a2 = 7;
+   (a->*print)(std::cout);
+   (a->*wprint)(std::wcout);
+}
+live example.
+Originally posted here in a SO self question & answer (and people noted above helped with the implementation).

@@ -1,0 +1,44 @@
+﻿    • The char, signed char, and unsigned char types have a size of 1. Conversely, a byte is defined to be the
+       amount of memory required to store a char object. It does not necessarily mean 8 bits, as some systems
+       have char objects longer than 8 bits.
+If expr is an expression, sizeof(expr) is equivalent to sizeof(T) where T is the type of expr.
+int a[100];
+std::cout << "The number of bytes in 'a' is: " << sizeof a;
+memset(a, 0, sizeof a); // zeroes out the array
+Version > C++11
+The sizeof... operator yields the number of elements in a parameter pack.
+template <class... T>
+void f(T&&...) {
+     std::cout << "f was called with " << sizeof...(T) << " arguments\n";
+}
+Section 24.6: noexcept
+Version > C++11
+    1. A unary operator that determines whether the evaluation of its operand can propagate an exception. Note
+      that the bodies of called functions are not examined, so noexcept can yield false negatives. The operand is
+      not evaluated.
+      #include <iostream>
+      #include <stdexcept>
+      void foo() { throw std::runtime_error("oops"); }
+      void bar() {}
+      struct S {};
+      int main() {
+           std::cout  << noexcept(foo()) << '\n';  // prints 0
+           std::cout  << noexcept(bar()) << '\n';  // prints 0
+           std::cout  << noexcept(1 + 1) << '\n';  // prints 1
+           std::cout  << noexcept(S()) << '\n';    // prints 1
+      }
+      In this example, even though bar() can never throw an exception, noexcept(bar()) is still false because the
+      fact that bar() cannot propagate an exception has not been explicitly specified.
+    2. When declaring a function, specifies whether or not the function can propagate an exception. Alone, it
+       declares that the function cannot propagate an exception. With a parenthesized argument, it declares that
+       the function can or cannot propagate an exception depending on the truth value of the argument.
+       void f1() { throw std::runtime_error("oops"); }
+       void f2() noexcept(false) { throw std::runtime_error("oops"); }
+       void f3() {}
+       void f4() noexcept {}
+       void f5() noexcept(true) {}
+       void f6() noexcept {
+       try {
+               f1();
+           } catch (const std::runtime_error&) {}
+       }

@@ -1,0 +1,39 @@
+﻿This is then used like so:
+  void perform_work()
+  {
+      // Perform some work
+  }
+  void t()
+  {
+      thread_joiner j{std::thread(perform_work)};
+      // Do some other calculations while thread is running
+  } // Thread is automatically joined here
+This also provides exception safety; if we had created our thread normally and the work done in t() performing
+other calculations had thrown an exception, join() would never have been called on our thread and our process
+would have been terminated.
+Section 80.7: Operations on the current thread
+std ::this_thread is a namespace which has functions to do interesting things on the current thread from function
+it is called from.
+  Function                      Description
+get_id Returns the id of the thread
+sleep_for Sleeps for a specified amount of time
+sleep_until Sleeps until a specific time
+yield       Reschedule running threads, giving other threads priority
+Getting the current threads id using std ::this_thread ::get_id:
+void foo()
+{
+     //Print this threads id
+     std::cout << std::this_thread::get_id() << '\n';
+}
+std::thread thread{ foo };
+thread.join(); //'threads' id has now been printed, should be something like 12556
+foo(); //The id of the main thread is printed, should be something like 2420
+Sleeping for 3 seconds using std ::this_thread ::sleep_for:
+void foo()
+{
+     std ::this_thread ::sleep_for(std::chrono::seconds(3));
+}
+std::thread thread{ foo };
+foo.join();
+std::cout << "Waited for 3 seconds!\n";
+Sleeping until 3 hours in the future using std ::this_thread ::sleep_until:

@@ -1,0 +1,42 @@
+﻿     auto e4 = b * 1;
+     auto e5 = 1 * b;
+     auto e6 = b / 1;
+     auto e7 = 1 / b;
+     return 0;
+}
+Section 37.5: Named operators
+You can extend C++ with named operators that are "quoted" by standard C++ operators.
+First we start with a dozen-line library:
+namespace named_operator {
+   template<class D>struct make_operator{constexpr make_operator(){}};
+   template<class T, char, class O> struct half_apply { T&& lhs; };
+   template<class Lhs, class Op>
+   half_apply<Lhs, '*', Op> operator*( Lhs&& lhs, make_operator<Op> ) {
+     return {std::forward<Lhs>(lhs)};
+   }
+   template<class Lhs, class Op, class Rhs>
+   auto operator*( half_apply<Lhs, '*', Op>&& lhs, Rhs&& rhs )
+   -> decltype( named_invoke( std::forward<Lhs>(lhs.lhs), Op{}, std::forward<Rhs>(rhs) ) )
+   {
+     return named_invoke( std::forward<Lhs>(lhs.lhs), Op{}, std::forward<Rhs>(rhs) );
+   }
+}
+this doesn't do anything yet.
+First, appending vectors
+namespace my_ns {
+   struct append_t : named_operator::make_operator<append_t> {};
+   constexpr append_t append{};
+   template<class T, class A0, class A1>
+   std::vector<T, A0> named_invoke( std::vector<T, A0> lhs, append_t, std::vector<T, A1> const& rhs
+) {
+       lhs.insert( lhs.end(), rhs.begin(), rhs.end() );
+       return std::move(lhs);
+   }
+}
+using my_ns::append;
+std::vector<int> a {1,2,3};
+std::vector<int> b {4,5,6};
+auto c = a *append* b;
+The core here is that we define an append object of type append_t:named_operator::make_operator<append_t>.
+We then overload named_invoke( lhs, append_t, rhs ) for the types we want on the right and left.
+The library overloads lhs*append_t, returning a temporary half_apply object. It also overloads half_apply*rhs to

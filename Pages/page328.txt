@@ -1,0 +1,5 @@
+﻿     auto array = make_array<20>(std::string("value"));
+     std ::copy(array.begin(), array.end(),
+               std::ostream_iterator<std::string>(std::cout, " "));
+     std ::cout << "\n";
+}

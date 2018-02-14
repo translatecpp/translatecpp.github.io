@@ -1,0 +1,40 @@
+﻿Section 85.1: Mutex Types
+C++1x offers a selection of mutex classes:
+    • std::mutex - offers simple locking functionality.
+    • std::timed_mutex - offers try_to_lock functionality
+    • std::recursive_mutex - allows recursive locking by the same thread.
+    • std::shared_mutex, std::shared_timed_mutex - offers shared and unique lock functionality.
+Section 85.2: std::lock
+std:: lock uses deadlock avoidance algorithms to lock one or more mutexes. If an exception is thrown during a call
+to lock multiple objects, std::lock unlocks the successfully locked objects before re-throwing the exception.
+std::lock(_mutex1, _mutex2);
+Section 85.3: std::unique_lock, std::shared_lock,
+std::lock_guard
+Used for the RAII style acquiring of try locks, timed try locks and recursive locks.
+std ::unique_lock allows for exclusive ownership of mutexes.
+std ::shared_lock allows for shared ownership of mutexes. Several threads can hold std ::shared_locks on a
+std ::shared_mutex. Available from C++ 14.
+std::lock_guard is a lightweight alternative to std::unique_lock and std::shared_lock.
+#include <unordered_map>
+#include <mutex>
+#include <shared_mutex>
+#include <thread>
+#include <string>
+#include <iostream>
+class PhoneBook {
+public:
+     std::string getPhoneNo( const std::string & name )
+     {
+         std::shared_lock<std::shared_timed_mutex> l(_protect);
+         auto it = _phonebook.find( name );
+         if ( it != _phonebook.end() )
+         return (*it).second;
+         return "";
+     }
+     void addPhoneNo ( const std::string & name, const std::string & phone )
+     {
+         std::unique_lock<std::shared_timed_mutex> l(_protect);
+         _phonebook[name] = phone;
+     }
+     std::shared_timed_mutex _protect;
+     std::unordered_map<std::string,std ::string> _phonebook;

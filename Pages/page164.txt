@@ -1,0 +1,48 @@
+﻿#include <cassert>
+#include <memory>
+int main()
+{
+     {
+          std::weak_ptr<int> wk;
+          std::shared_ptr<int> sp;
+          {
+              std::shared_ptr<int> sh = std::make_shared<int>(42);
+              wk = sh;
+              // calling lock will create a shared_ptr to the object referenced by wk
+              sp = wk.lock();
+              // sh will be destroyed after this point, but sp is still alive
+          }
+          // sp still keeps the data alive.
+          // At this point we could even call lock() again
+          // to retrieve another shared_ptr to the same data from wk
+          assert(*sp == 42);
+          assert(!wk.expired());
+          // resetting sp will delete the data,
+          // as it is currently the last shared_ptr with ownership
+          sp.reset();
+          // attempting to lock wk now will return an empty shared_ptr,
+          // as the data has already been deleted
+          sp = wk.lock();
+          assert(!sp);
+          assert(wk.expired());
+      }
+}
+Section 34.4: Using custom deleters to create a wrapper to a
+C interface
+Many C interfaces such as SDL2 have their own deletion functions. This means that you cannot use smart pointers
+directly:
+std::unique_ptr<SDL_Surface> a; // won't work, UNSAFE!
+Instead, you need to define your own deleter. The examples here use the SDL Surface structure which should be
+freed using the SDL FreeSurface() function, but they should be adaptable to many other C interfaces.
+The deleter must be callable with a pointer argument, and therefore can be e.g. a simple function pointer:
+std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)> a(pointer, SDL_FreeSurface);
+Any other callable object will work, too, for example a class with an operator():
+struct SurfaceDeleter {
+     void operator()(SDL_Surface* surf) {
+         SDL_FreeSurface(surf);
+     }
+};
+std::unique_ptr<SDL_Surface, SurfaceDeleter> a(pointer, SurfaceDeleter{}); // safe
+std::unique_ptr<SDL_Surface, SurfaceDeleter> b(pointer); // equivalent to the above
+                                                          // as the deleter is value-initialized
+This not only provides you with safe, zero overhead (if you use unique ptr) automatic memory management, you

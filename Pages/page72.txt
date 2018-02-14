@@ -1,0 +1,33 @@
+﻿double f;
+std::istringstream("0x1P-1022") >> std::hexfloat >> f;
+std::cout << "Parsing 0x1P-1022 as hex gives " << f << '\n';
+// Output: Parsing 0x1P-1022 as hex gives 0
+std::showpoint and std::noshowpoint - control whether decimal point is always included in floating-point
+representation. Have no effect on input streams.
+std::cout << "7.0 with showpoint: " << std::showpoint << 7.0 << '\n'
+           << "7.0 with noshowpoint: " << std::noshowpoint << 7.0 << '\n';
+// Output: 1.0 with showpoint: 7.00000
+// 1.0 with noshowpoint: 7
+Default is std ::showpoint.
+std::showpos. and std::noshowpos. - control displaying of the + sign in non-negative output. Have no effect on input
+streams.
+std::cout << "With showpos: " << std::showpos
+            << 0 << ' ' << -2.718 << ' ' << 17 << '\n'
+            << "Without showpos: " << std::noshowpos
+            << 0 << ' ' << -2.718 << ' ' << 17 << '\n';
+// Output: With showpos: +0 -2.718 +17
+// Without showpos: 0 -2.718 17
+Default if std ::noshowpos.
+std:: unitbuf, std:: nounitbuf - control flushing output stream after every operation. Have no effect on input
+stream. std ::unitbuf causes flushing.
+std::setbase(base) - sets the numeric base of the stream.
+std ::setbase(8) equals to setting std ::ios_base ::basefield to std :: ios_base ::oct,
+std::setbase(16) - to std::ios_base::hex,
+std::setbase(10) - to std::ios_base::dec.
+If base is other then 8, 10 or 16 then std::ios_base::basefield is setting to std::ios_base::fmtflags(0). It
+means decimal output and prefix-dependent input.
+As default std ::ios_base ::basefield is std ::ios_base ::dec then by default std ::setbase(10).
+std::setprecision(n). - changes floating-point precision.
+#include <cmath>
+#include <limits>
+typedef std::numeric_limits<long double> ld;

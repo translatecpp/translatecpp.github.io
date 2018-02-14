@@ -1,0 +1,36 @@
+﻿template<class T>
+using dot_foo_r = decltype(std::declval<T&>().foo());
+template<class T>
+using can_dot_foo = can_apply< dot_foo_r, T >;      // Is T.foo() well formed for T?
+which seems simpler than the original versions.
+There are post-C++17 proposals for std traits similar to can_apply.
+The utility of void_t was discovered by Walter Brown. He gave a wonderful presentation on it at CppCon 2016.
+Section 103.3: enable_if
+std ::enable_if is a convenient utility to use boolean conditions to trigger SFINAE. It is defined as:
+template <bool Cond, typename Result=void>
+struct enable_if { };
+template <typename Result>
+struct enable_if<true, Result> {
+using type = Result;
+};
+That is, enable_if<true, R> ::type is an alias for R, whereas enable_if<false, T> ::type is ill-formed as that
+specialization of enable_if does not have a type member type.
+std ::enable_if can be used to constrain templates:
+int negate(int i) { return -i; }
+template <class F>
+auto negate(F f) { return -f(); }
+Here, a call to negate(1) would fail due to ambiguity. But the second overload is not intended to be used for
+integral types, so we can add:
+int negate(int i) { return -i; }
+template <class F, class = typename std::enable_if<!std::is_arithmetic<F>::value>::type>
+auto negate(F f) { return -f(); }
+Now, instantiating negate<int> would result in a substitution failure since ! std ::is_arithmetic<int> ::value is
+false. Due to SFINAE, this is not a hard error, this candidate is simply removed from the overload set. As a result,
+negate(1) only has one single viable candidate - which is then called.
+When to use it
+It's worth keeping in mind that std ::enable_if is a helper on top of SFINAE, but it's not what makes SFINAE work in
+the first place. Let's consider these two alternatives for implementing functionality similar to std ::size, i.e. an
+overload set size(arg) that produces the size of a container or array:
+// for containers
+template<typename Cont>
+auto size1(Cont const& cont) -> decltype( cont.size() );

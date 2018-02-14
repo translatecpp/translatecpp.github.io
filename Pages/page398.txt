@@ -1,0 +1,33 @@
+﻿initialize an object, and which can be implicitly moved from. These include, but are not limited to:
+    •  Expressions that represent temporary objects, such as std ::string( "123").
+    •  A function call expression that does not return a reference
+    •  A literal (except a string literal - those are lvalues), such has 1, true, 0.5f, or 'a'
+    •  A lambda expression
+The built-in addressof operator (&) cannot be applied on these expressions.
+Section 74.5: lvalue
+An lvalue expression is an expression which has identity, but cannot be implicitly moved from. Among these are
+expressions that consist of a variable name, function name, expressions that are built-in dereference operator uses
+and expressions that refer to lvalue references.
+The typical lvalue is simply a name, but lvalues can come in other flavors as well:
+struct X { ... };
+X x;          // x is an lvalue
+X* px = &x;   // px is an lvalue
+*px = X{};    // *px is also an lvalue, X{} is a prvalue
+X* foo_ptr(); // foo_ptr() is a prvalue
+X& foo_ref(); // foo_ref() is an lvalue
+Additionally, while most literals (e.g. 4, 'x', etc.) are prvalues, string literals are lvalues.
+Section 74.6: glvalue
+A glvalue (a "generalized lvalue") expression is any expression which has identity, regardless of whether it can be
+moved from or not. This category includes lvalues (expressions that have identity but can't be moved from) and
+xvalues (expressions that have identity, and can be moved from), but excludes prvalues (expressions without
+identity).
+If an expression has a name, it's a glvalue:
+struct X { int n; };
+X foo();
+X x;
+x; // has a name, so it's a glvalue
+std::move(x); // has a name (we're moving from "x"), so it's a glvalue
+                // can be moved from, so it's an xvalue not an lvalue
+foo(); // has no name, so is a prvalue, not a glvalue
+X{};  // temporary has no name, so is a prvalue, not a glvalue
+X{}.n; // HAS a name, so is a glvalue. can be moved from, so it's an xvalue

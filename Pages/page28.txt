@@ -1,0 +1,30 @@
+﻿Bit fields tightly pack C and C++ structures to reduce size. This appears painless: specify the number of bits for
+members, and compiler does the work of co-mingling bits. The restriction is inability to take the address of a bit
+field member, since it is stored co-mingled. sizeof() is also disallowed.
+The cost of bit fields is slower access, as memory must be retrieved and bitwise operations applied to extract or
+modify member values. These operations also add to executable size.
+Section 8.1: Declaration and Usage
+struct FileAttributes
+{
+    unsigned int Readonly: 1;
+    unsigned int Hidden: 1;
+};
+Here, each of these two fields will occupy 1 bit in memory. It is specified by : 1 expression after the variable names.
+Base type of bit field could be any integral type (8-bit int to 64-bit int). Using unsigned type is recommended,
+otherwise surprises may come.
+If more bits are required, replace "1" with number of bits required. For example:
+struct Date
+{
+     unsigned   int  Year : 13; // 2A13 = 8192, enough for "year" representation for  long time
+     unsigned   int  Month: 4; //  2A4 = 16, enough to represent 1-12 month values.
+     unsigned   int  Day: 5;   //  32
+};
+The whole structure is using just 22 bits, and with normal compiler settings, sizeof this structure would be 4 bytes.
+Usage is pretty simple. Just declare the variable, and use it like ordinary structure.
+Date d;
+d.Year = 2016;
+d.Month = 7;
+d.Day =   22;
+std::cout << "Year:" << d.Year << std::endl <<
+          "Month:" << d.Month << std::endl <<
+          "Day:" << d.Day << std::endl;

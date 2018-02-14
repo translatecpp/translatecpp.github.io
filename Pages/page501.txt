@@ -1,0 +1,12 @@
+﻿for (auto pair : Map)              //
+for (const auto pair : Map)        //
+for  (const auto&  pair : Map)     //
+for  (auto i =  0; i < 1000; ++i)
+for  (auto i =  0; i < Map.size(); ++i)
+for  (auto i =  Map.size(); i > 0; --i)
+pair = std::pair<int, std::string>
+pair = const std::pair<int, std::string>
+pair = const std::pair<int, std::string>&
+//    i = int
+// Note that i = int and not size_t
+//    i = size_t

@@ -1,0 +1,52 @@
+﻿std::for_each(std::begin(v), std::end(v), [](int const& value) {
+     std::cout << value << "\n";
+});
+Version < C++11
+// Using a for loop with iterator
+for(std::vector<int>::iterator it = std::begin(v); it != std::end(v); ++it) {
+     std::cout << *it << "\n";
+}
+// Using a for loop with index
+for(std::size_t i = 0; i < v.size(); ++i) {
+std::cout << v[i] << "\n";
+}
+Iterating in the Reverse Direction
+Version > C++14
+// There is no standard way to use range based for for this.
+// See below for alternatives.
+// Using for_each algorithm
+// Note: Using a lambda for clarity. But a function or functor will work
+std::for_each(std::rbegin(v), std::rend(v), [](auto const& value) {
+std::cout << value << "\n";
+});
+// Using a for loop with iterator
+for(auto rit = std::rbegin(v); rit != std::rend(v); ++rit) {
+     std::cout << *rit << "\n";
+}
+// Using a for loop with index
+for(std::size_t i = 0; i < v.size(); ++i) {
+std::cout << v[v.size() - 1 - i] << "\n";
+}
+Though there is no built-in way to use the range based for to reverse iterate; it is relatively simple to fix this. The
+range based for uses begin() and end() to get iterators and thus simulating this with a wrapper object can achieve
+the results we require.
+Version > C++14
+template<class C>
+struct ReverseRange {
+   C c; // could be a reference or a copy, if the original was a temporary
+   ReverseRange(C&& cin): c(std::forward<C>(cin)) {}
+   ReverseRange(ReverseRange&&)=default;
+   ReverseRange& operator=(ReverseRange&&)=delete;
+   auto begin() const {return std::rbegin(c);}
+   auto end() const {return std::rend(c);}
+};
+// C is meant to be deduced, and perfect forwarded into
+template<class C>
+ReverseRange<C> make_ReverseRange(C&& c) {return {std::forward<C>(c)};}
+int main() {
+     std::vector<int> v { 1,2,3,4};
+     for(auto const& value: make_ReverseRange(v)) {
+     std::cout << value << "\n";
+     }
+}
+Enforcing const elements

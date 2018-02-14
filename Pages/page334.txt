@@ -1,0 +1,37 @@
+﻿Section 63.5: std::min element
+template <class ForwardIterator>
+ForwardIterator min_element (ForwardIterator first, ForwardIterator last);
+template <class ForwardIterator, class Compare>
+ForwardIterator min_element (ForwardIterator first, ForwardIterator last,Compare comp);
+Effects
+Finds the minimum element in a range
+Parameters
+first - iterator pointing to the beginning of the range
+last - iterator pointing to the end of the range comp - a function pointer or function object that takes two
+arguments and returns true or false indicating whether argument is less than argument 2. This function should not
+modify inputs
+Return
+Iterator to the minimum element in the range
+Complexity
+Linear in one less than the number of elements compared.
+Example
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <utility> //to use make_pair
+using namespace std;
+//function compare two pairs
+bool pairLessThanFunction(const pair<string, int> &p1, const pair<string, int> &p2)
+{
+   return p1.second < p2.second;
+}
+int main(int argc, const char * argv[]) {
+   vector<int> intVec {30,200,167,56,75,94,10,73,52,6,39,43};
+   vector<pair<string, int>> pairVector = {make_pair("y", 25), make_pair(MbM, 2), make_pair("z",
+26), make_pair("e", 5) };
+   // default using < operator
+   auto minInt = min_element(intVec.begin(), intVec.end());
+   //Using pairLessThanFunction
+   auto minPairFunction = min_element(pairVector.begin(), pairVector.end(), pairLessThanFunction);
+   //print minimum of intVector
+   cout << "min int from default: " << *minInt << endl;

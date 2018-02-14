@@ -1,0 +1,34 @@
+﻿          std::cout << arg << std::endl;
+};
+and then
+lambda print;
+print(42);
+print("hello world");
+Section 108.3: auto and proxy objects
+Sometimes auto may behave not quite as was expected by a programmer. It type deduces the expression, even
+when type deduction is not the right thing to do.
+As an example, when proxy objects are used in the code:
+std::vector<bool> flags{true, true, false};
+auto flag = flags[0];
+flags.push_back(true);
+Here flag would be not bool, but std ::vector<bool>:: reference, since for bool specialization of template vector
+the operator [ ] returns a proxy object with conversion operator operator bool defined.
+When flags.push_back(true) modifies the container, this pseudo-reference could end up dangling, referring to an
+element that no longer exists.
+It also makes the next situation possible:
+void foo(bool b);
+std::vector<bool> getFlags();
+auto flag = getFlags()[5];
+foo(flag);
+The vector is discarded immediately, so flag is a pseudo-reference to an element that has been discarded. The call
+to foo invokes undefined behavior.
+In cases like this you can declare a variable with auto and initialize it by casting to the type you want to be deduced:
+auto flag = static_cast<bool>(getFlags()[5]);
+but at that point, simply replacing auto with bool makes more sense.
+Another case where proxy objects can cause problems is expression templates. In that case, the templates are
+sometimes not designed to last beyond the current full-expression for efficiency sake, and using the proxy object
+on the next causes undefined behavior.
+Section 108.4: auto and Expression Templates
+auto can also cause problems where expression templates come into play:
+auto mult(int c) {
+     return c * std::valarray<int>{1};

@@ -1,0 +1,39 @@
+﻿allow you to append a vector to itself.
+If the order of the elements in the receiving vector doesn't matter, considering the number of elements in each
+vector can avoid unnecessary copy operations:
+if (b.size() < a.size())
+   a.    insert(a.end(), b.begin(), b.end());
+else
+   b.  insert(b.end(), a.begin(), a.end());
+Section 50.10: Matrices Using Vectors
+Vectors can be used as a 2D matrix by defining them as a vector of vectors.
+A matrix with 3 rows and 4 columns with each cell initialised as 0 can be defined as:
+std::vector<std::vector<int> > matrix(3, std::vector<int>(4));
+Version > C++11
+The syntax for initializing them using initialiser lists or otherwise are similar to that of a normal vector.
+   std::vector<std::vector<int>> matrix = { {0,1,2,3},
+                                                       {4,5,6,7},
+                                                      {8,9,10,11}
+                                              };
+Values in such a vector can be accessed similar to a 2D array
+int var = matrix[0][2];
+Iterating over the entire matrix is similar to that of a normal vector but with an extra dimension.
+for(int i = 0; i < 3; ++i)
+{
+      for(int j = 0; j < 4; ++j)
+      {
+          std::cout << matrix[i][j] << std::endl;
+      }
+}
+Version > C++11
+for(auto& row: matrix)
+{
+      for(auto& col : row)
+      {
+          std::cout << col << std::endl;
+      }
+}
+A vector of vectors is a convenient way to represent a matrix but it's not the most efficient: individual vectors are
+scattered around memory and the data structure isn't cache friendly.
+Also, in a proper matrix, the length of every row must be the same (this isn't the case for a vector of vectors). The
+additional flexibility can be a source of errors.

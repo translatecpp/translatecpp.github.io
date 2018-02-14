@@ -1,0 +1,38 @@
+﻿Section 45.6: Unnamed/anonymous namespaces
+An unnamed namespace can be used to ensure names have internal linkage (can only be referred to by the current
+translation unit). Such a namespace is defined in the same way as any other namespace, but without the name:
+namespace {
+     int foo = 42;
+}
+foo is only visible in the translation unit in which it appears.
+It is recommended to never use unnamed namespaces in header files as this gives a version of the content for
+every translation unit it is included in. This is especially important if you define non-const globals.
+// foo.h
+namespace {
+     std::string globalString;
+}
+// 1.cpp
+#include "foo.h" //< Generates unnamed_namespace{1.cpp}::globalString ...
+globalString = "Initialize";
+// 2.cpp
+#include "foo.h" //< Generates unnamed_namespace{2.cpp}::globalString ...
+std::cout << globalString; //< Will always print the empty string
+Section 45.7: Compact nested namespaces
+Version > C++17
+namespace a {
+   namespace b {
+     template<class T>
+     struct qualifies : std::false_type {};
+   }
+}
+                                             namespace other {
+                                             struct bob {};
+}
+namespace a::b {
+   template<>
+   struct qualifies<::other::bob> : std::true_type {};
+}
+You can enter both the a and b namespaces in one step with namespace a::b starting in C++17.
+Section 45.8: Namespace alias
+A namespace can be given an alias (i.e., another name for the same namespace) using the namespace identifier =
+syntax. Members of the aliased namespace can be accessed by qualifying them with the name of the alias. In the

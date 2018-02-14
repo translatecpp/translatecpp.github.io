@@ -1,0 +1,5 @@
+﻿function would be called. The overhead of calling a function -- such as creating a new stack frame, copying
+arguments, making local variables, jump (losing locality of reference and there by cache misses), etc. -- has to be
+incurred.
+Section 40.4: Non-member inline function declaration
+inline int add(int x, int y);

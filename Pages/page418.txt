@@ -1,0 +1,38 @@
+﻿In this case, the real type of t will be deduced depending on the context:
+struct X { };
+X x;
+f(x); // calls f<X&>(x)
+f(X()); // calls f<X>(x)
+In the first case, the type T is deduced as reference to X (X&), and the type of t is lvalue reference to X, while in the
+second case the type of T is deduced as X and the type of t as rvalue reference to X (X&&).
+Note: It is worth noticing that in the first case, decltype(t) is the same as T, but not in the second.
+In order to perfectly forward t to another function ,whether it is an lvalue or rvalue reference, one must use
+std ::forward:
+template <typename T>
+void f(T &&t) {
+     g(std::forward<T>(t));
+}
+Forwarding references may be used with variadic templates:
+template <typename... Args>
+void f(Args&&... args) {
+     g(std::forward<Args>(args)...);
+}
+Note: Forwarding references can only be used for template parameters, for instance, in the following code, v is a
+rvalue reference, not a forwarding reference:
+#include <vector>
+template <typename T>
+void f(std::vector<T> &&v);
+Section 77.5: Partial template specialization
+In contrast of a full template specialization partial template specialization allows to introduce template with some of
+the arguments of existing template fixed. Partial template specialization is only available for template class/structs:
+// Common case:
+template<typename T, typename U>
+struct S {
+     T t_val;
+     U u_val;
+};
+// Special case when the first template argument is fixed to int
+template<typename V>
+struct S<int, V> {
+     double another_value;
+     int foo(double arg) {// Do something}

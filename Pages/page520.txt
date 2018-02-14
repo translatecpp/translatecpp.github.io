@@ -1,0 +1,15 @@
+﻿Eventually some helpers:
+template<bool... Bs>
+using enable_if_any_t = typename enable_if_any<Bs...>::type;
+template<bool... Bs>
+using enable_if_all_t = typename enable_if_all<Bs...>::type;
+Usage
+The usage is also straight-forward:
+     /// SFINAE constraints on all of the parameters in Args.
+     template<typename ...Args,
+              enable_if_all_t<custom_conditions_v<Args>...>* = nullptr>
+     void func(Args &&...args) { //... };
+     /// SFINAE constraints on any of the parameters in Args.
+     template<typename ...Args,
+              enable_if_any_t<custom_conditions_v<Args>...>* = nullptr>
+     void func(Args &&...args) { //... };

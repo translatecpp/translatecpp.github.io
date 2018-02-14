@@ -1,0 +1,37 @@
+﻿Chapter 103: SFINAE (Substitution Failure Is
+Not An Error)
+Section 103.1: What is SFINAE
+SFINAE stands for Substitution Failure Is Not An Error. Ill-formed code that results from substituting types (or
+values) to instantiate a function template or a class template is not a hard compile error, it is only treated as a
+deduction failure.
+Deduction failures on instantiating function templates or class template specializations remove that candidate from
+the set of consideration - as if that failed candidate did not exist to begin with.
+template <class T>
+auto begin(T& c) -> decltype(c.begin()) { return c.begin(); }
+template <class T, size_t N>
+T* begin(T (&arr)[N]) { return arr; }
+int vals[10];
+begin(vals); // OK. The first function template substitution fails because
+             // vals.begin() is ill-formed. This is not an error! That function
+             // is just removed from consideration as a viable overload candidate,
+             // leaving us with the array overload.
+Only substitution failures in the immediate context are considered deduction failures, all others are considered
+hard errors.
+template <class T>
+void add_one(T& val) { val += 1; }
+int i = 4;
+add_one(i); // ok
+std::string msg = "Hello";
+add_one(msg); // error. msg += 1 is ill-formed for std::string, but this
+              // failure is NOT in the immediate context of substituting T
+Section 103.2: void t
+Version > C++11
+void_t is a meta-function that maps any (number of) types to type void. The primary purpose of void_t is to
+facilitate writing of type traits.
+std ::void t will be part of C++17, but until then, it is extremely straightforward to implement:
+template <class...> using void_t = void;
+Some compilers require a slightly different implementation:
+template <class...>
+struct make_void { using type = void; };
+template <typename... T>
+using void_t = typename make_void<T...>::type;

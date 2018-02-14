@@ -1,0 +1,39 @@
+﻿See also separate topic on Overload Resolution
+Section 36.1: What is Function Overloading?
+Function overloading is having multiple functions declared in the same scope with the exact same name exist in the
+same place (known as scope) differing only in their signature, meaning the arguments they accept.
+Suppose you are writing a series of functions for generalized printing capabilities, beginning with std ::string:
+void print(const std::string &str)
+{
+     std::cout << "This is a string: " << str << std::endl;
+}
+This works fine, but suppose you want a function that also accepts an int and prints that too. You could write:
+void print_int(int num)
+{
+     std::cout << "This is an int: " << num << std::endl;
+}
+But because the two functions accept different parameters, you can simply write:
+void print(int num)
+{
+     std::cout << "This is an int: " << num << std::endl;
+}
+Now you have 2 functions, both named print, but with different signatures. One accepts std::string, the other
+one an int. Now you can call them without worrying about different names:
+print("Hello world!"); //prints "This is a string: Hello world!"
+print(1337);         //prints "This is an int: 1337"
+Instead of:
+print("Hello world!");
+print_int(1337);
+When you have overloaded functions, the compiler infers which of the functions to call from the parameters you
+provide it. Care must be taken when writing function overloads. For example, with implicit type conversions:
+void print(int num)
+{
+      std::cout << "This is an int: "
+}
+void print(double num)
+{
+      std::cout << "This is a double:
+}
+<< num << std ::endl;
+<< num << std ::endl;
+Now it's not immediately clear which overload of print is called when you write:

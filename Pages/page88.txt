@@ -1,0 +1,43 @@
+﻿limits recursion depeth to 256 levels. In case of g++, programmer can set recursion depth using -ftemplate-depth-
+X option.
+Version > C++11
+Since C++11, the std ::integral_constant template can be used for this kind of template computation:
+#include <iostream>
+#include <type_traits>
+template<long long n>
+struct factorial :
+   std::integral_constant<long long, n * factorial<n - 1>::value> {};
+template<>
+struct factorial<0> :
+   std::integral_constant<long long, 1> {};
+int main()
+{
+     std::cout << factorial<7>::value << std::endl; // prints "5040"
+}
+Additionally, constexpr functions become a cleaner alternative.
+#include <iostream>
+constexpr long long factorial(long long n)
+{
+   return (n == 0) ? 1 : n * factorial(n - 1);
+}
+int main()
+{
+   char test[factorial(3)];
+   std::cout << factorial(7) << '\n';
+}
+The body of factorial() is written as a single statement because in C++11 constexpr functions can only use a
+quite limited subset of the language.
+Version > C++14
+Since C++14, many restrictions for constexpr functions have been dropped and they can now be written much
+more conveniently:
+constexpr long long factorial(long long n)
+{
+   if (n == 0)
+return 1 ;
+else
+      return n * factorial(n - 1);
+}
+Or even:
+constexpr long long factorial(int n)
+{
+   long long result = 1;

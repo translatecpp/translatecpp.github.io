@@ -1,0 +1,42 @@
+﻿In some cases, we can provide a pointer to an existing object or nullptr to indicate failure. But this is limited to
+those cases where objects already exist - optional, as a value type, can also be used to return new objects without
+resorting to memory allocation.
+Optional vs Sentinel
+A common idiom is to use a special value to indicate that the value is meaningless. This may be 0 or -1 for integral
+types, or nullptr for pointers. However, this reduces the space of valid values (you cannot differentiate between a
+valid 0 and a meaningless 0) and many types do not have a natural choice for the sentinel value.
+Optional vs std::pair<bool, T>
+Another common idiom is to provide a pair, where one of the elements is a bool indicating whether or not the
+value is meaningful.
+This relies upon the value type being default-constructible in the case of error, which is not possible for some types
+and possible but undesirable for others. An optional<T>, in the case of error, does not need to construct anything.
+Section 52.5: Using optionals to represent the failure of a
+function
+Before C++17, a function typically represented failure in one of several ways:
+    •  A null pointer was returned.
+          ° e.g. Calling a function Delegate *App::get_delegate() on an App instance that did not have a
+            delegate would return nullptr.
+          ° This is a good solution for objects that have been dynamically allocated or are large and managed by
+            pointers, but isn't a good solution for small objects that are typically stack-allocated and passed by
+            copying.
+    •  A specific value of the return type was reserved to indicate failure.
+          ° e.g. Calling a function unsigned shortest_path_distance(Vertex a, Vertex b) on two vertices that
+            are not connected may return zero to indicate this fact.
+    •  The value was paired together with a bool to indicate is the returned value was meaningful.
+          ° e.g. Calling a function std::pair<int, bool> parse(const std::string &str) with a string
+            argument that is not an integer would return a pair with an undefined int and a bool set to false.
+In this example, John is given two pets, Fluffy and Furball. The function Person ::pet_with_name() is then called to
+retrieve John's pet Whiskers. Since John does not have a pet named Whiskers, the function fails and std ::nullopt is
+returned instead.
+#include <iostream>
+#include <optional>
+#include <string>
+#include <vector>
+struct Animal {
+     std::string name;
+};
+struct Person {
+     std ::string name;
+     std::vector<Animal> pets;
+     std::optional<Animal> pet_with_name(const std::string &name) {
+          for (const Animal &pet : pets) {

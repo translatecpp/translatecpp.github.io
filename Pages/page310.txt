@@ -1,0 +1,110 @@
+﻿Section 56.1: atomic types
+Each instantiation and full specialization of the std ::atomic template defines an atomic type. If one thread writes
+to an atomic object while another thread reads from it, the behavior is well-defined (see memory model for details
+on data races)
+In addition, accesses to atomic objects may establish inter-thread synchronization and order non-atomic memory
+accesses as specified by std ::memory_order.
+std::atomic may be instantiated with any TriviallyCopyable type T. std::atomic is neither copyable nor
+movable.
+The standard library provides specializations of the std::atomic template for the following types:
+    1. One full specialization for the type bool and its typedef name is defined that is treated as a non-specialized
+       std ::atomic<T> except that it has standard layout, trivial default constructor, trivial destructors, and
+       supports aggregate initialization syntax:
+  Typedef name Full specialization
+std::atomic_boolstd ::atomic<bool>
+2)Full specializations and typedefs for integral types, as follows:
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+std
+   Typedef name
+:atomic_char           std
+:atomic_char           std
+:atomic_schar          std
+:atomic_uchar          std
+:atomic_short          std
+:atomic_ushort         std
+:atomic_int            std
+:atomic_uint           std
+:atomic_long           std
+:atomic_ulong          std
+:atomic_llong          std
+:atomic_ullong         std
+:atomic_char16_t       std
+:atomic_char32_t       std
+:atomic_wchar_t        std
+:atomic_int8_t         std
+:atomic_uint8_t        std
+:atomic_int16_t        std
+:atomic_uint16_t       std
+:atomic_int32_t        std
+:atomic_uint32_t       std
+:atomic_int64_t        std
+:atomic_uint64_t       std
+:atomic_int_least8_t std
+:atomic_uint_least8_t std
+:atomic_int_least16_t std
+:atomic_uint_least16_t std
+:atomic_int_least32_t std
+:atomic_uint_least32_t std
+:atomic_int_least64_t std
+:atomic_uint_least64_t std
+    Full specialization
+:atomic<char>
+:atomic<char>
+:atomic<signed char>
+:atomic<unsigned char>
+:atomic<short>
+:atomic<unsigned short>
+:atomic<int>
+:atomic<unsigned int>
+:atomic<long>
+:atomic<unsigned long>
+:atomic<long long>
+:atomic<unsigned long long>
+:atomic<char16_t>
+:atomic<char32_t>
+:atomic<wchar_t>
+:atomic<std::int8_t>
+:atomic<std::uint8_t>
+:atomic<std::int16_t>
+:atomic<std::uint16_t>
+:atomic<std::int32_t>
+:atomic<std::uint32_t>
+:atomic<std::int64_t>
+:atomic<std::uint64_t>
+:atomic<std::int_least8_t>
+:atomic<std::uint_least8_t>
+:atomic<std::int_least16_t>
+:atomic<std::uint_least16_t>
+:atomic<std::int_least32_t>
+:atomic<std::uint_least32_t>
+:atomic<std::int_least64_t>
+:atomic<std::uint_least64_t>

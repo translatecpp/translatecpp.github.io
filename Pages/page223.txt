@@ -1,0 +1,43 @@
+﻿Chapter 41: Special Member Functions
+Section 41.1: Default Constructor
+A default constructor is a type of constructor that requires no parameters when called. It is named after the type it
+constructs and is a member function of it (as all constructors are).
+class C{
+int i;
+public:
+     // the default constructor definition
+     C()
+     : i(0){ // member initializer list -- initialize i to 0
+         // constructor function body -- can do more complex things here
+     }
+};
+C c1 ; // calls default constructor of C to create object c1
+C c2 = C(); // calls default constructor explicitly
+C c3(); // ERROR: this intuitive version is not possible due to "most vexing parse"
+C c4{}; // but in C++11 {} CAN be used in a similar way
+C c5[2]; // calls default constructor for both array elements
+C* c6 = new C[2]; // calls default constructor for both array elements
+Another way to satisfy the "no parameters" requirement is for the developer to provide default values for all
+parameters:
+class D{
+int i;
+int j;
+public:
+     // also a default constructor (can be called with no parameters)
+     D( int i = 0, int j = 42 )
+     : i(i), j(j){
+     }
+};
+D d; // calls constructor of D with the provided default values for the parameters
+Under some circumstances (i.e., the developer provides no constructors and there are no other disqualifying
+conditions), the compiler implicitly provides an empty default constructor:
+class C{
+      std::string s; // note: members need to be default constructible themselves
+};
+C c1 ; // will succeed -- C has an implicitly defined default constructor
+Having some other type of constructor is one of the disqualifying conditions mentioned earlier:
+class C{
+int i;
+public:
+      C( int i ) : i(i){}
+};

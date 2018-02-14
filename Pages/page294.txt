@@ -1,0 +1,42 @@
+﻿while (it != m.end())
+{
+    if (pred(*it))
+        it = m.erase(it);
+    else
+        ++it;
+}
+Section 51.8: Iterating over std::map or std::multimap
+std ::map or std ::multimap could be traversed by the following ways:
+std::multimap< int , int > mmp{ {1, 2}, {3, 4}, {6, 5}, {8, 9}, {3, 4}, {6, 7} };
+//Range based loop - since C++11
+for(const auto &x: mmp)
+     std::cout<< x.first <<":"<< x.second << std::endl;
+//Forward iterator for loop: it would loop through first element to last element
+//it will be a std::map< int, int >::iterator
+for (auto it = mmp.begin(); it != mmp.end(); ++it)
+std::cout<< it->first <<":"<< it->second << std::endl; //Do something with iterator
+//Backward iterator for loop: it would loop through last element to first element
+//it will be a std::map< int, int >::reverse_iterator
+for (auto it = mmp.rbegin(); it != mmp.rend(); ++it)
+std::cout<< it->first <<" "<< it->second << std::endl; //Do something with iterator
+While iterating over a std ::map or a std ::multimap, the use of auto is preferred to avoid useless implicit
+conversions (see this SO answer for more details).
+Section 51.9: Creating std::map with user-defined types as key
+In order to be able to use a class as the key in a map, all that is required of the key is that it be copiable and
+assignable. The ordering within the map is defined by the third argument to the template (and the argument to
+the constructor, if used). This defaults to std:: less<KeyType>, which defaults to the < operator, but there's no
+requirement to use the defaults. Just write a comparison operator (preferably as a functional object):
+struct CmpMyType
+{
+     bool operator()( MyType const& lhs, MyType const& rhs ) const
+     {
+         // ...
+     }
+};
+In C++, the "compare" predicate must be a strict weak ordering. In particular, compare(X,X) must return false for
+any X. i.e. if CmpMyType()(a, b) returns true, then CmpMyType()(b, a) must return false, and if both return false,
+the elements are considered equal (members of the same equivalence class).
+Strict Weak Ordering
+This is a mathematical term to define a relationship between two objects.
+Its definition is:
+      Two objects x and y are equivalent if both f(x, y) and f(y, x) are false. Note that an object is always (by the

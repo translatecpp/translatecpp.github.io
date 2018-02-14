@@ -1,0 +1,46 @@
+﻿Return
+An iterator that points to the first element within the range that is equal(==) to val, the iterator points to last if val is
+not found.
+Example
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+int main(int argc, const
+  //create a vector
+  vector<int> intVec {4,
+  //define iterators
+  vector<int>::iterator
+  vector<int>::iterator
+  vector<int>::iterator
+char * argv[]) {
+6, 8, 9, 10, 30, 55,100,
+itr_9;
+itr_43;
+itr_50;
+45, 2, 4, 7, 9, 43, 48};
+   //calling find
+   itr_9 = find(intVec.begin(), intVec.end(), 9); //occurs twice
+   itr_43 = find(intVec.begin(), intVec.end(), 43); //occurs once
+   //a value not in the vector
+   itr_50 = find(intVec.begin(), intVec.end(), 50); //does not occur
+   cout << "first occurence of: " << *itr_9 << endl;
+   cout << "only occurence of: " << *itr_43 << Lendl;
+   /*
+     let's prove that itr_9 is pointing to the first occurence
+     of 9 by looking at the element after 9, which should be 10
+     not 43
+   */
+   cout << "element after first 9: " << *(itr_9 + 1) << ends;
+   /*
+     to avoid dereferencing intVec.end(), lets look at the
+     element right before the end
+   */
+   cout << "last element: " << *(itr_50 - 1) << endl;
+   return 0;
+}
+Output
+first occurence of: 9
+only occurence of: 43
+element after first 9: 10
+last element: 48

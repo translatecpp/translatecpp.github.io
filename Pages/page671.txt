@@ -1,0 +1,53 @@
+﻿Section 143.5: Small Object Optimization
+Small object optimization is a technique which is used within low level data structures, for instance the std ::string
+(Sometimes referred to as Short/Small String Optimization). It's meant to use stack space as a buffer instead of
+some allocated memory in case the content is small enough to fit within the reserved space.
+By adding extra memory overhead and extra calculations, it tries to prevent an expensive heap allocation. The
+benefits of this technique are dependent on the usage and can even hurt performance if incorrectly used.
+Example
+A very naive way of implementing a string with this optimization would the following:
+#include <cstring>
+class string final
+{
+     constexpr static auto SMALL_BUFFER_SIZE = 16;
+     bool _isAllocated{false};
+     char *_buffer{nullptr};
+     char _smallBuffer[SMALL_BUFFER_SIZE]= {'\0'};
+OPTIMIZATION
+public:
+     ~string()
+     {
+         if (_isAllocated)
+             delete [] _buffer;
+     }
+     explicit string(const char *cStyleString)
+     {
+         auto stringSize = std::strlen(cStyleString);
+         _isAllocated = (stringSize > SMALL_BUFFER_SIZE);
+         if (_isAllocated)
+             _buffer = new char[stringSize];
+         else
+             _buffer = &_smallBuffer[0];
+         std ::strcpy(_buffer, &cStyleString[0]);
+     }
+     string(string &&rhs)
+         : _isAllocated(rhs._isAllocated)
+         , _buffer(rhs._buffer)
+         , _smallBuffer(rhs._smallBuffer) //< Not needed if allocated
+     {
+         if (_isAllocated)
+         {
+             // Prevent double deletion of the memory
+             rhs._buffer = nullptr;
+         }
+         else
+         {
+             // Copy over data
+             std::strcpy(_smallBuffer, rhs._smallBuffer);
+             _buffer = &_smallBuffer[0];
+         }
+     }
+     // Other methods, including other constructors, copy constructor,
+///< Remember if we allocated memory
+///< Pointer to the buffer we are using
+///< Stack space used for SMALL OBJECT

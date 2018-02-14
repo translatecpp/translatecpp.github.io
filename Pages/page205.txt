@@ -1,0 +1,51 @@
+﻿-> complex<decay_t<decltype(a.x + b)>>
+{ return{a.x + b, a.y}; }
+//-----------------------------------------------------------------
+// operator -
+//-----------------------------------------------------------------
+template<typename left_t,typename right_t>
+auto operator - (const complex<left_t> &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a.x - b.x)>>
+{ return{a.x - b.x, a.y - b.y}; }
+template<typename left_t,typename right_t>
+auto operator - (const left_t &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a - b.x)>>
+{ return{a - b.x, - b.y}; }
+template<typename left_t,typename right_t>
+auto operator - (const complex<left_t> &a, const right_t &b)
+-> complex<decay_t<decltype(a.x - b)>>
+{ return{a.x - b, a.y}; }
+//-----------------------------------------------------------------
+// operator *
+//-----------------------------------------------------------------
+template<typename left_t, typename right_t>
+auto operator * (const complex<left_t> &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a.x * b.x)>>
+{
+     return {
+         a.x*b.x - a.y*b.y,
+         a.x*b.y + a.y*b.x
+         };
+}
+template<typename left_t, typename right_t>
+auto operator * (const left_t &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a * b.x)>>
+{ return {a * b.x, a * b.y}; }
+template<typename left_t, typename right_t>
+auto operator * (const complex<left_t> &a, const right_t &b)
+-> complex<decay_t<decltype(a.x * b)>>
+{ return {a.x * b, a.y * b}; }
+//-----------------------------------------------------------------
+// operator /
+//-----------------------------------------------------------------
+template<typename left_t, typename right_t>
+auto operator / (const complex<left_t> &a, const complex<right_t> &b)
+-> complex<decay_t<decltype(a.x / b.x)>>
+{
+     const auto r = absqr(b);
+     return {
+         ( a.x*b.x + a.y*b.y) / r,
+         (-a.x*b.y + a.y*b.x) / r
+         };
+}
+template<typename left_t, typename right_t>

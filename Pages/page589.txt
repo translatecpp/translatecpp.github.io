@@ -1,0 +1,35 @@
+﻿Section 120.1: ODR violation via overload resolution
+Even with identical tokens for inline functions, ODR can be violated if lookup of names doesn't refer to the same
+entity. let's consider func in following:
+    • header.h
+      void overloaded(int);
+      inline void func() { overloaded('*'); }
+    • foo.cpp
+      #include "header.h"
+      void foo()
+      {
+          func(); // 'overloaded' refers to 'void overloaded(int)'
+      }
+    • bar.cpp
+      void overloaded(char); // can come from other include
+      #include "header.h"
+      void bar()
+      {
+          func(); // 'overloaded' refers to 'void overloaded(char)'
+      }
+We have an ODR violation as overloaded refers to different entities depending of the translation unit.
+Section 120.2: Multiply defined function
+The most important consequence of the One Definition Rule is that non-inline functions with external linkage
+should only be defined once in a program, although they can be declared multiple times. Therefore, such functions
+should not be defined in headers, since a header can be included multiple times from different translation units.
+foo.h:
+#ifndef FOO_H
+#define FOO_H
+#include <iostream>
+void foo() { std::cout << "foo"; }
+void bar();
+#endif
+foo.cpp:
+#include "foo.h"
+void bar() { std:: cout << "bar"; }
+main.cpp:

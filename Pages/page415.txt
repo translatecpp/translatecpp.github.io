@@ -1,0 +1,43 @@
+﻿Section 77.3: Variadic template data structures
+Version > C++14
+It is often useful to define classes or structures that have a variable number and type of data members which are
+defined at compile time. The canonical example is std ::tuple, but sometimes is it is necessary to define your own
+custom structures. Here is an example that defines the structure using compounding (rather than inheritance as
+with std ::tuple. Start with the general (empty) definition, which also serves as the base-case for recrusion
+termination in the later specialisation:
+template<typename ... T>
+struct DataStructure {};
+This already allows us to define an empty structure, DataStructure<> data, albeit that isn't very useful yet.
+Next comes the recursive case specialisation:
+template<typename T, typename ... Rest>
+struct DataStructure<T, Rest ...>
+{
+      DataStructure(const T& first, const Rest& ... rest)
+          : first(first)
+          , rest(rest...)
+      {}
+      T first;
+      DataStructure<Rest ... > rest;
+};
+This is now sufficient for us to create arbitrary data structures, like DataStructure<int, float, std ::string>
+data(1, 2.1, "hello").
+So what's going on? First, note that this is a specialisation whose requirement is that at least one variadic template
+parameter (namely T above) exists, whilst not caring about the specific makeup of the pack Rest. Knowing that T
+exists allows the definition of its data member, first. The rest of the data is recursively packaged as
+DataStructure<Rest ... > rest. The constructor initiates both of those members, including a recursive
+constructor call to the rest member.
+To understand this better, we can work through an example: suppose you have a declaration DataStructure<int,
+float> data. The declaration first matches against the specialisation, yielding a structure with int first and
+DataStructure<float> rest data members. The rest definition again matches this specialisation, creating its own
+float first and DataStructure<> rest members. Finally this last rest matches against the base-case defintion,
+producing an empty structure.
+You can visualise this as follows:
+DataStructure<int, float>
+    -> int first
+    -> DataStructure<float> rest
+    -> float first
+    -> DataStructure<> rest
+    -> (empty)
+Now we have the data structure, but its not terribly useful yet as we cannot easily access the individual data
+elements (for example to access the last member of DataStructure<int, float, std::string> data we would
+have to use data. rest. rest.first, which is not exactly user-friendly). So we add a get method to it (only needed

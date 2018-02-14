@@ -1,0 +1,42 @@
+﻿{
+      // body of the loop
+}
+Explanation of the placeholder statements:
+    •  initialization statement: This statement gets executed only once, at the beginning of the for loop. You
+      can enter a declaration of multiple variables of one type, such as int i = 0, a = 2, b = 3. These variables
+      are only valid in the scope of the loop. Variables defined before the loop with the same name are hidden
+      during execution of the loop.
+    •  condition: This statement gets evaluated ahead of each loop body execution, and aborts the loop if it
+      evaluates to false.
+    •  iteration execution: This statement gets executed after the loop body, ahead of the next condition
+      evaluation, unless the for loop is aborted in the body (by break, goto, return or an exception being thrown).
+      You can enter multiple statements in the iteration execution part, such as a++, b+=10, c=b+a.
+The rough equivalent of a for loop, rewritten as a while loop is:
+/*initialization*/
+while (/*condition*/)
+{
+      // body of the loop; using 'continue' will skip to increment part below
+      /*iteration execution*/
+}
+The most common case for using a for loop is to execute statements a specific number of times. For example,
+consider the following:
+for(int i = 0; i < 10; i++) {
+      std::cout << i << std::endl;
+}
+A valid loop is also:
+for(int a = 0, b = 10, c = 20; (a+b+c < 100); c--, b++, a+=c) {
+      std::cout << a << " " << b << " " << c << std::endl;
+}
+An example of hiding declared variables before a loop is:
+int i = 99; //i = 99
+for(int i = 0; i < 10; i++) { //we declare a new variable i
+      //some operations, the value of i ranges from 0 to 9 during loop execution
+}
+//after the loop is executed, we can access i with value of 99
+But if you want to use the already declared variable and not hide it, then omit the declaration part:
+int i = 99; //i = 99
+for(i = 0; i < 10; i++) { //we are using already declared variable i
+      //some operations, the value of i ranges from 0 to 9 during loop execution
+}
+//after the loop is executed, we can access i with value of 10
+Notes:

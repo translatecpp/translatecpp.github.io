@@ -1,0 +1,37 @@
+﻿bounds checking. If pos is not within the range of the container, a runtime segmentation violation error can occur.
+The complexity is constant O(1).
+#include <array>
+int main()
+{
+     std::array<int, 3> arr;
+     // write values
+     std::get<0>(arr) = 2;
+     std::get<1>(arr) = 4;
+     std::get<2>(arr) = 6;
+// read values
+int a = std: :get<0>( arr); // a is now 2 
+int b = std: :get<1>( arr); // b is now 4 
+int c = std: :get<2>( arr); // c is now 6 
+      return 0;
+}
+4)  front()
+Returns a reference to the first element in container. Calling front() on an empty container is undefined.
+The complexity is constant O(1).
+Note: For a container c, the expression c.front() is equivalent to *c.begin().
+#include <array>
+int main()
+{
+      std::array<int, 3> arr{ 2, 4, 6 };
+      int a = arr.front(); // a is now 2
+      return 0;
+}
+5)  back()
+Returns reference to the last element in the container. Calling back() on an empty container is undefined.
+The complexity is constant O(1).
+#include <array>
+int main()
+{
+      std::array<int, 3> arr{ 2, 4, 6 };
+      int a = arr.back(); // a is now 6
+      return 0;
+}

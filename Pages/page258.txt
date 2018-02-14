@@ -1,0 +1,40 @@
+﻿into a std ::ostringstream object (with the stream insertion operator <<) and then converting the whole
+std::ostringstream to a std::string.
+For int for instance:
+#include <sstream>
+int main()
+{
+     int val = 4;
+     std::ostringstream str;
+     str << val;
+     std::string converted = str.str();
+     return 0;
+}
+Writing your own conversion function, the simple:
+template<class T>
+std::string toString(const T& x)
+{
+   std::ostringstream ss;
+   ss << x;
+   return ss.str();
+}
+works but isn't suitable for performance critical code.
+User-defined classes may implement the stream insertion operator if desired:
+std::ostream operator<<( std::ostream& out, const A& a )
+{
+     // write a string representation of a to out
+     return out;
+}
+Version > C++11
+Aside from streams, since C++11 you can also use the std ::to_string (and std ::to_wstring) function which is
+overloaded for all fundamental types and returns the string representation of its parameter.
+std::string s = to_string(0x12f3); // after this the string s contains "4851"
+Section 48.9: Splitting
+Use std::string ::substr to split a string. There are two variants of this member function.
+The first takes a starting position from which the returned substring should begin. The starting position must be
+valid in the range (0, str.length() ]:
+std::string str = "Hello foo, bar and world!";
+std::string newstr = str.substr(11); // "bar and world!"
+The second takes a starting position and a total length of the new substring. Regardless of the length, the substring
+will never go past the end of the source string:
+std::string str = "Hello foo, bar and world!";

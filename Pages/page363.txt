@@ -1,0 +1,36 @@
+﻿     • \B which asserts a \w character
+Let's say for example we want to capture a number with it's sign:
+auto input = "+1--12*123/+1234"s;
+smatch sm;
+if(regex_search(input, sm, regex{ "(?:A|\\b\\W)([+-]?\\d+)" })) {
+     do {
+         cout << sm[1] << endl;
+         input = sm.suffix().str();
+     } while(regex_search(input, sm, regex{ "(?:A\\W|\\b\\W)([+-]?\\d+)" }));
+}
+Live Example
+An important note here is that the anchor does not consume any characters.
+Section 70.4: regex_replace Example
+This code takes in various brace styles and converts them to One True Brace Style:
+const auto input = "if (KnR)\n\tfoo();\nif (spaces) {\n foo();\n}\nif
+(allman)\n{\n\tfoo();\n}\nif (horstmann)\n{\tfoo();\n}\nif (pico)\n{\tfoo(); }\nif
+(whitesmiths)\n\t{\n\tfoo();\n\t}\n"s;
+cout << input << regex_replace(input, regex("(.+?)\\s*\\{?\\s*(.+?;)\\s*\\}?\\s*"), "$1
+{\n\t$2\n}\n") << endl;
+Live Example
+Section 70.5: regex_token_iterator Example
+A std::regex token iterator provides a tremendous tool for extracting elements of a Comma Separated Value
+file. Aside from the advantages of iteration, this iterator is also able to capture escaped commas where other
+methods struggle:
+const auto input = "please split,this,csv, ,line,\\,\n"s;
+const regex re{ "((?:[A\\\\,]|\\\\.)+)(?:,|$)" };
+const vector<string> m_vecFields{ sregex_token_iterator(cbegin(input), cend(input), re, 1),
+sregex_token_iterator() };
+cout << input << endl;
+copy(cbegin(m_vecFields), cend(m_vecFields), ostream_iterator<string>(cout, "\n"));
+Live Example
+A notable gotcha with regex iterators is, that the regex argument must be an L-value. An R-value will not work.
+Section 70.6: Quantifiers
+Let's say that we're given const string input as a phone number to be validated. We could start by requiring a
+numeric input with a zero or more quantifier: regex_match(input, regex("\\d*")) or a one or more
+quantifier: regex_match(input, regex( "\\d+")) But both of those really fall short if input contains an invalid

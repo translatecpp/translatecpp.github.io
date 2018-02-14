@@ -1,0 +1,19 @@
+﻿Section 77.12: Default template parameter value
+Just like in case of the function arguments, template parameters can have their default values. All template
+parameters with a default value have to be declared at the end of the template parameter list. The basic idea is that
+the template parameters with default value can be omitted while template instantiation.
+Simple example of default template parameter value usage:
+ template <class T, size_t N = 10>
+ struct my_array {
+     T arr[N];
+ };
+ int main() {
+     /* Default parameter is ignored, N = 5 */
+     my_array<int, 5> a;
+     /* Print the length of a.arr: 5 */
+     std::cout << sizeof(a.arr) / sizeof(int) << std::endl;
+     /* Last parameter is omitted, N = 10 */
+     my_array<int> b;
+     /* Print the length of a.arr: 10 */
+     std::cout << sizeof(b.arr) / sizeof(int) << std::endl;
+ }

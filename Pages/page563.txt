@@ -1,0 +1,47 @@
+﻿original class may be different.
+As we've seen in the example above, this adapter pattern is useful to expose a different interface for an existing
+API to allow it to work with other code. Also, by using adapter pattern, we can take heterogeneous interfaces, and
+transform them to provide consistent API.
+Bridge pattern has a structure similar to an object adapter, but Bridge has a different intent: It is meant to
+separate an interface from its implementation so that they can be varied easily and independently. An adapter is
+meant to change the interface of an existing object.
+Section 112.2: Observer pattern
+Observer Pattern's intent is to define a one-to-many dependency between objects so that when one object changes
+state, all its dependents are notified and updated automatically.
+The subject and observers define the one-to-many relationship. The observers are dependent on the subject such
+that when the subject's state changes, the observers get notified. Depending on the notification, the observers may
+also be updated with new values.
+Here is the example from the book "Design Patterns" by Gamma.
+#include <iostream>
+#include <vector>
+class Subject;
+class Observer
+{
+public:
+     virtual ~Observer() = default;
+     virtual void Update(Subject&) = 0;
+};
+class Subject
+{
+public:
+      virtual ~Subject() = default;
+      void Attach(Observer& o) { observers.push_back(&o); }
+      void Detach(Observer& o)
+      {
+           observers.erase(std::remove(observers.begin(), observers.end(), &o));
+      }
+      void Notify()
+      {
+           for (auto* o : observers) {
+               o->Update(*this);
+           }
+      }
+private:
+      std ::vector<Observer*> observers;
+};
+class ClockTimer : public Subject
+{
+public:
+     void SetTime(int hour, int minute, int second)
+     {
+         this->hour = hour;

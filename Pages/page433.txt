@@ -1,0 +1,42 @@
+﻿int main()
+{
+     Bar bar;
+     // Create and execute the thread
+     std::thread thread(&Bar::foo, &bar, 10); // Pass 10 to member function
+     // The member function will be executed in a separate thread
+     // Wait for the thread to finish, this is a blocking operation
+     thread.join();
+     return 0;
+}
+Functor object example (Live Example):
+#include <iostream>
+#include <thread>
+class Bar
+{
+public:
+     void operator()(int a)
+     {
+          std::cout << a << '\n';
+     }
+};
+int main()
+{
+     Bar bar;
+     // Create and execute the thread
+     std::thread thread(bar, 10); // Pass 10 to functor object
+     // The functor object will be executed in a separate thread
+     // Wait for the thread to finish, this is a blocking operation
+     thread.join();
+     return 0;
+}
+Lambda expression example (Live Example):
+#include <iostream>
+#include <thread>
+int main()
+{
+     auto lambda = [](int a) { std::cout << a << '\n'; };
+     // Create and execute the thread
+     std::thread thread(lambda, 10); // Pass 10 to the lambda expression
+     // The lambda expression will be executed in a separate thread
+     // Wait for the thread to finish, this is a blocking operation
+     thread.join();

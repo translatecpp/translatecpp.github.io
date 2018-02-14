@@ -1,0 +1,48 @@
+﻿Note: For a vector deleting an element which is not the last element, all elements beyond the deleted element have
+to be copied or moved to fill the gap, see the note below and std::list.
+Deleting all elements in a range:
+std::vector<int> v{ 1, 2, 3, 4, 5, 6 };
+v.erase(v.begin() + 1, v.begin() + 5);    // v becomes {1, 6}
+Note: The above methods do not change the capacity of the vector, only the size. See Vector Size and Capacity.
+The erase method, which removes a range of elements, is often used as a part of the erase-remove idiom. That is,
+first std:: remove moves some elements to the end of the vector, and then erase chops them off. This is a relatively
+inefficient operation for any indices less than the last index of the vector because all elements after the erased
+segments must be relocated to new positions. For speed critical applications that require efficient removal of
+arbitrary elements in a container, see std::list.
+Deleting elements by value:
+std::vector<int> v{ 1, 1, 2, 2, 3, 3 };
+int value_to_remove = 2;
+v.erase(std::remove(v.begin(), v.end(), value_to_remove), v.end()); // v becomes {1, 1, 3, 3}
+Deleting elements by condition:
+// std::remove_if needs a function, that takes a vector element as argument and returns true,
+// if the element shall be removed
+bool _predicate(const int& element) {
+     return (element > 3); // This will cause all elements to be deleted that are larger than 3
+}
+std::vector<int> v{ 1, 2, 3, 4, 5, 6 };
+v.erase(std::remove_if(v.begin(), v.end(), _predicate), v.end()); // v becomes {1, 2, 3}
+Deleting elements by lambda, without creating additional predicate function
+Version > C++11
+std::vector<int> v{ 1, 2, 3, 4, 5, 6 };
+v.erase(std::remove_if(v.begin(), v.end(),
+       [](auto& element){return element > 3;} ), v.end()
+);
+Deleting elements by condition from a loop:
+std::vector<int> v{ 1, 2, 3, 4, 5, 6 };
+std::vector<int>::iterator it = v.begin();
+while (it != v.end()) {
+if (condition)
+         it = v.erase(it); // after erasing, 'it' will be set to the next element in v
+     else
+         ++it;              // manually set 'it' to the next element in v
+}
+While it is important not to increment it in case of a deletion, you should consider using a different method when
+then erasing repeatedly in a loop. Consider remove_if for a more efficient way.
+Deleting elements by condition from a reverse loop:
+std::vector<int> v{ -1, 0, 1, 2, 3, 4, 5, 6 };
+typedef std::vector<int>::reverse_iterator rev_itr;
+rev_itr it = v.rbegin();
+while (it != v.rend()) { // after the loop only '0' will be in v
+     int value = *it;
+     if (value) {
+         ++it;

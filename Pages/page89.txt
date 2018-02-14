@@ -1,0 +1,44 @@
+﻿    for (int i = 1; i <= n; ++i) {
+      result *= i;
+    }
+    return result;
+}
+Version > C++17
+Since c++17 one can use fold expression to calculate factorial:
+#include <iostream>
+#include <utility>
+template <class T, T N, class I = std::make_integer_sequence<T, N>>
+struct factorial;
+template <class T, T N, T... Is>
+struct factorial<T,N,std::index_sequence<T, Is...>> {
+    static constexpr T value = (static_cast<T>(1) * ... * (Is + 1));
+};
+int main() {
+    std::cout << factorial<int, 5>::value << std::endl;
+}
+Section 17.2: Iterating over a parameter pack
+Often, we need to perform an operation over every element in a variadic template parameter pack. There are many
+ways to do this, and the solutions get easier to read and write with C++17. Suppose we simply want to print every
+element in a pack. The simplest solution is to recurse:
+Version > C++11
+void print_all(std::ostream& os) {
+     // base case
+}
+template <class T, class... Ts>
+void print_all(std::ostream& os, T const& first, Ts const&... rest) {
+     os << first;
+     print_all(os, rest...);
+}
+We could instead use the expander trick, to perform all the streaming in a single function. This has the advantage of
+not needing a second overload, but has the disadvantage of less than stellar readability:
+Version > C++11
+template <class... Ts>
+void print_all(std::ostream& os, Ts const&... args) {
+     using expander = int[];
+     (void)expander{0,
+          (void(os << args), 0)...
+     };
+}
+For an explanation of how this works, see T.C's excellent answer.
+Version > C++17
+With C++17, we get two powerful new tools in our arsenal for solving this problem. The first is a fold-expression:

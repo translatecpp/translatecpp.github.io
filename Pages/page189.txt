@@ -1,0 +1,40 @@
+﻿definition outside the class definition; the programmer is allowed, but not required, to initialise static variables in
+their definition. When defining the member variables, the keyword static is omitted.
+class Example {
+      static int num_instances;                  // Declaration.
+   public:
+      static std::string static_str;             // Declaration.
+      // ...
+};
+int          Example::num_instances;         // Definition. Zero-initialised.
+std::string Example::static_str = "Hello."; // Definition.
+Due to this, static variables can be incomplete types (apart from void), as long as they're later defined as a
+complete type.
+struct ForwardDeclared;
+class ExIncomplete {
+     static ForwardDeclared fd;
+     static ExIncomplete i_contain_myself;
+     static int              an_array[];
+};
+struct ForwardDeclared {};
+ForwardDeclared ExIncomplete ::fd;
+ExIncomplete     ExIncomplete :: i_contain_myself;
+int              ExIncomplete::an_array[5];
+Static member functions can be defined inside or outside the class definition, as with normal member functions. As
+with static member variables, the keyword static is omitted when defining static member functions outside the
+class definition.
+// For Example above, either...
+class Example {
+     // ...
+   public:
+     static int static_func() { return num_instances; }
+     // ...
+     void set_str(const std::string& str) { static_str = str; }
+};
+// Or...
+class Example { /* ... */ };
+int Example::static_func() { return num_instances; }
+void Example::set_str(const std::string& str) { static_str = str; }
+If a static member variable is declared const but not volatile, and is of an integral or enumeration type, it can be
+initialised at declaration, inside the class definition.
+enum E { VAL = 5 };

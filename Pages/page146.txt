@@ -1,0 +1,40 @@
+﻿// Assign the value pointed to by 'p_bar0' to 'baz'.
+big_struct baz;
+baz = *p_bar0;
+// Now 'baz' contains a copy of the data pointed to by 'p_bar0'.
+// Indeed, it contains a copy of 'bar'.
+// Prints 5 as well
+std::cout << "baz.fool = " << baz.fool << std::endl;
+The combination of * and the operator . is abbreviated by ->:
+std::cout << "bar.fool = " << (*p_bar0).foo1 << std::endl; // Prints 5
+std::cout << "bar.fool = " << p_bar0->foo1 << std::endl; // Prints 5
+Dereferencing invalid pointers
+When dereferencing a pointer, you should make sure it points to valid data. Dereferencing an invalid pointer (or a
+null pointer) can lead to memory access violation, or to read or write garbage data.
+big_struct *never_do_this() {
+    // This is a local variable. Outside 'never_do_this' it doesn't exist.
+    big_struct retval;
+    retval.fool = 11;
+    // This returns the address of 'retval'.
+    return &retval;
+    // 'retval' is destroyed and any code using the value returned
+    // by 'never_do_this' has a pointer to a memory location that
+    // contains garbage data (or is inaccessible).
+}
+In such scenario, g++ and clang++ correctly issue the warnings:
+(Clang) warning: address of stack memory associated with local variable 'retval' returned [-
+Wreturn-stack-address]
+(Gcc) warning: address of local variable 'retval' returned [-Wreturn-local-addr]
+Hence, care must be taken when pointers are arguments of functions, as they could be null:
+void naive_code(big_struct *ptr_big_struct) {
+     // ... some code which doesn't check if 'ptr_big_struct' is valid.
+     ptr_big_struct->foo1 = 12;
+}
+// Segmentation fault.
+naive_code(nullptr);
+Section 31.3: Pointer Arithmetic
+Increment / Decrement
+A pointer can be incremented or decremented (prefix and postfix). Incrementing a pointer advances the pointer
+value to the element in the array one element past the currently pointed to element. Decrementing a pointer
+moves it to the previous element in the array.
+Pointer arithmetic is not permitted if the type that the pointer points to is not complete. void is always an

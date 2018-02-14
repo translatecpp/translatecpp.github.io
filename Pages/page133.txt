@@ -1,0 +1,16 @@
+﻿struct ProtectedDestructor {
+   protected:
+     ~ProtectedDestructor() = default;
+};
+struct ProtectedDerived : ProtectedDestructor {
+     ~ProtectedDerived() = default;
+};
+// ...
+VirtualDestructor* vd = new VirtualDerived;
+delete vd; // Looks up VirtualDestructor::~VirtualDestructor() in vtable, sees it's
+            // VirtualDerived::~VirtualDerived(), calls that.
+ProtectedDestructor* pd = new ProtectedDerived;
+delete pd; // Error: ProtectedDestructor::~ProtectedDestructor() is protected.
+delete static_cast<ProtectedDerived*>(pd); // Good.
+Both of these practices guarantee that the derived class' destructor will always be called on derived class instances,
+preventing memory leaks.

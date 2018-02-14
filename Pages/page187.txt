@@ -1,0 +1,43 @@
+﻿// Calls DerivedOuter::DerivedInner_::do_something();
+BaseOuter* d = new DerivedOuter;
+BaseOuter::Inner& din = d->getInner();
+din.do_something();
+d->getInner().do_something();
+In the above case, both BaseOuter and DerivedOuter supply the member type Inner, as BaseInner_ and
+DerivedInner_, respectively. This allows nested types to be derived without breaking the enclosing class' interface,
+and allows the nested type to be used polymorphically.
+Section 35.11: Unnamed struct/class
+Unnamed struct is allowed (type has no name)
+void foo()
+{
+     struct /* No name */ {
+         float x;
+         float y;
+     } point;
+     point.x = 42;
+}
+or
+struct Circle
+{
+     struct /* No name */ {
+         float x;
+         float y;
+     } center; // but a member name
+     float radius;
+};
+and later
+Circle circle;
+circle.center.x = 42.f;
+but NOT anonymous struct (unnamed type and unnamed object)
+struct InvalidCircle
+{
+     struct /* No name */ {
+          float centerX;
+          float centerY;
+     }; // No member either.
+     float radius;
+};
+Note: Some compilers allow anonymous struct as extension.
+Version > C++11
+     • lamdba can be seen as a special unnamed struct.
+     • decltype allows to retrieve the type of unnamed struct:

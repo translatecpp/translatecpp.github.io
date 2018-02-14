@@ -1,0 +1,34 @@
+﻿Chapter 14: C++ Streams
+Section 14.1: String streams
+std::ostringstream is a class whose objects look like an output stream (that is, you can write to them via
+operator<<), but actually store the writing results, and provide them in the form of a stream.
+Consider the following short code:
+#include <sstream>
+#include <string>
+using namespace std;
+int main()
+{
+      ostringstream ss;
+      ss << "the answer to everything is " << 42;
+      const string result = ss.str();
+}
+The line
+ostringstream ss;
+creates such an object. This object is first manipulated like a regular stream:
+ss << "the answer to everything is " << 42;
+Following that, though, the resulting stream can be obtained like this:
+const string result = ss.str();
+(the string result will be equal to "the answer to everything is 42").
+This is mainly useful when we have a class for which stream serialization has been defined, and for which we want a
+string form. For example, suppose we have some class
+class foo
+{
+      // All sort of stuff here.
+};
+ostream &operator<<(ostream &os, const foo &f);
+To get the string representation of a foo object,
+foo f;
+we could use
+ostringstream ss;
+ss << f;
+const string result = ss.str();

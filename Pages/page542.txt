@@ -1,0 +1,50 @@
+﻿In concrete numbers, with g++ and Visual C++ compilers the above invocation of collatz(42) resulted in a Collatz
+sequence of 8 items and 36 item copy operations (8*7/2 = 28, plus some) in vector copy constructor calls.
+All of these item copy operations can be removed by simply moving vectors whose values are not needed anymore.
+To do this it's necessary to remove const and reference for the vector type arguments, passing the vectors by value.
+The function returns are already automatically optimized. For the calls where vectors are passed, and not used
+again further on in the function, just apply std ::move to move those buffers rather than actually copying them:
+using std::move;
+auto concat( Vector_<int> v, int const x )
+      -> Vector_<int>
+{
+      v.push_back( x );
+      // warning: moving a local object in a return statement prevents copy elision [-Wpessimizing-
+move]
+      // See https://stackoverflow.com/documentation/c%2b%2b/2489/copy-elision
+      // return move( v );
+      return v;
+}
+auto collatz_aux( int const n, Vector_<int> result )
+      -> Vector_<int>
+{
+      if( n == 1 )
+      {
+          return result;
+      }
+      auto new_result = concat( move( result ), n );
+      struct result;       // Make absolutely sure no use of 'result' after this.
+      if( n % 2 == 0 )
+      {
+          return collatz_aux( n/2, move( new_result ) );
+      }
+      else
+      {
+          return collatz_aux( 3*n + 1, move( new_result ) );
+      }
+}
+auto collatz( int const n )
+      -> Vector_<int>
+{
+      assert( n != 0 );
+      return collatz_aux( n, Vector_<int>() );
+}
+Here, with g++ and Visual C++ compilers, the number of item copy operations due to vector copy constructor
+invocations, was exactly 0.
+The algorithm is necessarily still O(n) in the length of the Collatz sequence produced, but this is a quite dramatic
+improvement: O(n2) ? O(n).
+With some language support one could perhaps use moving and still express and enforce the immutability of a
+variable between its initialization and final move, after which any use of that variable should be an error. Alas, as of
+C++14 C++ does not support that. For loop-free code the no use after move can be enforced via a re-declaration of
+the relevant name as an incomplete struct, as with struct result; above, but this is ugly and not likely to be
+understood by other programmers; also the diagnostics can be quite misleading.

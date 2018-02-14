@@ -1,0 +1,41 @@
+﻿     static int get_total_instances() { return num_instances; }
+     int get_instance_number() const { return my_num; }
+};
+int ExTwo::num_instances;
+They cannot be mutable, nor would they need to be; as they aren't tied to any given instance, whether an instance
+is or isn't const doesn't affect static members.
+struct ExDontNeedMutable {
+     int immuta;
+     mutable int muta;
+     static int i;
+     ExDontNeedMutable() : immuta(-5), muta(-5) {}
+};
+int ExDontNeedMutable::i;
+// ...
+const ExDontNeedMutable dnm;
+dnm.immuta = 5; // Error: Can't modify read-only object.
+dnm.muta = 5;    // Good. Mutable fields of const objects can be written.
+dnm.i = 5;       // Good. Static members can be written regardless of an instance's const-ness.
+Static members respect access modifiers, just like non-static members.
+class ExAccess {
+     static int prv_int;
+   protected:
+     static int pro_int;
+   public:
+     static int pub_int;
+};
+int ExAccess::prv_int;
+int ExAccess::pro_int;
+int ExAccess::pub_int;
+// ...
+int x1 = ExAccess::prv_int; // Error: int ExAccess::prv_int is private.
+int x2 = ExAccess::pro_int; // Error: int ExAccess::pro_int is protected.
+int x3 = ExAccess::pub_int; // Good.
+As they aren't tied to a given instance, static member functions have no this pointer; due to this, they can't access
+non-static member variables unless passed an instance.
+class ExInstanceRequired {
+     int i;
+   public:
+     ExInstanceRequired() : i(0) {}
+     static void bad_mutate() { ++i *= 5; }                            // Error.
+     static void good_mutate(ExInstanceRequired& e) { ++e.i *= 5; } // Good.

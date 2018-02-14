@@ -1,0 +1,47 @@
+﻿   friend bool operator!=( task const& self, std::nullptr_t ) { return Mself; }
+private:
+   template<class T>
+   using pimpl_t = details::task_pimpl_impl<T, R, Args...>;
+   template<class F>
+static auto make_pimpl( F&& f ) {
+using dF=std::decay_t<F>;
+using pImpl_t = pimpl_t<dF>;
+     return std ::make_unique<pImpl_t>(std::forward<F>(f));
+   }
+   std::unique_ptr<details::task_pimpl<R,Args...>> m_pImpl;
+   template< class T >
+   T* target_impl() const {
+     return dynamic_cast<pimpl_t<T>*>(m_pImpl.get());
+   }
+};
+To make this library-worthy, you'd want to add in a small buffer optimization, so it does not store every callable on
+the heap.
+Adding SBO would require a non-default task(task&&), some std ::aligned_storage_t within the class, a m_pImpl
+unique_ptr with a deleter that can be set to destroy-only (and not return the memory to the heap), and a
+emplace_move_to( void* ) = 0 in the task_pimpl.
+live example of the above code (with no SBO).
+Section 90.2: Erasing down to a Regular type with manual
+vtable
+C++ thrives on what is known as a Regular type (or at least Pseudo-Regular).
+A Regular type is a type that can be constructed and assigned-to and assigned-from via copy or move, can be
+destroyed, and can be compared equal-to. It can also be constructed from no arguments. Finally, it also has
+support for a few other operations that are highly useful in various std algorithms and containers.
+This is the root paper, but in C++11 would want to add std::hash support.
+I will use the manual vtable approach to type erasure here.
+using dtor_unique_ptr = std::unique_ptr<void, void(*)(void*)>;
+template<class T, class...Args>
+dtor_unique_ptr make_dtor_unique_ptr( Args&&... args ) {
+   return {new T(std::forward<Args>(args)...), [](void* self){ delete static_cast<T*>(self); }};
+}
+struct regular_vtable {
+   void(*copy_assign)(void* dest, void const* src); // T&=(T const&)
+   void(*move_assign)(void* dest, void* src); // T&=(T&&)
+   bool(*equals)(void const* lhs, void const* rhs); // T const&==T const&
+   bool(*order)(void const* lhs, void const* rhs); // std::less<T>{}(T const&, T const&)
+   std::size_t(*hash)(void const* self); // std::hash<T>{}(T const&)
+   std::type_info const&(*type)(); // typeid(T)
+   dtor_unique_ptr(*clone)(void const* self); // T(T const&)
+};
+template<class T>
+regular_vtable make_regular_vtable() noexcept {
+   return {

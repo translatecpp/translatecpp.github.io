@@ -1,0 +1,39 @@
+﻿The sharing behavior is implemented through a technique known as reference counting, where the number of
+shared pointers that point to the object is stored alongside it. When this count reaches zero, either through the
+destruction or reassignment of the last std ::shared_ptr instance, the object is automatically destroyed.
+// Creation: 'firstShared' is a shared pointer for a new instance of 'Foo'
+std::shared_ptr<Foo> firstShared = std::make_shared<Foo>(/*args*/);
+To create multiple smart pointers that share the same object, we need to create another shared_ptr that aliases
+the first shared pointer. Here are 2 ways of doing it:
+std::shared_ptr<Foo> secondShared(firstShared); // 1st way: Copy constructing
+std::shared_ptr<Foo> secondShared;
+secondShared = firstShared;                        // 2nd way: Assigning
+Either of the above ways makes secondShared a shared pointer that shares ownership of our instance of Foo with
+firstShared.
+The smart pointer works just like a raw pointer. This means, you can use * to dereference them. The regular ->
+operator works as well:
+secondShared->test(); // Calls Foo::test()
+Finally, when the last aliased shared_ptr goes out of scope, the destructor of our Foo instance is called.
+Warning: Constructing a shared_ptr might throw a bad_alloc exception when extra data for shared ownership
+semantics needs to be allocated. If the constructor is passed a regular pointer it assumes to own the object pointed
+to and calls the deleter if an exception is thrown. This means shared_ptr<T>(new T(args)) will not leak a T object if
+allocation of shared_ptr<T> fails. However, it is advisable to use make_shared<T>(args) or
+allocate_shared<T>(alloc, args), which enable the implementation to optimize the memory allocation.
+Allocating Arrays([]) using shared_ptr
+Version > C++11 Version < C++17
+Unfortunately, there is no direct way to allocate Arrays using make_shared<>.
+It is possible to create arrays for shared_ptr<> using new and std ::default_delete.
+                                                  For example, to allocate an array of 10 integers, we can write the code as
+                                                  shared_ptr<int> sh(new int[10], std::default_delete<int[]>());
+Specifying std ::default_delete is mandatory here to make sure that the allocated memory is correctly cleaned up
+using delete[ ].
+If we know the size at compile time, we can do it this way:
+template<class Arr>
+struct shared_array_maker {};
+template<class T, std::size_t N>
+struct shared_array_maker<T[N]> {
+std::shared_ptr<T> operator()const{
+     auto r = std::make_shared<std::array<T,N>>();
+     if (!r) return {};
+     return {r.data(), r};
+   }

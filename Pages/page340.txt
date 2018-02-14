@@ -1,0 +1,41 @@
+﻿Chapter 64: The ISO C++ Standard
+In 1998, the there was a first publication of the standard making C++ an internally standardized language. From
+that time, C++ has evolved resulting in different dialects of C++. On this page, you can find an overview of all
+different standards and their changes compared to the previous version. The details on how to use these features
+is described on more specialized pages.
+Section 64.1: Current Working Drafts
+All published ISO standards are available for sale from the ISO store ( http://www.iso.org ). The working drafts of the
+C++ standards are publicly available for free though.
+The different versions of the standard:
+    • Upcoming (Sometimes referred as C++20 or C++2a): Current working draft (HTML-version)
+    • Proposed (Sometimes referred as C++17 or C++1z): March 2017 working draft N4659.
+    • C++14 (Sometimes referred as C++1y): November 2014 working draft N4296
+    • C++11 (Sometimes referred as C++0x): February 2011 working draft N3242
+    • C++03
+    • C++98
+Section 64.2: C++17
+The C++17 standard is feature complete and has been proposed for standardization. In compilers with
+experimental support for these features, it is usually referred to as C++1z.
+Language Extensions
+    •  Fold Expressions
+    •  declaring non-type template arguments with auto
+    •  Guaranteed copy elision
+    •  Template parameter deduction for constructors
+    •  Structured bindings
+    •  Compact nested namespaces
+    •  New attributes: [[fallthrough]], [[nodiscard]], [[maybe_unused]]
+    •  Default message for static_assert
+    •  Initializers in if and switch
+    •  Inline variables
+    •  if constexpr
+    •  Order of expression evaluation guarantees
+    •  Dynamic memory allocation for over-aligned data
+Library Extensions
+    •  std ::optional
+    •  std::variant
+    •  std ::string_view
+    •  merge() and extract() for associative containers
+    •  A file system library with the <filesystem> header.
+    •  Parallel versions of most of the standard algorithms (in the <algorithm> header).
+    •  Addition of mathematical special functions in the <cmath> header.
+    •  Moving nodes between map<>, unordered_map<>, set<>, and unordered_set<>

@@ -1,0 +1,44 @@
+﻿      system gets to decide if it wants to create a thread or not. The idea was that the system chooses to make a
+      thread unless it is already running more threads than it can run efficiently. Unfortunately implementations
+      commonly just choose not to create a thread in that situation, ever, so you need to override that behavior
+      with std:: launch:: async which forces the system to create a thread.
+    • Beware of race conditions.
+More on async on Futures and Promises
+Section 80.4: Basic Synchronization
+Thread synchronization can be accomplished using mutexes, among other synchronization primitives. There are
+several mutex types provided by the standard library, but the simplest is std ::mutex. To lock a mutex, you
+construct a lock on it. The simplest lock type is std ::lock_guard:
+std ::mutex m;
+void worker() {
+     std::lock_guard<std::mutex> guard(m); // Acquires a lock on the mutex
+     // Synchronized code here
+} // the mutex is automatically released when guard goes out of scope
+With std ::lock_guard the mutex is locked for the whole lifetime of the lock object. In cases where you need to
+manually control the regions for locking, use std ::unique_lock instead:
+std ::mutex m;
+void worker() {
+     // by default, constructing a unique_lock from a mutex will lock the mutex
+     // by passing the std::defer_lock as a second argument, we
+     // can construct the guard in an unlocked state instead and
+     // manually lock later.
+     std::unique_lock<std::mutex> guard(m, std::defer_lock);
+     // the mutex is not locked yet!
+     guard.lock();
+     // critical section
+     guard.unlock();
+     // mutex is again released
+}
+More Thread synchronization structures
+Section 80.5: Create a simple thread pool
+C++11 threading primitives are still relatively low level. They can be used to write a higher level construct, like a
+thread pool:
+Version > C++14
+struct tasks {
+   // the mutex, condition variable and deque form a single
+   // thread-safe triggered queue of tasks:
+   std::mutex m;
+   std::condition_variable v;
+   // note that a packaged_task<void> can store a packaged_task<R>:
+   std::deque<std::packaged_task<void()>> work;
+   // this holds futures representing the worker threads being done:
+   std::vector<std::future<void>> finished;

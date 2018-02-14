@@ -1,0 +1,39 @@
+﻿     •  decltype(auto)
+     •  Generalized lambda captures
+     •  Generic lambdas
+     •  Variable templates
+     •  Extended constexpr
+     •  The [[deprecated]] attribute
+     •  Digit separators
+Library Extensions
+     •  Shared locking
+     •  User-defined literals for std:: types
+     •  std ::make_unique
+     •  Type transformation _t aliases
+     •  Addressing tuples by type (e.g. get<string>(t))
+     •  Transparent Operator Functors (e.g. greater<>(x))
+     •  std::quoted
+Deprecated / Removed
+     •  std::gets was deprecated in C++11 and removed from C++14
+     •  std::random shuffle is deprecated
+Section 64.5: C++98
+C++98 is the first standardized version of C++. As it was developed as an extension to C, many of the features which
+set apart C++ from C are added.
+Language Extensions (in respect to C89/C90)
+     •  Classes, Derived classes, virtual member functions, const member functions
+     •  Function overloading, Operator overloading
+     •  Single line comments (Has been introduced in the C-languague with C99 standard)
+     •  References
+     •  new and delete
+       boolean type (Has been introduced in the C-languague with C99 standard)
+       templates
+       namespaces
+       exceptions
+       specific casts
+Library Extensions
+     • The Standard Template Library
+Section 64.6: C++03
+The C++03 standard mainly addresses defect reports of the C++98 standard. Apart from these defects, it only adds
+one new feature.
+Language Extensions
+      Value initalization

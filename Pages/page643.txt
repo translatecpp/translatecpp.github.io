@@ -1,0 +1,35 @@
+﻿values correspond to the year of finalization for each version of the ISO C++ standard. As of GCC 6.1.0, valid values
+for the std= flag are c++98/c++03, c++11, c++14, and c++17/c++1z. Values separated by a forward slash are
+equivalent.
+g++ -std=c++11 <file>
+GCC includes some compiler-specific extensions that are disabled when they conflict with a standard specified by
+the -std= flag. To compile with all extensions enabled, the value gnu++XX may be used, where XX is any of the years
+used by the c++ values listed above.
+The default standard will be used if none is specified. For versions of GCC prior to 6.1.0, the default is -
+std=gnu++03; in GCC 6.1.0 and greater, the default is -std=gnu++14.
+Note that due to bugs in GCC, the -pthread flag must be present at compilation and linking for GCC to support the
+C++ standard threading functionality introduced with C++11, such as std ::thread and std ::wait_for. Omitting it
+when using threading functions may result in no warnings but invalid results on some platforms.
+Linking with libraries:
+Use the -l option to pass the library name:
+g++ main.cpp -lpcre2-8
+#pcre2-8 is the PCRE2 library for 8bit code units (UTF-8)
+If the library is not in the standard library path, add the path with -L option:
+g++ main.cpp -L/my/custom/path/ -lmylib
+Multiple libraries can be linked together:
+g++ main.cpp -lmylib1 -lmylib2 -lmylib3
+If one library depends on another, put the dependent library before the independent library:
+g++ main.cpp -lchild-lib -lbase-lib
+Or let the linker determine the ordering itself via --start-group and --end-group (note: this has significant
+performance cost):
+g++ main.cpp -Wl,--start-group -lbase-lib -lchild-lib -Wl,--end-group
+Section 138.2: Compiling with Visual Studio (Graphical
+Interface) - Hello World
+   1. Download and install Visual Studio Community 2015
+   2. Open Visual Studio Community
+   3. Click File-> New-> Project
+t>4  Start Page - Microsoft Visual Studio                                                      
+File Edit View Project Debug              Team Tools Test Analyze Window Help                  
+     New                                     ► tQ Project...                  Ctrl -nShift-H N 
+     Open                                    ► % Web Site...                  Shift+Art+N      
+4. Click Templates -> Visual C++ -> Win32 Console Application and then name the project MyFirstProgram.

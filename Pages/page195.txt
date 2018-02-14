@@ -1,0 +1,5 @@
+﻿Base* bp = new Base;
+Base* dp = new Derived;
+bp.func(); // Calls Base::func().
+dp.func(); // Calls Derived::func().
+For more information, see here.

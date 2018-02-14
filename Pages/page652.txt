@@ -1,0 +1,44 @@
+﻿cl a.cpp b.cpp c.cpp
+// Generates "a.exe".
+cl d.obj a.cpp q.cpp
+// Generates "d.exe".
+cl y.lib n.cpp o.obj
+// Generates "n.exe".
+cl /o yo zp.obj pz.cpp
+// Generates "yo.exe".
+To compile a file(s) without linking, use:
+cl /c main.cpp
+// Generates object file "main.obj".
+This tells cl to exit without calling link, and produces an object file, which can later be linked with other files to
+produce a binary.
+cl main.obj niam.cpp
+// Generates object file "niam.obj".
+// Performs linking with "main.obj" and "niam.obj".
+// Generates executable "main.exe".
+link main.obj niam.obj
+// Performs linking with "main.obj" and "niam.obj".
+// Generates executable "main.exe".
+There are other valuable command line parameters as well, which it would be very useful for users to know:
+cl /EHsc main.cpp
+// "/EHsc" specifies that only standard C++ ("synchronous") exceptions will be caught,
+// and 'extern "C"' functions will not throw exceptions.
+// This is recommended when writing portable, platform-independent code.
+cl /clr main.cpp
+// "/clr" specifies that the code should be compiled to use the common language runtime,
+// the .NET Framework's virtual machine.
+// Enables the use of Microsoft's C++/CLI language in addition to standard ("native") C++,
+// and creates an executable that requires .NET to run.
+cl /Za main.cpp
+// "/Za" specifies that Microsoft extensions should be disabled, and code should be
+// compiled strictly according to ISO C++ specifications.
+// This is recommended for guaranteeing portability.
+cl /Zi main.cpp
+// "/Zi" generates a program database (PDB) file for use when debugging a program, without
+// affecting optimisation specifications, and passes the option "/DEBUG" to LINK.
+cl /LD dll.cpp
+// "/LD" tells CL to configure LINK to generate a DLL instead of an executable.
+// LINK will output a DLL, in addition to an LIB and EXP file for use when linking.
+// To use the DLL in other programs, pass its associated LIB to CL or LINK when compiling those
+// programs.
+cl main.cpp /link /LINKER_OPTION
+// "/link" passes everything following it directly to LINK, without parsing it in any way.

@@ -1,0 +1,2 @@
+﻿before func          push to stack         copy values                                copy values            after func
+It is called "call by value" because we do not hand over the variables but only the values of these variables.

@@ -1,0 +1,41 @@
+﻿     MatrixSum(const LHS& lhs, const RHS& rhs) : rhs(rhs), lhs(lhs) {}
+      value_type operator() (int x, int y) const {
+          return lhs(x, y) + rhs(x, y);
+      }
+private:
+      const LHS& lhs;
+      const RHS& rhs;
+};
+And here is the updated version of operator+()
+template <typename LHS, typename RHS>
+MatrixSum<LHS, RHS> operator+(const LHS& lhs, const LHS& rhs) {
+     return MatrixSum<LHS, RHS>(lhs, rhs);
+}
+As you can see, operator+() no longer returns an "eager evaluation" of the result of adding 2 Matrix instances
+(which would be another Matrix instance), but instead an expression template representing the addition operation.
+The most important point to keep in mind is that the expression has not been evaluated yet. It merely holds
+references to its operands.
+In fact, nothing stops you from instantiating the MatrixSum<> expression template as follows:
+MatrixSum<Matrix<double>, Matrix<double> > SumAB(a, b);
+You can however at a later stage, when you actually need the result of the summation, evaluate the expression d =
+a + b as follows:
+for (std::size_t y = 0; y != a.rows(); ++y) {
+     for (std::size_t x = 0; x != a.cols(); ++x) {
+          d(x, y) = SumAB(x, y);
+     }
+}
+As you can see, another benefit of using an expression template, is that you have basically managed to evaluate the
+sum of a and b and assign it to d in a single pass.
+Also, nothing stops you from combining multiple expression templates. For example, a + b + c would result in the
+following expression template:
+MatrixSum<MatrixSum<Matrix<double>, Matrix<double> >, Matrix<double> > SumABC(SumAB, c);
+And here again you can evaluate the final result using a single pass:
+for (std::size_t y = 0; y != a.rows(); ++y) {
+     for (std::size_t x = 0; x != a.cols(); ++x) {
+          d(x, y) = SumABC(x, y);
+     }
+}
+Finally, the last piece of the puzzle is to actually plug your expression template into the Matrix class. This is
+essentially achieved by providing an implementation for Matrix::operator=(), which takes the expression
+template as an argument and evaluates it in one pass, as you did "manually" before:
+template <typename T, std::size_t COL, std::size_t ROW>

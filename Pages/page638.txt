@@ -1,0 +1,6 @@
+﻿#ifdef ___cplusplus
+}  /* end of "extern C" block */
+#endif
+Now when foo.h is included from a C program, it will just appear as ordinary declarations, but when foo.h is
+included from a C++ program, make_foo will be inside an extern "C" block and the compiler will know to look for
+an unmangled name and use the C calling convention.

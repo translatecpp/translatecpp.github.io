@@ -1,0 +1,40 @@
+﻿         // See explanation below for the following line.
+         it = rev_itr(v.erase(it.base()));
+      } else
+         ++it;
+}
+Note some points for the preceding loop:
+    •  Given a reverse iterator it pointing to some element, the method base gives the regular (non-reverse)
+      iterator pointing to the same element.
+    •  vector::erase(iterator) erases the element pointed to by an iterator, and returns an iterator to the
+      element that followed the given element.
+    •  reverse_iterator::reverse_iterator(iterator) constructs a reverse iterator from an iterator.
+Put altogether, the line it = rev_itr(v.erase(it.base())) says: take the reverse iterator it, have v erase the
+element pointed by its regular iterator; take the resulting iterator, construct a reverse iterator from it, and assign it
+to the reverse iterator it.
+Deleting all elements using v.clear() does not free up memory (capacity() of the vector remains unchanged). To
+reclaim space, use:
+std::vector<int>().swap(v);
+Version > C++11
+shrink_to_fitO frees up unused vector capacity:
+v.shrink_to_fit();
+The shrink_to_fit does not guarantee to really reclaim space, but most current implementations do.
+Section 50.4: Iterating Over std::vector
+You can iterate over a std::vector in several ways. For each of the following sections, v is defined as follows:
+std::vector<int> v;
+Iterating in the Forward Direction
+Version > C++11
+// Range based for
+for(const auto& value: v) {
+     std::cout << value << "\n";
+}
+// Using a for loop with iterator
+for(auto it = std::begin(v); it != std::end(v); ++it) {
+     std::cout << *it << "\n";
+}
+// Using for_each algorithm, using a function or functor:
+void fun(int const& value) {
+std::cout << value << "\n";
+}
+std::for_each(std::begin(v), std::end(v), fun);
+// Using for_each algorithm. Using a lambda:

@@ -1,0 +1,46 @@
+﻿#pragma omp parallel sections
+{
+     // Execute these sections in parallel
+     #pragma omp section
+     {
+          ... do something ...
+          std::cout << "hello ";
+     }
+     #pragma omp section
+     {
+          ... do something ...
+          std::cout << "world ";
+     }
+     #pragma omp section
+     {
+          ... do something ...
+          std::cout << "forever ";
+     }
+}
+// end of parallel sections
+std::cout << "end";
+Output
+    •  begin hello world forever end
+    •  begin world hello forever end
+    •  begin hello forever world end
+    •  begin forever hello world end
+As execution order is not guaranteed, you may observe any of the above output.
+Section 131.3: OpenMP: Parallel For Loop
+This example shows how to divide a loop into equal parts and execute them in parallel.
+// Splits element vector into element.size() / Thread Qty
+// and allocate that range for each thread.
+#pragma omp parallel for
+for    (size_t i = 0; i < element.size (); ++i)        
+    element[i] = ...                                   
+//  Example Allocation (100 element    per thread)     
+//    Thread 1 : 0 ~ 99                                
+//    Thread 2 : 100 ~ 199                             
+//    Thread 2 : 200 ~ 299                             
+//                                                     
+//    Continue process                                 
+//   Only when all threads completed   their allocated 
+//    loop job                                         
+*Please take extra care to not modify the size of the vector used in parallel for loops as allocated range indices
+doesn't update automatically.
+Section 131.4: OpenMP: Parallel Gathering / Reduction
+This example illustrates a concept to perform reduction or gathering using std ::vector and OpenMP.

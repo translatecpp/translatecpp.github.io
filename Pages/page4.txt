@@ -1,0 +1,43 @@
+﻿    // This is a single-line comment.
+    int a; // this also is a single-line comment
+    int i; // this is another single-line comment
+C-Style/Block Comments
+The sequence /* is used to declare the start of the comment block and the sequence */ is used to declare the end
+of comment. All text between the start and end sequences is interpreted as a comment, even if the text is
+otherwise valid C++ syntax. These are sometimes called "C-style" comments, as this comment syntax is inherited
+from C++'s predecessor language, C:
+int main()
+{
+    /*
+     * This is a block comment.
+     */
+    int a;
+}
+In any block comment, you can write anything you want. When the compiler encounters the symbol */, it
+terminates the block comment:
+int main()
+{
+    /* A block comment with the symbol /*
+       Note that the compiler is not affected by the second /*
+       however, once the end-block-comment symbol is reached,
+       the comment ends.
+    */
+    int a;
+}
+The above example is valid C++ (and C) code. However, having additional /* inside a block comment might result in
+a warning on some compilers.
+Block comments can also start and end within a single line. For example:
+void SomeFunction(/* argument 1 */ int a, /* argument 2 */ int b);
+Importance of Comments
+As with all programming languages, comments provide several benefits:
+    •  Explicit documentation of code to make it easier to read/maintain
+    •  Explanation of the purpose and functionality of code
+    •  Details on the history or reasoning behind the code
+    •  Placement of copyright/licenses, project notes, special thanks, contributor credits, etc. directly in the source
+      code.
+However, comments also have their downsides:
+    •  They must be maintained to reflect any changes in the code
+    •  Excessive comments tend to make the code less readable
+The need for comments can be reduced by writing clear, self-documenting code. A simple example is the use of
+explanatory names for variables, functions, and types. Factoring out logically related tasks into discrete functions
+goes hand-in-hand with this.

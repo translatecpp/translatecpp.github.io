@@ -1,0 +1,39 @@
+﻿Version > C++11
+std::vector<int> v{ 1, 2, 3 };
+int* p = v.data();
+In contrast to solutions based on previous C++ standards (see below), the member function .data() may also be
+applied to empty vectors, because it doesn't cause undefined behavior in this case.
+Before C++11, you would take the address of the vector's first element to get an equivalent pointer, if the vector
+isn't empty, these both methods are interchangeable:
+int* p = &v[0];      //  combine subscript operator and 0 literal
+int* p = &v.front(); // explicitly reference the first element
+Note: If the vector is empty, v[0] and v.front() are undefined and cannot be used.
+When storing the base address of the vector's data, note that many operations (such as push_back, resize, etc.) can
+change the data memory location of the vector, thus invalidating previous data pointers. For example:
+std::vector<int> v;
+int* p = v.data();
+v.resize(42);      // internal memory location changed; value of p is now invalid
+Section 50.8: Finding an Element in std::vector
+The function std::find, defined in the <algorithm> header, can be used to find an element in a std ::vector.
+std ::find uses the operator== to compare elements for equality. It returns an iterator to the first element in the
+range that compares equal to the value.
+If the element in question is not found, std ::find returns std ::vector::end (or std ::vector::cend if the vector is
+const).
+Version < C++11
+static const int arr[] = {5, 4, 3, 2, 1};
+std::vector<int> v (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+std::vector<int>::iterator it = std::find(v.begin(), v.end(), 4);
+std::vector<int>::difference_type index = std::distance(v.begin(), it);
+// 'it' points to the second element of the vector, 'index' is 1
+std::vector<int>::iterator missing = std::find(v.begin(), v.end(), 10);
+std::vector<int>::difference_type index_missing = std::distance(v.begin(), missing);
+// 'missing' is v.end(), 'index_missing' is 5 (ie. size of the vector)
+Version > C++11
+std::vector<int> v { 5, 4, 3, 2, 1 };
+auto it = std::find(v.begin(), v.end(), 4);
+auto index = std::distance(v.begin(), it);
+// 'it' points to the second element of the vector, 'index' is 1
+auto missing = std::find(v.begin(), v.end(), 10);
+auto index_missing = std::distance(v.begin(), missing);
+// 'missing' is v.end(), 'index_missing' is 5 (ie. size of the vector)
+If you need to perform many searches in a large vector, then you may want to consider sorting the vector first,

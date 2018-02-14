@@ -1,0 +1,44 @@
+﻿       int a[10];
+       int b[10];
+       int *p1 = &a[8], *p2 = &a[3];
+       int d1 = pi - p2; // yields 5
+       int *p3 = p1 + 2; // ok; p3 points to one past the end of a
+       int d2 = p3 - p2; // yields 7
+       int *p4 = &b[0];
+       int d3 = p4 - p1; // UB
+     • Subtraction of two pointers if the result overflows std::ptrdiff_t.
+     • Any pointer arithmetic where either operand's pointee type does not match the dynamic type of the object
+       pointed to (ignoring cv-qualification). According to the standard, "[in] particular, a pointer to a base class
+       cannot be used for pointer arithmetic when the array contains objects of a derived class type."
+struct Base { int x; };                                       
+struct Derived : Base { int y; };                             
+Derived a[10];                                                
+Base* p1 = &a[1];           // ok                             
+Base* p2 = p1 + 1;          // UB; p1 points to Derived       
+Base* p3 = p1 - 1;          // likewise                       
+Base* p4 = &a[2];           // ok                             
+auto p5 = p4 - p1;          // UB; p4 and p1 point to Derived 
+const Derived* p6 = &a[1];                                    
+const Derived* p7 = p6 + 1; // ok; cv-qualifiers don't matter 
+Section 104.7: No return statement for a function with a non-
+void return type
+Omitting the return statement in a function which is has a return type that is not void is undefined behavior.
+int function() {
+     // Missing return statement
+}
+int main() {
+     function(); //Undefined Behavior
+}
+Most modern day compilers emit a warning at compile time for this kind of undefined behavior.
+Note: main is the only exception to the rule. If main doesn't have a return statement, the compiler automatically
+inserts return 0; for you, so it can be safely left out.
+Section 104.8: Accessing a dangling reference
+It is illegal to access a reference to an object that has gone out of scope or been otherwise destroyed. Such a
+reference is said to be dangling since it no longer refers to a valid object.
+#include <iostream>
+int& getX() {
+int x = 42;
+return x;
+}
+int main() {
+     int& r = getX();

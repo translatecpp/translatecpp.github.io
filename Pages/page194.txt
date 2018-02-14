@@ -1,0 +1,44 @@
+﻿the class' scope.
+struct ST {
+     void defined_inside() {}
+     void defined_outside();
+};
+void ST::defined_outside() {}
+They can be CV-qualified and/or ref-qualified, affecting how they see the instance they're called upon; the function
+will see the instance as having the specified cv-qualifier(s), if any. Which version is called will be based on the
+instance's cv-qualifiers. If there is no version with the same cv-qualifiers as the instance, then a more-cv-qualified
+version will be called if available.
+struct CVQualifiers {
+     void func()                     {} // 1: Instance is non-cv-qualified.
+     void func() const               {} // 2: Instance is const.
+     void cv_only() const volatile {}
+};
+CVQualifiers        non_cv_instance;
+const CVQualifiers       c_instance;
+non_cv_instance.func(); // Calls #1.
+c_instance.func();       // Calls #2.
+non_cv_instance.cv_only(); // Calls const volatile version.
+c_instance.cv_only();       // Calls const volatile version.
+Version > C++11
+Member function ref-qualifiers indicate whether or not the function is intended to be called on rvalue instances,
+and use the same syntax as function cv-qualifiers.
+struct RefQualifiers {
+      void func() & {} // 1: Called on normal instances.
+      void func() && {} // 2: Called on rvalue (temporary) instances.
+};
+RefQualifiers rf;
+rf.func();                // Calls #1.
+RefQualifiers{}.func(); // Calls #2.
+CV-qualifiers and ref-qualifiers can also be combined if necessary.
+struct BothCVAndRef {
+     void func() const& {} // Called on normal instances. Sees instance as const.
+     void func() &&       {} // Called on temporary instances.
+};
+They can also be virtual; this is fundamental to polymorphism, and allows a child class(es) to provide the same
+interface as the parent class, while supplying their own functionality.
+struct Base {
+      virtual void func() {}
+};
+struct Derived {
+      virtual void func() {}
+};

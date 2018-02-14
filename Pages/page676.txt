@@ -1,0 +1,100 @@
+﻿# run to generate profiling data
+./main
+# translate profiling data to text, create image
+gprof ./main | gprof2dot -s | dot -Tpng -o output.png
+                                                                                      65.77%
+                                                                                     10000000k
+56.91%
+100000005
+5.06%
+10000000s
+11.39%
+100000015
+5.06%
+,100000005
+3.80%
+100000005
+I 37.97%
+[9999975?
+| 2.53%
+20000002*
+30.38%
+10000000-
+   1.27%
+10000000=
+1.27%
+10000000)
+26.58%
+,10000000s
+1.27%
+10000000?
+1.27%
+100000005
+   5.06%
+100000005
+                                                                                                                                                                            std; vector;ipush back
+                                                                                                                                                                            65,77%
+                                                                                                                                                                                   (3:80%)
+                                                                                                                                                                                  1Q0QQDOQ*
+int std: accumulate
+     27.85%
+     (7.59%)
+                                                                                                        void std::vector::emplace_back
+                                                                                                        56:91%
+                                                                                                                   (15.19%)
+                                                                                                                  10000000*
+                                                                                                     std: :remove_reterence: :type&& std: :move
+                                                                                                     5.06%
+                                                                                                                    (5.06%)
+                                                                                                                   10000000*
+gnu_cxx::operatork
+’ 11.39%
+(8.86%)
+10000001*
+normal_iterator::operator*
+’ 5.06%
+(5.06%)
+10000000*
+normal_iterator::operator++
+’  3.80%
+(3.80%)
+10000000*
+                                                                                                    std::enable_if::type std::alIocator_traits::_S_construct
+                                                                                                    30.38%
+                                                                                                                           (2.53%)
+                                                                                                                         10000000*
+void std::_Destroy
+      1.27%
+      (0.00%)
+                                                                                                                         26*
+x::new_allocator: construct
+26.58%
+(20:25%)
+10000000*
+void std::_Destroy
+      1.27%
+      (0.00%)
+                                                                                                                         26*
+decltype std::allocator traits:construct 1 void std: ivector;: M emplace back aux 1 gnu cxx:; normal iterator::base 
+                 37:97%                                     2.48%                                2.53%              
+                (6.33%)                                    (1.27%)                              (2.53%)             
+               10000000*                 1 __i                                                 20000002*            
+long&& std:forward  operator new   void std:: Destroy aux:: destroy 
+      5.06%            5.06%                    1.27%               
+     (5.06%)          (5.06%)                  (1.27%)              
+    40000025*        10000000*   ■               26*                
+Section 145.3: Profiling CPU Usage with gcc and Google Perf
+Tools
+Google Perf Tools also provides a CPU profiler, with a slightly friendlier interface. To use it:
+    1. Install Google Perf Tools
+    2. Compile your code as usual
+    3. Add the libprofiler profiler library to your library load path at runtime
+    4. Use pprof to generate a flat execution profile, or a callgraph diagram
+For example:
+#  compile code
+g++ -O3 -std=c++11 main.cpp -o main
+#  run with profiler
+LD_PRELOAD=/usr/local/lib/libprofiler.so CPUPROFILE=main.prof CPUPROFILE_FREQUENCY=100000 ./main
+where:
+    •  CPUPROFILE indicates the output file for profiling data
+    •  CPUPROFILE_FREQUENCY indicates the profiler sampling frequency;

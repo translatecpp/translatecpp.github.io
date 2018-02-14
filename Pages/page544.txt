@@ -1,0 +1,47 @@
+﻿To create a move constructor, however, we will be taking an rvalue reference instead of an lvalue reference, like
+here.
+class Wallet {
+public:
+      int nrOfDollars;
+      Wallet() = default; //default ctor
+      Wallet(Wallet &&other) {
+          this->nrOfDollars = other.nrOfDollars;
+          other.nrOfDollars = 0;
+      }
+};
+Please notice that we set the old values to zero. The default move constructor (Wallet(Wallet&&) = default;)
+copies the value of nrOfDollars, as it is a POD.
+As move semantics are designed to allow 'stealing' state from the original instance, it is important to consider how
+the original instance should look like after this stealing. In this case, if we would not change the value to zero we
+would have doubled the amount of dollars into play.
+Wallet a;
+a.nrOfDollars = 1;
+Wallet b (std::move(a)); //calling B(B&& other);
+std::cout << a.nrOfDollars << std::endl; //0
+std::cout << b.nrOfDollars << std::endl; //1
+Thus we have move constructed an object from an old one.
+While the above is a simple example, it shows what the move constructor is intended to do. It becomes more useful
+in more complex cases, such as when resource management is involved.
+     // Manages operations involving a specified type.
+     // Owns a helper on the heap, and one in its memory (presumably on the stack).
+     // Both helpers are DefaultConstructible, CopyConstructible, and MoveConstructible.
+     template<typename T,
+               template<typename> typename HeapHelper,
+     template<typename> typename StackHelper>
+     class OperationsManager {
+         using MyType = OperationsManager<T, HeapHelper, StackHelper>;
+         HeapHelper<T>* h_helper;
+         StackHelper<T> s_helper;
+         // ...
+       public:
+         // Default constructor & Rule of Five.
+         OperationsManager() : h_helper(new HeapHelper<T>) {}
+         OperationsManager(const MyType& other)
+                      : h_helper(new HeapHelper<T>(*other.h_helper)), s_helper(other.s_helper) {}
+         MyType& operator=(MyType copy) {
+              swap(*this, copy);
+              return *this;
+         }
+         ~OperationsManager() {
+              if (h_helper) { delete h_helper; }
+         }

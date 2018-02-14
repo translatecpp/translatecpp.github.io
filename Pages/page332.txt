@@ -1,0 +1,36 @@
+﻿Accumulated value of f applications.
+Complexity:
+O(n*k), where n is the distance from first to last, O(k) is complexity of f function.
+Example:
+Simple sum example:
+std::vector<int> v { 2, 3, 4 };
+auto sum = std::accumulate(v.begin(), v.end(), 1);
+std::cout << sum << std::endl;
+Output:
+10
+Convert digits to number:
+Version < c++11
+class Converter {
+public:
+      int operator()(int a, int d) const { return a * 10 + d; }
+};
+and later
+const int ds[3] = {1, 2, 3};
+int n = std::accumulate(ds, ds + 3, 0, Converter());
+std::cout << n << std::endl;
+Version > c++11
+const std::vector<int> ds = {1, 2, 3};
+int n = std::accumulate(ds.begin(), ds.end(),
+                          0,
+                          [](int a, int d) { return a * 10 + d; });
+std::cout << n << std::endl;
+Output:
+123
+Section 63.4: std::find
+template <class InputIterator, class T>
+InputIterator find (InputIterator first, InputIterator last, const T& val);
+Effects
+Finds the first occurrence of val within the range [first, last)
+Parameters
+first => iterator pointing to the beginning of the range last => iterator pointing to the end of the range val => The
+value to find within the range

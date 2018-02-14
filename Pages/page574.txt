@@ -1,0 +1,42 @@
+﻿     auto total = t1 + t2 + t3 + t4 + t5 + t6;
+     std::cout.precision(13);
+     std::cout << total.count() << " nanoseconds" << std::endl; // 8941051042600 nanoseconds
+     std::cout << std ::chrono ::duration_cast<std ::chrono::hours>(total).count()
+               << " hours" << std::endl; // 2 hours
+}
+Section 114.3: User-defined literals with long double values
+#include <iostream>
+long double operator"" _km(long double val)
+{
+     return val * 1000.0;
+}
+long double operator"" _mi(long double val)
+{
+     return val * 1609.344;
+}
+int main()
+{
+     std::cout << "3 km = " << 3.0_km << " m\n";
+     std::cout << "3 mi = " << 3.0_mi << " m\n";
+     return 0;
+}
+The output of this program is the following:
+3 km = 3000 m
+3 mi = 4828.03 m
+Section 114.4: Standard user-defined literals for strings
+Version > C++14
+Those following string user literals are declared in the namespace std ::literals ::string_literals, where both
+literals and string_literals are inline namespaces. Access to these operators can be gained with using
+namespace std::literals, using namespace std::string_literals, and using namespace
+std ::literals::string_literals.
+#include <codecvt>
+#include <iostream>
+#include <locale>
+#include <string>
+int main()
+{
+     using namespace std::literals::string_literals;
+     std::string s = "hello world"s;
+     std::u16string s16 = u"hello world"s;
+     std::u32string s32 = U"hello world"s;
+     std::wstring ws = L"hello world"s;

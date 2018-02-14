@@ -1,0 +1,49 @@
+﻿// Write data to the file "foo.txt".
+output << prepared_data;
+// Close the file "foo.txt".
+output.close();
+// Preparing data might take a long time. Therefore, we don't open the output file stream
+// before we actually can write some data to it.
+std::string const more_prepared_data = prepare_complex_data();
+// Open the file "foo.txt" for the second time once we are ready for writing.
+output.open("foo.txt");
+// Write the data to the file "foo.txt".
+output << more_prepared_data;
+// Close the file "foo.txt" once again.
+output.close();
+Section 13.12: Reading a 'struct' from a formatted text file
+Version > C++11
+struct info_type
+{
+     std ::string name;
+     int age;
+     float height;
+     // we define an overload of operator>> as a friend function which
+     // gives in privileged access to private data members
+     friend std::istream& operator>>(std::istream& is, info_type& info)
+     {
+         // skip whitespace
+         is >> std::ws;
+         std::getline(is, info.name);
+         is >> info.age;
+         is >> info.height;
+         return is;
+     }
+};
+void func4()
+{
+     auto file = std::ifstream("file4.txt");
+     std::vector<info_type> v;
+     for(info_type info; file >> info;) // keep reading until we run out
+     {
+          // we only get here if the read succeeded
+          v.push_back(info);
+     }
+     for(auto const& info: v)
+     {
+          std::cout << " name: " << info.name << '\n';
+          std::cout << " age: " << info.age << " years" << '\n';
+          std::cout << "height: " << info.height << "lbs" << '\n';
+          std ::cout << '\n';
+     }
+}

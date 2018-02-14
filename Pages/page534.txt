@@ -1,0 +1,41 @@
+﻿void g(long x);
+void g(long double x);
+g(42); // ambiguous
+g(3.14); // ambiguous
+Therefore, in order to ensure that there will be no ambiguity when calling a function f with either integral or
+floating-point arguments of any standard type, a total of eight overloads are needed, so that for each possible
+argument type, either an overload matches exactly or the unique overload with the promoted argument type will
+be selected.
+void f(int x);
+void f(unsigned int x);
+void f(long x);
+void f(unsigned long x);
+void f(long long x);
+void f(unsigned long long x);
+void f(double x);
+void f(long double x);
+Section 105.3: Overloading on Forwarding Reference
+You must be very careful when providing a forwarding reference overload as it may match too well:
+struct A {
+A() = default;          // #1 
+A(A const& ) = default; // CM 
+template <class T>            
+A(T&& );                // CO 
+};
+The intent here was that A is copyable, and that we have this other constructor that might initialize some other
+member. However:
+A a;     // calls #1
+A b(a); // calls #3!
+There are two viable matches for the construction call:
+A(A const& ); // #2
+a(a& );        // #3, with T = A&
+Both are Exact Matches, but #3 takes a reference to a less cwqualified object than #2 does, so it has the better
+standard conversion sequence and is the best viable function.
+The solution here is to always constrain these constructors (e.g. using SFINAE):
+template <class T,
+     class = std::enable_if_t<!std::is_convertible<std::decay_t<T>*, A*>::value>
+     >
+A(T&& );
+The type trait here is to exclude any A or class publicly and unambiguously derived from A from consideration,
+which would make this constructor ill-formed in the example described earlier (and hence removed from the
+overload set). As a result, the copy constructor is invoked - which is what we wanted.

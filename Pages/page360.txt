@@ -1,0 +1,11 @@
+﻿Section 69.5: range-based for loop
+std::vector<int> primes = {2, 3, 5, 7, 11, 13};
+for(auto prime : primes) {
+     std::cout << prime << std::endl;
+}
+Section 69.6: for
+Introduces a for loop or, in C++11 and later, a range-based for loop.
+// print 10 asterisks
+for (int i = 0; i < 10; i++) {
+putchar('*');
+}

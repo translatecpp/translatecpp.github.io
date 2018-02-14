@@ -1,0 +1,37 @@
+﻿Section 75.6: Preprocessor Operators
+# operator or stringizing operator is used to convert a Macro parameter to a string literal. It can only be used with
+the Macros having arguments.
+// preprocessor will convert the parameter x to the string literal x
+#define PRINT(x) printf(#x "\n")
+PRINT(This line will be converted to string by preprocessor);
+// Compiler sees
+printf("This line will be converted to string by preprocessor""\n");
+Compiler concatenate two strings and the final printf() argument will be a string literal with newline character at
+its end.
+Preprocessor will ignore the spaces before or after the macro argument. So below print statement will give us the
+same result.
+PRINT( This line will be converted to string by preprocessor );
+If the parameter of the string literal requires an escape sequence like before a double quote() it will automatically
+be inserted by the preprocessor.
+PRINT(This "line" will be converted to "string" by preprocessor);
+// Compiler sees
+printf("This \"line\" will be converted to \"string\" by preprocessor""\n");
+## operator or Token pasting operator is used to concatenate two parameters or tokens of a Macro.
+// preprocessor will combine the variable and the x
+#define PRINT(x) printf("variable" #x " = %d", variable##x)
+int variableY = 15;
+PRINT(Y);
+//compiler sees
+printf("variable""Y"" = %d", variableY);
+and the final output will be
+variableY = 15
+Section 75.7: #pragma once
+Most, but not all, C++ implementations support the #pragma once directive which ensures the file is only included
+once within a single compilation. It is not part of any ISO C++ standard. For example:
+// Foo.h
+#pragma once
+class Foo
+{
+};
+While #pragma once avoids some problems associated with include guards, a #pragma - by definition in the
+standards - is inherently a compiler-specific hook, and will be silently ignored by compilers that don't support it.

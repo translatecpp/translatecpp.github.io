@@ -1,0 +1,41 @@
+﻿Chapter 49: std::array
+  Parameter                   Definition
+class T       Specifies the data type of array members
+std ::size_t N Specifies the number of members in the array
+Section 49.1: Initializing an std::array
+Initializing std ::array<T, N>, where T is a scalar type and N is the number of elements of type T
+If T is a scalar type, std ::array can be initialized in the following ways:
+// 1) Using aggregate-initialization
+std::array<int, 3> a{ 0, 1, 2 };
+// or equivalently
+std::array<int, 3> a = { 0, 1, 2 };
+// 2) Using the copy constructor
+std::array<int, 3> a{ 0, 1, 2 };
+std::array<int, 3> a2(a);
+// or equivalently
+std::array<int, 3> a2 = a;
+// 3) Using the move constructor
+std::array<int, 3> a = std::array<int, 3>{ 0, 1, 2 };
+Initializing std ::array<T, N>, where T is a non-scalar type and N is the number of elements of type T
+If T is a non-scalar type std ::array can be initialized in the following ways:
+struct A { int values[3]; }; // An aggregate type
+// 1) Using aggregate initialization with brace elision
+// It works only if T is an aggregate type!
+std::array<A, 2> a{ 0, 1, 2, 3, 4, 5 };
+// or equivalently
+std::array<A, 2> a = { 0, 1, 2, 3, 4, 5 };
+// 2) Using aggregate initialization with brace initialization of sub-elements
+std::array<A, 2> a{ A{ 0, 1, 2 }, A{ 3, 4, 5 } };
+// or equivalently
+std::array<A, 2> a = { A{ 0, 1, 2 }, A{ 3, 4, 5 } };
+// 3)
+std::array<A, 2> a{{ { 0, 1, 2 }, { 3, 4, 5 } }};
+// or equivalently
+std::array<A, 2> a = {{ { 0, 1, 2 }, { 3, 4, 5 } }};
+// 4) Using the copy constructor
+std::array<A, 2> a{ 1, 2, 3 };
+std::array<A, 2> a2(a);
+// or equivalently
+std::array<A, 2> a2 = a;
+// 5) Using the move constructor
+std::array<A, 2> a = std::array<A, 2>{ 0, 1, 2, 3, 4, 5 };

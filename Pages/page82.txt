@@ -1,0 +1,44 @@
+﻿      //will execute if a is a string "test"
+ } else {
+      // only if the first failed, will execute
+ }
+for multiple choices :
+ if (a=='a') {
+ // if a is a char valued 'a'
+ } else if (a=='b') {
+ // if a is a char valued 'b'
+ } else if (a=='c') {
+ // if a is a char valued 'c'
+ } else {
+ //if a is none of the above
+ }
+however it must be noted that you should use 'switch' instead if your code checks for the same variable's value
+Section 16.10: goto
+Jumps to a labelled statement, which must be located in the current function.
+ bool f(int arg) {
+      bool result = false;
+      hWidget widget = get_widget(arg);
+      if (!g()) {
+          // we can't continue, but must do cleanup still
+          goto end;
+      }
+      // ...
+      result = true;
+   end:
+      release_widget(widget);
+      return result;
+ }
+Section 16.11: Jump statements : break, continue, goto, exit
+The break instruction:
+Using break we can leave a loop even if the condition for its end is not fulfilled. It can be used to end an infinite
+loop, or to force it to end before its natural end
+The syntax is
+ break;
+Example: we often use break in switch cases,ie once a case i switch is satisfied then the code block of that
+condition is executed .
+ switch(conditon){
+ case 1 : block1;
+ case 2: block2;
+ case 3: block3;
+ default: blockdefault;
+ }

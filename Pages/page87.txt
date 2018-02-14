@@ -1,0 +1,39 @@
+﻿In C++ Metaprogramming refers to the use of macros or templates to generate code at compile-time.
+In general, macros are frowned upon in this role and templates are preferred, although they are not as generic.
+Template metaprogramming often makes use of compile-time computations, whether via templates or constexpr
+functions, to achieve its goals of generating code, however compile-time computations are not metaprogramming
+per se.
+Section 17.1: Calculating Factorials
+Factorials can be computed at compile-time using template metaprogramming techniques.
+#include <iostream>
+template<unsigned int n>
+struct factorial
+{
+    enum
+    {
+       value = n * factorial<n - 1>::value
+    };
+};
+template<>
+struct factorial<0>
+{
+     enum { value = 1 };
+};
+int main()
+{
+     std::cout << factorial<7>::value << std::endl; // prints "5040"
+}
+factorial is a struct, but in template metaprogramming it is treated as a template metafunction. By convention,
+template metafunctions are evaluated by checking a particular member, either ::type for metafunctions that result
+in types, or ::value for metafunctions that generate values.
+In the above code, we evaluate the factorial metafunction by instantiating the template with the parameters we
+want to pass, and using ::value to get the result of the evaluation.
+The metafunction itself relies on recursively instantiating the same metafunction with smaller values. The
+factorial<0> specialization represents the terminating condition. Template metaprogramming has most of the
+restrictions of a functional programming language, so recursion is the primary "looping" construct.
+Since template metafunctions execute at compile time, their results can be used in contexts that require compile-
+time values. For example:
+int my_array[factorial<5>::value];
+Automatic arrays must have a compile-time defined size. And the result of a metafunction is a compile-time
+constant, so it can be used here.
+Limitation: Most of the compilers won't allow recursion depth beyond a limit. For example, g++ compiler by default

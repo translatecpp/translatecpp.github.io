@@ -1,0 +1,45 @@
+﻿is done by adding this to the capture list:
+class Foo
+{
+private:
+      int i;
+public:
+      Foo(int val) : i(val) {}
+      void Test()
+      {
+          // capture the this pointer by value
+          auto lamb = [this](int val)
+          {
+              i = val;
+          };
+          lamb(30);
+      }
+};
+When this is captured, the lambda can use member names of its containing class as though it were in its
+containing class. So an implicit this-> is applied to such members.
+Be aware that this is captured by value, but not the value of the type. It is captured by the value of this, which is a
+pointer. As such, the lambda does not own this. If the lambda out lives the lifetime of the object that created it, the
+lambda can become invalid.
+This also means that the lambda can modify this without being declared mutable. It is the pointer which is const,
+not the object being pointed to. That is, unless the outer member function was itself a const function.
+Also, be aware that the default capture clauses, both [ = ] and [&], will also capture this implicitly. And they both
+capture it by the value of the pointer. Indeed, it is an error to specify this in the capture list when a default is given.
+Version > C++17
+Lambdas can capture a copy of the this object, created at the time the lambda is created. This is done by adding
+*this to the capture list:
+class Foo
+{
+private:
+      int i;
+public:
+      Foo(int val) : i(val) {}
+      void Test()
+      {
+          // capture a copy of the object given by the this pointer
+          auto lamb = [*this](int val) mutable
+          {
+               i = val;
+          };
+          lamb(30); // does not change this->i
+      }
+};

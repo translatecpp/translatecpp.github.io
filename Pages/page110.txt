@@ -1,0 +1,37 @@
+﻿The type void* ("pointer to void") has the property that any object pointer can be converted to it and back and
+result in the same pointer. This feature makes the type void* suitable for certain kinds of (type-unsafe) type-erasing
+interfaces, for example for generic contexts in C-style APIs (e.g. qsort, pthread_create).
+Any expression may be converted to an expression of type void; this is called a discarded-value expression:
+static_cast<void>(std::printf("Hello, %s!\n", name)); // discard return value
+This may be useful to signal explicitly that the value of an expression is not of interest and that the expression is to
+be evaluated for its side effects only.
+Section 22.6: wchar_t
+An integer type large enough to represent all characters of the largest supported extended character set, also
+known as the wide-character set. (It is not portable to make the assumption that wchar_t uses any particular
+encoding, such as UTF-16.)
+It is normally used when you need to store characters over ASCII 255 , as it has a greater size than the character
+type char.
+const wchar_t message_ahmaric[] = L"       \\n"; //Ahmaric for "hello, world\\n"
+const wchar_t message_chinese[] = L"□□ nn\\n";// Chinese for "hello, world\\n"
+const wchar_t message_hebrew[] = L"dViv DiVwWn"; //Hebrew for "hello, world\\n"
+const wchar_t message_russian[] = L"npMBeT MMp\\n"; //Russian for "hello, world\\n"
+const wchar_t message_tamil[] = L"nnnoon □ □□□□\\n"; //Tamil for "hello, world\\n"
+Section 22.7: float
+A floating point type. Has the narrowest range out of the three floating point types in C++.
+float area(float radius) {
+     const float pi = 3.14159f;
+     return pi*radius*radius;
+}
+Section 22.8: double
+A floating point type. Its range includes that of float. When combined with long, denotes the long double floating
+point type, whose range includes that of double.
+double area(double radius) {
+     const double pi = 3.141592653589793;
+     return pi*radius*radius;
+}
+Section 22.9: long
+Denotes a signed integer type that is at least as long as int, and whose range includes at least -2147483647 to
++2147483647, inclusive (that is, -(2A31 - 1) to +(2A31 - 1)). This type can also be written as long int.
+const long approx_seconds_per_year = 60L*60L*24L*365L;
+The combination long double denotes a floating point type, which has the widest range out of the three floating
+point types.

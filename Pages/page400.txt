@@ -1,0 +1,45 @@
+﻿{
+};
+While #pragma once avoids some problems associated with include guards, a #pragma - by definition in the
+standards - is inherently a compiler-specific hook, and will be silently ignored by compilers that don't support it.
+Projects which use #pragma once are more difficult to port to compilers that don't support it.
+A number of coding guidelines and assurance standards for C++ specifically discourage any use of the preprocessor
+other than to #include header files or for the purposes of placing include guards in headers.
+Section 75.2: Conditional logic and cross-platform handling
+In a nutshell, conditional pre-processing logic is about making code-logic available or unavailable for compilation
+using macro definitions.
+Three prominent use-cases are:
+    •  different app profiles (e.g. debug, release, testing, optimised) that can be candidates of the same app (e.g.
+      with extra logging).
+    •  cross-platform compiles - single code-base, multiple compilation platforms.
+    •  utilising a common code-base for multiple application versions (e.g. Basic, Premium and Pro versions of a
+      software) - with slightly different features.
+Example a: A cross-platform approach for removing files (illustrative):
+#ifdef _WIN32
+#include <windows.h> // and other windows system files
+#endif
+#include <cstdio>
+bool remove_file(const std::string &path)
+{
+#ifdef _WIN32
+   return DeleteFile(path.c_str());
+#elif defined(_POSIX_VERSION) || defined(___unix__)
+   return (0 == remove(path.c_str()));
+#elif defined(__APPLE___)
+   //TODO: check if NSAPI has a more specific function with permission dialog
+   return (0 == remove(path.c_str()));
+#else
+#error "This platform is not supported"
+#endif
+}
+Macros like _WIN32, APPLE or unix are normally predefined by corresponding implementations.
+Example b: Enabling additional logging for a debug build:
+void s_PrintAppStateOnUserPrompt()
+{
+     std::cout << "---------BEGIN-DUMP---------------\n"
+                << AppState::Instance()->Settings().ToString() << "\n"
+#if ( 1 == TESTING_MODE ) //privacy: we want user details only when testing
+                << ListToString(AppState::UndoStack()->GetActionNames())
+                << AppState::Instance()->CrntDocument().Name()
+                << AppState::Instance()->CrntDocument().SignatureSHA() << "\n"
+#endif

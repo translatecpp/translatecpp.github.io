@@ -1,0 +1,20 @@
+﻿     • It is inside a class, so it needs its name decorated with the class name;
+     • It has accessibility, with public, protected or private.
+So, if you have access to the static member variable and decorate it correctly, then you can point to the variable
+like any normal variable outside a class:
+class Class {
+public:
+      static int i;
+}; // Class
+int Class::i = 1; // Define the value of i (and where it's stored!)
+int j = 2;     // Just another global variable
+int main() {
+      int k = 3; // Local variable
+     int *p;
+     p = &k;    // Point to k
+     *p = 2;    // Modify it
+     p = &j;    // Point to j
+     *p = 3;    // Modify it
+     p = &Class::i; // Point to Class::i
+     *p = 4;    // Modify it
+} // main()

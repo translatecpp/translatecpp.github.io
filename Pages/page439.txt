@@ -1,0 +1,45 @@
+﻿void foo()
+{
+     std ::this_thread ::sleep_until(std::chrono::system_clock::now() + std ::chrono ::hours(3));
+}
+std::thread thread{ foo };
+thread.join();
+std::cout << "We are now located 3 hours after the thread has been called\n";
+Letting other threads take priority using std ::this_thread ::yield:
+void foo(int a)
+{
+     for (int i = 0; i < al ++i)
+         std::this_thread::yield(); //Now other threads take priority, because this thread
+                                      //isn't doing anything important
+     std::cout << "Hello World!\n";
+}
+std::thread thread{ foo, 10 };
+thread.join();
+Section 80.8: Using Condition Variables
+A condition variable is a primitive used in conjunction with a mutex to orchestrate communication between
+threads. While it is neither the exclusive or most efficient way to accomplish this, it can be among the simplest to
+those familiar with the pattern.
+One waits on a std ::condition_variable with a std ::unique_lock<std ::mutex>. This allows the code to safely
+examine shared state before deciding whether or not to proceed with acquisition.
+Below is a producer-consumer sketch that uses std ::thread, std ::condition_variable, std ::mutex, and a few
+others to make things interesting.
+#include <condition_variable>
+#include <cstddef>
+#include <iostream>
+#include <mutex>
+#include <queue>
+#include <random>
+#include <thread>
+int main()
+{
+     std::condition_variable cond;
+     std::mutex mtx;
+     std::queue<int> intq;
+     bool stopped = false;
+     std::thread producer{[&]()
+     {
+         // Prepare a random number generator.
+         // Our producer will simply push random numbers to intq.
+         //
+         std::default_random_engine gen{};
+         std::uniform_int_distribution<int> dist{};

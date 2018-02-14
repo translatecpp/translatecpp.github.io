@@ -1,0 +1,40 @@
+﻿  };
+Due to not having a this pointer, their addresses can't be stored in pointers-to-member-functions, and are instead
+stored in normal pointers-to-functions.
+ struct ExPointer {
+                                                                                                     void nsfunc() {}
+                                                                                                     static void sfunc() {}
+ };
+ typedef void (ExPointer::* mem_f_ptr)();
+ typedef void (*f_ptr)();
+ mem_f_ptr p_sf = &ExPointer::sfunc; // Error.
+      f_ptr p_sf = &ExPointer::sfunc; // Good.
+Due to not having a this pointer, they also cannot be const or volatile, nor can they have ref-qualifiers. They also
+cannot be virtual.
+struct ExCVQualifiersAndVirtual {
+static void  func()                  {} // Good. 
+static void  cfunc()  const          {} // Error 
+static void  vfunc()  volatile       {} // Error 
+static void  cvfunc() const volatile {} // Error 
+static void  rfunc()  &              {} // Error 
+static void  rvfunc() &&             {} // Error 
+virtual static void   vsfunc()       {} // Error 
+static virtual void   svfunc()       {} // Error 
+  };
+As they aren't tied to a given instance, static member variables are effectively treated as special global variables;
+they're created when the program starts, and destroyed when it exits, regardless of whether any instances of the
+class actually exist. Only a single copy of each static member variable exists (unless the variable is declared
+thread_local (C++11 or later), in which case there's one copy per thread).
+Static member variables have the same linkage as the class, whether the class has external or internal linkage. Local
+classes and unnamed classes aren't allowed to have static members.
+Section 35.13: Multiple Inheritance
+Aside from single inheritance:
+ class A {};
+ class B : public A {};
+You can also have multiple inheritance:
+ class A {};
+ class B {};
+ class C : public A, public B {};
+C will now have inherit from A and B at the same time.
+Note: this can lead to ambiguity if the same names are used in multiple inherited classs or structs. Be careful!
+Ambiguity in Multiple Inheritance

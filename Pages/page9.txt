@@ -1,0 +1,34 @@
+﻿The prototype must specify the return type (void), the name of the function (foo), and the argument list variable
+types (int), but the names of the arguments are NOT required.
+One common way to integrate this into the organization of source files is to make a header file containing all of the
+prototype declarations:
+// foo.h
+                                                                        void foo(int); // prototype declaration
+                                                                        and then provide the full definition elsewhere:
+// foo.cpp --> foo.o
+#include "foo.h" // foo's prototype declaration is "hidden" in here
+void foo(int x) { } // foo's body definition
+and then, once compiled, link the corresponding object file foo.o into the compiled object file where it is used in
+the linking phase, main.o:
+// main.cpp --> main.o
+#include "foo.h" // foo's prototype declaration is "hidden" in here
+int main() { foo(2); } // foo is valid to call because its prototype declaration was beforehand.
+// the prototype and body definitions of foo are linked through the object files
+An "unresolved external symbol" error occurs when the function prototype and call exist, but the function body is
+not defined. These can be trickier to resolve as the compiler won't report the error until the final linking stage, and
+it doesn't know which line to jump to in the code to show the error.
+Section 1.6: Preprocessor
+The preprocessor is an important part of the compiler.
+It edits the source code, cutting some bits out, changing others, and adding other things.
+In source files, we can include preprocessor directives. These directives tells the preprocessor to perform specific
+actions. A directive starts with a # on a new line. Example:
+#define ZERO 0
+The first preprocessor directive you will meet is probably the
+#include <something>
+directive. What it does is takes all of something and inserts it in your file where the directive was. The hello world
+program starts with the line
+#include <iostream>
+This line adds the functions and objects that let you use the standard input and output.
+The C language, which also uses the preprocessor, does not have as many header files as the C++ language, but in
+C++ you can use all the C header files.
+The next important directive is probably the

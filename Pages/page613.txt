@@ -1,0 +1,44 @@
+﻿Section 128.1: The Basics
+const correctness is the practice of designing code so that only code that needs to modify an instance is able to
+modify an instance (i.e. has write access), and conversely, that any code that doesn't need to modify an instance is
+unable to do so (i.e. only has read access). This prevents the instance from being modified unintentionally, making
+code less errorprone, and documents whether the code is intended to change the instance's state or not. It also
+allows instances to be treated as const whenever they don't need to be modified, or defined as const if they don't
+need to be changed after initialisation, without losing any functionality.
+This is done by giving member functions const CV-qualifiers, and by making pointer/reference parameters const,
+except in the case that they need write access.
+class ConstCorrectClass {
+     int x;
+   public:
+     int getX() const { return x; } // Function is const: Doesn't modify instance.
+     void setX(int i) { x = i; }  // Not const: Modifies instance.
+};
+// Parameter is const: Doesn't modify parameter.
+int const_correct_reader(const ConstCorrectClass& c) {
+return c.getX();
+}
+// Parameter isn't const: Modifies parameter.
+void const_correct_writer(ConstCorrectClass& c) {
+c.setX(42);
+}
+const ConstCorrectClass invariant; // Instance is const: Can't be modified.
+ConstCorrectClass       variant; // Instance isn't const: Can be modified.
+// ...
+const_ _correct_reader(invariant); // Good.  Calling 
+const_ _correct_reader(variant);   // Good.  Calling 
+const_ _correct_writer(variant);   // Good.  Calling 
+const_ _correct_writer(invariant); // Error. Calling 
+non-modifying function on const instance.
+non-modifying function on modifiable instance.
+modifying function on modifiable instance.
+modifying function on const instance.
+Due to the nature of const correctness, this starts with the class' member functions, and works its way outwards; if
+you try to call a non-const member function from a const instance, or from a non-const instance being treated as
+const, the compiler will give you an error about it losing cv-qualifiers.
+Section 128.2: Const Correct Class Design
+In a const-correct class, all member functions which don't change logical state have this cv-qualified as const,
+indicating that they don't modify the object (apart from any mutable fields, which can freely be modified even in
+const instances); if a const cv-qualified function returns a reference, that reference should also be const. This
+allows them to be called on both constant and non-cv-qualified instances, as a const T* is capable of binding to
+either a T* or a const T*. This, in turn, allows functions to declare their passed-by-reference parameters as const
+when they don't need to be modified, without losing any functionality.

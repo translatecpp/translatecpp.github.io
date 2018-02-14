@@ -1,0 +1,39 @@
+﻿lamb1(x); // Illegal; must use 'std::move(x)' for 'int&&' parameters.
+lamb2(x); // Legal; the type of 'x' is deduced as 'int&'.
+Lambda functions can be variadic and perfectly forward their arguments:
+auto lam = [](auto&&... args){return f(std::forward<decltype(args)>(args)...);};
+or:
+auto lam = [](auto&&... args){return f(decltype(args)(args)...);};
+which only works "properly" with variables of type auto&&.
+A strong reason to use generic lambdas is for visiting syntax.
+boost::variant<int, double> value;
+apply_visitor(value, [&](auto&& e){
+std::cout << e;
+});
+Here we are visiting in a polymorphic manner; but in other contexts, the names of the type we are passing isn't
+interesting:
+mutex_wrapped<std::ostream&> os = std::cout;
+os.write([&](auto&& os){
+os << "hello world\n";
+});
+Repeating the type of std ::ostream& is noise here; it would be like having to mention the type of a variable every
+time you use it. Here we are creating a visitor, but no a polymorphic one; auto is used for the same reason you
+might use auto in a for(:) loop.
+Section 73.9: Using lambdas for inline parameter pack
+unpacking
+Version > C++14
+Parameter pack unpacking traditionally requires writing a helper function for each time you want to do it.
+In this toy example:
+template<std::size_t...Is>
+void print_indexes( std::index_sequence<Is...> ) {
+   using discard=int[];
+   (void)discard{0, ((void)(
+     std::cout << Is << '\n' // here Is is a compile-time constant.
+   ),0)...};
+}
+template<std::size_t I>
+void print_indexes_upto() {
+   return print_indexes( std::make_index_sequence<I>{} );
+}
+The print_indexes_upto wants to create and unpack a parameter pack of indexes. In order to do so, it must call a
+helper function. Every time you want to unpack a parameter pack you created, you end up having to create a

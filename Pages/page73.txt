@@ -1,0 +1,60 @@
+﻿std:  :cout << ' \n'                                
+            << "default precision (6):   pi:   " << 
+            << "                         10pi: " << 
+            << "std:: setprecision(4):   10pi: " << 
+            << "                     10000pi:  " << 
+            << "std::         fixed: 10000pi:  " << 
+' \n'       << "std:: setprecision(10):  pi:   " << 
+            << "max-1 radix precicion:   pi:   " << 
+            << "max+1 radix precision:   pi:   " << 
+            << "significant digits prec  : pi: " << 
+pi << '\n'
+10 * pi << '\n'
+std::setprecision(4) << 10 * pi << '\n'
+10000 * pi << '\n'
+std::fixed << 10000 * pi << std::defaultfloat <<
+std::setprecision(10) << pi << '\n'
+std::setprecision(ld::digits - 1) << pi << '\n'
+std::setprecision(ld::digits + 1) << pi << '\n'
+std::setprecision(ld::digits10) << pi << '\n';
+// Output:
+// default precision (6):    pi:
+//                         10pi:
+// std::setprecision(4): 10pi:
+//                     10000pi:
+// std::fixed:         10000pi:
+// std::setprecision(10):   pi:
+// max-1 radix precicion:   pi:
+// max+1 radix precision:   pi:
+// significant digits prec: pi:
+3.14159
+31.4159
+31.42
+3.142e+04
+31415.9265
+3.141592654
+3.14159265358979323851280895940618620443274267017841339111328125
+3.14159265358979323851280895940618620443274267017841339111328125
+3.14159265358979324
+Default is std ::setprecision(6).
+std::setiosflags(mask) and std::resetiosflags(mask) - set and clear flags specified in mask of
+std ::ios_base::fmtflags type.
+#include <sstream>
+std::istringstream in("10 010 10 010 10 010");
+int num1, num2;
+in >> std::oct >> num1 >> num2;
+std: :cout  << "Parsing   \"10 010\" with std::oct gives: " << num1 << ' ' << num2 << ' \n 
+// Output:  : Parsing "10 010" with  std::oct gives: 8 8                                   
+in >> std:  ::dec >> num1 >> num2;                                                         
+std: :cout  << "Parsing   \"10 010\" with std::dec gives: " << num1 << ' ' << num2 << ' \n 
+// Output:  : Parsing "10 010" with  std::oct gives: 10 10                                 
+in >> std::resetiosflags(std::ios_base::basefield) >> num1 >> num2;
+std::cout << "Parsing \"10 010\" with autodetect gives: " << num1 << ' ' << num2 << '\n';
+// Parsing "10 010" with autodetect gives: 10 8
+std::cout << std::setiosflags(std::ios_base::hex |
+                                std::ios_base::uppercase |
+                                std::ios_base::showbase) << 42 << '\n';
+// Output: OX2A
+std::skipws and std::noskipws. - control skipping of leading whitespace by the formatted input functions. Have no
+effect on output streams.
+#include <sstream>

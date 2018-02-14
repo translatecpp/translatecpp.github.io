@@ -1,0 +1,44 @@
+﻿     • Any type which has member functions begin() and end(), which return iterators to the elements of the type.
+       The standard library containers qualify, but user-defined types can be used as well:
+       struct Rng
+       {
+           float arr[3];
+           // pointers are iterators
+           const float* begin() const {return &arr[0];}
+           const float* end() const {return &arr[3];}
+           float* begin() {return &arr[0];}
+           float* end() {return &arr[3];}
+       };
+       int main()
+       {
+           Rng rng = {{0.4f, 12.5f, 16.234f}};
+           for(auto val: rng)
+           {
+                std::cout << val << " ";
+           }
+       }
+    • Any type which has non-member begin(type) and end(type) functions which can found via argument
+      dependent lookup, based on type. This is useful for creating a range type without having to modify class type
+      itself:
+       namespace Mine
+       {
+           struct Rng {float arr[3];};
+           // pointers are iterators
+           const float* begin(const Rng &rng) {return &rng.arr[0];}
+           const float* end(const Rng &rng) {return &rng.arr[3];}
+           float* begin(Rng &rng) {return &rng.arr[0];}
+           float* end(Rng &rng) {return &rng.arr[3];}
+       }
+       int main()
+       {
+           Mine::Rng rng = {{0.4f, 12.5f, 16.234f}};
+           for(auto val: rng)
+           {
+                std::cout << val << " ";
+           }
+       }
+Section 12.2: For loop
+A for loop executes statements in the loop body, while the loop condition is true. Before the loop initialization
+statement is executed exactly once. After each cycle, the iteration execution part is executed.
+A for loop is defined as follows:
+for (/*initialization statement*/; /*condition*/; /*iteration execution*/)

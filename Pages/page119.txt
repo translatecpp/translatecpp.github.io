@@ -1,0 +1,38 @@
+﻿Class members as friends
+class B;
+class A {
+public:
+    int Funcl( B& b );
+private:
+    int Func2( B& b );
+};
+class B {
+private:
+int _b;
+    // A::Func1 is a friend function to class B
+    // so A::Func1 has access to all members of B
+    friend int A::Func1( B& );
+};
+int A::Func1 ( B& b ) { return b._b; } // OK
+int A::Func2( B& b ) { return b._b; }  // C2248
+Section 24.3: typename
+   1. When followed by a qualified name, typename specifies that it is the name of a type. This is often required in
+   templates, in particular, when the nested name specifier is a dependent type other than the current
+   instantiation. In this example, std ::decay<T> depends on the template parameter T, so in order to name the
+   nested type type, we need to prefix the entire qualified name with typename. For more deatils, see Where
+   and why do I have to put the "template" and "typename" keywords?
+       template <class T>
+       auto decay_copy(T&& r) -> typename std::decay<T>::type;
+   2. Introduces a type parameter in the declaration of a template. In this context, it is interchangeable with class.
+       template <typename T>
+       const T& min(const T& x, const T& y) {
+       return b < a ? b : a;
+       }
+Version > C++17
+    3. typename can also be used when declaring a template template parameter, preceding the name of the
+       parameter, just like class.
+       template <template <class T> typename U>
+       void f() {
+           U<int>::do_it();
+           U<double>::do_it();
+       }

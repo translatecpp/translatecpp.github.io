@@ -1,0 +1,23 @@
+﻿     cc.good_func(); // Good. Can be called from const or non-const instance.
+     cc.bad_func(); // Good. Can only be called from non-const instance.
+A common usage of this is declaring accessors as const, and mutators as non-const.
+No class members can be modified within a const member function. If there is some member that you really need
+to modify, such as locking a std ::mutex, you can declare it as mutable:
+class Integer
+{
+     public:
+          Integer(int i_): i{i_}{}
+          int get() const
+          {
+              std::lock_guard<std::mutex> lock{mut};
+              return i;
+          }
+          void set(int i_)
+          {
+              std::lock_guard<std::mutex> lock{mut};
+              i = i_;
+          }
+                                                                                                                protected:
+                                                                                                                int i;
+          mutable std::mutex mut;
+};

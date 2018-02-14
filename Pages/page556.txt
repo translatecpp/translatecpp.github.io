@@ -1,0 +1,39 @@
+﻿If all of these are the case, then the copy/move from the lvalue can be elided:
+std ::string func()
+{
+   std::string str("foo");
+   //Do stuff
+   return str;
+}
+More complex cases are eligible for elision, but the more complex the case, the less likely the compiler will be to
+actually elide it:
+std ::string func()
+{
+   std::string ret("foo");
+   if(some_condition)
+   {
+      return "bar";
+   }
+   return ret;
+}
+The compiler could still elide ret, but the chances of them doing so go down.
+As noted earlier, elision is not permitted for value parameters.
+std::string func(std::string str)
+{
+   str.assign("foo");
+   //Do stuff
+   return str; //No elision possible
+}
+Section 109.6: Copy initialization elision
+If you use a prvalue expression to copy initialize a variable, and that variable has the same type as the prvalue
+expression, then the copying can be elided.
+std::string str = std::string("foo");
+Copy initialization effectively transforms this into std ::string str( "foo"); (there are minor differences).
+This also works with return values:
+std ::string func()
+{
+   return std::string("foo");
+}
+std::string str = func();
+Without copy elision, this would provoke 2 calls to std ::string's move constructor. Copy elision permits this to call
+the move constructor 1 or zero times, and most compilers will opt for the latter.

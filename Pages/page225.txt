@@ -1,0 +1,46 @@
+﻿Section 41.2: Destructor
+A destructor is a function without arguments that is called when a user-defined object is about to be destroyed. It is
+named after the type it destructs with a ~ prefix.
+class C{
+      int* is;
+string s;
+public:
+      C()
+      : is( new int[10] ){
+      }
+      ~C (){ // destructor definition
+          delete[] is;
+      }
+};
+class C_child : public C{
+string s_ch;
+public:
+     C_child(){}
+     ~C_child(){} // child destructor
+};
+void f(){
+     C c1 ; // calls default constructor
+     C c2[2]; // calls default constructor for both elements
+     C* c3 = new C[2]; // calls default constructor for both array elements
+     C_child c_ch; // when destructed calls destructor of s_ch and of C base (and in turn s)
+     delete[] c3; // calls destructors on c3[0] and c3[1]
+} // automatic variables are destroyed here -- i.e. c1, c2 and c_ch
+Under most circumstances (i.e., a user provides no destructor, and there are no other disqualifying conditions), the
+compiler provides a default destructor implicitly:
+class C{
+     int i;
+     string s;
+};
+void f(){
+      C* c1 = new C;
+      delete c1; // C has a destructor
+}
+class C{
+int m;
+private:
+      ~C(){} // not public destructor!
+};
+class C_container{
+      C c;
+};
+void f(){

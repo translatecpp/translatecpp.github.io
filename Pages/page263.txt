@@ -1,0 +1,22 @@
+﻿Section 48.16: Finding character(s) in a string
+To find a character or another string, you can use std::string::find. It returns the position of the first character
+of the first match. If no matches were found, the function returns std::string ::npos
+std::string str = "Curiosity killed the cat";
+auto it = str.find("cat");
+if (it != std::string::npos)
+     std::cout << "Found at position: " << it << '\n';
+else
+     std::cout << "Not found!\n";
+      Found at position: 21
+The search opportunities are further expanded by the following functions:
+find_first_of // Find first occurrence of characters
+find_first_not_of // Find first absence of characters
+find_last_of       // Find last  occurrence of characters
+find_last_not_of // Find last absence of characters
+These functions can allow you to search for characters from the end of the string, as well as find the negative case
+(ie. characters that are not in the string). Here is an example:
+std::string str = "dog dog cat cat";
+std::cout << "Found at position: " << str.find_last_of("gzx") << '\n';
+      Found at position: 6
+Note: Be aware that the above functions do not search for substrings, but rather for characters contained in the
+search string. In this case, the last occurrence of 'g' was found at position 6 (the other characters weren't found).

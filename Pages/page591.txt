@@ -1,0 +1,8 @@
+﻿};
+     void bar() { std::cout << "bar"; }
+     void baz();
+// in foo.cpp
+void Foo::baz() {
+     // definition
+}
+The function Foo::baz is defined out-of-line, so it is not an inline function, and must not be defined in the header.

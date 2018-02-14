@@ -1,0 +1,18 @@
+﻿// passing a std::vector by reference
+void fillVectorFrom_By_Ref(int a, int b, std::vector<int> &v) {
+assert(v.empty());
+v. reserve(b-a+1);
+for (int i = a; i <= b; i++) {
+v.push_back(i);
+     }
+}
+                                           int main() {// declare vector
+                                           std::vector<int> vec;
+     // fill vector
+     fillVectorFrom_By_Ref(1, 10, vec);
+     // print vector
+     for (std::vector<int>::const_iterator it = vec.begin(); it != vec.end(); ++it)
+     std::cout << *it << " "; // this will print "1 2 3 4 5 6 7 8 9 10 "
+     std::cout << std::endl;
+     return 0;
+}

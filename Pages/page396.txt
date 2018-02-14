@@ -1,0 +1,24 @@
+﻿Section 74.1: Value Category Meanings
+Expressions in C++ are assigned a particular value category, based on the result of those expressions. Value
+categories for expressions can affect C++ function overload resolution.
+Value categories determines two important-but-separate properties about an expression. One property is whether
+the expression has identity. An expression has identity if it refers to an object that has a variable name. The variable
+name may not be involved in the expression, but the object can still have one.
+The other property is whether it is legal to implicitly move from the expression's value. Or more specifically,
+whether the expression, when used as a function parameter, will bind to r-value parameter types or not.
+C++ defines 3 value categories which represent the useful combination of these properties: lvalue (expressions with
+identity but not movable from), xvalue (expressions with identity that are moveable from), and prvalue (expressions
+without identity that are moveable from). C++ does not have expressions which have no identity and cannot be
+moved from.
+C++ defines two other value categories, each based solely on one of these properties: glvalue (expressions with
+identity) and rvalue (expressions that can be moved from). These act as useful groupings of the prior categories.
+This graph serves as an illustration:
+An rvalue expression is any expression which can be implicitly moved from, regardless of whether it has identity.
+More precisely, rvalue expressions may be used as the argument to a function that takes a parameter of type T &&
+(where T is the type of expr). Only rvalue expressions may be given as arguments to such function parameters; if a
+non-rvalue expression is used, then overload resolution will pick any function that does not use an rvalue reference
+parameter. And if none exist, then you get an error.
+The category of rvalue expressions includes all xvalue and prvalue expressions, and only those expressions.
+The standard library function std ::move exists to explicitly transform a non-rvalue expression into an rvalue. More
+specifically, it turns the expression into an xvalue, since even if it was an identity-less prvalue expression before, by
+passing it as a parameter to std ::move, it gains identity (the function's parameter name) and becomes an xvalue.

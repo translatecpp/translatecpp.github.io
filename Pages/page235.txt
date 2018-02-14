@@ -1,0 +1,29 @@
+﻿class ConstCorrect {
+     Field fld;
+   public:
+     ConstCorrect(const Field& f) : fld(f) {}
+// Not const: Modifies.
+     const Field& get_field() const { return fld; } // const: Doesn't modify.
+     void set_field(const Field& f) { fld = f; }     // Not const: Modifies.
+void do_something(int i) {
+// Not const: Modifies.
+                                               fld.insert_value(i);
+}
+void do_nothing() const { }
+// const: Doesn't modify.
+};
+// ...
+const ConstIncorrect i_cant_do_anything(make_me_a_field());
+// Now, let's read it...
+Field f = i_cant_do_anything.get_field();
+   // Error: Loses cv-qualifiers, get_field() isn't const.
+i_cant_do_anything.do_nothing();
+   // Error: Same as above.
+// Oops.
+const ConstCorrect but_i_can(make_me_a_field());
+// Now, let's read it...
+Field f = but_i_can.get_field(); // Good.
+but_i_can.do_nothing();           // Good.
+As illustrated by the comments on ConstIncorrect and ConstCorrect, properly cv-qualifying functions also serves
+as documentation. If a class is const correct, any function that isn't const can safely be assumed to change state,
+and any function that is const can safely be assumed not to change state.

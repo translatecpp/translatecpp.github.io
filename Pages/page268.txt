@@ -1,0 +1,38 @@
+﻿Chapter 50: std::vector
+A vector is a dynamic array with automatically handled storage. The elements in a vector can be accessed just as
+efficiently as those in an array with the advantage being that vectors can dynamically change in size.
+In terms of storage the vector data is (usually) placed in dynamically allocated memory thus requiring some minor
+overhead; conversely C-arrays and std ::array use automatic storage relative to the declared location and thus do
+not have any overhead.
+Section 50.1: Accessing Elements
+There are two primary ways of accessing elements in a std ::vector
+    • index-based access
+    • iterators
+Index-based access:
+This can be done either with the subscript operator [], or the member function at().
+Both return a reference to the element at the respective position in the std ::vector (unless it's a vector<bool>), so
+that it can be read as well as modified (if the vector is not const).
+[] and at() differ in that [] is not guaranteed to perform any bounds checking, while at() does. Accessing
+elements where index < 0 or index >= size is undefined behavior for [], while at() throws a std::out of range
+exception.
+Note: The examples below use C++11-style initialization for clarity, but the operators can be used with all versions
+(unless marked C++11).
+Version > C++11
+std ::vector<int> v{ 1, 2, 3 };                            
+// using []                                                
+int a = v[1];     // a  is 2                               
+v[1] = 4;         // v  now contains { 1, 4, 3   }         
+// using at()                                              
+int b = v.at(2);  // b  is 3                               
+v.at(2) = 5;      // v  now contains { 1, 4, 5   }         
+int c = v.at(3);  // throws std::out_of_  range  exception 
+Because the at() method performs bounds checking and can throw exceptions, it is slower than []. This makes []
+preferred code where the semantics of the operation guarantee that the index is in bounds. In any case, accesses
+to elements of vectors are done in constant time. That means accessing to the first element of the vector has the
+same cost (in time) of accessing the second element, the third element and so on.
+For example, consider this loop
+for (std::size_t i = 0; i < v.size(); ++i) {
+     v[i] = 1;
+}
+Here we know that the index variable i is always in bounds, so it would be a waste of CPU cycles to check that i is
+in bounds for every call to operator[ ].

@@ -1,0 +1,47 @@
+﻿//Define string
+std::string str = "Hello foo, bar and world!";
+std::string alternate = "Hello foobar";
+//1)
+str.replace(6, 3, "bar"); //"Hello bar, bar and world!"
+//2)
+str.replace(str.begin() + 6, str.end(), "nobody!"); //"Hello nobody!"
+//3)
+str.replace(19, 5, alternate, 6, 6); //"Hello foo, bar and foobar!"
+Version > C++14
+//4)
+str.replace(19, 5, alternate, 6); //"Hello foo, bar and foobar!"
+//5)
+str.replace(str.begin(), str.begin() + 5, str.begin() + 6, str.begin() + 9);
+//"foo foo, bar and world!"
+//6)
+str.replace(0, 5, 3, 'z'); //"zzz foo, bar and world!"
+//7)
+str.replace(str.begin() + 6, str.begin() + 9, 3, 'x'); //"Hello xxx, bar and world!"
+Version > C++11
+//8)
+str.replace(str.begin(), str.begin() + 5, { 'x', 'y', 'z' }); //"xyz foo, bar and world!"
+Replace occurrences of a string with another string
+Replace only the first occurrence of replace with with in str:
+std::string replaceString(std::string str,
+                            const std::string& replace,
+     const std::string& with){
+     std::size_t pos = str.find(replace);
+     if (pos != std::string::npos)
+         str.replace(pos, replace.length(), with);
+     return str;
+}
+Replace all occurrence of replace with with in str:
+std::string replaceStringAll(std::string str,
+                               const std::string& replace,
+                               const std::string& with) {
+     if(!replace.empty()) {
+         std::size_t pos = 0;
+         while ((pos = str.find(replace, pos)) != std::string::npos) {
+              str.replace(pos, replace.length(), with);
+              pos += with.length();
+         }
+     }
+     return str;
+}
+Section 48.8: Converting to std::string
+std::ostringstream. can be used to convert any streamable type to a string representation, by inserting the object

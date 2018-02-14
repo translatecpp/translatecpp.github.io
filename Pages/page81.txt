@@ -1,0 +1,39 @@
+﻿std::cout << "Please enter a positive number." << std::endl;
+std::cin >> x;
+if (x <= 0) {
+     std::cout << "You didn't enter a positive number!" << std::endl;
+     abort();
+}
+Section 16.8: else
+The first substatement of an if statement may be followed by the keyword else. The substatement after the else
+keyword will be executed when the condition is falsey (that is, when the first substatement is not executed).
+int x;
+std ::cin >> x;
+if (x%2 == 0) {
+     std::cout << "The number is even\n";
+} else {
+     std::cout << "The number is odd\n";
+}
+Section 16.9: Conditional Structures: if, if..else
+if and else:
+it used to check whether the given expression returns true or false and acts as such:
+if (condition) statement
+the condition can be any valid C++ expression that returns something that be checked against truth/falsehood for
+example:
+if (true) { /* code here */ } // evaluate that true is true and execute the code in the brackets
+if (false) { /* code here */ } // always skip the code since false is always false
+the condition can be anything, a function, a variable, or a comparison for example
+if(istrue()) { } // evaluate the function, if it returns true, the if will execute the code
+if(isTrue(var)) { } //evalute the return of the function after passing the argument var
+if(a == b) { } // this will evaluate the return of the experssion (a==b) which will be true if
+equal and false if unequal
+if(a) { } //if a is a boolean type, it will evaluate for its value, if it's an integer, any non
+zero value will be true,
+if we want to check for a multiple expressions we can do it in two ways :
+using binary operators :
+if (a && b) { } // will be true only if both a and b are true (binary operators are outside the
+scope here
+if (a || b ) { } //true if a or b is true
+using if/ifelse/else:
+for a simple switch either if or else
+if (a== "test") {

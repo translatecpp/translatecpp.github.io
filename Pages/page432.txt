@@ -1,0 +1,42 @@
+﻿Chapter 80: Threading
+Parameter                          Details
+other     Takes ownership of other, other doesn't own the thread anymore
+func      Function to call in a seperate thread
+args      Arguments for func
+Section 80.1: Creating a std::thread
+In C++, threads are created using the std::thread class. A thread is a separate flow of execution; it is analogous to
+having a helper perform one task while you simultaneously perform another. When all the code in the thread is
+executed, it terminates. When creating a thread, you need to pass something to be executed on it. A few things that
+you can pass to a thread:
+    • Free functions
+    • Member functions
+    • Functor objects
+    • Lambda expressions
+Free function example - executes a function on a separate thread (Live Example):
+#include <iostream>
+#include <thread>
+void foo(int a)
+{
+     std::cout << a << '\n';
+}
+int main()
+{
+     // Create and execute the thread
+     std::thread thread(foo, 10); // foo is the function to execute, 10 is the
+                                 // argument to pass to it
+     // Keep going; the thread is executed separately
+     // Wait for the thread to finish; we stay here until it is done
+     thread.join();
+     return 0;
+}
+Member function example - executes a member function on a separate thread (Live Example):
+#include <iostream>
+#include <thread>
+class Bar
+{
+public:
+     void foo(int a)
+     {
+         std::cout << a << '\n';
+     }
+};

@@ -1,0 +1,55 @@
+﻿void List::insertAtPos(int pos,int val)
+{
+     listNode *newnode=new listNode(val);
+     if(pos==1)
+     {
+         //as head
+         newnode->next=this->head;
+         this->head=newnode;
+         return;
+     }
+     pos--;
+     listNode *ptr=this->head;
+     while(ptr!=NULL && --pos)
+     {
+         ptr=ptr->next;
+     }
+     if(ptr==NULL)
+     return;//not enough elements
+     newnode->next=ptr->next;
+     ptr->next=newnode;
+}
+Removing a node from the list
+void List::remove(int toBeRemoved)//removing an element
+{
+     if(this->head==NULL)
+     return; //empty
+     if(this->head->data==toBeRemoved)
+     {
+         //first node to be removed
+         listNode *temp=this->head;
+         this->head=this->head->next;
+         delete(temp);
+         return;
+     }
+     listNode *ptr=this->head;
+     while(ptr->next!=NULL && ptr->next->data!=toBeRemoved)
+     ptr=ptr->next;
+     if(ptr->next==NULL)
+     return;//not found
+     listNode *temp=ptr->next;
+     ptr->next=ptr->next->next;
+     delete(temp);
+}
+Print the list
+void List::print()//printing the list
+{
+     listNode *ptr=this->head;
+     while(ptr!=NULL)
+     {
+         cout<<ptr->data<<" " ;
+         ptr=ptr->next;
+     }
+     cout<<endl;
+}
+Destructor for the list

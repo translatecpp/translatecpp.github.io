@@ -1,0 +1,10 @@
+﻿operations. For example:
+void block_and_use()
+{
+   while (!ready.load(std::memory_order_relaxed))
+      i
+   atomic_thread_fence(std::memory_order_acquire);
+   std ::cout << x + y;
+}
+The block_and_use() function spins until the ready flag is set with the help of relaxed atomic load. Then a single
+acquire fence is used to provide the needed memory ordering.

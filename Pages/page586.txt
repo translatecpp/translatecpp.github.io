@@ -1,0 +1,40 @@
+﻿A const variable is a variable which needs memory for its storage. A constexpr does not. A constexpr produces
+compile time constant, which cannot be changed. You may argue that const may also not be changed. But
+consider:
+int main()
+{
+    const int sizel = 10;
+    const int size2 = abs(10);
+    int arr_one[size1];
+    int arr_two[size2];
+}
+With most compilers the second statement will fail (may work with GCC, for example). The size of any array, as you
+might know, has to be a constant expression (i.e. results in compile-time value). The second variable size2 is
+assigned some value that is decided at runtime (even though you know it is 10, for the compiler it is not compile-
+time).
+This means that a const may or may not be a true compile-time constant. You cannot guarantee or enforce that a
+particular const value is absolutely compile-time. You may use #define but it has its own pitfalls.
+Therefore simply use:
+Version > C++11
+int main()
+{
+     constexpr int size = 10;
+     int arr[size];
+}
+A constexpr expression must evaluate to a compile-time value. Thus, you cannot use:
+Version > C++11
+constexpr int size = abs(10);
+Unless the function (abs) is itself returning a constexpr.
+All basic types can be initialized with constexpr.
+Version > C++11
+constexpr bool FailFatal = true;
+constexpr float PI = 3.14f;
+constexpr char* site= "StackOverflow";
+Interestingly, and conveniently, you may also use auto:
+Version > C++11
+constexpr auto domain = ".COM"; // const char * const domain = ".COM"
+constexpr auto PI = 3.14;          // constexpr double
+Section 119.2: Static if statement
+Version > C++17
+The if constexpr statement can be used to conditionally compile code. The condition must be a constant
+expression. The branch not selected is discarded. A discarded statement inside a template is not instantiated. For

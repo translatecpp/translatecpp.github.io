@@ -1,0 +1,46 @@
+﻿custom helper function to do it.
+This can be avoided with lambdas.
+You can unpack parameter packs into a set of invocations of a lambda, like this:
+template<std::size_t I>
+using index_t = std::integral_constant<std::size_t, I>;
+template<std::size_t I>
+constexpr index_t<I> index{};
+template<class=void, std::size_t...Is>
+auto index_over( std::index_sequence<Is...> ) {
+return [](auto&& f){
+using discard=int[];
+     (void)discard{0, (void(
+       f( index<Is> )
+     ),0)...};
+   };
+}
+template<std::size_t N>
+auto index_over(index_t<N> = {}) {
+   return index_over( std::make_index_sequence<N>{} );
+}
+Version > C++17
+With fold expressions, index_over() can be simplified to:
+template<class=void, std::size_t...Is>
+auto index_over( std::index_sequence<Is...> ) {
+return [](auto&& f){
+     ((void)(f(index<Is>)), ...);
+   };
+}
+Once you have done that, you can use this to replace having to manually unpack parameter packs with a second
+overload in other code, letting you unpack parameter packs "inline":
+template<class Tup, class F>
+void for_each_tuple_element(Tup&& tup, F&& f) {
+   using T = std::remove_reference_t<Tup>;
+   using std::tuple_size;
+   auto from_zero_to_N = index_over< tuple_size<T>{} >();
+   from_zero_to_N(
+     [&](auto i){
+       using std::get;
+       f( get<i>( std::forward<Tup>(tup) ) );
+     }
+   );
+}
+The auto i passed to the lambda by the index_over is a std ::integral_constant<std ::size_t, ???>. This has a
+constexpr conversion to std ::size_t that does not depend on the state of this, so we can use it as a compile-time
+constant, such as when we pass it to std ::get<i> above.
+To go back to the toy example at the top, rewrite it as:

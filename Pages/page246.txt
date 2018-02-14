@@ -1,0 +1,8 @@
+﻿//    Not recommended as
+// its not explicitly clear whether Namel refers to
+//    numeric::multiprecision  or boost::multiprecision
+namespace Namel = multiprecision;
+//    For clarity, its recommended  to use absolute paths
+//    instead
+namespace Name2 = numeric::multiprecision;
+namespace Name3 = boost::multiprecision;

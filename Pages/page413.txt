@@ -1,0 +1,48 @@
+﻿Chapter 77: Templates
+Classes, functions, and (since C++14) variables can be templated. A template is a piece of code with some free
+parameters that will become a concrete class, function, or variable when all parameters are specified. Parameters
+can be types, values, or themselves templates. A well-known template is std ::vector, which becomes a concrete
+container type when the element type is specified, e.g., std ::vector<int>.
+Section 77.1: Basic Class Template
+The basic idea of a class template is that the template parameter gets substituted by a type at compile time. The
+result is that the same class can be reused for multiple types. The user specifies which type will be used when a
+variable of the class is declared. Three examples of this are shown in main():
+#include <iostream>
+using std::cout;
+template <typename T>
+class Number {
+public:
+     void setNum(T n);
+     T plus1() const;
+private:
+     T num;
+};
+template <typename T>
+void Number<T>::setNum(T n) {
+num = n;
+}
+template <typename T>        // returns class field's "follower"
+T Number<T>::plus1() const {
+     return num + 1 ;
+}
+int main() {
+     Number<int> anInt;      // Test with an integer (int replaces T in the class)
+     anInt.setNum(1);
+     cout << "My integer + 1 is " << anInt.plus1() << "\n";  // Prints 2
+     Number<double> aDouble; // Test with a double
+     aDouble.setNum(3.1415926535897);
+     cout << "My double + 1 is " << aDouble.plus1() << "\n"; // Prints 4.14159
+     Number<float> aFloat; // Test with a float
+     aFloat.setNum(1.4);
+     cout << "My float + 1 is " << aFloat.plus1() << "\n";   // Prints 2.4
+     return 0; // Successful completion
+}
+Section 77.2: Function Templates
+Templating can also be applied to functions (as well as the more traditional structures) with the same effect.
+// 'T' stands for the unknown type
+// Both of our arguments will be of the same type.
+// A simple class to hold one number of any type
+// Sets the class field to the given number
+// returns class field's "follower"
+// Class field
+// Set the class field to the given number

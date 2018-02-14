@@ -1,0 +1,35 @@
+﻿};
+Section 104.17: Overflow during conversion to or from
+floating point type
+If, during the conversion of:
+    •  an integer type to a floating point type,
+    •  a floating point type to an integer type, or
+    •  a floating point type to a shorter floating point type,
+the source value is outside the range of values that can be represented in the destination type, the result is
+undefined behavior. Example:
+double x = 1e100;
+int y = x; // int probably cannot hold numbers that large, so this is UB
+Section 104.18: Modifying a string literal
+Version < C++11
+char *str = "hello world";
+str[0] = 'H';
+"hello world" is a string literal, so modifying it gives undefined behaviour.
+The initialisation of str in the above example was formally deprecated (scheduled for removal from a future
+version of the standard) in C++03. A number of compilers before 2003 might issue a warning about this (e.g. a
+suspicious conversion). After 2003, compilers typically warn about a deprecated conversion.
+Version > C++11
+The above example is illegal, and results in a compiler diagnostic, in C++11 and later. A similar example may be
+constructed to exhibit undefined behaviour by explicitly permitting the type conversion, such as:
+char *str = const_cast<char *>("hello world");
+str[0] = 'H';
+Section 104.19: Accessing an object as the wrong type
+In most cases, it is illegal to access an object of one type as though it were a different type (disregarding cv-
+qualifiers). Example:
+float x = 42;
+int y = reinterpret_cast<int&>(x);
+The result is undefined behavior.
+There are some exceptions to this strict aliasing rule:
+    •  An object of class type can be accessed as though it were of a type that is a base class of the actual class type.
+    •  Any type can be accessed as a char or unsigned char, but the reverse is not true: a char array cannot be
+      accessed as though it were an arbitrary type.
+    •  A signed integer type can be accessed as the corresponding unsigned type and vice versa.

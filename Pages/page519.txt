@@ -1,0 +1,40 @@
+﻿Section 103.7: enable_if_aM / enable_if_any
+Version > C++11
+Motivational example
+When you have a variadic template pack in the template parameters list, like in the following code snippet:
+template<typename ...Args> void func(Args &&...args) { //... };
+The standard library (prior to C++17) offers no direct way to write enable_if to impose SFINAE constraints on all of
+the parameters in Args or any of the parameters in Args. C++17 offers std::conjunction and std ::disjunction
+which solve this problem. For example:
+/// C++17: SFINAE constraints on all of the parameters in Args.
+template<typename ...Args,
+          std::enable_if_t<std—conjunction_v<custom_conditions_v<Args>...>>* = nullptr>
+void func(Args &&...args) { //... };
+/// C++17: SFINAE constraints on any of the parameters in Args.
+template<typename ...Args,
+          std::enable_if_t<std::disjunction_v<custom_conditions_v<Args>...>>* = nullptr>
+void func(Args &&...args) { //... };
+If you do not have C++17 available, there are several solutions to achieve these. One of them is to use a base-case
+class and partial specializations, as demonstrated in answers of this question.
+Alternatively, one may also implement by hand the behavior of std — conjunction and std — disjunction in a
+rather straight-forward way. In the following example I'll demonstrate the implementations and combine them with
+std ::enable_if to produce two alias: enable_if_all and enable_if_any, which do exactly what they are supposed
+to semantically. This may provide a more scalable solution.
+Implementation of enable_if_all and enable_if_any
+First let's emulate std — conjunction and std — disjunction using customized seq_and and seq_or respectively:
+/// Helper for prior to C++14.
+template<bool B, class T, class F >
+using conditional_t = typename std::conditional<B,T,F>::type;
+/// Emulate C++17 std::conjunction.
+template<bool...> struct seq_or: std::false_type {};
+template<bool...> struct seq_and: std::true_type {};
+template<bool B1, bool... Bs>
+struct seq_or<B1,Bs...>:
+   conditional_t<B1,std::true_type,seq_or<Bs...>> {};
+template<bool B1, bool... Bs>
+struct seq_and<B1,Bs...>:
+   conditional_t<B1,seq_and<Bs...>,std::false_type> {};
+Then the implementation is quite straight-forward:
+template<bool... Bs>
+using enable_if_any = std::enable_if<seq_or<Bs...>::value>;
+template<bool... Bs>

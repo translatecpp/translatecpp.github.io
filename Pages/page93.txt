@@ -1,0 +1,37 @@
+﻿Section 17.6: If-then-else
+Version > C++11
+The type std ::conditional in the standard library header <type_traits> can select one type or the other, based
+on a compile-time boolean value:
+template<typename T>
+struct ValueOrPointer
+{
+     typename std::conditional<(sizeof(T) > sizeof(void*)), T*, T>::type vop;
+};
+This struct contains a pointer to T if T is larger than the size of a pointer, or T itself if it is smaller or equal to a
+pointer's size. Therefore sizeof(ValueOrPointer) will always be <= sizeof(void*).
+Section 17.7: Manual distinction of types when given any type
+When implementing SFINAE using std ::enable_if, it is often useful to have access to helper templates that
+determines if a given type T matches a set of criteria.
+To help us with that, the standard already provides two types analog to true and false which are std ::true_type
+and std::false_type.
+The following example show how to detect if a type T is a pointer or not, the is_pointer template mimic the
+behavior of the standard std ::is_pointer helper:
+template <typename T>
+struct is_pointer_: std::false_type {};
+template <typename T>
+struct is_pointer_<T*>: std::true_type {};
+template <typename T>
+struct is_pointer: is_pointer_<typename std::remove_cv<T>::type> { }
+There are three steps in the above code (sometimes you only need two):
+   1.  The first declaration of is_pointer_ is the default case, and inherits from std ::false_type. The default case
+      should always inherit from std ::false_type since it is analogous to a "false condition".
+   2.  The second declaration specialize the is_pointer_ template for pointer T* without caring about what T is
+      really. This version inherits from std ::true_type.
+   3.  The third declaration (the real one) simply remove any unnecessary information from T (in this case we
+      remove const and volatile qualifiers) and then fall backs to one of the two previous declarations.
+Since is_pointer<T> is a class, to access its value you need to either:
+    •  Use ::value, e.g. is_pointer<int> ::value - value is a static class member of type bool inherited from
+      std::true_type or std::false_type;
+    •  Construct an object of this type, e.g. is_pointer<int>{} - This works because std ::is_pointer inherits its
+      default constructor from std ::true_type or std ::false_type (which have constexpr constructors) and both
+      std ::true_type and std ::false_type have constexpr conversion operators to bool.

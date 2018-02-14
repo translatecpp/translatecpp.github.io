@@ -1,0 +1,42 @@
+﻿Trimming the trailing elements involves finding the last element not matching the predicate, and erasing from there
+on:
+template <typename Sequence, typename Pred>
+                                                                  Sequence& trim_end(Sequence& seq, Pred pred) {
+                                                                  auto last = std::find_if_not(seq.rbegin(),
+                                   seq.rend(),
+                                   pred);
+     seq.erase(last.base(), seq.end());
+     return seq;
+}
+Trimming the leading elements involves finding the first element not matching the predicate and erasing up to
+there:
+template <typename Sequence, typename Pred>
+Sequences trim_start(Sequence& seq, Pred pred) {
+     auto first = std::find_if_not(seq.begin(),
+                                    seq.end(),
+                                    pred);
+     seq.erase(seq.begin(), first);
+     return seq;
+}
+To specialize the above for trimming whitespace in a std ::string we can use the std::isspace(). function as a
+predicate:
+std::string& trim(std::string& str, const std::locale& loc = std::locale()) {
+     return trim(str, [&loc](const char c){ return std::isspace(c, loc); });
+}
+std::string& trim_start(std::string& str, const std::locale& loc = std::locale()) {
+     return trim_start(str, [&loc](const char c){ return std::isspace(c, loc); });
+}
+std::string& trim_end(std::string& str, const std::locale& loc = std::locale()) {
+     return trim_end(str, [&loc](const char c){ return std::isspace(c, loc); });
+}
+Similarly, we can use the std::iswspace() function for std ::wstring etc.
+If you wish to create a new sequence that is a trimmed copy, then you can use a separate function:
+template <typename Sequence, typename Pred>
+Sequence trim_copy(Sequence seq, Pred pred) { // NOTE: passing seq by value
+     trim(seq, pred);
+     return seq;
+}
+Section 48.7: String replacement
+Replace by position
+To replace a portion of a std ::string you can use the method replace from std ::string.
+replace has a lot of useful overloads:

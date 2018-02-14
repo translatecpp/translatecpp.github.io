@@ -1,0 +1,65 @@
+﻿public:
+   // Let's provide the same helper types as most
+   typedef T
+   typedef std::allocator<value_type>
+   typedef value_type&
+   typedef const value_type&
+   typedef value_type*
+   typedef const value_type*
+   typedef MyIterator<value_type>
+   typedef MyConstIterator<value_type>
+   typedef std::reverse_iterator<iterator>
+   typedef std::reverse_iterator<const_iterator>
+   typedef size_t
+   typedef ptrdiff_t
+standard containers.
+value_type;
+allocator_type;
+reference;
+const_reference;
+pointer;
+const_pointer;
+iterator;
+const_iterator;
+reverse_iterator;
+const_reverse_iterator;
+size_type;
+difference_type;
+};
+Prior to C++11, it was also commonly used to provide a "template typedef" of sorts, as the feature wasn't yet
+available; these have become a bit less common with the introduction of alias templates, but are still useful in some
+situations (and are combined with alias templates in other situations, which can be very useful for obtaining
+individual components of a complex type such as a function pointer). They commonly use the name type for their
+type alias.
+template<typename T>
+                                              struct TemplateTypedef {
+                                              typedef T type;
+}
+TemplateTypedef<int>::type i; // i is an int.
+This was often used with types with multiple template parameters, to provide an alias that defines one or more of
+the parameters.
+template<typename T, size _t SZ, s 
+class Array { /* ... */ } t        
+template<typename T, size _t SZ>   
+struct OneDArray {                 
+    typedef Array<T, SZ,  1> type; 
+};                                 
+template<typename T, size _t SZ>   
+struct TwoDArray {                 
+    typedef Array<T, SZ,  2> type; 
+};
+template<typename T>
+struct MonoDisplayLine {
+                                                                                      typedef Array<T, 80, 1> type;
+};
+OneDArray<int, 3>::type
+TwoDArray<short, 5>::type
+MonoDisplayLine<char>::type
+arr1i;
+arr2s;
+arr3c;
+// arr1i is an Array<int, 3, 1>.
+// arr2s is an Array<short, 5, 2>.
+// arr3c is an Array<char, 80, 1>.
+Section 35.10: Nested Classes/Structures
+A class or struct can also contain another class/struct definition inside itself, which is called a "nested class"; in

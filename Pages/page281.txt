@@ -1,0 +1,37 @@
+﻿Section 50.11: Using a Sorted Vector for Fast Element Lookup
+The <algorithm> header provides a number of useful functions for working with sorted vectors.
+An important prerequisite for working with sorted vectors is that the stored values are comparable with <.
+An unsorted vector can be sorted by using the function std ::sort():
+std::vector<int> v;
+// add some code here to fill v with some elements
+std::sort(v.begin(), v.end());
+Sorted vectors allow efficient element lookup using the function std::lower bound(). Unlike std::find(), this
+performs an efficient binary search on the vector. The downside is that it only gives valid results for sorted input
+ranges:
+// search the vector for the first element with value 42
+std::vector<int>::iterator it = std::lower_bound(v.begin(), v.end(), 42);
+if (it != v.end() && *it == 42) {
+     // we found the element!
+}
+Note: If the requested value is not part of the vector, std ::lower_bound() will return an iterator to the first element
+that is greater than the requested value. This behavior allows us to insert a new element at its right place in an
+already sorted vector:
+int const new_element = 33;
+v.insert(std::lower_bound(v.begin(), v.end(), new_element), new_element);
+If you need to insert a lot of elements at once, it might be more efficient to call push_back() for all them first and
+then call std ::sort() once all elements have been inserted. In this case, the increased cost of the sorting can pay
+off against the reduced cost of inserting new elements at the end of the vector and not in the middle.
+If your vector contains multiple elements of the same value, std ::lower_bound() will try to return an iterator to the
+first element of the searched value. However, if you need to insert a new element after the last element of the
+searched value, you should use the function std::upper bound() as this will cause less shifting around of
+elements:
+v.insert(std::upper_bound(v.begin(), v.end(), new_element), new_element);
+If you need both the upper bound and the lower bound iterators, you can use the function std ::equal_range() to
+retrieve both of them efficiently with one call:
+std::pair<std::vector<int>::iterator,
+           std::vector<int>::iterator> rg = std::equal_range(v.begin(), v.end(), 42);
+std::vector<int>::iterator lower_bound = rg.first;
+std::vector<int>::iterator upper_bound = rg.second;
+In order to test whether an element exists in a sorted vector (although not specific to vectors), you can use the
+function std::binary search():
+bool exists = std::binary_search(v.begin(), v.end(), value_to_find);

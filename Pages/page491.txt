@@ -1,0 +1,39 @@
+﻿Section 93.2: Standard type traits
+Version > C++11
+The type_traits header contains a set of template classes and helpers to transform and check properties of types
+at compile-time.
+These traits are typically used in templates to check for user errors, support generic programming, and allow for
+optimizations.
+Most type traits are used to check if a type fulfils some criteria. These have the following form:
+template <class T> struct is_foo;
+If the template class is instantiated with a type which fulfils some criteria foo, then is_foo<T> inherits from
+std ::integral_constant<bool,true> (a.k.a. std ::true_type), otherwise it inherits from
+std ::integral_constant<bool,false> (a.k.a. std ::false_type). This gives the trait the following members:
+Constants
+static constexpr bool value
+true if T fulfils the criteria foo, false otherwise
+Functions
+operator bool
+Returns value
+Version > C++14
+bool operator()
+Returns value
+Types
+   Name                 Definition
+value_type bool
+type       std::integral_constant<bool,value>
+The trait can then be used in constructs such as static_assert or std ::enable_if. An example with
+std:: is_pointer:
+template <typename T>
+void i_require_a_pointer (T t) {
+     static_assert(std::is_pointer<T>::value, "T must be a pointer type");
+}
+//Overload for when T is not a pointer type
+template <typename T>
+typename std::enable_if<!std::is_pointer<T>::value>::type
+does_something_special_with_pointer (T t) {
+     //Do something boring
+}
+//Overload for when T is a pointer type
+template <typename T>
+typename std ::enable_if<std ::is_pointer<T>::value>::type

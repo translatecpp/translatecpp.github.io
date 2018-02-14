@@ -1,0 +1,41 @@
+﻿position:
++ — +
+i  i
++—+
+In an empty sequence, begin() and end() will be the same position, and neither can be dereferenced:
++—+
+I I
++—+
+   T
+   I
+   +- empty_sequence.begin()
+   I
+   +- empty_sequence.end()
+The alternative visualization of iterators is that they mark the positions between elements:
++ — +—+ — +
+I A | B | C |
++ — + — + — +
+T ~     ~ T
+I            I
++- first +- last
+and dereferencing an iterator returns a reference to the element coming after the iterator. Some situations where
+this view is particularly useful are:
+    •  insert operations will insert elements into the position indicated by the iterator,
+    •  erase operations will return an iterator corresponding to the same position as the one passed in,
+    •  an iterator and its corresponding reverse iterator are located in the same .position between elements
+Invalid Iterators
+An iterator becomes invalidated if (say, in the course of an operation) its position is no longer a part of a sequence.
+An invalidated iterator cannot be dereferenced until it has been reassigned to a valid position. For example:
+std::vector<int>::iterator first;
+{
+      std::vector<int> foo;
+      first = foo.begin(); // first is now valid
+} // foo falls out of scope and is destroyed
+// At this point first is now invalid
+The many algorithms and sequence member functions in the C++ standard library have rules governing when
+iterators are invalidated. Each algorithm is different in the way they treat (and invalidate) iterators.
+Navigating with Iterators
+As we know, iterators are for navigating sequences. In order to do that an iterator must migrate its position
+throughout the sequence. Iterators can advance forward in the sequence and some can advance backwards:
+auto first = my_vector.begin();
+++first;                                                // advance the iterator 1 position

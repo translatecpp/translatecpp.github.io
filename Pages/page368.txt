@@ -1,0 +1,40 @@
+﻿compatibility purposes). It is inherited from the C90 standard, ISO 9899:1990 § 4.1.5, with only minor rewording.
+Depending on the implementation, the size of wchar_t is often, but not always, 8, 16, or 32 bits. The most common
+examples of these are:
+    •  In Unix and Unix-like systems, wchar_t is 32-bit, and is usually used for UTF-32.
+    •  In Windows, wchar_t is 16-bit, and is used for UTF-16.
+    •  On a system which only has 8-bit support, wchar_t is 8 bit.
+Version > C++11
+If Unicode support is desired, it is recommended to use char for UTF-8, char16_t for UTF-16, or char32_t for
+UTF-32, instead of using wchar_t.
+Data Models
+As mentioned above, the widths of integer types can differ between platforms. The most common models are as
+follows, with sizes specified in bits:
+    Model int long pointer
+LP32 (2/4/4) 16 32  32
+ILP32 (4/4/4) 32 32 32
+LLP64 (4/4/8) 32 32 64
+LP64 (4/8/8) 32 64  64
+Out of these models:
+    •  16-bit Windows used LP32.
+    •  32-bit *nix systems (Unix, Linux, Mac OSX, and other Unix-like OSes) and Windows use ILP32.
+    •  64-bit Windows uses LLP64.
+    •  64-bit *nix systems use LP64.
+Note, however, that these models aren't specifically mentioned in the standard itself.
+Section 71.2: Char might be unsigned or signed
+The standard doesn't specify if char should be signed or unsigned. Different compilers implement it differently, or
+might allow to change it using a command line switch.
+Section 71.3: Ranges of numeric types
+The ranges of the integer types are implementation-defined. The header <limits> provides the
+std ::numeric_limits<T> template which provides the minimum and maximum values of all fundamental types.
+The values satisfy guarantees provided by the C standard through the <climits> and (>= C++11) <cinttypes>
+headers. •
+    • std ::numeric_limits<signed char> ::min() equals SCHAR_MIN, which is less than or equal to -127.
+    • std ::numeric_limits<signed char> ::max() equals SCHAR_MAX, which is greater than or equal to 127.
+    • std ::numeric_limits<unsigned char> ::max() equals UCHAR_MAX, which is greater than or equal to 255.
+    • std ::numeric_limits<short> ::min() equals SHRT_MIN, which is less than or equal to -32767.
+    • std::numeric_limits<short>::max() equals SHRT_MAX, which is greater than or equal to 32767.
+    • std ::numeric_limits<unsigned short> ::max() equals USHRT_MAX, which is greater than or equal to 65535.
+    • std ::numeric_limits<int> ::min() equals INT_MIN, which is less than or equal to -32767.
+    • std::numeric_limits<int>::max() equals INT_MAX, which is greater than or equal to 32767.
+    • std ::numeric_limits<unsigned int> ::max() equals UINT_MAX, which is greater than or equal to 65535.

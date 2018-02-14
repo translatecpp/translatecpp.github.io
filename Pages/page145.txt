@@ -1,0 +1,41 @@
+﻿big_struct bar;
+// Create a variable 'p_bar' of type 'pointer to big_struct'.
+// Initialize it to 'nullptr' (a null pointer).
+big_struct *p_bar0 = nullptr;
+// Print the size of 'bar'
+std::cout << "sizeof(bar) = " << sizeof(bar) << std::endl;
+// Print the size of 'p_bar'.
+std::cout << "sizeof(p_bar0) = " << sizeof(p_bar0) << std::endl;
+/* Produces:
+     sizeof(bar) = 24
+     sizeof(p_bar0) = 8
+*/
+Taking the address of another variable
+Pointers can be assigned between each other just as normal variables; in this case, it is the memory address that is
+copied from one pointer to another, not the actual data that a pointer points to.
+Moreover, they can take the value nullptr which represents a null memory location. A pointer equal to nullptr
+contains an invalid memory location and hence it does not refer to valid data.
+You can get the memory address of a variable of a given type by prefixing the variable with the address of operator
+&. The value returned by & is a pointer to the underlying type which contains the memory address of the variable
+(which is valid data as long as the variable does not go out of scope).
+// Copy 'p_bar0' into 'p_bar_1'.
+big_struct *p_bar1 = p_bar0;
+// Take the address of 'bar' into 'p_bar_2'
+big_struct *p_bar2 = &bar;
+// p_bar1 is now nullptr, p_bar2 is &bar.
+p_bar0 = p_bar2;
+// p_bar0 is now &bar.
+p_bar2 = nullptr;
+// p_bar0 == &bar
+// p_bar1 == nullptr
+// p_bar2 == nullptr
+In contrast with references:
+    •  assigning two pointers does not overwrite the memory that the assigned pointer refers to;
+    •  pointers can be null.
+    •  the address of operator is required explicitly.
+Accessing the content of a pointer
+As taking an address requires &, as well accessing the content requires the usage of the dereference operator *, as a
+prefix. When a pointer is dereferenced, it becomes a variable of the underlying type (actually, a reference to it). It
+can then be read and modified, if not const.
+(*p_bar0).foo1 = 5;
+// 'p_bar0' points to 'bar'. This prints 5.

@@ -1,0 +1,38 @@
+﻿Section 115.1: Free Storage (Heap, Dynamic Allocation ...)
+The term 'heap' is a general computing term meaning an area of memory from which portions can be allocated
+and deallocated independently of the memory provided by the stack.
+In C++ the Standard refers to this area as the Free Store which is considered a more accurate term.
+Areas of memory allocated from the Free Store may live longer than the original scope in which it was allocated.
+Data too large to be stored on the stack may also be allocated from the Free Store.
+Raw memory can be allocated and deallocated by the new and delete keywords.
+float *foo = nullptr;
+{
+     *foo = new float; // Allocates memory for a float
+     float bar;            // Stack allocated
+} // End lifetime of bar, while foo still alive
+delete foo;        // Deletes the memory for the float at pF, invalidating the pointer
+foo = nullptr;     // Setting the pointer to nullptr after delete is often considered good
+practice
+It's also possible to allocate fixed size arrays with new and delete, with a slightly different syntax. Array allocation is
+not compatible with non-array allocation, and mixing the two will lead to heap corruption. Allocating an array also
+allocates memory to track the size of the array for later deletion in an implementation-defined way.
+// Allocates memory for an array of 256 ints
+int *foo = new int[256];
+// Deletes an array of 256 ints at foo
+delete[] foo;
+When using new and delete instead malloc and free, the constructor and destructor will get executed (Similar to
+stack based objects). This is why new and delete are prefered over malloc and free.
+struct ComplexType {
+     int a = 0;
+     ComplexType() { std::cout << "Ctor" << std::endl; }
+     ~ComplexType() { std::cout << "Dtor" << std::endl; }
+};
+// Allocates memory for a ComplexType, and calls its constructor
+ComplexType *foo = new ComplexType();
+//Calls the destructor for ComplexType() and deletes memory for a Complextype at pC
+delete foo;
+Version > C++11
+From C++11 on, the use of smart pointers is recommended for indicating ownership.
+Version > C++14
+C++14 added std ::make_unique to the STL, changing the recommendation to favor std ::make_unique or
+std ::make_shared instead of using naked new and delete.

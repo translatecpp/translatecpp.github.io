@@ -1,0 +1,46 @@
+﻿// this is the function the user calls. it will dispatch the call
+// to the correct implementation with the help of 'tags'.
+template<typename T>
+void stable_sort(T& t)
+{
+     // use an N that is higher that any used above.
+     // this will pick the highest overload that is well formed.
+     detail::stable_sort(t, detail::pick<10>{});
+}
+There are other methods commonly used to differentiate between overloads, such as exact match being better
+than conversion, being better than ellipsis.
+However, tag-dispatch can extend to any number of choices, and is a bit more clear in intent.
+Section 103.6: trailing decltype in function templates
+Version > C++11
+One of constraining function is to use trailing decltype to specify the return type:
+namespace details {
+    using std::to_string;
+    // this one is constrained on being able to call to_string(T)
+    template <class T>
+    auto convert_to_string(T const& val, int )
+        -> decltype(to_string(val))
+    {
+        return to_string(val);
+    }
+    // this one is unconstrained, but less preferred due to the ellipsis argument
+    template <class T>
+    std::string convert_to_string(T const& val, ... )
+    {
+        std::ostringstream oss;
+        oss << val;
+        return oss.str();
+    }
+}
+template <class T>
+std::string convert_to_string(T const& val)
+{
+     return details::convert_to_string(val, 0);
+}
+If I call convert_to_string() with an argument with which I can invoke to_string(), then I have two viable
+functions for details ::convert_to_string(). The first is preferred since the conversion from 0 to int is a better
+implicit conversion sequence than the conversion from 0 to ...
+If I call convert_to_string() with an argument from which I cannot invoke to_string(), then the first function
+template instantiation leads to substitution failure (there is no decltype(to_string(val))). As a result, that
+candidate is removed from the overload set. The second function template is unconstrained, so it is selected and
+we instead go through operator<<(std ::ostream&, T). If that one is undefined, then we have a hard compile error
+with a template stack on the line oss << val.

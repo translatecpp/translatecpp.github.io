@@ -1,0 +1,17 @@
+﻿      // assignment operators have been omitted for readability
+};
+As you can see in the code above, some extra complexity has been added in order to prevent some new and delete
+operations. On top of this, the class has a larger memory footprint which might not be used except in a couple of
+cases.
+Often it is tried to encode the bool value _isAllocated, within the pointer _buffer with bit manipulation to reduce
+the size of a single instance (intel 64 bit: Could reduce size by 8 byte). An optimization which is only possible when
+its known what the alignment rules of the platform is.
+When to use?
+As this optimization adds a lot of complexity, it is not recommended to use this optimization on every single class. It
+will often be encountered in commonly used, low-level data structures. In common C++11 standard library
+implementations one can find usages in std ::basic_string<> and std ::function<>.
+As this optimization only prevents memory allocations when the stored data is smaller than the buffer, it will only
+give benefits if the class is often used with small data.
+A final drawback of this optimization is that extra effort is required when moving the buffer, making the move-
+operation more expensive than when the buffer would not be used. This is especially true when the buffer contains
+a non-POD type.

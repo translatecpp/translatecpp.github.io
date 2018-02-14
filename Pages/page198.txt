@@ -1,0 +1,48 @@
+﻿A class with some basic print method could be const overloaded like so:
+#include <iostream>
+class Integer
+{
+      public:
+          Integer(int i_): i{i_}{}
+          void print()
+          {
+              std::cout << "int: " << i << std::endl;
+          }
+          void print() const
+          {
+              std::cout << "const int: " << i << std::endl;
+          }
+                                                                                                                 protected:
+                                                                                                                 int i;
+};
+int main()
+{
+      Integer i{5};
+      const Integer &ic = i;
+      i.print(); // prints "int: 5"
+      ic.print(); // prints "const int: 5"
+}
+This is a key tenet of const correctness: By marking member functions as const, they are allowed to be called on
+const instances, which in turn allows functions to take instances as const pointers/references if they don't need to
+modify them. This allows code to specify whether it modifies state by taking unmodified parameters as const and
+modified parameters without cv-qualifiers, making code both safer and more readable.
+class ConstCorrect
+{
+   public:
+      void good_func() const
+      {
+          std::cout << "I care not whether the instance is const." << std::endl;
+      }
+      void bad_func()
+      {
+          std::cout << "I can only be called on non-const, non-volatile instances." << std::endl;
+      }
+};
+void i_change_no_state(const ConstCorrect& cc)
+{
+     std::cout << "I can take either a const or a non-const ConstCorrect." << std::endl;
+     cc.good_func(); // Good. Can be called from const or non-const instance.
+     cc.bad_func(); // Error. Can only be called from non-const instance.
+}
+void const_incorrect_func(ConstCorrect& cc)
+{

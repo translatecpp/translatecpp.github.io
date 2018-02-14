@@ -1,0 +1,23 @@
+﻿Note that despite using the simple recursion formula, on first call this function is $O(n)$. On subsequent calls with
+the same value, it is of course $O(1)$.
+Note however that this implementation is not reentrant. Also, it doesn't allow to get rid of stored values. An
+alternative implementation would be to allow the map to be passed as additional argument:
+#include <map>
+int fibonacci(int n, std::map<int, int> values)
+{
+   if (n==0 || n==1)
+     return n;
+   std::map<int,int>::iterator iter = values.find(n);
+   if (iter == values.end())
+   {
+     return values[n] = fibonacci(n-l) + fibonacci(n-2);
+   }
+   else
+   {
+     return iter->second;
+   }
+}
+For this version, the caller is required to maintain the map with the stored values. This has the advantage that the
+function is now reentrant, and that the caller can remove values that are no longer needed, saving memory. It has
+the disadvantage that it breaks encapsulation; the caller can change the output by populating the map with
+incorrect values.

@@ -1,0 +1,50 @@
+﻿static_assert(std::is_same<void, // Default
+                                 detected_or<void, foo_type, C1, char>>::value,
+                "Unexpected");
+static_assert(std::is_same<int, detected_or<void, foo_type, C2, char>>::value,
+                "Unexpected");
+Section 103.5: Overload resolution with a large number of
+options
+If you need to select between several options, enabling just one via enable_if<> can be quite cumbersome, since
+several conditions needs to be negated too.
+The ordering between overloads can instead be selected using inheritance, i.e. tag dispatch.
+Instead of testing for the thing that needs to be well-formed, and also testing the negation of all the other versions
+conditions, we instead test just for what we need, preferably in a decltype in a trailing return.
+This might leave several option well formed, we differentiate between those using 'tags', similar to iterator-trait tags
+(random_access_tag et al). This works because a direct match is better that a base class, which is better that a base
+class of a base class, etc.
+#include <algorithm>
+#include <iterator>
+namespace detail
+{
+     // this gives us infinite types, that inherit from each other
+     template<std::size_t N>
+     struct pick : pick<N-1> {};
+     template<>
+     struct pick<0> {};
+     // the overload we want to be preferred have a higher N in pick<N>
+     // this is the first helper template function
+     template<typename T>
+     auto stable_sort(T& t, pick<2>)
+         -> decltype( t.stable_sort(), void() )
+     {
+         // if the container have a member stable_sort, use that
+         t.stable_sort();
+     }
+     // this helper will be second best match
+     template<typename T>
+     auto stable_sort(T& t, pick<1>)
+         -> decltype( t.sort(), void() )
+     {
+         // if the container have a member sort, but no member stable_sort
+         // it's customary that the sort member is stable
+         t.sort();
+     }
+     // this helper will be picked last
+     template<typename T>
+     auto stable_sort(T& t, pick<0>)
+         -> decltype( std::stable_sort(std::begin(t), std::end(t)), void() )
+     {
+         // the container have neither a member sort, nor member stable_sort
+         std ::stable_sort(std::begin(t), std::end(t));
+     }

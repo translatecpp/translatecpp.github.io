@@ -1,0 +1,50 @@
+﻿that they will be available during name lookup.
+struct HidingDerived : HiddenBase {
+      // All members named HiddenBase::f shall be considered members of HidingDerived for lookup.
+     using HiddenBase::f;
+      void f(float) { std::cout << "float" << std::endl; }
+};
+// ...
+HidingDerived hd;
+hd.f(1.f);
+hd.f(3);
+hd.f(true);
+hd.f(s);
+// Output:
+// Output:
+// Output:
+// Output:
+float
+int
+bool
+std::string
+If a derived class imports names with a using-declaration, but also declares functions with the same signature as
+functions in the base class, the base class functions will silently be overridden or hidden.
+struct NamesHidden {
+     virtual void hide_me()         {}
+     virtual void hide_me(float) {}
+     void hide_me(int)        {}
+     void hide_me(bool)             {}
+};
+struct NameHider : NamesHidden {
+     using NamesHidden::hide_me;
+     void hide_me() {} // Overrides NamesHidden::hide_me().
+     void hide_me(int) {} // Hides NamesHidden::hide_me(int).
+};
+A using-declaration can also be used to change access modifiers, provided the imported entity was public or
+protected in the base class.
+                                                       struct ProMem {
+                                                       protected:
+      void func() {}
+};
+struct BecomesPub : ProMem {
+     using ProMem::func;
+};
+// ...
+ProMem pm;
+BecomesPub bp;
+pm.func(); // Error: protected.
+bp.func(); // Good.
+Similarly, if we explicitly want to call a member function from a specific class in the inheritance hierarchy, we can
+qualify the function name when calling the function, specifying that class by name.
+struct One {

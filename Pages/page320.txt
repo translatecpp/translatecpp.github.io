@@ -1,0 +1,45 @@
+﻿### Default sort on std::set<std::string> :
+1
+2
+23
+290
+5
+6
+### Custom sort on set :
+1
+2
+5
+6
+23
+290
+### Lambda sort on set :
+6
+5
+290
+23
+2
+1
+In the example above, one can find 3 different ways of adding compare operations to the std ::set, each of them is
+useful in its own context.
+Default sort
+This will use the compare operator of the key (first template argument). Often, the key will already provide a good
+default for the std ::less<T> function. Unless this function is specialized, it uses the operator< of the object. This is
+especially useful when other code also tries to use some ordering, as this allows consistency over the whole code
+base.
+Writing the code this way, will reduce the effort to update your code when the key changes is API, like: a class
+containing 2 members which changes to a class containing 3 members. By updating the operator< in the class, all
+occurrences will get updated.
+As you might expect, using the default sort is a reasonable default.
+Custom sort
+Adding a custom sort via an object with a compare operator is often used when the default comparison doesn't
+comply. In the example above this is because the strings are referring to integers. In other cases, it's often used
+when you want to compare (smart) pointers based upon the object they refer to or because you need different
+constraints for comparing (example: comparing std ::pair by the value of first).
+When creating a compare operator, this should be a stable sorting. If the result of the compare operator changes
+after insert, you will have undefined behavior. As a good practice, your compare operator should only use the
+constant data (const members, const functions ...).
+As in the example above, you will often encounter classes without members as compare operators. This results in
+default constructors and copy constructors. The default constructor allows you to omit the instance at construction
+time and the copy constructor is required as the set takes a copy of the compare operator.
+Lambda sort
+Lambdas are a shorter way to write function objects. This allows writing the compare operator on less lines, making

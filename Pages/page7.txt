@@ -1,0 +1,47 @@
+﻿Function Definition
+A function definition* is similar to a declaration, except it also contains the code that is executed when the function
+is called within its body.
+An example of a function definition for add2 might be:
+int add2(int i)        // Data that is passed into (int i) will be referred to by the name i
+{                      // while in the function's curly brackets or "scope."
+     int j = i + 2;    // Definition of a variable j as the value of i+2.
+     return j;         // Returning or, in essence, substitution of j for a function call to
+                        // add2.
+}
+Function Overloading
+You can create multiple functions with the same name but different parameters.
+int add2(int i)
+{
+     int j = i + 2;
+     return j;
+}
+// Code contained in this definition will be evaluated
+// when add2() is called with one parameter.
+int add2(int i, int j)
+{
+     int k = i + j + 2 ;
+     return k;
+}
+// However, when add2() is called with two parameters, the
+// code from the initial declaration will be overloaded,
+// and the code in this declaration will be evaluated
+// instead.
+Both functions are called by the same name add2, but the actual function that is called depends directly on the
+amount and type of the parameters in the call. In most cases, the C++ compiler can compute which function to call.
+In some cases, the type must be explicitly stated.
+Default Parameters
+Default values for function parameters can only be specified in function declarations.
+int multiply(int a, int b = 7); // b has default value of 7.
+int multiply(int a, int b)
+{
+     return a * b;               // If multiply() is called with one parameter, the
+}                                // value will be multiplied by the default, 7.
+In this example, multiply() can be called with one or two parameters. If only one parameter is given, b will have
+default value of 7. Default arguments must be placed in the latter arguments of the function. For example:
+int multiply(int a = 10, int b = 20); // This is legal
+int multiply(int a = 10, int b);       // This is illegal since int a is in the former
+Special Function Calls - Operators
+There exist special function calls in C++ which have different syntax than name_of_function(value1, value2,
+value3). The most common example is that of operators.
+Certain special character sequences that will be reduced to function calls by the compiler, such as !, +, -, *, %, and
+<< and many more. These special characters are normally associated with non-programming usage or are used for

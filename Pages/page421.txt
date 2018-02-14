@@ -1,0 +1,44 @@
+﻿// print_string.cpp
+#include Mprint_string.hM
+template void print_string(const char*);
+template void print_string(const wchar_t*);
+Because print_string<char> and print_string<wchar_t> are explicitly instantiated in print_string.cpp, the
+linker will be able to find them even though the print_string template is not defined in the header. If these explicit
+instantiation declarations were not present, a linker error would likely occur. See Why can templates only be
+implemented in the header file?
+Version > C++11
+If an explicit instantiation definition is preceded by the extern keyword, it becomes an explicit instantiation
+declaration instead. The presence of an explicit instantiation declaration for a given specialization prevents the
+implicit instantiation of the given specialization within the current translation unit. Instead, a reference to that
+specialization that would otherwise cause an implicit instantiation can refer to an explicit instantiation definition in
+the same or another TU.
+foo.h
+#ifndef FOO_H
+#define FOO_H
+template <class T> void foo(T x) {
+     // complicated implementation
+}
+#endif
+foo.cpp
+#include "foo.h"
+// explicit instantiation definitions for common cases
+template void foo(int);
+template void foo(double);
+main.cpp
+#include "foo.h"
+// we already know foo.cpp has explicit instantiation definitions for these
+extern template void foo(double);
+int main() {
+     foo(42);    // instantiates foo<int> here;
+                // wasteful since foo.cpp provides an explicit instantiation already!
+     foo(3.14); // does not instantiate foo<double> here;
+                // uses instantiation of foo<double> in foo.cpp instead
+}
+Section 77.9: Non-type template parameter
+Apart from types as a template parameter we are allowed to declare values of constant expressions meeting one of
+the following criteria:
+    • integral or enumeration type,
+    • pointer to object or pointer to function,
+    • lvalue reference to object or lvalue reference to function,
+    • pointer to member,
+    • std ::nullptr_t.

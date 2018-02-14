@@ -1,0 +1,43 @@
+﻿the overall code more readable.
+The disadvantage of the use of lambdas is that each lambda gets a specific type at compile time, so
+decltype(lambda) will be different for each compilation of the same compilation unit (cpp file) as over multiple
+compilation units (when included via header file). For this reason, its recommended to use function objects as
+compare operator when used within header files.
+This construction is often encountered when a std ::set is used within the local scope of a function instead, while
+the function object is preferred when used as function arguments or class members.
+Other sort options
+As the compare operator of std ::set is a template argument, all callable objects can be used as compare operator
+and the examples above are only specific cases. The only restrictions these callable objects have are:
+    • They must be copy constructable
+    • They must be callable with 2 arguments of the type of the key. (implicit conversions are allowed, though not
+      recommended as it can hurt performance)
+Section 60.2: Deleting values from a set
+The most obvious method, if you just want to reset your set/multiset to an empty one, is to use clear:
+   std::set<int> sut;
+   sut.insert(10);
+   sut.insert(15);
+   sut.insert(22);
+   sut.insert(3);
+   sut.clear(); //size of sut is 0
+Then the erase method can be used. It offers some possibilities looking somewhat equivalent to the insertion:
+std::set<int> sut;
+std::set<int>::iterator it;
+sut.insert(10);
+sut.insert(15);
+sut.insert(22);
+sut.insert(3);
+sut.insert(30);
+sut.insert(33);
+sut.insert(45);
+// Basic deletion
+sut.erase(3);
+// Using iterator
+it = sut.find(22);
+sut.erase(it);
+// Deleting a range of values
+it = sut.find(33);
+sut.erase(it, sut.end());
+std::cout << std::endl << "Set under test contains:" << std::endl;
+for (it = sut.begin(); it != sut.end(); ++it)
+{
+   std::cout << *it << std::endl;

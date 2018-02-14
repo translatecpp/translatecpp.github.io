@@ -1,0 +1,45 @@
+﻿          swap(*this, that);
+          return *this;
+      }
+      friend void swap(Person& lhs, Person& rhs) noexcept
+      {
+          std::swap(lhs.name, rhs.name);
+          std::swap(lhs.age, rhs.age);
+      }
+};
+Alternatively, both the copy and move assignment operator can be replaced with a single assignment operator,
+which takes an instance by value instead of reference or rvalue reference to facilitate using the copy-and-swap
+idiom.
+Person& operator=(Person copy)
+{
+      swap(*this, copy);
+      return *this;
+}
+Extending from the Rule of Three to the Rule of Five is important for performance reasons, but is not strictly
+necessary in most cases. Adding the copy constructor and assignment operator ensures that moving the type will
+not leak memory (move-constructing will simply fall back to copying in that case), but will be performing copies that
+the caller probably did not anticipate.
+Section 82.3: Rule of Three
+Version < c++03
+The Rule of Three states that if a type ever needs to have a user-defined copy constructor, copy assignment
+operator, or destructor, then it must have all three.
+The reason for the rule is that a class which needs any of the three manages some resource (file handles,
+dynamically allocated memory, etc), and all three are needed to manage that resource consistently. The copy
+functions deal with how the resource gets copied between objects, and the destructor would destroy the resource,
+in accord with RAII principles.
+Consider a type that manages a string resource:
+class Person
+{
+      char* name;
+      int age;
+public:
+      Person(char const* new_name, int new_age)
+          : name(new char[std::strlen(new_name) + 1])
+          , age(new_age)
+      {
+         std::strcpy(name, new_name);
+      }
+      ~Person() {
+          delete [] name;
+      }
+};

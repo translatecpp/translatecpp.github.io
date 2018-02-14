@@ -1,0 +1,41 @@
+﻿        std::lock(lock1,lock2); // no deadlock possible
+        std::cout << "Locked! << std::endl;
+        //...
+     }
+    3. std ::adopt_lock does not attempt to lock a second time if the calling thread currently owns the lock.
+{
+     std::unique_lock<std::mutex> lock1(_mutex1, std::adopt_lock);
+     std::unique_lock<std::mutex> lock2(_mutex2, std::adopt_lock);
+     std::cout << "Locked! << std::endl;
+     //...
+}
+Something to keep in mind is that std::adopt_lock is not a substitute for recursive mutex usage. When the lock goes
+out of scope the mutex is released.
+Section 85.5: std::mutex
+std::mutex is a simple, non-recursive synchronization structure that is used to protect data which is accessed by
+multiple threads.
+     std::atomic_int temp{0};
+     std::mutex _mutex;
+     std ::thread t( [&](){
+                       while( temp!= -1){
+                           std ::this_thread ::sleep_for(std::chrono::seconds(5));
+                           std::unique_lock<std::mutex> lock( _mutex);
+                                temp=0;
+                       }
+                    });
+     while ( true )
+     {
+         std ::this_thread ::sleep_for(std::chrono::milliseconds(1));
+         std::unique_lock<std::mutex> lock( _mutex, std::try_to_lock);
+         if ( temp < INT_MAX )
+         temp++;
+         cout << temp << endl;
+     }
+Section 85.6: std::scoped_lock (C++ 17)
+std ::scoped_lock provides RAII style semantics for owning one more mutexes, combined with the lock avoidance
+algorithms used by std:: lock. When std:: scoped_lock is destroyed, mutexes are released in the reverse order
+from which they where acquired.
+{
+     std::scoped_lock lock{_mutex1,_mutex2};
+     //do something
+}

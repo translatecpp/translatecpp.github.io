@@ -1,0 +1,16 @@
+﻿the thread is replaced.
+#include <thread>
+void foo()
+{
+     std ::this_thread ::sleep_for(std::chrono::seconds(3));
+}
+//create 100 thread objects that do nothing
+std::thread executors[100];
+// Some code
+// I want to create some threads now
+for (int i = 0;i < 100;i++)
+{
+     // If this object doesn't have a thread assigned
+     if (!executors[i].joinable())
+          executors[i] = std::thread(foo);
+}

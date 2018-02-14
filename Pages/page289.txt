@@ -1,0 +1,35 @@
+﻿std::cout << it2->first << " : " << it2->second << std::endl; // Output: "2 : stackoverflow"
+it2++;
+std::cout << it2->first << " : " << it2->second << std::endl; // Output: "1 : docs-beta"
+Section 51.2: Inserting elements
+An element can be inserted into a std ::map only if its key is not already present in the map. Given for example:
+std::map< std::string, size_t > fruits_count;
+    • A key-value pair is inserted into a std ::map through the insert() member function. It requires a pair as an
+      argument:
+       fruits_count.insert({"grapes", 20});
+       fruits_count.insert(make_pair("orange", 30));
+       fruits_count.insert(pair<std ::string, size_t>("banana", 40));
+       fruits_count.insert(map<std::string, size_t> ::value_type("cherry", 50));
+      The insert() function returns a pair consisting of an iterator and a bool value:
+          ° If the insertion was successful, the iterator points to the newly inserted element, and the bool value is
+            true.
+          ° If there was already an element with the same key, the insertion fails. When that happens, the iterator
+            points to the element causing the conflict, and the bool is value is false.
+      The following method can be used to combine insertion and searching operation:
+       auto success = fruits_count.insert({"grapes", 20});
+       if (!success.second) {              // we already have 'grapes' in the map
+            success.first->second += 20; // access the iterator to update the value
+       }
+    • For convenience, the std ::map container provides the subscript operator to access elements in the map and
+      to insert new ones if they don't exist:
+       fruits_count["apple"] = 10;
+      While simpler, it prevents the user from checking if the element already exists. If an element is missing,
+      std ::map ::operator[ ] implicitly creates it, initializing it with the default constructor before overwriting it
+      with the supplied value.
+    •  insert() can be used to add several elements at once using a braced list of pairs. This version of insert()
+       returns void:
+       fruits_count.insert({{"apricot", 1}, {"jackfruit", 1}, {"lime", 1}, {"mango", 7}});
+    •  insert() can also be used to add elements by using iterators denoting the begin and end of value_type
+      values:
+      std::map< std::string, size_t > fruit_list{ {"lemon", 0}, {"olive", 0}, {"plum", 0}};
+      fruits_count.insert(fruit_list.begin(), fruit_list.end());

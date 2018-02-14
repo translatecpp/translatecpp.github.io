@@ -1,0 +1,40 @@
+﻿};
+template<class Arr>
+auto make_shared_array()
+-> decltype( shared_array_maker<Arr>{}() )
+{ return shared_array_maker<Arr>{}(); }
+then make_shared_array<int[10]> returns a shared_ptr<int> pointing to 10 ints all default constructed.
+Version > C++17
+With C++17, shared_ptr gained special support for array types. It is no longer necessary to specify the array-deleter
+explicitly, and the shared pointer can be dereferenced using the [] array index operator:
+std::shared_ptr<int[]> sh(new int[10]);
+sh[0] = 42;
+Shared pointers can point to a sub-object of the object it owns:
+struct Foo { int x; };
+std::shared_ptr<Foo> pi = std::make_shared<Foo>();
+std::shared_ptr<int> p2(p1, &p1->x);
+Both p2 and p1 own the object of type Foo, but p2 points to its int member x. This means that if p1 goes out of
+scope or is reassigned, the underlying Foo object will still be alive, ensuring that p2 does not dangle.
+Important: A shared_ptr only knows about itself and all other shared_ptr that were created with the alias
+constructor. It does not know about any other pointers, including all other shared_ptrs created with a reference to
+the same Foo instance:
+Foo *foo = new Foo;
+std ::shared_ptr<Foo> shared1(foo);
+std::shared_ptr<Foo> shared2(foo); // don't do this
+shared1.reset(); // this will delete foo, since shared1
+                  // was the only shared_ptr that owned it
+shared2->test(); // UNDEFINED BEHAVIOR: shared2's foo has been
+                  // deleted already!!
+Ownership Transfer of shared_ptr
+By default, shared_ptr increments the reference count and doesn't transfer the ownership. However, it can be
+made to transfer the ownership using std ::move:
+shared_ptr<int> up = make_shared<int>();
+// Transferring the ownership
+shared_ptr<int> up2 = move(up);
+// At this point, the reference count of up = 0 and the
+// ownership of the pointer is solely with up2 with reference count = 1
+Section 34.3: Sharing with temporary ownership
+(std::weak_ptr)
+Instances of std::weak ptr can point to objects owned by instances of std ::shared ptr while only becoming
+temporary owners themselves. This means that weak pointers do not alter the object's reference count and
+therefore do not prevent an object's deletion if all of the object's shared pointers are reassigned or destroyed.

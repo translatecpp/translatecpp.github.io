@@ -1,0 +1,43 @@
+﻿Section 95.1: Class types
+By "class", we mean a type that was defined using the class or struct keyword (but not enum struct or enum
+class).
+   • Even an empty class still occupies at least one byte of storage; it will therefore consist purely of padding. This
+    ensures that if p points to an object of an empty class, then p + 1 is a distinct address and points to a distinct
+    object. However, it is possible for an empty class to have a size of 0 when used as a base class. See empty
+    base optimisation.
+      class Empty_1 {}; // sizeof(Empty_1) == 1
+      class Empty_2 {}; // sizeof(Empty_2) == 1
+      class Derived : Empty_1 {}; // sizeof(Derived) == 1
+      class DoubleDerived : Empty_1, Empty_2 {}; // sizeof(DoubleDerived) == 1
+      class Holder { Empty_1 e; }; // sizeof(Holder) == 1
+      class DoubleHolder { Empty_1 e1; Empty_2 e2; }; // sizeof(DoubleHolder) == 2
+      class DerivedHolder : Empty_1 { Empty_1 e; }; // sizeof(DerivedHolder) == 2
+     • The object representation of a class type contains the object representations of the base class and non-static
+       member types. Therefore, for example, in the following class:
+       struct S {
+            int x;
+            char* y;
+       };
+       there is a consecutive sequence of sizeof(int) bytes within an S object, called a subobject, that contain the
+       value of x, and another subobject with sizeof(char*) bytes that contains the value of y. The two cannot be
+       interleaved.
+    • If a class type has members and/or base classes with types t1, t2,...tN, the size must be at least
+       sizeof(t1) + sizeof(t2) + ... + sizeof(tN) given the preceding points. However, depending on the
+       alignment requirements of the members and base classes, the compiler may be forced to insert padding
+       between subobjects, or at the beginning or end of the complete object.
+      struct AnInt       { int i; };
+         // sizeof(AnInt)        == sizeof(int)
+         // Assuming a typical 32- or 64-bit system, sizeof(AnInt)          == 4 (4).
+      struct TwoInts { int i, j; };
+         // sizeof(TwoInts)      >= 2 * sizeof(int)
+         // Assuming a typical 32- or 64-bit system, sizeof(TwoInts)        == 8 (4 + 4).
+      struct IntAndChar { int i; char c; };
+         // sizeof(IntAndChar) >= sizeof(int) + sizeof(char)
+         // Assuming a typical 32- or 64-bit system, sizeof(IntAndChar) == 8 (4 + 1 + padding).
+      struct AnIntDerived : AnInt { long long l; };
+         // sizeof(AnIntDerived) >= sizeof(AnInt) + sizeof(long long)
+         // Assuming a typical 32- or 64-bit system, sizeof(AnIntDerived) == 16 (4 + padding + 8).
+    • If padding is inserted in an object due to alignment requirements, the size will be greater than the sum of the
+      sizes of the members and base classes. With n-byte alignment, size will typically be the smallest multiple of n
+      which is larger than the size of all members & base classes. Each member memN will typically be placed at an
+      address which is a multiple of alignof(memN), and n will typically be the largest alignof out of all members'

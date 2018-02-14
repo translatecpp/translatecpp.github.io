@@ -1,0 +1,46 @@
+﻿We see the segmentation fault is happening at line 11. So the only variable being used at this line is pointer p2. Lets
+examine its content typing print.
+(gdb) print p2
+$1 = (int *) 0x0
+Now we see that p2 was initialized to 0x0 which stands for NULL. At this line, we know that we are trying to
+dereference a NULL pointer. So we go and fix it.
+Section 142.3: Clean code
+Debugging starts with understanding the code you are trying to debug.
+Bad code:
+int main() {
+     int value;
+     std::vector<int> vectorToSort;
+     vectorToSort.push_back(42); vectorToSort.push_back(13);
+     for (int i = 52; i; i = i - 1)
+     {
+     vectorToSort.push_back(i *2);
+     }
+     /// Optimized for sorting small vectors
+     if (vectorToSort.size() == 1);
+     else
+         {
+         if (vectorToSort.size() <= 2)
+              std ::sort(vectorToSort.begin(), std ::end(vectorToSort));
+         }
+     for (value : vectorToSort) std::cout << value << ' ';
+return 0; }
+Better code:
+std::vector<int> createSemiRandomData() {
+     std::vector<int> data;
+     data.push_back(42);
+     data.push_back(13);
+     for (int i = 52; i; --i)
+         vectorToSort.push_back(i *2);
+     return data;
+}
+/// Optimized for sorting small vectors
+void sortVector(std::vector &v) {
+if (vectorToSort.size() == 1)
+return;
+     if (vectorToSort.size() > 2)
+         return;
+     std::sort(vectorToSort.begin(), vectorToSort.end());
+}
+void printVector(const std::vector<int> &v) {
+     for (auto i : v)
+         std ::cout << i << ' ';

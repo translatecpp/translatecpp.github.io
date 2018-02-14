@@ -1,0 +1,41 @@
+﻿auto fp = reinterpret_cast<int(*)(int)>(&f); // fp has unspecified value
+Version < C++03
+The result of a reinterpret_cast from one object pointer type to another, or one object reference type to another,
+is unspecified. Example:
+int x = 42;
+char* p = reinterpret_cast<char*>(&x); // p has unspecified value
+However, with most compilers, this was equivalent to static_cast<char*>(static_cast<void*>(&x)) so the
+resulting pointer p pointed to the first byte of x. This was made the standard behavior in C++11. See type punning
+conversion for more details.
+Section 121.4: Space occupied by a reference
+A reference is not an object, and unlike an object, it is not guaranteed to occupy some contiguous bytes of memory.
+The standard leaves it unspecified whether a reference requires any storage at all. A number of features of the
+language conspire to make it impossible to portably examine any storage the reference might occupy:
+    • If sizeof is applied to a reference, it returns the size of the referenced type, thereby giving no information
+     about whether the reference occupies any storage.
+    • Arrays of references are illegal, so it is not possible to examine the addresses of two consecutive elements of
+     a hypothetical reference of arrays in order to determine the size of a reference.
+    • If the address of a reference is taken, the result is the address of the referent, so we cannot get a pointer to
+     the reference itself.
+    • If a class has a reference member, attempting to extract the address of that member using offsetof yields
+     undefined behavior since such a class is not a standard-layout class.
+    • If a class has a reference member, the class is no longer standard layout, so attempts to access any data used
+     to store the reference results in undefined or unspecified behavior.
+In practice, in some cases a reference variable may be implemented similarly to a pointer variable and hence
+occupy the same amount of storage as a pointer, while in other cases a reference may occupy no space at all since
+it can be optimized out. For example, in:
+void f() {
+     int x;
+     int& r = x;
+     // do something with r
+}
+the compiler is free to simply treat r as an alias for x and replace all occurrences of r in the rest of the function f
+with x, and not allocate any storage to hold r.
+Section 121.5: Moved-from state of most standard library
+classes
+Version > C++11
+All standard library containers are left in a valid but unspecified state after being moved from. For example, in the
+following code, v2 will contain {1, 2, 3, 4} after the move, but v1 is not guaranteed to be empty.
+int main() {
+      std::vector<int> v1{1, 2, 3, 4};
+      std::vector<int> v2 = std::move(v1);

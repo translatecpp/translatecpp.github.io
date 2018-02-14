@@ -1,0 +1,7 @@
+﻿char invert_case_table[256] = { ..., 'a', 'b', 'c', ..., 'A', 'B', 'C', ... };
+char invert_case(char c) {
+unsigned char index = c;
+return invert_case_table[index];
+     // note: returning invert_case_table[c] directly does the
+     // wrong thing on implementations where char is a signed type
+}

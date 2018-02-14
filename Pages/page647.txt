@@ -1,0 +1,9 @@
+﻿      10: Copy and paste the following code in the new file main.cpp:
+#include <iostream>
+int main()
+{
+     std::cout << "Hello World!\n";
+     return 0;
+}
+You environment should look like:
+11. Click Debug -> Start Without Debugging (or press ctrl + F5) :

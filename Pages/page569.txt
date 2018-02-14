@@ -1,0 +1,10 @@
+﻿      Email mail = builder;
+      cout << mail << endl;
+}
+Design variant : Mutable object
+You can change the design of this pattern to fit your needs. I'll give one variant.
+In the given example the Email object is immutable, i.e., it's properties can't be modified because there is no access
+to them. This was a desired feature. If you need to modify the object after its creation you have to provide some
+setters to it. Since those setters would be duplicated in the builder, you may consider to do it all in one class (no
+builder class needed anymore). Nevertheless, I would consider the need to make the built object mutable in the
+first place.

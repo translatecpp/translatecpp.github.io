@@ -1,0 +1,48 @@
+﻿     try {
+         std::ifstream file(s);
+         file.exceptions(std::ios_base::failbit);
+     } catch(...) {
+         std::throw_with_nested(MyException{"Couldn't open " + s});
+     }
+}
+// sample function that catches an exception and wraps it in a nested exception
+void run()
+{
+     try {
+         open_file("nonexistent.file");
+     } catch(...) {
+         std::throw_with_nested( std::runtime_error("run() failed") );
+     }
+}
+// runs the sample function above and prints the caught exception
+int main()
+{
+     try {
+         run();
+     } catch(...) {
+         print_current_exception_with_nested();
+     }
+}
+Possible output:
+exception: run() failed
+MyException: Couldn't open nonexistent.file
+exception: basic_ios::clear
+If you work only with exceptions inherited from std —exception, code can even be simplified.
+Section 72.8: Function Try Blocks In constructor
+The only way to catch exception in initializer list:
+struct A : public B
+{
+     A() try : B(), foo(1), bar(2)
+     {
+         // constructor body
+     }
+     catch (...)
+     {
+         // exceptions from the initializer list and constructor are caught here
+         // if no exception is thrown here
+         // then the caught exception is re-thrown.
+     }
+private:
+     Foo foo;
+     Bar bar;
+};

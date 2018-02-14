@@ -1,0 +1,20 @@
+﻿          int newFD
+            = accept(sockFD, (sockaddr *) &client_addr, &client_addr_size);
+          if (newFD == -1) {
+              std::cerr << "Error while Accepting on socket\n";
+              continue;
+          }
+          // send call sends the data you specify as second param and it's length as 3rd param, also
+returns how many bytes were actually sent
+          auto bytes_sent = send(newFD, response.data(), response.length(), 0);
+          close(newFD);
+     }
+     close(sockFD);
+     freeaddrinfo(res);
+     return 0;
+}
+The following program runs as -
+Detecting addresses
+(1) IPv4 : 0.0.0.0
+(2) IPv6 : ::
+Enter the number of host address to bind with: 1

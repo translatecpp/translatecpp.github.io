@@ -1,0 +1,41 @@
+﻿in the parameter list, special syntax is required for this; the cv-qualifiers are listed after the parameter list, but
+before the function's body.
+struct ThisCVQ {
+void no_qualifier()                {} // "this" is: ThisCVQ*                
+void c_qualifier()  const          {} // "this" is: const ThisCVQ*          
+void v_qualifier()  volatile       {} // "this" is: volatile ThisCVQ*       
+void cv_qualifier() const volatile {} // "this" is: const volatile ThisCVQ* 
+};
+As this is a parameter, a function can be overloaded based on its this cv-qualifier(s).
+struct CVOverload {
+int func()                { return    3; } 
+int func() const          { return   33; } 
+int func() volatile       { return  333; } 
+int func() const volatile { return 3333; } 
+};
+When this is const (including const volatile), the function is unable to write to member variables through it,
+whether implicitly or explicitly. The sole exception to this is mutable member variables, which can be written
+regardless of const-ness. Due to this, const is used to indicate that the member function doesn't change the
+object's logical state (the way the object appears to the outside world), even if it does modify the physical state (the
+way the object looks under the hood).
+      Logical state is the way the object appears to outside observers. It isn't directly tied to physical state, and
+      indeed, might not even be stored as physical state. As long as outside observers can't see any changes,
+      the logical state is constant, even if you flip every single bit in the object.
+      Physical state, also known as bitwise state, is how the object is stored in memory. This is the object's nitty-
+      gritty, the raw 1s and 0s that make up its data. An object is only physically constant if its representation in
+      memory never changes.
+Note that C++ bases constness on logical state, not physical state.
+class DoSomethingComplexAndOrExpensive {
+     mutable ResultType cached_result;
+     mutable bool state_changed;
+     ResultType calculate_result();
+     void modify_somehow(const Param& p);
+     // ...
+   public:
+     DoSomethingComplexAndOrExpensive(Param p) : state_changed(true) {
+         modify_somehow(p);
+     }
+     void change_state(Param p) {
+         modify_somehow(p);
+         state_changed = true;
+     }

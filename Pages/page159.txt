@@ -1,0 +1,37 @@
+﻿Chapter 34: Smart Pointers
+Section 34.1: Unique ownership (std::unique_ptr)
+Version > C++11
+A std::unique_ptr is a class template that manages the lifetime of a dynamically stored object. Unlike for
+std ::shared ptr. the dynamic object is owned by only one instance of a std ::unique_ptr at any time,
+// Creates a dynamic int with value of 20 owned by a unique pointer
+std::unique_ptr<int> ptr = std::make_unique<int>(20);
+(Note: std ::unique_ptr is available since C++11 and std ::make_unique since C++14.)
+Only the variable ptr holds a pointer to a dynamically allocated int. When a unique pointer that owns an object
+goes out of scope, the owned object is deleted, i.e. its destructor is called if the object is of class type, and the
+memory for that object is released.
+To use std ::unique_ptr and std ::make_unique with array-types, use their array specializations:
+// Creates a unique_ptr to an int with value 59
+std::unique_ptr<int> ptr = std::make_unique<int>(59);
+// Creates a unique_ptr to an array of 15 ints
+std::unique_ptr<int[]> ptr = std::make_unique<int[]>(15);
+You can access the std ::unique_ptr just like a raw pointer, because it overloads those operators.
+You can transfer ownership of the contents of a smart pointer to another pointer by using std ::move, which will
+cause the original smart pointer to point to nullptr.
+// 1. std::unique_ptr
+std::unique_ptr<int> ptr = std::make_unique<int>();
+// Change value to 1
+*ptr = 1 ;
+// 2. std::unique_ptr (by moving 'ptr' to 'ptr2', 'ptr' doesn't own the object anymore)
+std::unique_ptr<int> ptr2 = std::move(ptr);
+int a = *ptr2; // 'a' is 1
+int b = *ptr; // undefined behavior! 'ptr' is 'nullptr'
+                 // (because of the move command above)
+Passing unique_ptr to functions as parameter:
+void foo(std::unique_ptr<int> ptr)
+{
+     // Your code goes here
+}
+std::unique_ptr<int> ptr = std::make_unique<int>(59);
+foo(std::move(ptr))
+Returning unique_ptr from functions. This is the preferred C++11 way of writing factory functions, as it clearly
+conveys the ownership semantics of the return: the caller owns the resulting unique_ptr and is responsible for it.

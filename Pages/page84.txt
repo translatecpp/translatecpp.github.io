@@ -1,0 +1,33 @@
+﻿The goto instruction:
+It allows making an absolute jump to another point in the program. You should use this feature carefully since its
+execution ignores any type of nesting limitation. The destination point is identified by a label, which is then used as
+an argument for the goto instruction. A label is made of a valid identifier followed by a colon (:)
+The syntax is
+goto label;
+label: statement;
+Note: Use of goto statement is highly discouraged because it makes difficult to trace the control flow of a program,
+making the program hard to understand and hard to modify.
+goto label;
+_______________
+label :
+      statement 1
+      statement 2
+      statement 3
+       Forward Reference
+Example :
+int num = 1 ;
+STEP:
+do{
+lal 3eJ :        
+  - statement 1; 
+    statement 2; 
+    statement 3; 
+                 
+                 
+                 
+                 
+goi to label;    
+Backward Reference
+      if( num%2==0 )
+      {
+          num = num + 1 ;

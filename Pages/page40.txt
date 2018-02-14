@@ -1,0 +1,50 @@
+﻿// Iterate over all tuples
+for (std::map<char,int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+     std::cout << it->first << " => " << it->second << '\n';
+Output:
+     a => 200
+     b => 100
+     c => 300
+Section 10.4: Reverse Iterators
+If we want to iterate backwards through a list or vector we can use a reverse_iterator. A reverse iterator is made
+from a bidirectional, or random access iterator which it keeps as a member which can be accessed through base().
+To iterate backwards use rbegin() and rend() as the iterators for the end of the collection, and the start of the
+collection respectively.
+For instance, to iterate backwards use:
+std::vector<int> v{1, 2, 3, 4, 5};
+for (std::vector<int>::reverse_iterator it = v.rbegin(); it != v.rend(); ++it)
+{
+     cout << *it;
+} // prints 54321
+A reverse iterator can be converted to a forward iterator via the base() member function. The relationship is that
+the reverse iterator references one element past the base() iterator:
+std::vector<int>::reverse_iterator r = v.rbegin();
+std::vector<int>::iterator i = r.base();
+assert(&*r == &*(i-1)); // always true if r, (i-1) are dereferenceable
+                          // and are not proxy iterators
+  +---+---+---+---+---+---+---+
+  |    | 1 | 2 | 3 | 4 | 5 |   |
+  +---+---+---+---+---+---+---+
+     T T             T T 
+     | |             | | 
+     | |             | | 
+rend() | rbegin() end()  
+       | rbegin().base() 
+begin()                  
+       rend().base()
+In the visualization where iterators mark positions between elements, the relationship is simpler:
+  +—+—+ — +—+—+
+  I 1 I 2 | 3 | 4 | 5 |
+  + — + — + — + — + — +
+                                                                  T
+                                                                  I
+                                                                  I
+                                                                  I
+begin()
+rend()
+rend().base(;
+   T
+   I
+end()
+rbegin()
+rbegin().base()

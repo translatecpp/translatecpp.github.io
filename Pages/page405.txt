@@ -1,0 +1,40 @@
+﻿// ...
+some_function(DO_SOMETHING(some_func, 3), DO_SOMETHING(some_func, 42));
+Normally, a macro definition ends at the end of the line. If a macro needs to cover multiple lines, however, a
+backslash can be used at the end of a line to indicate this. This backslash must be the last character in the line,
+which indicates to the preprocessor that the following line should be concatenated onto the current line, treating
+them as a single line. This can be used multiple times in a row.
+#define TEXT "I \
+am \
+many \
+lines."
+// ...
+std::cout << TEXT << std::endl; // Output:     I am many lines.
+This is especially useful in complex function-like macros, which may need to cover multiple lines.
+#define CREATE_OUTPUT_AND_DELETE(Str) \
+     std::string* tmp = new std::string(Str); \
+     std::cout << *tmp << std::endl; \
+     delete tmp;
+// ...
+CREATE_OUTPUT_AND_DELETE("There's no real need for this to use 'new'.")
+In the case of more complex function-like macros, it can be useful to give them their own scope to prevent possible
+name collisions or to cause objects to be destroyed at the end of the macro, similar to an actual function. A
+common idiom for this is do while 0, where the macro is enclosed in a do-while block. This block is generally not
+followed with a semicolon, allowing it to swallow a semicolon.
+#define DO_STUFF(Type, Param, ReturnVar) do { \
+     Type temp(some_setup_values); \
+     ReturnVar = temp.process(Param); \
+} while (0)
+int x;
+DO_STUFF(MyClass, 41153.7, x);
+// Compiler sees:
+int x;
+do {
+     MyClass temp(some_setup_values);
+     x = temp.process(41153.7);
+} while (0);
+There are also variadic macros; similarly to variadic functions, these take a variable number of arguments, and then
+expand them all in place of a special "Varargs" parameter,_VA_ARGS_.
+#define VARIADIC(Param, ...) Param(____VA_ARGS__)
+VARIADIC(printf, "%d", 8);
+// Compiler sees:

@@ -1,0 +1,43 @@
+﻿#define LIST(MACRO, ...) \
+     EXPAND(MACRO(dog, __VA_ARGS__)) \
+     EXPAND(MACRo(cat, __VA_ARGS__)) \
+     EXPAND(lMACRo(racoon, __VA_ARGS__))
+The first argument is supplied by the LIST, while the rest is provided by the user in the LIST invocation. For
+example:
+#define FORWARD_DECLARE(name, type, prefix) type prefix##name;
+LIST(FORWARD_DECLARE,Animal,anim_)
+LIST(FORWARD_DECLARE,Object,obj_)
+will expand to
+Animal anim_dog;
+Animal anim_cat;
+Animal anim_racoon;
+Object obj_dog;
+Object obj_cat;
+Object obj_racoon;
+Section 75.4: Macros
+Macros are categorized into two main groups: object-like macros and function-like macros. Macros are treated as a
+token substitution early in the compilation process. This means that large (or repeating) sections of code can be
+abstracted into a preprocessor macro.
+// This is an object-like macro
+#define    PI         3.14159265358979
+// This is a function-like macro.
+// Note that we can use previously defined macros
+// in other macro definitions (object-like or function-like)
+// But watch out, its quite useful if you know what you're doing, but the
+// Compiler doesnt know which type to handle, so using inline functions instead
+// is quite recommended (But e.g. for Minimum/Maximum functions it is quite useful)
+#define    AREA(r)    (PI*(r)*(r))
+// They can be used like this:
+double pi_macro = PI;
+double area_macro = AREA(4.6);
+The Qt library makes use of this technique to create a meta-object system by having the user declare the Q_OBJECT
+macro at the head of the user-defined class extending QObject.
+Macro names are usually written in all caps, to make them easier to differentiate from normal code. This isn't a
+requirement, but is merely considered good style by many programmers.
+When an object-like macro is encountered, it's expanded as a simple copy-paste operation, with the macro's name
+being replaced with its definition. When a function-like macro is encountered, both its name and its parameters are
+expanded.
+double pi_squared = PI * PI;
+// Compiler sees:
+double pi_squared = 3.14159265358979 * 3.14159265358979;
+double area = AREA(5);

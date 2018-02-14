@@ -1,0 +1,44 @@
+﻿1 is an odd number
+3 is an odd number
+5 is an odd number
+Because such control flow changes are sometimes difficult for humans to easily understand, break and continue
+are used sparingly. More straightforward implementation are usually easier to read and understand. For example,
+the first for loop with the break above might be rewritten as:
+for (int i = 0; i < 4; i++)
+{
+     std::cout << i << '\n' ;
+}
+The second example with continue might be rewritten as:
+for (int i = 0; i < 6; i++)
+{
+     if (i % 2 != 0) {
+         std::cout << i << " is an odd number\n";
+     }
+}
+Section 12.6: Declaration of variables in conditions
+In the condition of the for and while loops, it's also permitted to declare an object. This object will be considered to
+be in scope until the end of the loop, and will persist through each iteration of the loop:
+for (int i = 0; i < 5; ++i) {
+     do_something(i);
+}
+// i is no longer in scope.
+for (auto& a : some_container) {
+     a.do_something();
+}
+// a is no longer in scope.
+while(std::shared_ptr<Object> p = get_object()) {
+    p->do_something();
+}
+// p is no longer in scope.
+However, it is not permitted to do the same with a do...while loop; instead, declare the variable before the loop,
+and (optionally) enclose both the variable and the loop within a local scope if you want the variable to go out of
+scope after the loop ends:
+//This doesn't compile
+do {
+     s = do_something();
+} while (short s > 0);
+// Good
+short s;
+do {
+     s = do_something();
+} while (s > 0);

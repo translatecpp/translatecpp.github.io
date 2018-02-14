@@ -1,0 +1,40 @@
+﻿Chapter 65: Random number generation
+Section 65.1: True random value generator
+To generate true random values that can be used for cryptography std:: random_device has to be used as
+generator.
+#include <iostream>
+#include <random>
+int main()
+{
+    std::random_device crypto_random_generator;
+    std::uniform_int_distribution<int> int_distribution(0,9);
+    int actual_distribution[10] = {0,0,0,0,0,0,0,0,0,0};
+    for(int i = 0; i < 10000; i++) {
+        int result = int_distribution(crypto_random_generator);
+        actual_distribution[result]++;
+    }
+    for(int i = 0; i < 10; i++) {
+        std::cout << actual_distribution[i] << " ";
+    }
+    return 0;
+}
+std:: random_device is used in the same way as a pseudo random value generator is used.
+However std:: random_device may be implemented in terms of an implementation-defined pseudo-random
+number engine if a non-deterministic source (e.g. a hardware device) isn't available to the implementation.
+Detecting such implementations should be possible via the entropy member function (which return zero when the
+generator is completely deterministic), but many popular libraries (both GCC's libstdc++ and LLVM's libc++) always
+return zero, even when they're using high-quality external randomness.
+Section 65.2: Generating a pseudo-random number
+A pseudo-random number generator generates values that can be guessed based on previously generated values.
+In other words: it is deterministic. Do not use a pseudo-random number generator in situations where a true
+random number is required.
+#include <iostream>
+#include <random>
+int main()
+{
+    std::default_random_engine pseudo_random_generator;
+    std::uniform_int_distribution<int> int_distribution(0, 9);
+    int actual_distribution[10] = {0,0,0,0,0,0,0,0,0,0};
+    for(int i = 0; i < 10000; i++) {
+        int result = int_distribution(pseudo_random_generator);
+        actual_distribution[result]++;

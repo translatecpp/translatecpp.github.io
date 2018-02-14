@@ -1,0 +1,49 @@
+﻿      * @return #error_offset
+      */
+     virtual int getErrorOffset() const throw() {
+         return error_offset;
+     }
+};
+Note that I haven't overridden the what() function from the base class (std:: runtime_error) i.e we will be using
+the base class's version of what(). You can override it if you have further agenda.
+Section 72.5: std::uncaught_exceptions
+Version > c++17
+C++17 introduces int std::uncaught_exceptions() (to replace the limited bool std::uncaught_exception()) to
+know how many exceptions are currently uncaught. That allows for a class to determine if it is destroyed during a
+stack unwinding or not.
+#include <exception>
+#include <string>
+#include <iostream>
+// Apply change on destruction:
+// Rollback in case of exception (failure)
+// Else Commit (success)
+class Transaction
+{
+public:
+     Transaction(const std::string& s) : message(s) {}
+     Transaction(const Transactions.) = delete;
+     Transactions operator =(const Transactions) = delete;
+     void Commit() { std::cout << message << ": Commit\n"; }
+     void RollBack() noexcept(true) { std::cout << message << ": Rollback\n"; }
+     // ...
+     ~Transaction() {
+         if (uncaughtExceptionCount == std::uncaught_exceptions()) {
+             Commit(); // May throw.
+         } else { // current stack unwinding
+             RollBack();
+         }
+     }
+private:
+     std::string message;
+     int uncaughtExceptionCount = std::uncaught_exceptions();
+};
+class Foo
+{
+public:
+     ~Foo() {
+         try {
+              Transaction transaction("In ~Foo"); // Commit,
+                                               // even if there is an uncaught exception
+              //...
+         } catch (const std::exception& e) {
+              std::cerr << "exception/~Foo:" << e.what() << std::endl;

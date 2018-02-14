@@ -1,0 +1,42 @@
+﻿#include <functional> // for std::hash
+#include <type_traits> // for std::false_type and std::true_type
+#include <utility> // for std::declval
+template<class, class = void>
+struct has_hash
+      : std::false_type
+{};
+template<class T>
+struct has_hash<T, decltype(std::hash<T>()(std::declval<T>()), void())>
+      : std::true_type
+{};
+Version > C++17
+Since C++17, std ::void_t can be used to simplify this type of construct
+#include <functional> // for std::hash
+#include <type_traits> // for std::false_type, std::true_type, std::void_t
+#include <utility> // for std::declval
+template<class, class = std::void_t<> >
+struct has_hash
+      : std::false_type
+{};
+template<class T>
+struct has_hash<T, std::void_t< decltype(std::hash<T>()(std::declval<T>())) > >
+      : std::true_type
+{};
+where std ::void_t is defined as:
+template< class... > using void_t = void;
+For detecting if an operator, such as operator< is defined, the syntax is almost the same:
+template<class, class = void>
+struct has_less_than
+: std::false_type
+{};
+template<class T>
+struct has_less_than<T, decltype(std::declval<T>() < std::declval<T>(), void())>
+      : std::true_type
+{};
+These can be used to use a std ::unordered_map<T> if T has an overload for std ::hash, but otherwise attempt to
+use a std::map<T>:
+template <class K, class V>
+using hash_invariant_map = std::conditional_t<
+      has_hash<K>::value,
+      std::unordered_map<K, V>,
+      std::map<K,V>>;

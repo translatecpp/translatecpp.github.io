@@ -1,0 +1,18 @@
+﻿Section 41.4: Implicit Move and Copy
+Bear in mind that declaring a destructor inhibits the compiler from generating implicit move constructors and move
+assignment operators. If you declare a destructor, remember to also add appropriate definitions for the move
+operations.
+Furthermore, declaring move operations will suppress the generation of copy operations, so these should also be
+added (if the objects of this class are required to have copy semantics).
+class Movable {
+public:
+     virtual ~Movable() noexcept = default;
+     // compiler won't generate these unless we tell it to
+     // because we declared a destructor
+     Movable(Movable&&) noexcept = default;
+     Movables operator=(Movable&&) noexcept = default;
+     //   declaring move operations will suppress generation
+     //   of copy operations unless we explicitly re-enable them
+     Movable(const Movables) = default;
+     Movables operator=(const Movables) = default;
+};

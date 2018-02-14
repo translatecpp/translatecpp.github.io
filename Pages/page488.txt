@@ -1,0 +1,40 @@
+﻿Section 92.1: Unnamed classes
+Unlike a named class or struct, unnamed classes and structs must be instantiated where they are defined, and
+cannot have constructors or destructors.
+struct {
+     int foo;
+     double bar;
+} foobar;
+foobar.foo = 5;
+foobar.bar = 4.0;
+class {
+     int baz;
+public:
+     int buzz;
+     void setBaz(int v) {
+        baz = v;
+     }
+} barbar;
+barbar.setBaz(15);
+barbar.buzz = 2;
+Section 92.2: As a type alias
+Unnamed class types may also be used when creating type aliases, i.e. via typedef and using:
+Version < C++11
+using vec2d = struct {
+      float x;
+      float y;
+};
+typedef struct {
+     float x;
+     float y;
+} vec2d;
+vec2d pt;
+pt.x = 4.f;
+pt.y = 3.f;
+Section 92.3: Anonymous members
+As a non-standard extension to C++, common compilers allow the use of classes as anonymous members.
+                                           struct Example {
+                                           struct {
+        int inner_b;
+     };
+     int outer_b;

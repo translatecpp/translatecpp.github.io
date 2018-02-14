@@ -1,0 +1,40 @@
+﻿Section 10.5: Stream Iterators
+Stream iterators are useful when we need to read a sequence or print formatted data from a container:
+// Data stream. Any number of various whitespace characters will be OK.
+std::istringstream istr("1\t 2     3 4");
+std::vector<int> v;
+// Constructing stream iterators and copying data from stream into vector.
+std ::copy(
+     // Iterator which will read stream data as integers.
+     std ::istream_iterator<int>(istr),
+     // Default constructor produces end-of-stream iterator.
+     std ::istream_iterator<int>(),
+     std::back_inserter(v));
+// Print vector contents.
+std::copy(v.begin(), v.end(),
+     //Will print values to standard output as integers delimeted by " -- ".
+     std::ostream_iterator<int>(std::cout, " -- "));
+The example program will print 1 -- 2 -- 3 -- 4 -- to standard output.
+Section 10.6: C Iterators (Pointers)
+// This creates an array with 5 values.
+const int array[] = { 1, 2, 3, 4, 5 };
+#ifdef BEFORE_CPP11
+// You can use 'sizeof' to determine how many elements are in an array.
+const int* first = array;
+const int* afterLast = first + sizeof(array) / sizeof(array[0]);
+// Then you can iterate over the array by incrementing a pointer until
+// it reaches past the end of our array.
+for (const int* i = first; i < afterLast; ++i) {
+std::cout << *i << std::endl;
+}
+#else
+// With C++11, you can let the STL compute the start and end iterators:
+for (auto i = std::begin(array); i != std::end(array); ++i) {
+std::cout << *i << std::endl;
+}
+#endif
+This code would output the numbers 1 through 5, one on each line like this:
+      1
+      2
+      3
+      4

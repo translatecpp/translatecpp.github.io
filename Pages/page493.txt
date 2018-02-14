@@ -1,0 +1,38 @@
+﻿Section 93.4: Fundamental type traits
+Version > C++11
+There are a number of different type traits that compare more general types.
+Is Integral:
+Evaluates as true for all integer types int, char, long, unsigned int etc.
+std::cout << std::is_integral<int>::value << "\n"; // Prints true.
+std::cout << std::is_integral<char>::value << "\n"; // Prints true.
+std::cout << std::is_integral<float>::value << "\n"; // Prints false.
+Is Floating Point:
+Evaluates as true for all floating point types. float,double, long double etc.
+std::cout << std::is_floating_point<float>::value << "\n"; // Prints true.
+std::cout << std::is_floating_point<double>::value << "\n"; // Prints true.
+std::cout << std::is_floating_point<char>::value << "\n"; // Prints false.
+Is Enum:
+Evaluates as true for all enumerated types, including enum class.
+enum fruit {apple, pair, banana};
+enum class vegetable {carrot, spinach, leek};
+std::cout << std::is_enum<fruit>::value << "\n"; // Prints true.
+std::cout << std::is_enum<vegetable>::value << "\n"; // Prints true.
+std::cout << std::is_enum<int>::value << "\n"; // Prints false.
+Is Pointer:
+Evaluates as true for all pointers.
+std::cout << std::is_pointer<int *>::value << "\n"; // Prints true.
+typedef int* MyPTR;
+std::cout << std::is_pointer<MyPTR>::value << "\n"; // Prints true.
+std::cout << std::is_pointer<int>::value << "\n"; // Prints false.
+Is Class:
+Evaluates as true for all classes and struct, with the exception of enum class.
+struct FOO {int x, y;};
+class BAR {
+public:
+int x, y;
+};
+enum class fruit {apple, pair, banana};
+std::cout << std::is_class<FOO>::value << "\n"; // Prints true.
+std::cout << std::is_class<BAR>::value << "\n"; // Prints true.
+std::cout << std::is_class<fruit>::value << "\n"; // Prints false.
+std::cout << std::is_class<int>::value << "\n"; // Prints false.

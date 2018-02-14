@@ -1,0 +1,38 @@
+﻿Promises and Futures are used to ferry a single object from one thread to another.
+A std — promise object is set by the thread which generates the result.
+A std — future object can be used to retrieve a value, to test to see if a value is available, or to halt execution until
+the value is available.
+Section 88.1: Async operation classes
+    • std::async: performs an asynchronous operation.
+    • std::future: provides access to the result of an asynchronous operation.
+    • std::promise: packages the result of an asynchronous operation.
+    • std::packaged_task: bundles a function and the associated promise for its return type.
+Section 88.2: std::future and std::promise
+The following example sets a promise to be consumed by another thread:
+     {
+         auto promise = std — promise<std — string>();
+         auto producer = std:: thread([&]
+         {
+             promise.set_value("Hello World");
+         });
+         auto future = promise.get_future();
+         auto consumer = std::thread([&]
+         {
+             std::cout << future.get();
+         });
+         producer.join();
+         consumer.join();
+}
+Section 88.3: Deferred async example
+This code implements a version of std ::async, but it behaves as if async were always called with the deferred
+launch policy. This function also does not have async's special future behavior; the returned future can be
+destroyed without ever acquiring its value.
+template<typename F>
+auto async_deferred(F&& func) -> std::future<decltype(func())>
+{
+     using result_type = decltype(func());
+     auto promise = std::promise<result_type>();
+     auto future = promise.get_future();
+     std::thread(std::bind([=](std::promise<result_type>& promise)
+     {
+         try

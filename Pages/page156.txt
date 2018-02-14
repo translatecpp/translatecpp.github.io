@@ -1,0 +1,45 @@
+﻿     // Return some complex and/or expensive-to-calculate result.
+     // As this has no reason to modify logical state, it is marked as "const".
+     ResultType get_result() const;
+};
+ResultType DoSomethingComplexAndOrExpensive::get_result() const {
+     // cached_result and state_changed can be modified, even with a const "this" pointer.
+     // Even though the function doesn't modify logical state, it does modify physical state
+     // by caching the result, so it doesn't need to be recalculated every time the function
+     // is called. This is indicated by cached_result and state_changed being mutable.
+     if (state_changed) {
+          cached_result = calculate_result();
+          state_changed = false;
+     }
+     return cached_result;
+}
+Note that while you technically could use const_cast on this to make it non-cv-qualified, you really, REALLY
+shouldn't, and should use mutable instead. A const_cast is liable to invoke undefined behaviour when used on an
+object that actually is const, while mutable is designed to be safe to use. It is, however, possible that you may run
+into this in extremely old code.
+An exception to this rule is defining non-cv-qualified accessors in terms of const accessors; as the object is
+guaranteed to not be const if the non-cv-qualified version is called, there's no risk of UB.
+                                                  class CVAccessor {
+                                                  int arr[5] ;
+   public:
+     const int& get_arr_element(size_t i) const { return arr[i]; }
+     int& get_arr_element(size_t i) {
+          return const_cast<int&>(const_cast<const CVAccessor*>(this)->get_arr_element(i));
+     }
+};
+This prevents unnecessary duplication of code.
+As with regular pointers, if this is volatile (including const volatile), it is loaded from memory each time it is
+accessed, instead of being cached. This has the same effects on optimisation as declaring any other pointer
+volatile would, so care should be taken.
+Note that if an instance is cv-qualified, the only member functions it is allowed to access are member functions
+whose this pointer is at least as cv-qualified as the instance itself:
+     •  Non-cv instances can access any member functions.
+     •  const instances can access const and const volatile functions.
+     •  volatile instances can access volatile and const volatile functions.
+     •  const volatile instances can access const volatile functions.
+This is one of the key tenets of const correctness.
+struct CVAccess {
+void    func()                {} 
+void  func_c() const          {} 
+void  func_v() volatile       {} 
+void func_cv() const volatile {} 

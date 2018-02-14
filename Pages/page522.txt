@@ -1,0 +1,35 @@
+﻿static int a;
+std::cout << a; // Defined behavior, 'a' is 0
+Section 104.3: Accessing an out-of-bounds index
+It is undefined behavior to access an index that is out of bounds for an array (or standard library container for that
+matter, as they are all implemented using a raw array):
+  int array[] = {1, 2, 3, 4, 5};
+  array[5] = 0; // Undefined behavior
+It is allowed to have a pointer pointing to the end of the array (in this case array + 5), you just can't dereference it,
+as it is not a valid element.
+  const int *end = array + 5; // Pointer to one past the last index
+  for (int *p = array; p != end; ++p)
+     // Do something with 'p'
+In general, you're not allowed to create an out-of-bounds pointer. A pointer must point to an element within the
+array, or one past the end.
+Section 104.4: Deleting
+base class that doesn't
+class base { };
+class derived: public base { };
+int main() {
+     base* p = new derived();
+     delete p; // The is undefined behavior!
+}
+In section [expr.delete] §5.3.5/3 the standard says that if delete is called on an object whose static type does not
+have a virtual destructor:
+a derived object via a pointer to a
+have a virtual destructor
+      if the static type of the object to be deleted is different from its dynamic type, the static type shall be a
+      base class of the dynamic type of the object to be deleted and the static type shall have a virtual
+      destructor or the behavior is undefined.
+This is the case regardless of the question whether the derived class added any data members to the base class.
+Section 104.5: Extending the 'std' or 'posix' Namespace
+The standard (17.6.4.2.1/1) generally forbids extending the std namespace:
+      The behavior of a C++ program is undefined if it adds declarations or definitions to namespace std or to a
+      namespace within namespace std unless otherwise specified.
+The same goes for posix (17.6.4.2.2/1):

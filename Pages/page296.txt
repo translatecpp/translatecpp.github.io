@@ -1,0 +1,44 @@
+﻿Chapter 52: std::optional
+Section 52.1: Using optionals to represent the absence of a
+value
+Before C++17, having pointers with a value of nullptr commonly represented the absence of a value. This is a good
+solution for large objects that have been dynamically allocated and are already managed by pointers. However, this
+solution does not work well for small or primitive types such as int, which are rarely ever dynamically allocated or
+managed by pointers. std ::optional provides a viable solution to this common problem.
+In this example, struct Person is defined. It is possible for a person to have a pet, but not necessary. Therefore,
+the pet member of Person is declared with an std ::optional wrapper.
+#include <iostream>
+#include <optional>
+#include <string>
+struct Animal {
+     std::string name;
+};
+struct Person {
+     std ::string name;
+     std::optional<Animal> pet;
+};
+int main() {
+     Person person;
+     person.name = "John";
+     if (person.pet) {
+         std::cout << person.name << "'s pet's name is " <<
+              person.pet->name << std::endl;
+     }
+     else {
+         std::cout << person.name << " is alone." << std::endl;
+     }
+}
+Section 52.2: optional as return value
+std::optional<float> divide(float a, float b) {
+   if (b!=0.f) return a/b;
+   return {};
+}
+Here we return either the fraction a/b, but if it is not defined (would be infinity) we instead return the empty
+optional.
+A more complex case:
+template<class Range, class Pred>
+auto find_if( Range&& r, Pred&& p ) {
+   using std::begin; using std::end;
+   auto b = begin(r), e = end(r);
+   auto r = std::find_if(b, e , p );
+   using iterator = decltype(r);

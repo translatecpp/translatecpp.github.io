@@ -1,0 +1,39 @@
+﻿int qux;
+void baz() {
+     qux(N::X{}); // error: variable declaration disables ADL for "qux"
+}
+Section 45.3: Extending namespaces
+A useful feature of namespaces is that you can expand them (add members to it).
+namespace Foo
+{
+     void bar() {}
+}
+//some other stuff
+namespace Foo
+{
+     void bar2() {}
+}
+Section 45.4: Using directive
+The keyword 'using' has three flavors. Combined with keyword 'namespace' you write a 'using directive':
+If you don't want to write Foo:: in front of every stuff in the namespace Foo, you can use using namespace Foo; to
+import every single thing out of Foo.
+namespace Foo
+{
+     void bar() {}
+     void baz() {}
+}
+//Have to use Foo::bar()
+Foo::bar();
+//Import Foo
+using namespace Foo;
+bar(); //OK
+baz(); //OK
+It is also possible to import selected entities in a namespace rather than the whole namespace:
+using Foo::bar;
+bar(); //OK, was specifically imported
+baz(); // Not OK, was not imported
+A word of caution: using namespaces in header files is seen as bad style in most cases. If this is done, the
+namespace is imported in every file that includes the header. Since there is no way of "un-using" a namespace, this
+can lead to namespace pollution (more or unexpected symbols in the global namespace) or, worse, conflicts. See
+this example for an illustration of the problem:
+/***** foo.h *****/

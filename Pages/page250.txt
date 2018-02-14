@@ -1,0 +1,10 @@
+﻿                                               struct Derived2 : Base {
+                                               using Base::Base;
+};
+int main() {
+     Derivedl d1(42, "Hello, world");
+     Derived2 d2(42, "Hello, world");
+}
+In the above code, both Derived1 and Derived2 have constructors that forward the arguments directly to the
+corresponding constructor of Base. Derived1 performs the forwarding explicitly, while Derived2, using the C++11
+feature of inheriting constructors, does so implicitly.

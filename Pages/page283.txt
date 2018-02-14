@@ -1,0 +1,42 @@
+﻿       const vector<int>::size_type max_size = v.max_size();
+       cout << max_size << endl; // prints some large number
+       v.resize( max_size ); // probably won't work
+       v.push_back( 1 ); // definitely won't work
+Common mistake: size is not necessarily (or even usually) int:
+// !!!bad!!!evil!!!
+vector<int> v_bad( N, 1 ); // constructs large N size vector
+for( int i = 0; i < v_bad.size(); ++i ) { // size is not supposed to be int!
+do_something( v_bad[i] );
+}
+Vector capacity differs from size. While size is simply how many elements the vector currently has, capacity is for
+how many elements it allocated/reserved memory for. That is useful, because too frequent (re)allocations of too
+large sizes can be expensive.
+    1. Current vector capacity is queried by capacity() member function. Capacity is always greater or equal to
+      size:
+       vector<int> v = { 1, 2, 3 }; // size is 3, capacity is >= 3
+       const vector<int>::size_type capacity = v.capacity();
+       cout << capacity << endl; // prints number >= 3
+   2. You can manually reserve capacity by reserve( N ) function (it changes vector capacity to N):
+       // !!!bad!!!evil!!!
+       vector<int> v_bad;
+       for( int i = 0; i < 10000; ++i ) {
+           v_bad.push_back( i ); // possibly lot of reallocations
+       }
+       // good
+       vector<int> v_good;
+       v_good.reserve( 10000 ); // good! only one allocation
+       for( int i = 0; i < 10000; ++i ) {
+           v_good.push_back( i ); // no allocations needed anymore
+       }
+   3. You can request for the excess capacity to be released by shrink_to_fit() (but the implementation doesn't
+       have to obey you). This is useful to conserve used memory:
+       vector<int> v = { 1, 2, 3, 4, 5 }; // size is 5, assume capacity is 6
+       v.shrink_to_fit(); // capacity is 5 (or possibly still 6)
+       cout << boolalpha << v.capacity() == v.size() << endl; // prints likely true (but possibly
+       false)
+Vector partly manages capacity automatically, when you add elements it may decide to grow. Implementers like to
+use 2 or 1.5 for the grow factor (golden ratio would be the ideal value - but is impractical due to being rational
+number). On the other hand vector usually do not automatically shrink. For example:
+vector<int> v; // capacity is possibly (but not guaranteed) to be 0
+v.push_back( 1 ); // capacity is some starter value, likely 1
+v.clear(); // size is 0 but capacity is still same as before!

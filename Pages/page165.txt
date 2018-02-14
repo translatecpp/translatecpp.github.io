@@ -1,0 +1,39 @@
+﻿also get exception safety.
+Note that the deleter is part of the type for unique_ptr, and the implementation can use the empty base
+optimization to avoid any change in size for empty custom deleters. So while std ::unique_ptr<SDL_Surface,
+SurfaceDeleter> and std ::unique_ptr<SDL_Surface, void(*) (SDL_Surface*)> solve the same problem in a
+similar way, the former type is still only the size of a pointer while the latter type has to hold two pointers: both the
+SDL_Surface* and the function pointer! When having free function custom deleters, it is preferable to wrap the
+function in an empty type.
+In cases where reference counting is important, one could use a shared ptr instead of an unique_ptr. The
+shared_ptr always stores a deleter, this erases the type of the deleter, which might be useful in APIs. The
+disadvantages of using shared_ptr over unique_ptr include a higher memory cost for storing the deleter and a
+performance cost for maintaining the reference count.
+// deleter required at construction time and is part of the type
+std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)> a(pointer, SDL_FreeSurface);
+// deleter is only required at construction time, not part of the type
+std::shared_ptr<SDL_Surface> b(pointer, SDL_FreeSurface);
+Version > C++17
+With template auto, we can make it even easier to wrap our custom deleters:
+template <auto DeleteFn>
+struct FunctionDeleter {
+template <class T>
+void operator()(T* ptr) {
+          DeleteFn(ptr);
+      }
+};
+template <class T, auto DeleteFn>
+using unique_ptr_deleter = std::unique_ptr<T, FunctionDeleter<DeleteFn>>;
+With which the above example is simply:
+unique_ptr_deleter<SDL_Surface, SDL_FreeSurface> c(pointer);
+Here, the purpose of auto is to handle all free functions, whether they return void (e.g. SDL_FreeSurface) or not
+(e.g. fclose).
+Section 34.5: Unique ownership without move semantics
+(auto_ptr)
+Version < C++11
+NOTE: std ::auto_ptr has been deprecated in C++11 and will be removed in C++17. You should only use this if you
+are forced to use C++03 or earlier and are willing to be careful. It is recommended to move to unique_ptr in
+combination with std ::move to replace std ::auto_ptr behavior.
+Before we had std ::unique_ptr, before we had move semantics, we had std ::auto_ptr. std ::auto_ptr provides
+unique ownership but transfers ownership upon copy.
+As with all smart pointers, std ::auto_ptr automatically cleans up resources (see RAII):

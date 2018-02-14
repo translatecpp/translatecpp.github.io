@@ -1,0 +1,38 @@
+﻿      return 0;
+}
+Functions
+      Most of the time this error occurs if the needed header is not included (e.g. using std ::cout without
+      #include <iostream>)
+Not compiling:
+#include <iostream>
+int main(int argc, char *argv[])
+{
+      doCompile();
+      return 0;
+}
+void doCompile()
+{
+      std::cout << "No!" << std::endl;
+}
+Fix:
+#include <iostream>
+void doCompile(); // forward declare the function
+int main(int argc, char *argv[])
+{
+      doCompile();
+      return 0;
+}
+void doCompile()
+{
+      std::cout << "No!" << std::endl;
+}
+Or:
+#include <iostream>
+void doCompile() // define the function before using it
+{
+      std::cout << "No!" << std::endl;
+}
+int main(int argc, char *argv[])
+{
+      doCompile();
+      return 0;

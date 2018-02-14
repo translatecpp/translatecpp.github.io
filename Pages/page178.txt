@@ -1,0 +1,48 @@
+﻿A& a = static_cast<A&>(b); // OK for public inheritance
+a.move(); // OK
+Section 35.8: Accessing class members
+To access member variables and member functions of an object of a class, the . operator is used:
+struct SomeStruct {
+   int a;
+   int b;
+   void foo() {}
+};
+SomeStruct var;
+// Accessing member variable a in var.
+std::cout << var.a << std::endl;
+// Assigning member variable b in var.
+var.b = 1;
+// Calling a member function.
+var.foo();
+When accessing the members of a class via a pointer, the -> operator is commonly used. Alternatively, the instance
+can be dereferenced and the . operator used, although this is less common:
+struct SomeStruct {
+   int a;
+   int b;
+   void foo() {}
+};
+SomeStruct var;
+SomeStruct *p = &var;
+// Accessing member variable a in var via pointer.
+std::cout << p->a << std::endl;
+std::cout << (*p).a << std::endl;
+// Assigning member variable b in var via pointer.
+p->b = 1;
+(*p).b = 1 ;
+// Calling a member function via a pointer.
+p->foo();
+(*p).foo();
+When accessing static class members, the :: operator is used, but on the name of the class instead of an instance
+of it. Alternatively, the static member can be accessed from an instance or a pointer to an instance using the . or ->
+operator, respectively, with the same syntax as accessing non-static members.
+struct SomeStruct {
+   int a;
+   int b;
+   void foo() {}
+   static int c;
+   static void bar() {}
+};
+int SomeStruct::c;
+SomeStruct var;
+SomeStruct* p = &var;
+// Assigning static member variable c in struct SomeStruct.

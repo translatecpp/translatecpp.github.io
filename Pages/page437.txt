@@ -1,0 +1,44 @@
+﻿        std::packaged_task<void()> f;
+        {
+          // usual thread-safe queue code:
+          std ::unique_lock<std::mutex> l(m);
+          if (work.empty()){
+            v.wait(l,[&]{return !work.empty();});
+          }
+          f = std::move(work.front());
+          work.pop_front();
+        }
+        // if the task is invalid, it means we are asked to abort:
+        if (!f.valid()) return;
+        // otherwise, run the task:
+        f();
+     }
+   }
+};
+tasks.queue( []{ return "hello world"s; } ) returns a std::future<std::string>, which when the tasks
+object gets around to running it is populated with hello world.
+You create threads by running tasks.start(10) (which starts 10 threads).
+The use of packaged_task<void()> is merely because there is no type-erased std ::function equivalent that stores
+move-only types. Writing a custom one of those would probably be faster than using packaged_task<void()>.
+Live example.
+Version = C++11
+In C++11, replace result_of_t<blah> with typename result_of<blah> ::type.
+More on Mutexes.
+Section 80.6: Ensuring a thread is always joined
+When the destructor for std ::thread is invoked, a call to either join() or detach() must have been made. If a
+thread has not been joined or detached, then by default std ::terminate will be called. Using RAII, this is generally
+simple enough to accomplish:
+class thread_joiner
+{
+public:
+     thread_joiner(std::thread t)
+         : t_(std::move(t))
+     { }
+     ~thread_joiner()
+     {
+         if(t_.joinable()) {
+             t_.join();
+         }
+     }
+private:
+     std ::thread t_;

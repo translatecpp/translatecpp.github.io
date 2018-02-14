@@ -1,0 +1,40 @@
+﻿Section 13.8: Flushing a stream
+File streams are buffered by default, as are many other types of streams. This means that writes to the stream may
+not cause the underlying file to change immediately. In oder to force all buffered writes to take place immediately,
+you can flush the stream. You can do this either directly by invoking the flush() method or through the std ::flush
+stream manipulator:
+std::ofstream os("foo.txt");
+os << "Hello World!" << std::flush;
+char data[3] = "Foo";
+os.write(data, 3);
+os.flush();
+There is a stream manipulator std ::endl that combines writing a newline with flushing the stream:
+// Both following lines do the same thing
+os << "Hello World!\n" << std::flush;
+os << "Hello world!" << std::endl;
+Buffering can improve the performance of writing to a stream. Therefore, applications that do a lot of writing
+should avoid flushing unnecessarily. Contrary, if I/O is done infrequently, applications should consider flushing
+frequently in order to avoid data getting stuck in the stream object.
+Section 13.9: Reading a file into a container
+In the example below we use std ::string and operator>> to read items from the file.
+     std ::ifstream file("file3.txt");
+     std::vector<std::string> v;
+     std ::string s;
+     while(file >> s) // keep reading until we run out
+     {
+         v.push_back(s);
+     }
+In the above example we are simply iterating through the file reading one "item" at a time using operator>>. This
+same affect can be achieved using the std:: istream_iterator which is an input iterator that reads one "item" at a
+time from the stream. Also most containers can be constructed using two iterators so we can simplify the above
+code to:
+     std ::ifstream file("file3.txt");
+     std::vector<std::string> v(std::istream_iterator<std::string>{file},
+                                 std ::istream_iterator<std::string>{});
+We can extend this to read any object types we like by simply specifying the object we want to read as the template
+parameter to the std:: istream_iterator. Thus we can simply extend the above to read lines (rather than words)
+like this:
+// Unfortunately there is no built in type that reads line using >>
+// So here we build a simple helper class to do it. That will convert
+// back to a string when used in string context.
+struct Line

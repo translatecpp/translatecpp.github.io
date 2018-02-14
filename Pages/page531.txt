@@ -1,0 +1,38 @@
+﻿// NB: this is correct:
+// std::shared_ptr<S> sp(p);
+// f(sp, sp);
+Section 104.22: Access to nonexistent member through
+pointer to member
+When accessing a non-static member of an object through a pointer to member, if the object does not actually
+contain the member denoted by the pointer, the behavior is undefined. (Such a pointer to member can be obtained
+through static_cast.)
+struct Base { int x; };
+struct Derived : Base { int y; };
+int Derived::*pdy = &Derived::y;
+int Base::*pby = static_cast<int Base::*>(pdy);
+Base* b1 = new Derived;
+b1->*pby = 42; // ok; sets y in Derived object to 42
+Base* b2 = new Base;
+b2->*pby = 42; // undefined; there is no y member in Base
+Section 104.23: Invalid base-to-derived static cast
+If static_cast is used to convert a pointer (resp. reference) to base class to a pointer (resp. reference) to derived
+class, but the operand does not point (resp. refer) to an object of the derived class type, the behavior is undefined.
+See Base to derived conversion.
+Section 104.24: Floating point overflow
+If an arithmetic operation that yields a floating point type produces a value that is not in the range of representable
+values of the result type, the behavior is undefined according to the C++ standard, but may be defined by other
+standards the machine might conform to, such as IEEE 754.
+float x = 1.0;
+for (int i = 0; i < 10000; i++) {
+     x *= 10.0; // will probably overflow eventually; undefined behavior
+}
+Section 104.25: Calling (Pure) Virtual Members From
+Constructor Or Destructor
+The Standard (10.4) states:
+      Member functions can be called from a constructor (or destructor) of an abstract class; the effect of
+      making a virtual call (10.3) to a pure virtual function directly or indirectly for the object being created (or
+      destroyed) from such a constructor (or destructor) is undefined.
+More generally, some C++ authorities, e.g. Scott Meyers, suggest never calling virtual functions (even non-pure
+ones) from constructors and dstructors.
+Consider the following example, modified from the above link:
+class transaction

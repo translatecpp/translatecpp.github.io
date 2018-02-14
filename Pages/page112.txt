@@ -1,0 +1,37 @@
+﻿Chapter 23: Variable Declaration
+Keywords
+Section 23.1: decltype
+Version > C++11
+Yields the type of its operand, which is not evaluated.
+    •  If the operand e is a name without any additional parentheses, then decltype(e) is the declared type of e.
+       int x = 42;
+       std::vector<decltype(x)> v(100, x); // v is a vector<int>
+    •  If the operand e is a class member access without any additional parentheses, then decltype(e) is the
+      declared type of the member accessed.
+       struct S {
+           int x = 42;
+       };
+       const S s;
+       decltype(s.x) y; // y has type int, even though s.x is const
+    •  In all other cases, decltype(e) yields both the type and the value category of the expression e, as follows:
+          ° If e is an lvalue of type T, then decltype(e) is T&.
+          ° If e is an xvalue of type T, then decltype(e) is T&&.
+          ° If e is a prvalue of type T, then decltype(e) is T.
+      This includes the case with extraneous parentheses.
+       int f() { return 42; }
+       int& g() { static int x = 42; return x; }
+       int x = 42;
+       decltype(f()) a = f(); // a has type int
+       decltype(g()) b = g(); // b has type int&
+       decltype((x)) c = x; // c has type int&, since x is an lvalue
+Version > C++14
+The special form decltype(auto) deduces the type of a variable from its initializer or the return type of a function
+from the return statements in its definition, using the type deduction rules of decltype rather than those of auto.
+const int x = 123;
+auto y = x;           // y has type int
+decltype(auto) z = x; // z has type const int, the declared type of x
+Section 23.2: const
+A type specifier; when applied to a type, produces the const-qualified version of the type. See const keyword for
+details on the meaning of const.
+const int x = 123;
+x = 456;    // error

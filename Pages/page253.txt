@@ -1,0 +1,41 @@
+﻿                                       // allocation if caller's data was not in a string
+                                       // (e.g. string literal or vector<char> )
+void foo(const char* s, size_t len); // pre-C++17, two arguments, have to pass them
+                                        // both everywhere
+void foo(const char* s);
+// pre-C++17, single argument, but need to call
+// strlen()
+template <class StringT>
+void foo(StringT const& s);
+// pre-C++17, caller can pass arbitrary char data
+// provider, but now foo() has to live in a header
+All of these can be replaced with:
+void foo(std::string_view s);
+// post-C++17, single argument, tighter coupling
+// zero copies regardless of how caller is storing
+// the data
+Note that std::string_view cannot modify its underlying data.
+string_view is useful when you want to avoid unnecessary copies.
+It offers a useful subset of the functionality that std ::string does, although some of the functions behave
+differently:
+std::string str = "lllloooonnnngggg sssstttrrriiinnnggg"; //A really long string
+//Bad way - 'string::substr' returns a new string (expensive if the string is long)
+std::cout << str.substr(15, 10) << '\n';
+//Good way - No copies are created!
+std::string_view view = str;
+// string_view::substr returns a new string_view
+std::cout << view.substr(15, 10) << '\n';
+In C++, sequences of characters are represented by specializing the std ::basic_string class with a native
+character type. The two major collections defined by the standard library are std ::string and std ::wstring:
+    •  std ::string is built with elements of type char
+    •  std ::wstring is built with elements of type wchar_t
+To convert between the two types, use wstring_convert:
+#include <string>
+#include <codecvt>
+#include <locale>
+std::string input_str = "this is a -string-, which is a sequence based on the -char- type.";
+std::wstring input_wstr = L"this is a -wide- string, which is based on the -wchar_t- type.";
+// conversion
+std::wstring str_turned_to_wstr =
+std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(input_str);
+Section 48.4: Conversion to std::wstring

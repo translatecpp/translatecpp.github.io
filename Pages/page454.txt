@@ -1,0 +1,38 @@
+﻿         throw std::runtime_error("Failed"); // std::uncaught_exceptions() == 1
+     } catch (...) { // std::uncaught_exceptions() == 0
+     }
+}
+Output:
+Failure 2
+Section 83.4: Finally/ScopeExit
+For cases when we don't want to write special classes to handle some resource, we may write a generic class:
+template<typename Function>
+class Finally final
+{
+public:
+     explicit Finally(Function f) : f(std::move(f)) {}
+     ~Finally() { f(); } // (1) See below
+     Finally(const Finally&) = delete;
+     Finally(Finally&&) = default;
+     Finally& operator =(const Finally&) = delete;
+     Finally& operator =(Finally&&) = delete;
+private:
+     Function f;
+};
+// Execute the function f when the returned object goes out of scope.
+template<typename Function>
+auto onExit(Function &&f) { return Finally<std::decay_t<Function>>{std::forward<Function>(f)}; }
+And its example usage
+void foo(std::vector<int>& v, int i)
+{
+     // ...
+     v[i] += 42;
+     auto autoRollBackChange = onExit([&](){ v[i] -= 42; });
+     // ... code as recursive call 'foo(v, i + 1)'
+}
+Note (1): Some discussion about destructor definition has to be considered to handle exception:
+    •~Finally() noexcept { f(); }: std::terminate is called in case of exception
+    •  ~Finally() noexcept(noexcept(f())) { f(); }: terminate() is called only in case of exception during stack
+      unwinding.
+    •  ~Finally() noexcept { try { f(); } catch (...) { /* ignore exception (might log it) */} } No
+      std — terminate called, but we cannot handle error (even for non stack unwinding).

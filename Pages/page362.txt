@@ -1,0 +1,44 @@
+﻿interdependence. Let's say that we want to tokenize some C++ code. Given:
+enum TOKENS {
+     NUMBER,
+     ADDITION,
+     SUBTRACTION,
+     MULTIPLICATION,
+     DIVISION,
+     EQUALITY,
+     OPEN_PARENTHESIS,
+     CLOSE_PARENTHESIS
+};
+We can tokenize this string: const auto input = "42/2 + -8\t=\n(2 + 2) * 2 * 2 -3"s with a regex_iterator
+like this:
+vector<TOKENS> tokens;
+const regex re{ "\\s*(\\(?)\\s*(-?Ws*Wd+)Ws*( W)?)Ws*(?:(W+)|(-)KW*)K/)K = ))" };
+for_each(sregex_iterator(cbegin(input), cend(input), re), sregex_iterator(), [&](const auto& i) {
+     if(i[1].length() > 0) {
+         tokens.push_back(OPEN_PARENTHESIS);
+     }
+     tokens.push_back(i[2].str().front() == '-' ? NEGATIVE_NUMBER : NON_NEGATIVE_NUMBER);
+     if(i[3].length() > 0) {
+         tokens.push_back(CLOSE_PARENTHESIS);
+     }
+     auto it = next(cbegin(i), 4);
+     for(int result = ADDITION; it != cend(i); ++result, ++it) {
+         if (it->length() > 0U) {
+             tokens.push_back(static_cast<TOKENS>(result));
+             break;
+         }
+     }
+});
+match_results<string ::const_reverse_iterator> sm;
+if(regex_search(crbegin(input), crend(input), sm, regex{ tokens.back() == SUBTRACTION ?
+"A\\s*\\d+Us*-\\s*(-?)" : "A\\s*\\d+Us*(-?)" })) {
+     tokens.push_back(sm[1 ].length() == 0 ? NON_NEGATIVE_NUMBER : NEGATIVE_NUMBER);
+}
+Live Example
+A notable gotcha with regex iterators is that the regex argument must be an L-value, an R-value will not work: Visual
+Studio regex iterator Bug?
+Section 70.3: Anchors
+C++ provides only 4 anchors:
+    •  A which asserts the start of the string
+    •  $ which asserts the end of the string
+    •  \b which asserts a \W character or the beginning or end of the string

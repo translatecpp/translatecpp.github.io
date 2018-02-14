@@ -1,0 +1,41 @@
+﻿      The behavior of a C++ program is undefined if it adds declarations or definitions to namespace posix or
+      to a namespace within namespace posix unless otherwise specified.
+Consider the following:
+#include <algorithm>
+namespace std
+{
+     int foo(){}
+}
+Nothing in the standard forbids algorithm (or one of the headers it includes) defining the same definition, and so
+this code would violate the One Definition Rule.
+So, in general, this is forbidden. There are specific exceptions allowed, though. Perhaps most usefully, it is allowed
+to add specializations for user defined types. So, for example, suppose your code has
+class foo
+{
+     // Stuff
+};
+Then the following is fine
+namespace std
+{
+     template<>
+     struct hash<foo>
+     {
+     public:
+          size_t operator()(const foo &f) const;
+     };
+}
+Section 104.6: Invalid pointer arithmetic
+The following uses of pointer arithmetic cause undefined behavior:
+    • Addition or subtraction of an integer, if the result does not belong to the same array object as the pointer
+      operand. (Here, the element one past the end is considered to still belong to the array.)
+int a[10];                                                  
+int* p1 = &a[5];                                            
+int* p2 = p1 + 4  // ok; p2 points to a[9]                  
+int* p3 = p1 + 5  // ok; p2 points to one past the end of a 
+int* p4 = p1 + 6  // UB                                     
+int* p5 = p1 - 5  // ok; p2 points to a[0]                  
+int* p6 = p1 - 6; // UB                                     
+int* p7 = p3 - 5  // ok; p7 points to a[5]                  
+     • Subtraction of two pointers if they do not both belong to the same array object. (Again, the element one past
+       the end is considered to belong to the array.) The exception is that two null pointers may be subtracted,
+       yielding 0.

@@ -1,0 +1,38 @@
+﻿Strings are objects that represent sequences of characters. The standard string class provides a simple, safe and
+versatile alternative to using explicit arrays of chars when dealing with text and other sequences of characters. The
+C++ string class is part of the std namespace and was standardized in 1998.
+Section 48.1: Tokenize
+Listed from least expensive to most expensive at run-time:
+   1. std::strtok is the cheapest standard provided tokenization method, it also allows the delimiter to be
+     modified between tokens, but it incurs 3 difficulties with modern C++:
+         ° std::strtok cannot be used on multiple strings at the same time (though some implementations do
+          extend to support this, such as: strtok s)
+         ° For the same reason std::strtok cannot be used on multiple threads simultaneously (this may
+          however be implementation defined, for example: Visual Studio's implementation is thread safe)
+         ° Calling std::strtok modifies the std::string it is operating on, so it cannot be used on const
+          strings, const char*s, or literal strings, to tokenize any of these with std::strtok or to operate on a
+          std ::string who's contents need to be preserved, the input would have to be copied, then the copy
+          could be operated on
+     Generally any of these options cost will be hidden in the allocation cost of the tokens, but if the cheapest
+     algorithm is required and std ::strtok's difficulties are not overcomable consider a hand-spun solution.
+// String to tokenize
+std::string str{ "The quick brown fox" };
+// Vector to store tokens
+vector<std::string> tokens;
+for (auto i = strtok(&str[0], " "); i != NULL; i = strtok(NULL, " "))
+     tokens.push_back(i);
+Live Example
+   2. The std::istream_iterator uses the stream's extraction operator iteratively. If the input std::string is
+      white-space delimited this is able to expand on the std ::strtok option by eliminating its difficulties, allowing
+      inline tokenization thereby supporting the generation of a const vector<string>, and by adding support for
+      multiple delimiting white-space character:
+// String to tokenize
+const std::string str("The quick \tbrown \nfox");
+std::istringstream is(str);
+// Vector to store tokens
+const std::vector<std::string> tokens = std::vector<std::string>(
+                                          std ::istream_iterator<std::string>(is),
+                                          std ::istream_iterator<std::string>());
+Live Example
+   3. The std::regex_token_iterator uses a std::regex to iteratively tokenize. It provides for a more flexible
+      delimiter definition. For example, non-delimited commas and white-space:

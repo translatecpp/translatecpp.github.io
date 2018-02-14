@@ -1,0 +1,33 @@
+﻿int __builtin_popcount (unsigned x);
+Section 7.6: Check if an integer is a power of 2
+The n & (n - 1) trick (see Remove rightmost set bit) is also useful to determine if an integer is a power of 2:
+bool power_of_2 = n && !(n & (n - 1));
+Note that without the first part of the check (n &&), 0 is incorrectly considered a power of 2.
+Section 7.7: Setting a bit
+C-style bit manipulation
+A bit can be set using the bitwise OR operator (|).
+// Bit x will be set
+number |= 1LL << x;
+Using std::bitset
+set(x) or set(x, true) - sets bit at position x to 1.
+std ::bitset<5> num(std ::string("01100"));
+num.set(0);      // num is now 01101
+num.set(2);      // num is still 01101
+num.set(4,true); // num is now 11110
+Section 7.8: Clearing a bit
+C-style bit-manipulation
+A bit can be cleared using the bitwise AND operator (&).
+// Bit x will be cleared
+number &= ~(1LL << x);
+Using std::bitset
+reset(x) or set(x, false) - clears the bit at position x.
+std ::bitset<5> num(std ::string("01100"));
+num.reset(2);    // num is now 01000
+num.reset(0);    // num is still 01000
+num.set(3,false); // num is now 00000
+Section 7.9: Changing the nth bit to x
+C-style bit-manipulation
+// Bit n will be set if x is 1 and cleared if x is 0.
+number A= (-x A number) & (1LL << n);
+Using std::bitset
+set(n,val) - sets bit n to the value val.

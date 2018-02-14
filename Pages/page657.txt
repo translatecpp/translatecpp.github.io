@@ -1,0 +1,4 @@
+﻿there. To compile and/or run your program, press one of the three compile/run buttons in the toolbar:
+To compile without running, press ®, to run without compiling again, press ^ and to compile and then
+run, press
+Compiling and running the default "Hello world!" code gives the following result:

@@ -1,0 +1,46 @@
+﻿     std::auto_ptr<int> p(new int(42));
+     std::cout << *p;
+} // p is deleted here, no memory leaked
+but allows only one owner:
+std::auto_ptr<X> px = ...;
+std::auto_ptr<X> py = px;
+   // px is now empty
+This allows to use std::auto_ptr to keep ownership explicit and unique at the danger of losing ownership
+unintended:
+void f(std::auto_ptr<X> ) {
+     // assumes ownership of X
+     // deletes it at end of scope
+};
+std::auto_ptr<X> px = ...;
+f(px); // f acquires ownership of underlying X
+// px is now empty
+px->foo(); // NPE!
+// px.~auto_ptr() does NOT delete
+The transfer of ownership happened in the "copy" constructor. auto_ptr's copy constructor and copy assignment
+operator take their operands by non-const reference so that they could be modified. An example implementation
+might be:
+template <typename T>
+class auto_ptr {
+     T* ptr;
+public:
+     auto_ptr(auto_ptr& rhs)
+     : ptr(rhs.release())
+     { }
+     auto_ptr& operator=(auto_ptr& rhs) {
+          reset(rhs.release());
+          return *this;
+     }
+     T* release() {
+          T* tmp = ptr;
+          ptr = nullptr;
+          return tmp;
+     }
+     void reset(T* tmp = nullptr) {
+if (ptr != tmp) {
+delete ptr;
+ptr = tmp;
+          }
+     }
+     /* other functions ... */
+};
+This breaks copy semantics, which require that copying an object leaves you with two equivalent versions of it. For

@@ -1,0 +1,45 @@
+﻿                return new S;
+        };
+        int main() {
+            S* s = S::create();
+        }
+Note that in the case of a static data member of a class, both 2 and 3 apply simultaneously: the static keyword
+both makes the member into a static data member and makes it into a variable with static storage duration.
+Section 133.4: auto
+Version < C++03
+Declares a variable to have automatic storage duration. It is redundant, since automatic storage duration is already
+the default at block scope, and the auto specifier is not allowed at namespace scope.
+void f() {
+     auto int x; // equivalent to: int x;
+     auto y; // illegal in C++; legal in C89
+}
+auto int z; // illegal: namespace-scope variable cannot be automatic
+In C++11, auto changed meaning completely, and is no longer a storage class specifier, but is instead used for type
+deduction.
+Section 133.5: mutable
+A specifier that can be applied to the declaration of a non-static, non-reference data member of a class. A mutable
+member of a class is not const even when the object is const.
+class C {
+     int x;
+     mutable int times_accessed;
+   public:
+     C(): x(0), times_accessed(0) {
+     }
+     int get_x() const {
+         ++times_accessed; // ok: const member function can modify mutable data member
+         return x;
+     }
+     void set_x(int x) {
+         ++times_accessed;
+         this->x = x;
+     }
+};
+Version > C++11
+A second meaning for mutable was added in C++11. When it follows the parameter list of a lambda, it suppresses
+the implicit const on the lambda's function call operator. Therefore, a mutable lambda can modify the values of
+entities captured by copy. See mutable lambdas for more details.
+std::vector<int> my_iota(int start, int count) {
+     std::vector<int> result(count);
+     std::generate(result.begin(), result.end(),
+                    [start]() mutable { return start++; });
+     return result;

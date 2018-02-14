@@ -1,0 +1,32 @@
+﻿Section 110.1: Unary Folds
+Unary folds are used to fold parameter packs over a specific operator. There are 2 kinds of unary folds:
+   • Unary Left Fold (... op pack) which expands as follows:
+     ((Packl op Pack2) op ...) op PackN
+   • Unary Right Fold (pack op ...) which expands as follows:
+     Packl op (... (Pack(N-1) op PackN))
+Here is an example
+template<typename... Ts>
+int sum(Ts... args)
+{
+     return (... + args); //Unary left fold
+     //return (args + ...); //Unary right fold
+     // The two are equivalent if the operator is associative.
+     // For +, ((1+2)+3) (left fold) == (1+(2+3)) (right fold)
+     // For -, ((1-2)-3) (left fold) != (1-(2-3)) (right fold)
+}
+int result = sum(1, 2, 3); //   6
+Section 110.2: Binary Folds
+Binary folds are basically unary folds, with an extra argument.
+There are 2 kinds of binary folds:
+    • Binary Left Fold - (value op ... op pack) - Expands as follows:
+       (((Value op Pack1) op Pack2) op ...) op PackN
+    • Binary Right Fold (pack op ... op value) - Expands as follows:
+       Pack1 op (... op (Pack(N-1) op (PackN op Value)))
+Here is an example:
+template<typename... Ts>
+int removeFrom(int num, Ts... args)
+{
+     return (num - ... - args); //Binary left fold
+// Note that a binary right fold cannot be used
+// due to the lack of associativity of operator-
+}

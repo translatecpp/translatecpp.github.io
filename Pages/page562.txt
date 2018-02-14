@@ -1,0 +1,41 @@
+﻿        }
+     void draw() {
+          std::cout << "RectangleAdapter: draw().\n";
+          oldDraw();
+      }
+};
+int main()
+{
+   int x = 20, y = 50, w = 300, h = 200;
+   Rectangle *r = new RectangleAdapter(x,y,w,h);
+   r->draw();
+}
+//Output:
+//LegacyRectangle(x1,y1,x2,y2)
+//RectangleAdapter(x,y,x+w,x+h)
+Summary of the code:
+   1.  The client thinks he is talking to a Rectangle
+   2.  The target is the Rectangle class. This is what the client invokes method on.
+        Rectangle *r = new RectangleAdapter(x,y,w,h);
+        r->draw();
+    3. Note that the adapter class uses multiple inheritance.
+        class RectangleAdapter: public Rectangle, private LegacyRectangle {
+        }
+   4. The Adapter RectangleAdapter lets the LegacyRectangle responds to request (draw() on a Rectangle) by
+      inheriting BOTH classes.
+   5.  The LegacyRectangle class does not have the same methods (draw()) as Rectangle, but the
+      Adapter(RectangleAdapter) can take the Rectangle method calls and turn around and invoke method on
+      the LegacyRectangle, oldDraw().
+        class RectangleAdapter: public Rectangle, private LegacyRectangle {
+          public:
+            RectangleAdapter(int x, int y, int w, int h):
+              LegacyRectangle(x, y, x + w, y + h) {
+                std::cout << "RectangleAdapter(x,y,x+w,x+h)\n";
+              }
+            void draw() {
+                std::cout << "RectangleAdapter: draw().\n";
+                oldDraw();
+            }
+        };
+Adapter design pattern translates the interface for one class into a compatible but different interface. So, this is
+similar to the proxy pattern in that it's a single-component wrapper. But the interface for the adapter class and the

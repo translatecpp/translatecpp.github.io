@@ -1,0 +1,41 @@
+﻿   if (b<a)
+     return std::tie(b,a);
+   else
+     return std::tie(a,b);
+}
+which permits
+void increase_least(int& a, int& b) {
+   std ::get<0>(minmax(a,b))++;
+}
+In some rare cases you'll use std::forward as tuple instead of std ::tie; be careful if you do so, as temporaries
+may not last long enough to be consumed.
+Section 25.2: Structured Bindings
+Version > C++17
+C++17 introduces structured bindings, which makes it even easier to deal with multiple return types, as you do not
+need to rely upon std::tie() or do any manual tuple unpacking:
+std::map<std::string, int> m;
+// insert an element into the map and check if insertion succeeded
+auto [iterator, success] = m.insert({"Hello", 42});
+if (success) {
+     // your code goes here
+}
+// iterate over all elements without having to use the cryptic 'first' and 'second' names
+for (auto const& [key, value] : m) {
+     std::cout << "The value for " << key << " is " << value << '\n';
+}
+Structured bindings can be used by default with std ::pair, std ::tuple, and any type whose non-static data
+members are all either public direct members or members of an unambiguous base class:
+struct A { int x; };
+struct B : A { int y; };
+B foo();
+// with structured bindings
+const auto [x, y] = foo();
+// equivalent code without structured bindings
+const auto result = foo();
+auto& x = result.x;
+auto& y = result.y;
+If you make your type "tuple-like" it will also automatically work with your type. A tuple-like is a type with
+appropriate tuple_size, tuple_element and get written:
+namespace my_ns {
+struct my_type {
+int x;

@@ -1,0 +1,42 @@
+﻿Section 116.1: Need for Memory Model
+int x, y;
+bool ready = false;
+void init()
+{
+   x = 2;
+   y = 3;
+   ready = true;
+}
+void use()
+{
+   if (ready)
+     std ::cout << x + y;
+}
+One thread calls the init() function while another thread (or signal handler) calls the use() function. One might
+expect that the use() function will either print 5 or do nothing. This may not always be the case for several reasons:
+    •  The CPU may reorder the writes that happen in init() so that the code that actually executes might look
+       like:
+       void init()
+       {
+         ready = true;
+         x = 2;
+         y = 3;
+       }
+    •  The CPU may reorder the reads that happen in use() so that the actually executed code might become:
+       void use()
+       {
+         int local_x = x;
+         int local_y = y;
+         if (ready)
+           std::cout << local_x + local_y;
+       }
+    •  An optimizing C++ compiler may decide to reorder the program in similar way.
+Such reordering cannot change the behavior of a program running in single thread because a thread cannot
+interleave the calls to init() and use(). On the other hand in a multi-threaded setting one thread may see part of
+the writes performed by the other thread where it may happen that use() may see ready==true and garbage in x
+or y or both.
+The C++ Memory Model allows the programmer to specify which reordering operations are permitted and which
+are not, so that a multi-threaded program would also be able to behave as expected. The example above can be
+rewritten in thread-safe way like this:
+int x, y;
+std::atomic<bool> ready{false};

@@ -1,0 +1,37 @@
+﻿Manipulators are special helper functions that help controlling input and output streams using operator >> or
+operator <<.
+They all can be included by #include <iomanip>.
+Section 15.1: Stream manipulators
+std::boolalpha. and std::noboolalpha. - switch between textual and numeric representation of booleans.
+std::cout << std::boolalpha << 1;
+// Output: true
+std::cout << std::noboolalpha << false;
+// Output: 0
+bool boolValue;
+std::cin >> std::boolalpha >> boolValue;
+std::cout << "Value \"" << std::boolalpha << boolValue
+          << "\" was parsed as " << std::noboolalpha << boolValue;
+// Input: true
+// Output: Value "true" was parsed as 0
+std::showbase and std::noshowbase. - control whether prefix indicating numeric base is used.
+std::dec (decimal), std::hex (hexadecimal) and std::oct (octal) - are used for changing base for integers.
+#include <sstream>
+std::cout << std::dec << 29 << ' - '
+           << std::hex << 29 << ' - '
+           << std::showbase << std::oct << 29 << ' - '
+           << std::noshowbase << 29   '\n';
+int number;
+std::istringstream("3B") >> std::hex >> number;
+std::cout << std::dec << 10;
+// Output: 22 - 1D - 35 - 035
+// 59
+Default values are std::ios base::noshowbase and std::ios base::dec.
+If you want to see more about std ::istringstream check out the <sstream> header.
+std::uppercase. and std::nouppercase. - control whether uppercase characters are used in floating-point and
+hexadecimal integer output. Have no effect on input streams.
+std::cout << std::hex << std::showbase
+                << "0x2a with nouppercase: " << std::nouppercase << 0x2a << '\n'
+                << "1e-10 with uppercase: " << std::uppercase << 1e-10 << '\n'
+}
+// Output: 0x2a with nouppercase: 0x2a
+// 1e-10 with uppercase: 1E-10

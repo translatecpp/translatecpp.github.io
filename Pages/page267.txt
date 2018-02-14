@@ -1,0 +1,36 @@
+﻿Returns pointer to the underlying array serving as element storage. The pointer is such that range [data();
+data() + size()) is always a valid range, even if the container is empty (data() is not dereferenceable in that
+case).
+The complexity is constant O(1).
+#include <iostream>
+#include <cstring>
+#include <array>
+int main ()
+{
+     const char* cstr = "Test string";
+     std::array<char, 12> arr;
+     std::memcpy(arr.data(), cstr, 12); // copy cstr to arr
+     std::cout << arr.data(); // outputs: Test string
+     return 0;
+}
+Section 49.3: Iterating through the Array
+std ::array being a STL container, can use range-based for loop similar to other containers like vector
+int main() {
+      std::array<int, 3> arr = { 1, 2, 3 };
+      for (auto i : arr)
+          cout << i << '\n';
+}
+Section 49.4: Checking size of the Array
+One of the main advantage of std ::array as compared to C style array is that we can check the size of the array
+using size() member function
+int main() {
+     std::array<int, 3> arr = { 1, 2, 3 };
+     cout << arr.size() << endl;
+}
+Section 49.5: Changing all array elements at once
+The member function fill() can be used on std ::array for changing the values at once post initialization
+int main() {
+     std::array<int, 3> arr = { 1, 2, 3 };
+     // change all elements of the array to 100
+     arr.fill(100);
+}

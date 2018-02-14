@@ -1,0 +1,47 @@
+﻿Section 72.3: Best practice: throw by value, catch by const
+reference
+In general, it is considered good practice to throw by value (rather than by pointer), but catch by (const) reference.
+try {
+     // throw new std::runtime_error("Error!"); // Don't do this!
+     // This creates an exception object
+     // on the heap and would require you to catch the
+     // pointer and manage the memory yourself. This can
+     // cause memory leaks!
+     throw std:: runtime_error("Error!");
+} catch (const std::runtime_error& e) {
+     std::cout << e.what() << std::endl;
+}
+One reason why catching by reference is a good practice is that it eliminates the need to reconstruct the object
+when being passed to the catch block (or when propagating through to other catch blocks). Catching by reference
+also allows the exceptions to be handled polymorphically and avoids object slicing. However, if you are rethrowing
+an exception (like throw e;, see example below), you can still get object slicing because the throw e; statement
+makes a copy of the exception as whatever type is declared:
+#include <iostream>
+struct BaseException {
+     virtual const char* what() const { return "BaseException"; }
+};
+struct DerivedException : BaseException {
+     // "virtual" keyword is optional here
+     virtual const char* what() const { return "DerivedException"; }
+};
+int main(int argc, char** argv) {
+     try {
+          try {
+              throw DerivedException();
+          } catch (const BaseException& e) {
+              std::cout << "First catch block: " << e.what() << std::endl;
+              // Output ==> First catch block: DerivedException
+              throw e; // This changes the exception to BaseException
+                       // instead of the original DerivedException!
+          }
+     } catch (const BaseException& e) {
+          std::cout << "Second catch block: " << e.what() << std::endl;
+          // Output ==> Second catch block: BaseException
+     }
+     return 0;
+}
+If you are sure that you are not going to do anything to change the exception (like add information or modify the
+message), catching by const reference allows the compiler to make optimizations and can improve performance.
+But this can still cause object splicing (as seen in the example above).
+Warning: Beware of throwing unintended exceptions in catch blocks, especially related to allocating extra memory
+or resources. For example, constructing logic_error, runtime_error or their subclasses might throw bad_alloc

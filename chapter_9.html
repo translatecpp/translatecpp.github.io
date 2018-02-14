@@ -1,0 +1,4187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="bookStyle.css" rel="stylesheet">
+    <title>CHAPTER 9</title>
+</head>
+<body>
+<div class="container">
+    <div class="block"><p class="word">﻿Arrays</p></div>
+    <div class="block"><p class="word">are</p></div>
+    <div class="block"><p class="word">elements</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">same</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">placed</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">adjoining</p></div>
+    <div class="block"><p class="word">memory</p></div>
+    <div class="block"><p class="word">locations.</p></div>
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">elements</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">individually
+    </p></div>
+</body>
+</html></div>
+<div class="container">
+    <div class="block"><p class="word">referenced</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">unique</p></div>
+    <div class="block"><p class="word">identifier</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">added</p></div>
+    <div class="block"><p class="word">index.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">This</p></div>
+    <div class="block"><p class="word">allows</p></div>
+    <div class="block"><p class="word">you</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">declare</p></div>
+    <div class="block"><p class="word">multiple</p></div>
+    <div class="block"><p class="word">variable</p></div>
+    <div class="block"><p class="word">values</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">specific</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">access</p></div>
+    <div class="block"><p class="word">them</p></div>
+    <div class="block"><p class="word">individually</p></div>
+    <div class="block"><p class="word">without</p></div>
+    <div class="block"><p class="word">needing
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">declare</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">variable</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">each</p></div>
+    <div class="block"><p class="word">value.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Section</p></div>
+    <div class="block"><p class="word">9.1:</p></div>
+    <div class="block"><p class="word">Array</p></div>
+    <div class="block"><p class="word">initialization
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">An</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">just</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">block</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">sequential</p></div>
+    <div class="block"><p class="word">memory</p></div>
+    <div class="block"><p class="word">locations</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">specific</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">variable.</p></div>
+    <div class="block"><p class="word">Arrays</p></div>
+    <div class="block"><p class="word">are</p></div>
+    <div class="block"><p class="word">allocated</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">same
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">way</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">normal</p></div>
+    <div class="block"><p class="word">variables,</p></div>
+    <div class="block"><p class="word">but</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">square</p></div>
+    <div class="block"><p class="word">brackets</p></div>
+    <div class="block"><p class="word">appended</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">its</p></div>
+    <div class="block"><p class="word">name</p></div>
+    <div class="block"><p class="word">[]</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">contain</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">elements
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">fit</p></div>
+    <div class="block"><p class="word">into</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">memory.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">following</p></div>
+    <div class="block"><p class="word">example</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">uses</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">typ</p></div>
+    <div class="block"><p class="word">int,</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">variable</p></div>
+    <div class="block"><p class="word">name</p></div>
+    <div class="block"><p class="word">arrayOfInts,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">elements
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">[</p></div>
+    <div class="block"><p class="word">5</p></div>
+    <div class="block"><p class="word">]</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">has</p></div>
+    <div class="block"><p class="word">space</p></div>
+    <div class="block"><p class="word">for:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">arrayOfInts[5];
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">An</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">declared</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">initialized</p></div>
+    <div class="block"><p class="word">at</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">same</p></div>
+    <div class="block"><p class="word">time</p></div>
+    <div class="block"><p class="word">like</p></div>
+    <div class="block"><p class="word">this
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">arrayOfInts[5]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{10,</p></div>
+    <div class="block"><p class="word">20,</p></div>
+    <div class="block"><p class="word">30,</p></div>
+    <div class="block"><p class="word">40,</p></div>
+    <div class="block"><p class="word">50};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">When</p></div>
+    <div class="block"><p class="word">initializing</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">listing</p></div>
+    <div class="block"><p class="word">all</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">its</p></div>
+    <div class="block"><p class="word">members,</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">not</p></div>
+    <div class="block"><p class="word">necessary</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">include</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">elements</p></div>
+    <div class="block"><p class="word">inside
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">square</p></div>
+    <div class="block"><p class="word">brackets.</p></div>
+    <div class="block"><p class="word">It</p></div>
+    <div class="block"><p class="word">will</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">automatically</p></div>
+    <div class="block"><p class="word">calculated</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">compiler.</p></div>
+    <div class="block"><p class="word">In</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">following</p></div>
+    <div class="block"><p class="word">example,</p></div>
+    <div class="block"><p class="word">it's</p></div>
+    <div class="block"><p class="word">5:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">arrayOfInts[]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{10,</p></div>
+    <div class="block"><p class="word">20,</p></div>
+    <div class="block"><p class="word">30,</p></div>
+    <div class="block"><p class="word">40,</p></div>
+    <div class="block"><p class="word">50};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">It</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">also</p></div>
+    <div class="block"><p class="word">possible</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">initialize</p></div>
+    <div class="block"><p class="word">only</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">first</p></div>
+    <div class="block"><p class="word">elements</p></div>
+    <div class="block"><p class="word">while</p></div>
+    <div class="block"><p class="word">allocating</p></div>
+    <div class="block"><p class="word">more</p></div>
+    <div class="block"><p class="word">space.</p></div>
+    <div class="block"><p class="word">In</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">case,</p></div>
+    <div class="block"><p class="word">defining</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">length</p></div>
+    <div class="block"><p class="word">in
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">brackets</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">mandatory.</p></div>
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">following</p></div>
+    <div class="block"><p class="word">will</p></div>
+    <div class="block"><p class="word">allocate</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">length</p></div>
+    <div class="block"><p class="word">5</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">partial</p></div>
+    <div class="block"><p class="word">initialization,</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">compiler
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">initializes</p></div>
+    <div class="block"><p class="word">all</p></div>
+    <div class="block"><p class="word">remaining</p></div>
+    <div class="block"><p class="word">elements</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">standard</p></div>
+    <div class="block"><p class="word">value</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">element</p></div>
+    <div class="block"><p class="word">type,</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">case</p></div>
+    <div class="block"><p class="word">zero.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">arrayOfInts[5]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{10,20};</p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">means</p></div>
+    <div class="block"><p class="word">10,</p></div>
+    <div class="block"><p class="word">20,</p></div>
+    <div class="block"><p class="word">0,</p></div>
+    <div class="block"><p class="word">0,</p></div>
+    <div class="block"><p class="word">0
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Arrays</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">other</p></div>
+    <div class="block"><p class="word">basic</p></div>
+    <div class="block"><p class="word">data</p></div>
+    <div class="block"><p class="word">types</p></div>
+    <div class="block"><p class="word">may</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">initialized</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">same</p></div>
+    <div class="block"><p class="word">way.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">char</p></div>
+    <div class="block"><p class="word">arrayOfChars[5];</p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">declare</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">allocate</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">memory,</p></div>
+    <div class="block"><p class="word">don't</p></div>
+    <div class="block"><p class="word">initialize
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">char</p></div>
+    <div class="block"><p class="word">arrayOfChars[5]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">'a',</p></div>
+    <div class="block"><p class="word">'b',</p></div>
+    <div class="block"><p class="word">'c',</p></div>
+    <div class="block"><p class="word">'d',</p></div>
+    <div class="block"><p class="word">'e'</p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">;</p></div>
+    <div class="block"><p class="word">//declare</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">initialize
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">double</p></div>
+    <div class="block"><p class="word">arrayOfDoubles[5]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{1.14159,</p></div>
+    <div class="block"><p class="word">2.14159,</p></div>
+    <div class="block"><p class="word">3.14159,</p></div>
+    <div class="block"><p class="word">4.14159,</p></div>
+    <div class="block"><p class="word">5.14159};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">string</p></div>
+    <div class="block"><p class="word">arrayOfStrings[5]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">"C++",</p></div>
+    <div class="block"><p class="word">"is",</p></div>
+    <div class="block"><p class="word">"super",</p></div>
+    <div class="block"><p class="word">"duper",</p></div>
+    <div class="block"><p class="word">"great!"};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">It</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">also</p></div>
+    <div class="block"><p class="word">important</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">take</p></div>
+    <div class="block"><p class="word">note</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">when</p></div>
+    <div class="block"><p class="word">accessing</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">elements,</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">array's</p></div>
+    <div class="block"><p class="word">element</p></div>
+    <div class="block"><p class="word">index(or</p></div>
+    <div class="block"><p class="word">position)</p></div>
+    <div class="block"><p class="word">starts
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">from</p></div>
+    <div class="block"><p class="word">0.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">array[5]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">10/*Element</p></div>
+    <div class="block"><p class="word">no.0*/,</p></div>
+    <div class="block"><p class="word">20/*Element</p></div>
+    <div class="block"><p class="word">no.1*/,</p></div>
+    <div class="block"><p class="word">30,</p></div>
+    <div class="block"><p class="word">40,</p></div>
+    <div class="block"><p class="word">50/*Element</p></div>
+    <div class="block"><p class="word">no.4*/};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">array[4];</p></div>
+    <div class="block"><p class="word">//outputs</p></div>
+    <div class="block"><p class="word">50
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">array[0];</p></div>
+    <div class="block"><p class="word">//outputs</p></div>
+    <div class="block"><p class="word">10</p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">﻿Section</p></div>
+    <div class="block"><p class="word">9.2:</p></div>
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">fixed</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">(that</p></div>
+    <div class="block"><p class="word">is,</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">2D</p></div>
+    <div class="block"><p class="word">raw
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">array)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">fixed</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">(that</p></div>
+    <div class="block"><p class="word">is,</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">2D</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array).
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <iostream>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <iomanip>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">std;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">main()</p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">int
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">n_rows</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">3;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">n_cols</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">7;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">m[n_rows][n_cols]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">matrix.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">1,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">2,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">3,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">4,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">5,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">6,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">7</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">8,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">9,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">10,</p></div>
+    <div class="block"><p class="word">11,</p></div>
+    <div class="block"><p class="word">12,</p></div>
+    <div class="block"><p class="word">13,</p></div>
+    <div class="block"><p class="word">14</p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">15,</p></div>
+    <div class="block"><p class="word">16,</p></div>
+    <div class="block"><p class="word">17,</p></div>
+    <div class="block"><p class="word">18,</p></div>
+    <div class="block"><p class="word">19,</p></div>
+    <div class="block"><p class="word">20,</p></div>
+    <div class="block"><p class="word">21</p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0;</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word"><</p></div>
+    <div class="block"><p class="word">n_rows;</p></div>
+    <div class="block"><p class="word">++y</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0;</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word"><</p></div>
+    <div class="block"><p class="word">n_cols;</p></div>
+    <div class="block"><p class="word">++x</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">setw(</p></div>
+    <div class="block"><p class="word">4</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">m[y][x];</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Note:</p></div>
+    <div class="block"><p class="word">do</p></div>
+    <div class="block"><p class="word">NOT</p></div>
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">m[y,x]!
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">'\n';
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Output:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">1</p></div>
+    <div class="block"><p class="word">2</p></div>
+    <div class="block"><p class="word">3</p></div>
+    <div class="block"><p class="word">4</p></div>
+    <div class="block"><p class="word">5</p></div>
+    <div class="block"><p class="word">6</p></div>
+    <div class="block"><p class="word">7</p></div>
+    <div class="block"><p class="word">8</p></div>
+    <div class="block"><p class="word">9</p></div>
+    <div class="block"><p class="word">10</p></div>
+    <div class="block"><p class="word">11</p></div>
+    <div class="block"><p class="word">12</p></div>
+    <div class="block"><p class="word">13</p></div>
+    <div class="block"><p class="word">14</p></div>
+    <div class="block"><p class="word">15</p></div>
+    <div class="block"><p class="word">16</p></div>
+    <div class="block"><p class="word">17</p></div>
+    <div class="block"><p class="word">18</p></div>
+    <div class="block"><p class="word">19</p></div>
+    <div class="block"><p class="word">20</p></div>
+    <div class="block"><p class="word">21
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">C++</p></div>
+    <div class="block"><p class="word">doesn't</p></div>
+    <div class="block"><p class="word">support</p></div>
+    <div class="block"><p class="word">special</p></div>
+    <div class="block"><p class="word">syntax</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">indexing</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">multi-dimensional</p></div>
+    <div class="block"><p class="word">array.</p></div>
+    <div class="block"><p class="word">Instead</p></div>
+    <div class="block"><p class="word">such</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">viewed</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">an
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">arrays</p></div>
+    <div class="block"><p class="word">(possibly</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">arrays,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">so</p></div>
+    <div class="block"><p class="word">on),</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">ordinary</p></div>
+    <div class="block"><p class="word">single</p></div>
+    <div class="block"><p class="word">index</p></div>
+    <div class="block"><p class="word">notation</p></div>
+    <div class="block"><p class="word">[i]</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">used</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">each</p></div>
+    <div class="block"><p class="word">level.</p></div>
+    <div class="block"><p class="word">In
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">example</p></div>
+    <div class="block"><p class="word">above</p></div>
+    <div class="block"><p class="word">m[y]</p></div>
+    <div class="block"><p class="word">refers</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">row</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">m,</p></div>
+    <div class="block"><p class="word">where</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">zero-based</p></div>
+    <div class="block"><p class="word">index.</p></div>
+    <div class="block"><p class="word">Then</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">row</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">indexed</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">turn,
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">e.g.</p></div>
+    <div class="block"><p class="word">m[y][x],</p></div>
+    <div class="block"><p class="word">which</p></div>
+    <div class="block"><p class="word">refers</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">xth</p></div>
+    <div class="block"><p class="word">item</p></div>
+    <div class="block"><p class="word">-</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">column</p></div>
+    <div class="block"><p class="word">-</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">row</p></div>
+    <div class="block"><p class="word">y.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">I.e.</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">last</p></div>
+    <div class="block"><p class="word">index</p></div>
+    <div class="block"><p class="word">varies</p></div>
+    <div class="block"><p class="word">fastest,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">declaration</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">range</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">index,</p></div>
+    <div class="block"><p class="word">which</p></div>
+    <div class="block"><p class="word">here</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">columns
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">per</p></div>
+    <div class="block"><p class="word">row,</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">last</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">"innermost"</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">specified.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Since</p></div>
+    <div class="block"><p class="word">C++</p></div>
+    <div class="block"><p class="word">doesn't</p></div>
+    <div class="block"><p class="word">provide</p></div>
+    <div class="block"><p class="word">built-in</p></div>
+    <div class="block"><p class="word">support</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">arrays,</p></div>
+    <div class="block"><p class="word">other</p></div>
+    <div class="block"><p class="word">than</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">allocation,</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">often</p></div>
+    <div class="block"><p class="word">implemented</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">class.</p></div>
+    <div class="block"><p class="word">Then</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">indexing</p></div>
+    <div class="block"><p class="word">notation</p></div>
+    <div class="block"><p class="word">m[y][x]</p></div>
+    <div class="block"><p class="word">has</p></div>
+    <div class="block"><p class="word">some</p></div>
+    <div class="block"><p class="word">cost,</p></div>
+    <div class="block"><p class="word">either
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">exposing</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">implementation</p></div>
+    <div class="block"><p class="word">(so</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">e.g.</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">view</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">transposed</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">becomes</p></div>
+    <div class="block"><p class="word">practically</p></div>
+    <div class="block"><p class="word">impossible)</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">by
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">adding</p></div>
+    <div class="block"><p class="word">some</p></div>
+    <div class="block"><p class="word">overhead</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">slight</p></div>
+    <div class="block"><p class="word">inconvenience</p></div>
+    <div class="block"><p class="word">when</p></div>
+    <div class="block"><p class="word">it's</p></div>
+    <div class="block"><p class="word">done</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">returning</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">proxy</p></div>
+    <div class="block"><p class="word">object</p></div>
+    <div class="block"><p class="word">from</p></div>
+    <div class="block"><p class="word">operator[</p></div>
+    <div class="block"><p class="word">].</p></div>
+    <div class="block"><p class="word">And
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">so</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">indexing</p></div>
+    <div class="block"><p class="word">notation</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">such</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">abstraction</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">will</p></div>
+    <div class="block"><p class="word">usually</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">different,</p></div>
+    <div class="block"><p class="word">both</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">look-and-feel</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">the
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">order</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">indices,</p></div>
+    <div class="block"><p class="word">e.g.</p></div>
+    <div class="block"><p class="word">m(x,y)</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">m.at(x,y)</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">m.item(x,y).
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Section</p></div>
+    <div class="block"><p class="word">9.3:</p></div>
+    <div class="block"><p class="word">Dynamically</p></div>
+    <div class="block"><p class="word">sized</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Example</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">array.</p></div>
+    <div class="block"><p class="word">It's</p></div>
+    <div class="block"><p class="word">generally</p></div>
+    <div class="block"><p class="word">better</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">std::vector.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <algorithm>
+        </p>
+    </div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">std::sort
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <iostream>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">std;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">int_from(</p></div>
+    <div class="block"><p class="word">istream&</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">x;</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">>></p></div>
+    <div class="block"><p class="word">x;</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">x;</p></div>
+    <div class="block"><p class="word">}</p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">﻿auto</p></div>
+    <div class="block"><p class="word">main()
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">int
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"Sorting</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">integers</p></div>
+    <div class="block"><p class="word">provided</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">you.\\n";
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"n?</p></div>
+    <div class="block"><p class="word">";
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">int_from(</p></div>
+    <div class="block"><p class="word">cin</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int*</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">new</p></div>
+    <div class="block"><p class="word">int[n];</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Allocation</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">items.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">1;</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word"><=</p></div>
+    <div class="block"><p class="word">n;</p></div>
+    <div class="block"><p class="word">++i</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"The</p></div>
+    <div class="block"><p class="word">#"</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"</p></div>
+    <div class="block"><p class="word">number,</p></div>
+    <div class="block"><p class="word">please:</p></div>
+    <div class="block"><p class="word">";
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">a[i-1]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">int_from(</p></div>
+    <div class="block"><p class="word">cin</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">sort(</p></div>
+    <div class="block"><p class="word">a,</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">+</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0;</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word"><</p></div>
+    <div class="block"><p class="word">n;</p></div>
+    <div class="block"><p class="word">++i</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">a[i]</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">'</p></div>
+    <div class="block"><p class="word">'</p></div>
+    <div class="block"><p class="word">;</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">'</p></div>
+    <div class="block"><p class="word">\\n'</p></div>
+    <div class="block"><p class="word">;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">delete[]</p></div>
+    <div class="block"><p class="word">a;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">program</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">declares</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">T</p></div>
+    <div class="block"><p class="word">a[n];</p></div>
+    <div class="block"><p class="word">where</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">determined</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">run-time,</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">compile</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">certain</p></div>
+    <div class="block"><p class="word">compilers
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">support</p></div>
+    <div class="block"><p class="word">C99</p></div>
+    <div class="block"><p class="word">variadic</p></div>
+    <div class="block"><p class="word">length</p></div>
+    <div class="block"><p class="word">arrays</p></div>
+    <div class="block"><p class="word">(VLAs)</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">language</p></div>
+    <div class="block"><p class="word">extension.</p></div>
+    <div class="block"><p class="word">But</p></div>
+    <div class="block"><p class="word">VLAs</p></div>
+    <div class="block"><p class="word">are</p></div>
+    <div class="block"><p class="word">not</p></div>
+    <div class="block"><p class="word">supported</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">standard</p></div>
+    <div class="block"><p class="word">C++.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">This</p></div>
+    <div class="block"><p class="word">example</p></div>
+    <div class="block"><p class="word">shows</p></div>
+    <div class="block"><p class="word">how</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">manually</p></div>
+    <div class="block"><p class="word">allocate</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">via</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">new[</p></div>
+    <div class="block"><p class="word">]-expression,
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int*</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">new</p></div>
+    <div class="block"><p class="word">int[n];</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Allocation</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">items.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">...</p></div>
+    <div class="block"><p class="word">then</p></div>
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">it,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">finally</p></div>
+    <div class="block"><p class="word">deallocate</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">via</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">delete[</p></div>
+    <div class="block"><p class="word">]-expression:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">delete[]</p></div>
+    <div class="block"><p class="word">a;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">allocated</p></div>
+    <div class="block"><p class="word">here</p></div>
+    <div class="block"><p class="word">has</p></div>
+    <div class="block"><p class="word">indeterminate</p></div>
+    <div class="block"><p class="word">values,</p></div>
+    <div class="block"><p class="word">but</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">zero-initialized</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">just</p></div>
+    <div class="block"><p class="word">adding</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">empty
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">parenthesis</p></div>
+    <div class="block"><p class="word">(),</p></div>
+    <div class="block"><p class="word">like</p></div>
+    <div class="block"><p class="word">this:</p></div>
+    <div class="block"><p class="word">new</p></div>
+    <div class="block"><p class="word">int[n]</p></div>
+    <div class="block"><p class="word">().</p></div>
+    <div class="block"><p class="word">More</p></div>
+    <div class="block"><p class="word">generally,</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">arbitrary</p></div>
+    <div class="block"><p class="word">item</p></div>
+    <div class="block"><p class="word">type,</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">performs</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">value-initialization.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">As</p></div>
+    <div class="block"><p class="word">part</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">function</p></div>
+    <div class="block"><p class="word">down</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">call</p></div>
+    <div class="block"><p class="word">hierarchy</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">code</p></div>
+    <div class="block"><p class="word">would</p></div>
+    <div class="block"><p class="word">not</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">exception</p></div>
+    <div class="block"><p class="word">safe,</p></div>
+    <div class="block"><p class="word">since</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">exception</p></div>
+    <div class="block"><p class="word">before</p></div>
+    <div class="block"><p class="word">the
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">delete[</p></div>
+    <div class="block"><p class="word">]</p></div>
+    <div class="block"><p class="word">expression</p></div>
+    <div class="block"><p class="word">(and</p></div>
+    <div class="block"><p class="word">after</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">new[</p></div>
+    <div class="block"><p class="word">])</p></div>
+    <div class="block"><p class="word">would</p></div>
+    <div class="block"><p class="word">cause</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">memory</p></div>
+    <div class="block"><p class="word">leak.</p></div>
+    <div class="block"><p class="word">One</p></div>
+    <div class="block"><p class="word">way</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">address</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">issue</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">to
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">automate</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">cleanup</p></div>
+    <div class="block"><p class="word">via</p></div>
+    <div class="block"><p class="word">e.g.</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">std</p></div>
+    <div class="block"><p class="word">::unique_ptr</p></div>
+    <div class="block"><p class="word">smart</p></div>
+    <div class="block"><p class="word">pointer.</p></div>
+    <div class="block"><p class="word">But</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">generally</p></div>
+    <div class="block"><p class="word">better</p></div>
+    <div class="block"><p class="word">way</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">address</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">just
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">std</p></div>
+    <div class="block"><p class="word">::vector:</p></div>
+    <div class="block"><p class="word">that's</p></div>
+    <div class="block"><p class="word">what</p></div>
+    <div class="block"><p class="word">std</p></div>
+    <div class="block"><p class="word">::vector</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">there</p></div>
+    <div class="block"><p class="word">for.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Section</p></div>
+    <div class="block"><p class="word">9.4:</p></div>
+    <div class="block"><p class="word">Array</p></div>
+    <div class="block"><p class="word">size:</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">safe</p></div>
+    <div class="block"><p class="word">at</p></div>
+    <div class="block"><p class="word">compile</p></div>
+    <div class="block"><p class="word">time
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">size_t,</p></div>
+    <div class="block"><p class="word">ptrdiff_t
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">//------------------------------------</p></div>
+    <div class="block"><p class="word">Machinery:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">ptrdiff_t;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">template<</p></div>
+    <div class="block"><p class="word">class</p></div>
+    <div class="block"><p class="word">Item,</p></div>
+    <div class="block"><p class="word">size_t</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">>
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">constexpr</p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">n_items(</p></div>
+    <div class="block"><p class="word">Item</p></div>
+    <div class="block"><p class="word">(&)[n]</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">noexcept
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">Size
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">n;</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">//------------------------------------</p></div>
+    <div class="block"><p class="word">Usage:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">std;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">main()</p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">﻿</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">int
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">a[]</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{3,</p></div>
+    <div class="block"><p class="word">1,</p></div>
+    <div class="block"><p class="word">4,</p></div>
+    <div class="block"><p class="word">1,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">5,</p></div>
+    <div class="block"><p class="word">9,</p></div>
+    <div class="block"><p class="word">2,</p></div>
+    <div class="block"><p class="word">6,</p></div>
+    <div class="block"><p class="word">5,</p></div>
+    <div class="block"><p class="word">4};</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">items(</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">•</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">b[n]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{};</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">An</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">same</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">(void)</p></div>
+    <div class="block"><p class="word">b;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">C</p></div>
+    <div class="block"><p class="word">idiom</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">size,</p></div>
+    <div class="block"><p class="word">sizeof(a)/sizeof(a[0]),</p></div>
+    <div class="block"><p class="word">will</p></div>
+    <div class="block"><p class="word">accept</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">pointer</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">argument</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">will</p></div>
+    <div class="block"><p class="word">then</p></div>
+    <div class="block"><p class="word">generally</p></div>
+    <div class="block"><p class="word">yield
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">incorrect</p></div>
+    <div class="block"><p class="word">result.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">For</p></div>
+    <div class="block"><p class="word">C++11
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">C++11</p></div>
+    <div class="block"><p class="word">you</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">do:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block">
+        <p class="word">std::extent
+            <decltype
+            (MyArray)>::value;
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Example:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">char</p></div>
+    <div class="block"><p class="word">MyArray[]</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">'X','o','c','e'</p></div>
+    <div class="block"><p class="word">};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block">
+        <p class="word">std::extent
+            <decltype
+            (MyArray)>::value;
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"\n";</p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Prints</p></div>
+    <div class="block"><p class="word">4
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Up</p></div>
+    <div class="block"><p class="word">till</p></div>
+    <div class="block"><p class="word">C++17</p></div>
+    <div class="block"><p class="word">(forthcoming</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">writing)</p></div>
+    <div class="block"><p class="word">C++</p></div>
+    <div class="block"><p class="word">had</p></div>
+    <div class="block"><p class="word">no</p></div>
+    <div class="block"><p class="word">built-in</p></div>
+    <div class="block"><p class="word">core</p></div>
+    <div class="block"><p class="word">language</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">standard</p></div>
+    <div class="block"><p class="word">library</p></div>
+    <div class="block"><p class="word">utility</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">obtain
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">array,</p></div>
+    <div class="block"><p class="word">but</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">implemented</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">passing</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">reference</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">function</p></div>
+    <div class="block"><p class="word">template,</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">shown
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">above.</p></div>
+    <div class="block"><p class="word">Fine</p></div>
+    <div class="block"><p class="word">but</p></div>
+    <div class="block"><p class="word">important</p></div>
+    <div class="block"><p class="word">point:</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">template</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">parameter</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">size_t,</p></div>
+    <div class="block"><p class="word">somewhat</p></div>
+    <div class="block"><p class="word">inconsistent</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">signed
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">function</p></div>
+    <div class="block"><p class="word">result</p></div>
+    <div class="block"><p class="word">type,</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">order</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">accommodate</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">g++</p></div>
+    <div class="block"><p class="word">compiler</p></div>
+    <div class="block"><p class="word">which</p></div>
+    <div class="block"><p class="word">sometimes</p></div>
+    <div class="block"><p class="word">insists</p></div>
+    <div class="block"><p class="word">on</p></div>
+    <div class="block"><p class="word">size_t</p></div>
+    <div class="block"><p class="word">for
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">template</p></div>
+    <div class="block"><p class="word">matching.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">With</p></div>
+    <div class="block"><p class="word">C++17</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">later</p></div>
+    <div class="block"><p class="word">one</p></div>
+    <div class="block"><p class="word">may</p></div>
+    <div class="block"><p class="word">instead</p></div>
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">std::size,</p></div>
+    <div class="block"><p class="word">which</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">specialized</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">arrays.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Section</p></div>
+    <div class="block"><p class="word">9.5:</p></div>
+    <div class="block"><p class="word">Expanding</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">using
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::vector
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Example</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">std::vector
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <algorithm>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <iostream>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <vector>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">std;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">int_from(</p></div>
+    <div class="block"><p class="word">std::istream&</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0;</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">>></p></div>
+    <div class="block"><p class="word">x;</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">x;</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">main()
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"Sorting</p></div>
+    <div class="block"><p class="word">integers</p></div>
+    <div class="block"><p class="word">provided</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">you.\n";
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"You</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">indicate</p></div>
+    <div class="block"><p class="word">EOF</p></div>
+    <div class="block"><p class="word">via</p></div>
+    <div class="block"><p class="word">F6</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">Windows</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">Ctrl+D</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">Unix-land.\n";
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block">
+        <p class="word">vector
+            <int>
+        </p>
+    </div>
+    <div class="block"><p class="word">a;</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">?</p></div>
+    <div class="block"><p class="word">Zero</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">default.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">while(</p></div>
+    <div class="block"><p class="word">cin</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"One</p></div>
+    <div class="block"><p class="word">number,</p></div>
+    <div class="block"><p class="word">please,</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">indicate</p></div>
+    <div class="block"><p class="word">EOF:</p></div>
+    <div class="block"><p class="word">";
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">int_from(</p></div>
+    <div class="block"><p class="word">cin</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">if(</p></div>
+    <div class="block"><p class="word">!cin.fail()</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">a.push_back(</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word">);</p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">Expands</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">necessary.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">sort(</p></div>
+    <div class="block"><p class="word">a.begin(),</p></div>
+    <div class="block"><p class="word">a.end()</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">a.size();
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">expanding</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">array.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">std::sort
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">std::vector</p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">﻿</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0;</p></div>
+    <div class="block"><p class="word">i</p></div>
+    <div class="block"><p class="word"><</p></div>
+    <div class="block"><p class="word">n;</p></div>
+    <div class="block"><p class="word">++i</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">a[i]</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">'</p></div>
+    <div class="block"><p class="word">';</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">'\n';
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std</p></div>
+    <div class="block"><p class="word">::vector</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">standard</p></div>
+    <div class="block"><p class="word">library</p></div>
+    <div class="block"><p class="word">class</p></div>
+    <div class="block"><p class="word">template</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">provides</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">notion</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">variable</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">array.</p></div>
+    <div class="block"><p class="word">It</p></div>
+    <div class="block"><p class="word">takes</p></div>
+    <div class="block"><p class="word">care</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">all
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">memory</p></div>
+    <div class="block"><p class="word">management,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">buffer</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">contiguous</p></div>
+    <div class="block"><p class="word">so</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">pointer</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">buffer</p></div>
+    <div class="block"><p class="word">(e.g.</p></div>
+    <div class="block"><p class="word">&v[0]</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">v.data())</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">be
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">passed</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">API</p></div>
+    <div class="block"><p class="word">functions</p></div>
+    <div class="block"><p class="word">requiring</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array.</p></div>
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">vector</p></div>
+    <div class="block"><p class="word">can</p></div>
+    <div class="block"><p class="word">even</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">expanded</p></div>
+    <div class="block"><p class="word">at</p></div>
+    <div class="block"><p class="word">run</p></div>
+    <div class="block"><p class="word">time,</p></div>
+    <div class="block"><p class="word">via</p></div>
+    <div class="block"><p class="word">e.g.</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">push_back
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">member</p></div>
+    <div class="block"><p class="word">function</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">appends</p></div>
+    <div class="block"><p class="word">an</p></div>
+    <div class="block"><p class="word">item.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">complexity</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">sequence</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">push_back</p></div>
+    <div class="block"><p class="word">operations,</p></div>
+    <div class="block"><p class="word">including</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">copying</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">moving</p></div>
+    <div class="block"><p class="word">involved</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">vector
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">expansions,</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">amortized</p></div>
+    <div class="block"><p class="word">O(n).</p></div>
+    <div class="block"><p class="word">"Amortized":</p></div>
+    <div class="block"><p class="word">on</p></div>
+    <div class="block"><p class="word">average.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Internally</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">usually</p></div>
+    <div class="block"><p class="word">achieved</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">vector</p></div>
+    <div class="block"><p class="word">doubling</p></div>
+    <div class="block"><p class="word">its</p></div>
+    <div class="block"><p class="word">buffer</p></div>
+    <div class="block"><p class="word">size,</p></div>
+    <div class="block"><p class="word">its</p></div>
+    <div class="block"><p class="word">capacity,</p></div>
+    <div class="block"><p class="word">when</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">larger</p></div>
+    <div class="block"><p class="word">buffer</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">needed.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">E.g.</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">buffer</p></div>
+    <div class="block"><p class="word">starting</p></div>
+    <div class="block"><p class="word">out</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">1,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">being</p></div>
+    <div class="block"><p class="word">repeatedly</p></div>
+    <div class="block"><p class="word">doubled</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">needed</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">n=17</p></div>
+    <div class="block"><p class="word">push_back</p></div>
+    <div class="block"><p class="word">calls,</p></div>
+    <div class="block"><p class="word">this
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">involves</p></div>
+    <div class="block"><p class="word">1</p></div>
+    <div class="block"><p class="word">+</p></div>
+    <div class="block"><p class="word">2</p></div>
+    <div class="block"><p class="word">+</p></div>
+    <div class="block"><p class="word">4</p></div>
+    <div class="block"><p class="word">+</p></div>
+    <div class="block"><p class="word">8</p></div>
+    <div class="block"><p class="word">+</p></div>
+    <div class="block"><p class="word">16</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">31</p></div>
+    <div class="block"><p class="word">copy</p></div>
+    <div class="block"><p class="word">operations,</p></div>
+    <div class="block"><p class="word">which</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">less</p></div>
+    <div class="block"><p class="word">than</p></div>
+    <div class="block"><p class="word">2xn</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">34.</p></div>
+    <div class="block"><p class="word">And</p></div>
+    <div class="block"><p class="word">more</p></div>
+    <div class="block"><p class="word">generally</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">sum</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">this
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">sequence</p></div>
+    <div class="block"><p class="word">can't</p></div>
+    <div class="block"><p class="word">exceed</p></div>
+    <div class="block"><p class="word">2xn.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Compared</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array</p></div>
+    <div class="block"><p class="word">example,</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">vector-based</p></div>
+    <div class="block"><p class="word">code</p></div>
+    <div class="block"><p class="word">does</p></div>
+    <div class="block"><p class="word">not</p></div>
+    <div class="block"><p class="word">require</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">user</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">supply</p></div>
+    <div class="block"><p class="word">(and
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">know)</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">items</p></div>
+    <div class="block"><p class="word">up</p></div>
+    <div class="block"><p class="word">front.</p></div>
+    <div class="block"><p class="word">Instead</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">vector</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">just</p></div>
+    <div class="block"><p class="word">expanded</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">necessary,</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">each</p></div>
+    <div class="block"><p class="word">new</p></div>
+    <div class="block"><p class="word">item</p></div>
+    <div class="block"><p class="word">value
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">specified</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">user.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Section</p></div>
+    <div class="block"><p class="word">9.6:</p></div>
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">std::vector</p></div>
+    <div class="block"><p class="word">for
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">storage
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Unfortunately</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">C++14</p></div>
+    <div class="block"><p class="word">there's</p></div>
+    <div class="block"><p class="word">no</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">class</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">C++</p></div>
+    <div class="block"><p class="word">standard</p></div>
+    <div class="block"><p class="word">library.</p></div>
+    <div class="block"><p class="word">Matrix</p></div>
+    <div class="block"><p class="word">classes</p></div>
+    <div class="block"><p class="word">that
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">support</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">are</p></div>
+    <div class="block"><p class="word">however</p></div>
+    <div class="block"><p class="word">available</p></div>
+    <div class="block"><p class="word">from</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">3rd</p></div>
+    <div class="block"><p class="word">party</p></div>
+    <div class="block"><p class="word">libraries,</p></div>
+    <div class="block"><p class="word">including</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">Boost</p></div>
+    <div class="block"><p class="word">Matrix</p></div>
+    <div class="block"><p class="word">library
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">(a</p></div>
+    <div class="block"><p class="word">sub-library</p></div>
+    <div class="block"><p class="word">within</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">Boost</p></div>
+    <div class="block"><p class="word">library).
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">If</p></div>
+    <div class="block"><p class="word">you</p></div>
+    <div class="block"><p class="word">don't</p></div>
+    <div class="block"><p class="word">want</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">dependency</p></div>
+    <div class="block"><p class="word">on</p></div>
+    <div class="block"><p class="word">Boost</p></div>
+    <div class="block"><p class="word">or</p></div>
+    <div class="block"><p class="word">some</p></div>
+    <div class="block"><p class="word">other</p></div>
+    <div class="block"><p class="word">library,</p></div>
+    <div class="block"><p class="word">then</p></div>
+    <div class="block"><p class="word">one</p></div>
+    <div class="block"><p class="word">poor</p></div>
+    <div class="block"><p class="word">man's</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">C++</p></div>
+    <div class="block"><p class="word">is
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">just</p></div>
+    <div class="block"><p class="word">like
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block">
+        <p class="word">vector
+            <vector
+            <int>>
+        </p>
+    </div>
+    <div class="block"><p class="word">m(</p></div>
+    <div class="block"><p class="word">3,</p></div>
+    <div class="block">
+        <p class="word">vector
+            <int>(
+        </p>
+    </div>
+    <div class="block"><p class="word">7</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">...</p></div>
+    <div class="block"><p class="word">where</p></div>
+    <div class="block"><p class="word">vector</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">std</p></div>
+    <div class="block"><p class="word">::vector.</p></div>
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">here</p></div>
+    <div class="block"><p class="word">created</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">copying</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">row</p></div>
+    <div class="block"><p class="word">vector</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">times</p></div>
+    <div class="block"><p class="word">where</p></div>
+    <div class="block"><p class="word">n</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">rows,</p></div>
+    <div class="block"><p class="word">here</p></div>
+    <div class="block"><p class="word">3.</p></div>
+    <div class="block"><p class="word">It</p></div>
+    <div class="block"><p class="word">has</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">advantage</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">providing</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">same</p></div>
+    <div class="block"><p class="word">m[y][x]</p></div>
+    <div class="block"><p class="word">indexing</p></div>
+    <div class="block"><p class="word">notation</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">fixed</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">raw</p></div>
+    <div class="block"><p class="word">array
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">matrix,</p></div>
+    <div class="block"><p class="word">but</p></div>
+    <div class="block"><p class="word">it's</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">bit</p></div>
+    <div class="block"><p class="word">inefficient</p></div>
+    <div class="block"><p class="word">because</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">involves</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">allocation</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">each</p></div>
+    <div class="block"><p class="word">row,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">it's</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">bit</p></div>
+    <div class="block"><p class="word">unsafe</p></div>
+    <div class="block"><p class="word">because
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">it's</p></div>
+    <div class="block"><p class="word">possible</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">inadvertently</p></div>
+    <div class="block"><p class="word">resize</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">row.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">more</p></div>
+    <div class="block"><p class="word">safe</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">efficient</p></div>
+    <div class="block"><p class="word">approach</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">single</p></div>
+    <div class="block"><p class="word">vector</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">storage</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">matrix,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">map</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">client</p></div>
+    <div class="block"><p class="word">code's</p></div>
+    <div class="block"><p class="word">(x,y)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">corresponding</p></div>
+    <div class="block"><p class="word">index</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">that</p></div>
+    <div class="block"><p class="word">vector:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">A</p></div>
+    <div class="block"><p class="word">dynamic</p></div>
+    <div class="block"><p class="word">size</p></div>
+    <div class="block"><p class="word">matrix</p></div>
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">std::vector</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">storage.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <algorithm>
+        </p>
+    </div>
+    <div class="block"><p class="word">//
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <assert.h>
+        </p>
+    </div>
+    <div class="block"><p class="word">//
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <initializer_list>
+        </p>
+    </div>
+    <div class="block"><p class="word">//
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <vector>
+        </p>
+    </div>
+    <div class="block"><p class="word">//
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <stddef.h>
+        </p>
+    </div>
+    <div class="block"><p class="word">//
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::copy
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">assert
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::initializer_list
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::vector
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">ptrdiff_t
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">my</p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">ptrdiff_t;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">std::initializer_list;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">std::vector;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">template<</p></div>
+    <div class="block"><p class="word">class</p></div>
+    <div class="block"><p class="word">Item</p></div>
+    <div class="block"><p class="word">>
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">class</p></div>
+    <div class="block"><p class="word">Matrix</p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">﻿</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">private:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block">
+        <p class="word">vector
+            <Item>
+        </p>
+    </div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">items_;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">n_cols_;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">index_for(</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">x,</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">const
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">Size
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">y*n_cols_</p></div>
+    <div class="block"><p class="word">+</p></div>
+    <div class="block"><p class="word">x;</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">public:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">n_rows()</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">items_.size()/n_cols_;</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">n_cols()</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">n_cols_;</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">item(</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">x,</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">Item&
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">items_[index_for(x,</p></div>
+    <div class="block"><p class="word">y)];</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">item(</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">x,</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">const
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">Item</p></div>
+    <div class="block"><p class="word">const&
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">return</p></div>
+    <div class="block"><p class="word">items_[index_for(x,</p></div>
+    <div class="block"><p class="word">y)];</p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Matrix():</p></div>
+    <div class="block"><p class="word">n_cols_(</p></div>
+    <div class="block"><p class="word">0</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">{}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Matrix(</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">n_cols,</p></div>
+    <div class="block"><p class="word">Size</p></div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">n_rows</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">:</p></div>
+    <div class="block"><p class="word">items_(</p></div>
+    <div class="block"><p class="word">n_cols*n_rows</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">,</p></div>
+    <div class="block"><p class="word">n_cols_(</p></div>
+    <div class="block"><p class="word">n_cols</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Matrix(</p></div>
+    <div class="block"><p class="word">initializer_list<</p></div>
+    <div class="block">
+        <p class="word">initializer_list
+            <Item>
+        </p>
+    </div>
+    <div class="block"><p class="word">></p></div>
+    <div class="block"><p class="word">const&</p></div>
+    <div class="block"><p class="word">values</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">:</p></div>
+    <div class="block"><p class="word">items_()
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">,</p></div>
+    <div class="block"><p class="word">n_cols_(</p></div>
+    <div class="block"><p class="word">values.size()</p></div>
+    <div class="block"><p class="word">==</p></div>
+    <div class="block"><p class="word">0?</p></div>
+    <div class="block"><p class="word">0</p></div>
+    <div class="block"><p class="word">:</p></div>
+    <div class="block"><p class="word">values.begin()->size()</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">const&</p></div>
+    <div class="block"><p class="word">row</p></div>
+    <div class="block"><p class="word">:</p></div>
+    <div class="block"><p class="word">values</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">assert(</p></div>
+    <div class="block"><p class="word">Size(</p></div>
+    <div class="block"><p class="word">row.size()</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word">==</p></div>
+    <div class="block"><p class="word">n_cols_</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">items_.insert(</p></div>
+    <div class="block"><p class="word">items_.end(),</p></div>
+    <div class="block"><p class="word">row.begin(),</p></div>
+    <div class="block"><p class="word">row.end()</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">my
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">//-----------------------------------------------</p></div>
+    <div class="block"><p class="word">Usage:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">my::Matrix;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">some_matrix()
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block">
+        <p class="word">Matrix
+            <int>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">return
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">1,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">2,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">3,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">4,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">5,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">6,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">7</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">8,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">9,</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">10,</p></div>
+    <div class="block"><p class="word">11,</p></div>
+    <div class="block"><p class="word">12,</p></div>
+    <div class="block"><p class="word">13,</p></div>
+    <div class="block"><p class="word">14</p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{</p></div>
+    <div class="block"><p class="word">15,</p></div>
+    <div class="block"><p class="word">16,</p></div>
+    <div class="block"><p class="word">17,</p></div>
+    <div class="block"><p class="word">18,</p></div>
+    <div class="block"><p class="word">19,</p></div>
+    <div class="block"><p class="word">20,</p></div>
+    <div class="block"><p class="word">21</p></div>
+    <div class="block"><p class="word">}</p></div>
+    <div class="block"><p class="word">
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <iostream>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">#include</p></div>
+    <div class="block">
+        <p class="word">
+            <iomanip>
+        </p>
+    </div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">namespace</p></div>
+    <div class="block"><p class="word">std;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">auto</p></div>
+    <div class="block"><p class="word">main()</p></div>
+    <div class="block"><p class="word">-></p></div>
+    <div class="block"><p class="word">int
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block">
+        <p class="word">Matrix
+            <int>
+        </p>
+    </div>
+    <div class="block"><p class="word">const</p></div>
+    <div class="block"><p class="word">m</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">some_matrix();
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">assert(</p></div>
+    <div class="block"><p class="word">m.n_cols()</p></div>
+    <div class="block"><p class="word">==</p></div>
+    <div class="block"><p class="word">7</p></div>
+    <div class="block"><p class="word">);</p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">﻿</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">assert(</p></div>
+    <div class="block"><p class="word">m.n_rows()</p></div>
+    <div class="block"><p class="word">==</p></div>
+    <div class="block"><p class="word">3</p></div>
+    <div class="block"><p class="word">);
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0,</p></div>
+    <div class="block"><p class="word">y_end</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">m.n_rows();</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word"><</p></div>
+    <div class="block"><p class="word">y_end;</p></div>
+    <div class="block"><p class="word">++y</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">for(</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">0,</p></div>
+    <div class="block"><p class="word">x_end</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">m.n_cols();</p></div>
+    <div class="block"><p class="word">x</p></div>
+    <div class="block"><p class="word"><</p></div>
+    <div class="block"><p class="word">x_end;</p></div>
+    <div class="block"><p class="word">++x</p></div>
+    <div class="block"><p class="word">)
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">setw(</p></div>
+    <div class="block"><p class="word">4</p></div>
+    <div class="block"><p class="word">)</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">m.item(</p></div>
+    <div class="block"><p class="word">x,</p></div>
+    <div class="block"><p class="word">y</p></div>
+    <div class="block"><p class="word">);</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">?</p></div>
+    <div class="block"><p class="word">Note:</p></div>
+    <div class="block"><p class="word">not</p></div>
+    <div class="block"><p class="word">'m[y][x]'!
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">'\n';
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">}
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Output:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">1</p></div>
+    <div class="block"><p class="word">2</p></div>
+    <div class="block"><p class="word">3</p></div>
+    <div class="block"><p class="word">4</p></div>
+    <div class="block"><p class="word">5</p></div>
+    <div class="block"><p class="word">6</p></div>
+    <div class="block"><p class="word">7</p></div>
+    <div class="block"><p class="word">8</p></div>
+    <div class="block"><p class="word">9</p></div>
+    <div class="block"><p class="word">10</p></div>
+    <div class="block"><p class="word">11</p></div>
+    <div class="block"><p class="word">12</p></div>
+    <div class="block"><p class="word">13</p></div>
+    <div class="block"><p class="word">14</p></div>
+    <div class="block"><p class="word">15</p></div>
+    <div class="block"><p class="word">16</p></div>
+    <div class="block"><p class="word">17</p></div>
+    <div class="block"><p class="word">18</p></div>
+    <div class="block"><p class="word">19</p></div>
+    <div class="block"><p class="word">20</p></div>
+    <div class="block"><p class="word">21
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">above</p></div>
+    <div class="block"><p class="word">code</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">not</p></div>
+    <div class="block"><p class="word">industrial</p></div>
+    <div class="block"><p class="word">grade:</p></div>
+    <div class="block"><p class="word">it's</p></div>
+    <div class="block"><p class="word">designed</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">show</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">basic</p></div>
+    <div class="block"><p class="word">principles,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">serve</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">needs</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">students
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">learning</p></div>
+    <div class="block"><p class="word">C++.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">For</p></div>
+    <div class="block"><p class="word">example,</p></div>
+    <div class="block"><p class="word">one</p></div>
+    <div class="block"><p class="word">may</p></div>
+    <div class="block"><p class="word">define</p></div>
+    <div class="block"><p class="word">operator()</p></div>
+    <div class="block"><p class="word">overloads</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">simplify</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">indexing</p></div>
+    <div class="block"><p class="word">notation.</p></div>
+    </body></html></div>
+<div class="container"><a href="chapter_"><p>NEXT CHAPTER </p></a><a href="index.html"><p> HOME </p></a></div>

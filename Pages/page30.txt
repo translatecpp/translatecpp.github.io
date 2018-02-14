@@ -1,0 +1,45 @@
+﻿Section 9.2: A fixed size raw array matrix (that is, a 2D raw
+array)
+// A fixed size raw array matrix (that is, a 2D raw array).
+#include <iostream>
+#include <iomanip>
+using namespace std;
+auto main() -> int
+{
+     int const   n_rows = 3;
+     int const   n_cols = 7;
+     int const m[n_rows][n_cols] =                 // A raw array matrix.
+     {
+{ 1,  2,  3,  4,  5,  6,  7  } 
+{ 8,  9,  10, 11, 12, 13, 14 } 
+{ 15, 16, 17, 18, 19, 20, 21 } 
+     };
+     for( int y = 0; y < n_rows; ++y )
+     {
+         for( int x = 0; x < n_cols; ++x )
+         {
+             cout << setw( 4 ) << m[y][x];        // Note: do NOT use m[y,x]!
+         }
+         cout << '\n';
+     }
+}
+Output:
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+C++ doesn't support special syntax for indexing a multi-dimensional array. Instead such an array is viewed as an
+array of arrays (possibly of arrays, and so on), and the ordinary single index notation [i] is used for each level. In
+the example above m[y] refers to row y of m, where y is a zero-based index. Then this row can be indexed in turn,
+e.g. m[y][x], which refers to the xth item - or column - of row y.
+I.e. the last index varies fastest, and in the declaration the range of this index, which here is the number of columns
+per row, is the last and "innermost" size specified.
+Since C++ doesn't provide built-in support for dynamic size arrays, other than dynamic allocation, a dynamic size
+matrix is often implemented as a class. Then the raw array matrix indexing notation m[y][x] has some cost, either
+by exposing the implementation (so that e.g. a view of a transposed matrix becomes practically impossible) or by
+adding some overhead and slight inconvenience when it's done by returning a proxy object from operator[ ]. And
+so the indexing notation for such an abstraction can and will usually be different, both in look-and-feel and in the
+order of indices, e.g. m(x,y) or m.at(x,y) or m.item(x,y).
+Section 9.3: Dynamically sized raw array
+// Example of raw dynamic size array. It's generally better to use std::vector.
+#include <algorithm>             // std::sort
+#include <iostream>
+using namespace std;
+auto int_from( istream& in ) -> int { int x; in >> x; return x; }

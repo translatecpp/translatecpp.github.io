@@ -1,0 +1,41 @@
+﻿The primary application of void_t is writing type traits that check validity of a statement. For example, let's check if
+a type has a member function foo() that takes no arguments:
+template <class T, class=void>
+struct has_foo : std::false_type {};
+template <class T>
+struct has_foo<T, void_t<decltype(std::declval<T&>().foo())>> : std::true_type {};
+How does this work? When I try to instantiate has_foo<T>::value, that will cause the compiler to try to look for the
+best specialization for has_foo<T, void>. We have two options: the primary, and this secondary one which involves
+having to instantiate that underlying expression:
+    •  If T does have a member function foo(), then whatever type that returns gets converted to void, and the
+      specialization is preferred to the primary based on the template partial ordering rules. So
+      has_foo<T>::value will be true
+    •  If T doesn't have such a member function (or it requires more than one argument), then substitution fails for
+      the specialization and we only have the primary template to fallback on. Hence, has_foo<T> ::value is false.
+A simpler case:
+template<class T, class=void>
+struct can_reference : std::false_type {};
+template<class T>
+struct can_reference<T, std::void_t<T&>> : std::true_type {};
+this doesn't use std ::declval or decltype.
+You may notice a common pattern of a void argument. We can factor this out:
+struct details {
+   template<template<class...>class Z, class=void, class...Ts>
+   struct can_apply:
+   std::false_type
+   {};
+   template<template<class...>class Z, class...Ts>
+   struct can_apply<Z, std::void_t<Z<Ts...>>, Ts...>:
+   std::true_type
+   {};
+};
+template<template<class...>class Z, class...Ts>
+using can_apply = details::can_apply<Z, void, Ts...>;
+which hides the use of std ::void_t and makes can_apply act like an indicator whether the type supplied as the
+first template argument is well-formed after substituting the other types into it. The previous examples may now be
+rewritten using can_apply as:
+template<class T>
+using ref_t = T&;
+template<class T>
+using can_reference = can_apply<ref_t, T>;      // Is T& well formed for T?
+and:

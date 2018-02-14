@@ -1,0 +1,44 @@
+﻿         std::cin >> choice;
+         if (choice > (numOfAddr + 1) || choice < 1) {
+             madeChoice = false;
+             std::cout << "Wrong choice, try again!" << std::endl;
+         } else
+             madeChoice = true;
+    } while (!madeChoice);
+     p = res;
+    // let's create a new socket, socketFD is returned as descriptor
+    // man socket for more information
+    // these calls usually return -1 as result of some error
+    int sockFD = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+    if (sockFD == -1) {
+         std::cerr << "Error while creating socket\n";
+         freeaddrinfo(res);
+         return -4;
+    }
+    // Let's bind address to our socket we've just created
+    int bindR = bind(sockFD, p->ai_addr, p->ai_addrlen);
+    if (bindR == -1) {
+         std::cerr << "Error while binding socket\n";
+         // if some error occurs, make sure to close socket and free resources
+         close(sockFD);
+         freeaddrinfo(res);
+         return -5;
+    }
+    // finally start listening for connections on our socket
+    int listenR = listen(sockFD, backLog);
+    if (listenR == -1) {
+         std::cerr << "Error while Listening on socket\n";
+         // if some error occurs, make sure to close socket and free resources
+         close(sockFD);
+         freeaddrinfo(res);
+         return -6;
+    }
+    // structure large enough to hold client's address
+    sockaddr_storage client_addr;
+    socklen_t client_addr_size = sizeof(client_addr);
+    const std::string response = "Hello World";
+    // a fresh infinite loop to communicate with incoming connections
+    // this will take client connections one at a time
+    // in further examples, we're going to use fork() call for each client connection
+    while (1) {
+         // accept call will give us a new socket descriptor

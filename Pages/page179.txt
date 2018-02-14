@@ -1,0 +1,42 @@
+﻿SomeStruct::c = 5;
+// Accessing static member variable c in struct SomeStruct, through var and p.
+var.a = var.c;
+var.b = p->c;
+// Calling a static member function.
+SomeStruct::bar();
+var.bar();
+p->bar();
+Background
+The -> operator is needed because the member access operator . has precedence over the dereferencing operator
+*.
+One would expect that *p.a would dereference p (resulting in a reference to the object p is pointing to) and then
+accessing its member a. But in fact, it tries to access the member a of p and then dereference it. I.e. *p.a is
+equivalent to *(p.a). In the example above, this would result in a compiler error because of two facts: First, p is a
+pointer and does not have a member a. Second, a is an integer and, thus, can't be dereferenced.
+The uncommonly used solution to this problem would be to explicitly control the precedence: (*p) .a
+Instead, the -> operator is almost always used. It is a short-hand for first dereferencing the pointer and then
+accessing it. I.e. (*p) .a is exactly the same as p->a.
+The :: operator is the scope operator, used in the same manner as accessing a member of a namespace. This is
+because a static class member is considered to be in that class' scope, but isn't considered a member of instances
+of that class. The use of normal . and -> is also allowed for static members, despite them not being instance
+members, for historical reasons; this is of use for writing generic code in templates, as the caller doesn't need to be
+concerned with whether a given member function is static or non-static.
+Section 35.9: Member Types and Aliases
+A class or struct can also define member type aliases, which are type aliases contained within, and treated as
+members of, the class itself.
+struct IHaveATypedef {
+     typedef int MyTypedef;
+};
+struct IHaveATemplateTypedef {
+     template<typename T>
+     using MyTemplateTypedef = std::vector<T>;
+};
+Like static members, these typedefs are accessed using the scope operator, ::.
+IHaveATypedef::MyTypedef i = 5; // i is an int.
+IHaveATemplateTypedef::MyTemplateTypedef<int> v; // v is a std::vector<int>.
+As with normal type aliases, each member type alias is allowed to refer to any type defined or aliased before, but
+not after, its definition. Likewise, a typedef outside the class definition can refer to any accessible typedefs within
+the class definition, provided it comes after the class definition.
+template<typename T>
+struct Helper {
+     T get() const { return static_cast<T>(42); }

@@ -1,0 +1,42 @@
+﻿following example, the nested namespace AReallyLongName ::AnotherReallyLongName is inconvenient to type, so
+the function qux locally declares an alias N. Members of that namespace can then be accessed simply using N::.
+namespace AReallyLongName {
+     namespace AnotherReallyLongName {
+         int foo();
+         int bar();
+         void baz(int x, int y);
+     }
+}
+void qux() {
+     namespace N = AReallyLongName::AnotherReallyLongName;
+     N::baz(N::foo(), N::bar());
+}
+Section 45.9: Inline namespace
+Version > C++11
+inline namespace includes the content of the inlined namespace in the enclosing namespace, so
+namespace Outer
+{
+      inline namespace Inner
+      {
+          void foo();
+      }
+}
+is mostly equivalent to
+namespace Outer
+{
+      namespace Inner
+      {
+          void foo();
+      }
+      using Inner::foo;
+}
+but element from Outer ::Inner:: and those associated into Outer:: are identical.
+So following is equivalent
+Outer::foo();
+Outer::Inner::foo();
+The alternative using namespace Inner; would not be equivalent for some tricky parts as template specialization:
+For
+#include <outer.h> // See below
+class MyCustomType;
+namespace Outer
+{

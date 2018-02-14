@@ -1,0 +1,45 @@
+﻿Using two smart pointers:
+auto gcd_self = std::make_shared<std::unique_ptr< std::function<int(int, int)> >>();
+*gcd_self = std::make_unique<std::function<int(int, int)>>(
+    [gcd_self](int a, int b){
+     return b == 0 ? a : (**gcd_self)(b, a%b);
+    };
+};
+This adds a lot of indirection (which is overhead), but it can be copied/returned, and all copies share state. It does
+let you return the lambda, and is otherwise less fragile than the above solution.
+Use a Y-combinator
+With the help of a short utility struct, we can solve all of these problems:
+template <class F>
+struct y_combinator {
+     F f; // the lambda will be stored here
+     // a forwarding operator():
+     template <class... Args>
+     decltype(auto) operator()(Args&&... args) const {
+          // we pass ourselves to f, then the arguments.
+          // the lambda should take the first argument as 'auto&& recurse' or similar.
+          return f(*this, std::forward<Args>(args)...);
+     }
+};
+// helper function that deduces the type of the lambda:
+template <class F>
+y_combinator<std::decay_t<F>> make_y_combinator(F&& f) {
+     return {std::forward<F>(f)};
+}
+// (Be aware that in C++17 we can do better than a 'make_' function)
+we can implement our gcd as:
+auto gcd = make_y_combinator(
+   [](auto&& gcd, int a, int b){
+     return b == 0 ? a : gcd(b, a%b);
+   }
+);
+The y_combinator is a concept from the lambda calculus that lets you have recursion without being able to name
+yourself until you are defined. This is exactly the problem lambdas have.
+You create a lambda that takes "recurse" as its first argument. When you want to recurse, you pass the arguments
+to recurse.
+The y_combinator then returns a function object that calls that function with its arguments, but with a suitable
+"recurse" object (namely the y_combinator itself) as its first argument. It forwards the rest of the arguments you call
+the y_combinator with to the lambda as well.
+In short:
+auto foo = make_y_combinator( [&](auto&& recurse, some arguments) {
+    // write body that processes some arguments
+    // when you want to recurse, call recurse(some other arguments)

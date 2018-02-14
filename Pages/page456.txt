@@ -1,0 +1,19 @@
+﻿assert(typeid(b) == typeid(Base)); // not Derived
+assert(typeid(std::declval<Base>()) == typeid(Base)); // OK because unevaluated
+Section 84.3: Name of a type
+You can retrieve the implementation defined name of a type in runtime by using the .name() member function of
+the std ::type_info object returned by typeid.
+#include <iostream>
+#include <typeinfo>
+int main()
+{
+     int speed = 110;
+     std::cout << typeid(speed).name() << '\n';
+}
+Output (implementation-defined):
+int
+Section 84.4: When to use which cast in c++
+Use dynamic_cast for converting pointers/references within an inheritance hierarchy.
+Use static_cast for ordinary type conversions.
+Use reinterpret_cast for low-level reinterpreting of bit patterns. Use with extreme caution.
+Use const_cast for casting away const/volatile. Avoid this unless you are stuck using a const-incorrect API.

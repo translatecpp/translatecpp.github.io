@@ -1,0 +1,48 @@
+﻿*       Dog Barks!
+*   @function getName
+*       To Get Private
+*       Name Variable
+*/
+class Dog
+{
+  public:
+     Dog(std::string name);
+     ~Dog() ;
+     void bark() const;
+  std::string getName() const;
+  private:
+     std::string name;
+};
+Dog::Dog(std::string name)
+{
+     /*
+     *  this->name is the
+     *  name variable from
+     *  the class dog . and
+     *  name is from the
+     *  parameter of the function
+     */
+     this->name = name;
+}
+Dog::~Dog(){}
+void Dog::bark() const
+{
+   cout << "BARK" << endl;
+}
+std::string Dog::getName() const
+{
+     return this->name;
+}
+int main()
+{
+     Dog dog("Max");
+     cout << dog.getName() << endl;
+     dog.bark();
+}
+You can see here in the constructor we execute the following:
+this->name = name;
+Here , you can see we are assinging the parameter name to the name of the private variable from the class
+Dog(this->name) .
+To see the output of above code : http://cpp.sh/75r7
+Section 33.4: this Pointer CV-Qualifiers
+this can also be cv-qualified, the same as any other pointer. However, due to the this parameter not being listed

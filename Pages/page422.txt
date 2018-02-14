@@ -1,0 +1,45 @@
+﻿Like all template parameters, non-type template parameters can be explicitly specified, defaulted, or derived
+implicitly via Template Argument Deduction.
+Example of non-type template parameter usage:
+#include <iostream>
+template<typename T, std::size_t size>
+std::size_t size_of(T (&anArray)[size]) //
+{ //
+     return size;                             //
+}
+int main()
+{
+     char anArrayOfChar[15];
+     std::cout << "anArrayOfChar: " << size_of(anArrayOfChar) << "\n";
+     int anArrayOfData[] = {1,2,3,4,5,6,7,8,9};
+     std::cout << "anArrayOfData: " << size_of(anArrayOfData) << "\n";
+}
+Example of explicitly specifying both type and non-type template parameters:
+#include <array>
+int main ()
+{
+     std::array<int, 5> foo; // int is a type parameter, 5 is non-type
+}
+Non-type template parameters are one of the ways to achieve template recurrence and enables to do
+Metaprogramming.
+Section 77.10: Declaring non-type template arguments with
+auto
+Prior to C++17, when writing a template non-type parameter, you had to specify its type first. So a common pattern
+became writing something like:
+template <class T, T N>
+struct integral_constant {
+using type = T;
+static constexpr T value = N;
+};
+Pass array by reference. Requires.
+an exact size. We allow all sizes
+by using a template "size".
+using five = integral_constant<int, 5>;
+But for complicated expressions, using something like this involves having to write decltype(expr), expr when
+instantiating templates. The solution is to simplify this idiom and simply allow auto:
+Version > C++17
+template <auto N>
+struct integral_constant {
+using type = decltype(N);
+static constexpr type value = N;
+};

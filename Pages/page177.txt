@@ -1,0 +1,42 @@
+﻿};
+struct B : public /*virtual*/ A {};
+struct C : public /*virtual*/ A {};
+struct D : public B, public C
+{
+      void bar()
+      {
+          foo(); //Error, which foo? B::foo() or C::foo()? - Ambiguous
+      }
+};
+Removing the comments resolves the ambiguity.
+Section 35.7: Private inheritance: restricting base class
+interface
+Private inheritance is useful when it is required to restrict the public interface of the class:
+class A {
+public:
+     int move();
+     int turn();
+};
+class B : private A {
+public:
+      using A::turn;
+};
+B b;
+b.move(); // compile error
+b.turn(); // OK
+This approach efficiently prevents an access to the A public methods by casting to the A pointer or reference:
+B b;
+A& a = static_cast<A&>(b); // compile error
+In the case of public inheritance such casting will provide access to all the A public methods despite on alternative
+ways to prevent this in derived B, like hiding:
+class B : public A {
+private:
+      int move();
+};
+or private using:
+class B : public A {
+private:
+      using A::move;
+};
+then for both cases it is possible:
+B b;

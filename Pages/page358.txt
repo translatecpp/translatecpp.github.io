@@ -1,0 +1,22 @@
+﻿     enumNamel = 1, // value will be  1
+     enumName2 = 2, // value will be  2
+     enumName3, // value will be 3, previous value + 1
+     enumName4 = 7, // value will be 7
+     enumName5, // value will be 8
+     enumName6 = 5, // value will be 5, legal to go backwards
+     enumName7 = 3, // value will be 3, legal to reuse numbers
+     enumName8 = enumName4 + 2, // value will be 9, legal to take prior enums and adjust them
+};
+Section 68.5: Enumeration in switch statements
+A common use for enumerators is for switch statements and so they commonly appear in state machines. In fact a
+useful feature of switch statements with enumerations is that if no default statement is included for the switch, and
+not all values of the enum have been utilized, the compiler will issue a warning.
+enum State {
+     start,
+     middle,
+     end
+};
+switch(myState) {
+     case start:
+     case middle:
+} // warning: enumeration value 'end' not handled in switch [-Wswitch]

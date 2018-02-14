@@ -1,0 +1,43 @@
+﻿Chapter 18: const keyword
+Section 18.1: Avoiding duplication of code in const and non-
+const getter methods
+In C++ methods that differs only by const qualifier can be overloaded. Sometimes there may be a need of two
+versions of getter that return a reference to some member.
+Let Foo be a class, that has two methods that perform identical operations and returns a reference to an object of
+type Bar:
+class Foo
+{
+public:
+     Bar& GetBar(/* some arguments */)
+     {
+        /* some calculations */
+        return bar;
+     }
+     const Bar& GetBar(/* some arguments */) const
+     {
+        /* some calculations */
+        return bar;
+     }
+     // ...
+};
+The only difference between them is that one method is non-const and return a non-const reference (that can be
+use to modify object) and the second is const and returns const reference.
+To avoid the code duplication, there is a temptation to call one method from another. However, we can not call
+non-const method from the const one. But we can call const method from non-const one. That will require as to
+use 'const_cast' to remove the const qualifier.
+The solution is:
+struct Foo
+{
+      Bar& GetBar(/*arguments*/)
+      {
+          return const_cast<Bar&>(const_cast<const Foo*>(this)->GetBar(/*arguments*/));
+      }
+      const Bar& GetBar(/*arguments*/) const
+      {
+          /* some calculations */
+          return foo;
+      }
+};
+In code above, we call const version of GetBar from the non-const GetBar by casting this to const type:
+const_cast<const Foo*>(this). Since we call const method from non-const, the object itself is non-const, and
+casting away the const is allowed.

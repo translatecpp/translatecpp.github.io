@@ -1,0 +1,38 @@
+﻿Chapter 51: std::map
+Section 51.1: Accessing elements
+An std::map takes (key, value) pairs as input.
+Consider the following example of std::map. initialization:
+std::map < std::string, int > ranking { std::make_pair("stackoverflow", 2),
+                                        std::make_pair("docs-beta", 1) };
+In an std::map , elements can be inserted as follows:
+ranking["stackoverflow"]=2;
+ranking["docs-beta"]=1 ;
+In the above example, if the key stackoverflow is already present, its value will be updated to 2. If it isn't already
+present, a new entry will be created.
+In an std::map, elements can be accessed directly by giving the key as an index:
+std::cout << ranking[ "stackoverflow" ] << std::endl;
+Note that using the operator[ ] on the map will actually insert a new value with the queried key into the map. This
+means that you cannot use it on a const std ::map, even if the key is already stored in the map. To prevent this
+insertion, check if the element exists (for example by using find()) or use at() as described below.
+Version > C++11
+Elements of a std ::map can be accessed with at():
+std::cout << ranking.at("stackoverflow") << std::endl;
+Note that at() will throw an std ::out_of_range exception if the container does not contain the requested
+element.
+In both containers std ::map and std::multimap, elements can be accessed using iterators:
+Version > C++11
+// Example using begin()
+std::multimap < int, std::string > mmp { std::make_pair(2, "stackoverflow"),
+                                            std ::make_pair(1, "docs-beta"),
+                                            std::make_pair(2, "stackexchange") };
+auto it = mmp.begin();
+std ::cout << it->first << " : : " << it->second << std: :endl; // Output: "1 docs-beta"       
+it++ ;                                                                                         
+std ::cout << it->first << " : : " << it->second << std: :endl; // Output: "2 : stackoverflow1 
+it++;                                                                                          
+std ::cout << it->first << " : : " << it->second << std: :endl; // Output: "2 stackexchange    
+// Example using rbegin()
+std::map < int, std::string > mp { std::make_pair(2, "stackoverflow"),
+                                       std ::make_pair(1, "docs-beta"),
+                                       std::make_pair(2, "stackexchange") };
+auto it2 = mp.rbegin();

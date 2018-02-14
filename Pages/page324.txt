@@ -1,0 +1,37 @@
+﻿Section 60.4: Inserting values in a multiset
+All the insertion methods from sets also apply to multisets. Nevertheless, another possibility exists, which is
+providing an initializer_list:
+auto il = { 7, 5, 12 };
+std::multiset<int> msut;
+msut.insert(il);
+Section 60.5: Searching values in set and multiset
+There are several ways to search a given value in std ::set or in std ::multiset:
+To get the iterator of the first occurrence of a key, the find() function can be used. It returns end() if the key does
+not exist.
+   std::set<int> sut;
+   sut.insert(10);
+   sut.insert(15);
+   sut.insert(22);
+   sut.insert(3); // contains 3, 10, 15, 22
+   auto itS = sut.find(10); // the value is found, so *itS == 10
+   itS = sut.find(555); // the value is not found, so itS == sut.end()
+   std::multiset<int> msut;
+   sut.insert(10);
+   sut.insert(15);
+   sut.insert(22);
+   sut.insert(15);
+   sut.insert(3); // contains 3, 10, 15, 15, 22
+   auto itMS = msut.find(10);
+Another way is using the count() function, which counts how many corresponding values have been found in the
+set/multiset (in case of a set, the return value can be only 0 or 1). Using the same values as above, we will have:
+int result = sut.count(10); // result == 1
+result =  sut.count(555); // result == 0
+result =  msut.count(10); // result == 1
+result =  msut.count(15); // result == 2
+In the case of std ::multiset, there could be several elements having the same value. To get this range, the
+equal_range() function can be used. It returns std ::pair having iterator lower bound (inclusive) and upper bound
+(exclusive) respectively. If the key does not exist, both iterators would point to the nearest superior value (based on
+compare method used to sort the given multiset).
+auto eqr = msut.equal_range(15);
+auto st = eqr.first; // point to first element '15'
+auto en = eqr.second; // point to element '22'

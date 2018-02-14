@@ -1,0 +1,48 @@
+﻿the derived class' version of the function is even allowed to call the base class' version.
+struct DefaultAbstract {
+     virtual void f() = 0;
+};
+void DefaultAbstract::f() {}
+struct WhyWouldWeDoThis : DefaultAbstract {
+     void f() override { DefaultAbstract::f(); }
+};
+There are a couple of reasons why we might want to do this:
+    •  If we want to create a class that can't itself be instantiated, but doesn't prevent its derived classes from being
+      instantiated, we can declare the destructor as pure virtual. Being the destructor, it must be defined anyways,
+      if we want to be able to deallocate the instance. And as the destructor is most likely already virtual to prevent
+      memory leaks during polymorphic use, we won't incur an unnecessary performance hit from declaring
+      another function virtual. This can be useful when making interfaces.
+         struct Interface {
+             virtual ~Interface() = 0;
+         };
+         Interface::~Interface() = default;
+         struct Implementation : Interface {};
+         // ~Implementation() is automatically defined by the compiler if not explicitly
+         // specified, meeting the "must be defined before instantiation" requirement.
+    •  If most or all implementations of the pure virtual function will contain duplicate code, that code can instead
+      be moved to the base class version, making the code easier to maintain.
+         class SharedBase {
+             State my_state;
+             std::unique_ptr<Helper> my_helper;
+             // ...
+           public:
+             virtual void config(const Contexts cont) = 0;
+             // ...
+         };
+         /* virtual */ void SharedBase::config(const Contexts cont) {
+             my_helper = new Helper(my_state, cont.relevant_field);
+             do_this();
+             and_that();
+         }
+         class OneImplementation : public SharedBase {
+             int i;
+             // ...
+           public:
+             void config(const Contexts cont) override;
+             // ...
+         };
+         void OneImplementation::config(const Contexts cont) /* override */ {
+             my_state = { cont.some_field, cont.another_field, i };
+             SharedBase ::config(cont);
+             my_unique_setup();
+         };

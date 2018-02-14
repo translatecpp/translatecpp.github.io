@@ -1,0 +1,25 @@
+body{
+    background-color:#cccccc;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: -40px;
+}
+
+.block {
+    margin: 5px;
+}
+
+a:hover {
+    color: red;
+}
+
+p:hover {
+    color: red;
+}
+a{
+    font-weight:bold;
+    text-decoration: none;
+    color:black;
+}

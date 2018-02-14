@@ -1,0 +1,5 @@
+﻿Empty base optimization is commonly used by allocator-aware standard library classes (std ::vector,
+std ::function, std ::shared_ptr, etc) to avoid occupying any additional storage for its allocator member if the
+allocator is stateless. This is achieved by storing one of the required data members (e.g., begin, end, or capacity
+pointer for the vector).
+Reference: cppreference

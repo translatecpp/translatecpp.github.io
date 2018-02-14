@@ -1,0 +1,43 @@
+﻿   1. You can't modify the original object (Object foobar = foo + bar; shouldn't modify foo after all, it wouldn't
+      make sense)
+   2.  You can't make it const, because you will have to be able to modify the object (because operator+ is
+      implemented in terms of operator+=, which modifies the object)
+Passing by const& would be an option, but then you will have to make a temporary copy of the passed object. By
+passing by value, the compiler does it for you.
+operator+= returns a reference to the itself, because it is then possible to chain them (don't use the same variable
+though, that would be undefined behavior due to sequence points).
+The first argument is a reference (we want to modify it), but not const, because then you wouldn't be able to
+modify it. The second argument should not be modified, and so for performance reason is passed by const&
+(passing by const reference is faster than by value).
+Section 37.2: Array subscript operator
+You can even overload the array subscript operator [].
+You should always (99.98% of the time) implement 2 versions, a const and a not-const version, because if the
+object is const, it should not be able to modify the object returned by [].
+The arguments are passed by const& instead of by value because passing by reference is faster than by value, and
+const so that the operator doesn't change the index accidentally.
+The operators return by reference, because by design you can modify the object [] return, i.e:
+std::vector<int> v{ 1 };
+v[0] = 2; //Changes value of 1 to 2
+           //wouldn't be possible if not returned by reference
+You can only overload inside a class/struct:
+//I is the index type, normally an int
+T& operator[](const I& index)
+{
+     //Do something
+     //return something
+}
+//I is the index type, normally an int
+const T& operator[](const I& index) const
+{
+     //Do something
+     //return something
+}
+Multiple subscript operators, [][]..., can be achieved via proxy objects. The following example of a simple row-
+major matrix class demonstrates this:
+template<class T>
+class matrix {
+     // class enabling [][] overload to access matrix elements
+     template <class C>
+     class proxy_row_vector {
+         using reference = decltype(std::declval<C>()[0]);
+         using const_reference = decltype(std::declval<C const>()[0]);

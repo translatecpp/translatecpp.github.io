@@ -1,0 +1,45 @@
+﻿{
+     std::cout << (addl + add2) << std::endl;
+}
+This can then be used in the same way as structure templates.
+printSum<int>(4, 5);
+printSum<float>(4.5f, 8.9f);
+In both these case the template argument is used to replace the types of the parameters; the result works just like
+a normal C++ function (if the parameters don't match the template type the compiler applies the standard
+conversions).
+One additional property of template functions (unlike template classes) is that the compiler can infer the template
+parameters based on the parameters passed to the function.
+printSum(4, 5);
+// Both parameters are int.
+// This allows the compiler deduce that the type
+// T is also int.
+printSum(5.0, 4);    // In this case the parameters are two different types.
+                      // The compiler is unable to deduce the type of T
+                      // because there are contradictions. As a result
+                      // this is a compile time error.
+This feature allows us to simplify code when we combine template structures and functions. There is a common
+pattern in the standard library that allows us to make template structure X using a helper function make_X().
+// The make_X pattern looks like this.
+// 1) A template structure with 1 or more template types.
+template<typename T1, typename T2>
+struct MyPair
+{
+      T1      first;
+      T2      second;
+};
+// 2) A make function that has a parameter type for
+// each template parameter in the template structure.
+template<typename T1, typename T2>
+MyPair<T1, T2> make_MyPair(T1 t1, T2 t2)
+{
+      return MyPair<T1, T2>{t1, t2};
+}
+How does this  help?
+auto val1   =  MyPair<int, float>{5, 8.7};
+auto val2   =  make_MyPair(5,   8.7);
+// Create object explicitly defining the types
+// Create object using the types of the paramters.
+// In this code both val1 and val2 are the same
+// type.
+Note: This is not designed to shorten the code. This is designed to make the code more robust. It allows the types
+to be changed by changing the code in a single place rather than in multiple locations.

@@ -1,0 +1,43 @@
+﻿Chapter 37: Operator Overloading
+In C++, it is possible to define operators such as + and -> for user-defined types. For example, the <string> header
+defines a + operator to concatenate strings. This is done by defining an operator function using the operator
+keyword.
+Section 37.1: Arithmetic operators
+You can overload all basic arithmetic operators:
+   • + and +=
+   • - and -=
+   • * and *=
+   • /and /=
+   • & and &=
+   • | and |=
+   • A and A=
+   • >> and >>=
+   • << and <<=
+Overloading for all operators is the same. Scroll down for explanation
+Overloading outside of class/struct:
+//operator+ should be implemented in terms of operator+=
+T operator+(T lhs, const T& rhs)
+{
+     lhs += rhs;
+     return lhs;
+}
+T& operator+=(T& lhs, const T& rhs)
+{
+     //Perform addition
+     return lhs;
+}
+Overloading inside of class/struct:
+//operator+ should be implemented in terms of operator+=
+T operator+(const T& rhs)
+{
+     *this += rhs;
+     return *this;
+}
+T& operator+=(const T& rhs)
+{
+     //Perform addition
+     return *this;
+}
+Note: operator+ should return by non-const value, as returning a reference wouldn't make sense (it returns a new
+object) nor would returning a const value (you should generally not return by const). The first argument is passed
+by value, why? Because

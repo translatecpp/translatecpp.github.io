@@ -1,0 +1,40 @@
+﻿            E e = *it;
+            // Do job with e;
+        }
+Version > C++11
+    • or std ::initializer_list and a simpler syntax:
+       enum E {
+            E1 = 4,
+            E2 = 8,
+            // ..
+            En
+       };
+       constexpr std::initializer_list<E> all_E = {E1, E2, /*..*/ En
+      and then
+       for (auto e : all_E) {
+            // Do job with e
+       }
+Section 68.2: Scoped enums
+C++11 introduces what are known as scoped enums. These are enumerations whose members must be qualified
+with enumname ::membername. Scoped enums are declared using the enum class syntax. For example, to store the
+colors in a rainbow:
+enum class rainbow {
+     RED,
+     ORANGE,
+     YELLOW,
+     GREEN,
+     BLUE,
+     INDIGO,
+     VIOLET
+};
+To access a specific color:
+rainbow r = rainbow::INDIGO;
+enum classes cannot be implicitly converted to ints without a cast. So int x = rainbow::RED is invalid.
+Scoped enums also allow you to specify the underlying type, which is the type used to represent a member. By
+default it is int. In a Tic-Tac-Toe game, you may store the piece as
+enum class piece : char {
+      EMPTY = '\0',
+      X = 'X',
+      O = 'O',
+};
+As you may notice, enums can have a trailing comma after the last member.

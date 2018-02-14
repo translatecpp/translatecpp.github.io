@@ -1,0 +1,43 @@
+﻿Section 24.4: explicit
+    1. When applied to a single-argument constructor, prevents that constructor from being used to perform
+      implicit conversions.
+       class MyVector {
+         public:
+           explicit MyVector(uint64_t size);
+       };
+       MyVector v1(100);   // ok
+       uint64_t len1 = 100;
+       MyVector v2{len1}; // ok, len1 is uint64_t
+       int len2 = 100;
+       MyVector v3{len2}; // ill-formed, implicit conversion from int to uint64_t
+       Since C++11 introduced initializer lists, in C++11 and later, explicit can be applied to a constructor with any
+       number of arguments, with the same meaning as in the single-argument case.
+       struct S {
+           explicit S(int x, int y);
+       };
+       S f() {
+           return {12, 34};    // ill-formed
+           return S{12, 34}; // ok
+       }
+Version > C++11
+    2. When applied to a conversion function, prevents that conversion function from being used to perform
+       implicit conversions.
+       class C {
+           const int x;
+         public:
+           C(int x) : x(x) {}
+           explicit operator int() { return x; }
+       };
+       C c(42);
+       int x = c;                     // ill-formed
+       int y = static_cast<int>(c); // ok; explicit conversion
+Section 24.5: sizeof
+A unary operator that yields the size in bytes of its operand, which may be either an expression or a type. If the
+operand is an expression, it is not evaluated. The size is a constant expression of type std ::size_t.
+If the operand is a type, it must be parenthesized.
+    •  It is illegal to apply sizeof to a function type.
+    •  It is illegal to apply sizeof to an incomplete type, including void.
+    •  If sizeof is applied to a reference type T& or T&&, it is equivalent to sizeof(T).
+    •  When sizeof is applied to a class type, it yields the number of bytes in a complete object of that type,
+       including any padding bytes in the middle or at the end. Therefore, a sizeof expression can never have a
+       value of 0. See layout of object types for more details.

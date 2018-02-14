@@ -1,0 +1,51 @@
+﻿// "Containers That Never Change" September 19, 2013, available at
+// <url: http://www.drdobbs.com/cpp/containters-that-never-change/240161543>
+// Includes here, e.g. <vector>
+namespace my {
+     template< class Item >
+     using Vector_ = /* E.g. std::vector<Item> */;
+     auto concat( Vector_<int> const& v, int const x )
+          -> Vector_<int>
+     {
+          auto result{ v };
+          result.push_back( x );
+          return result;
+     }
+     auto collatz_aux( int const n, Vector_<int> const& result )
+          -> Vector_<int>
+     {
+          if( n == 1 )
+          {
+              return result;
+          }
+          auto const new_result = concat( result, n );
+          if( n % 2 == 0 )
+          {
+              return collatz_aux( n/2, new_result );
+          }
+          else
+          {
+              return collatz_aux( 3*n + 1, new_result );
+          }
+     }
+     auto collatz( int const n )
+          -> Vector_<int>
+     {
+          assert( n != 0 );
+          return collatz_aux( n, Vector_<int>() );
+     }
+}  // namespace my
+#include <iostream>
+using namespace std;
+auto main() -> int
+{
+     for( int const x : my::collatz( 42 ) )
+     {
+          cout << x << ' ';
+     }
+     cout << '\n';
+}
+Output:
+42 21 64 32 16 8 4 2
+The number of item copy operations due to copying of the vectors is here roughly O(n2), since it's the sum 1 + 2 + 3
++ ... n.

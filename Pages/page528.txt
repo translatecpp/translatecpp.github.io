@@ -1,0 +1,45 @@
+﻿      int get_x() const { return m_x; }
+   void set_x(int x) { m_x = x; }
+   private:
+      Foo(int x, Foo*& this_ref): m_x(x) {
+          this_ref = this;
+      }
+      int m_x;
+      friend const Foo& getFoo();
+};
+const Foo& getFoo() {
+     static const Foo foo(123, instance);
+     return foo;
+}
+void do_evil(int x) {
+     instance->set_x(x);
+}
+int main() {
+     const Foo& foo = getFoo();
+     do_evil(456);
+     std::cout << foo.get_x() << '\n';
+}
+In this code, getFoo creates a singleton of type const Foo and its member m_x is initialized to 123. Then do_evil is
+called and the value of foo.m_x is apparently changed to 456. What went wrong?
+Despite its name, do_evil does nothing particularly evil; all it does is call a setter through a Foo*. But that pointer
+points to a const Foo object even though const_cast was not used. This pointer was obtained through Foo's
+constructor. A const object does not become const until its initialization is complete, so this has type Foo*, not
+const Foo*, within the constructor.
+Therefore, undefined behavior occurs even though there are no obviously dangerous constructs in this program.
+Section 104.15: Returning from a [[noreturn]] function
+Version > C++11
+Example from the Standard, [dcl.attr.noreturn]:
+                                              [[ noreturn ]] void f() {
+                                              throw "error"; // OK
+}
+[[ noreturn ]] void q(int i) { // behavior is undefined if called with an argument <= 0
+   if (i > 0)
+     throw "positive";
+}
+Section 104.16: Infinite template recursion
+Example from the Standard, [temp.inst]/17:
+template<class T> class X {
+     X<T>* p; // OK
+     X<T*> a; // implicit generation of X<T> requires
+               // the implicit instantiation of X<T*> which requires
+               // the implicit instantiation of X<T**> which ...

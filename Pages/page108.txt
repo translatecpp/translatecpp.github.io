@@ -1,0 +1,11 @@
+﻿         public:
+           bar(foo& f);
+       };
+       void baz();
+       union baz; // another elaborated type specifer; another forward declaration
+                   // note: the class has the same name as the function void baz()
+                                                                                                                union foo {
+                                                                                                                long l;
+           union baz* b; // elaborated type specifier refers to the class,
+                          // not the function of the same name
+       };

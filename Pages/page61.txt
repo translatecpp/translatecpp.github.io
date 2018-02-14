@@ -1,0 +1,36 @@
+﻿78.123.456
+78.123.456
+78123.456
+If, for example, the preferred locale is German and hence uses a different number format, the example writes
+78 123,456
+78.123.456
+78123.456
+(note the decimal comma in the first line).
+Section 13.7: Checking end of file inside a loop condition, bad
+practice?
+eof returns true only after reading the end of file. It does NOT indicate that the next read will be the end of
+stream.
+while (!f.eof())
+{
+   // Everything is OK
+   f >> buffer;
+   // What if *only* now the eof / fail bit is set?
+   /* Use 'buffer' */
+}
+You could correctly write:
+while (!f.eof())
+{
+   f >> buffer >> std::ws;
+   if (f.fail())
+     break;
+   /* Use 'buffer' */
+}
+but
+while (f >> buffer)
+{
+   /* Use 'buffer' */
+}
+is simpler and less error prone.
+Further references:
+    •  std::ws: discards leading whitespace from an input stream
+    •  std::basic ios::fail: returns true if an error has occurred on the associated stream

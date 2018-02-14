@@ -1,0 +1,37 @@
+﻿     Define a few functions to use as predicates
+*/
+//return true if number is odd
+bool isOdd(int i){
+return i%2 == 1;
+}
+//functor that returns true if number is greater than the value of the constructor parameter
+provided
+class Greater {
+int _than;
+public:
+   Greater(int th): _than(th){}
+   bool operator()(int i){
+   return i > _than;
+   }
+};
+int main(int argc, const char * argv[]) {
+   //create a vector
+   vector<int> myvec = {1,5,8,0,7,6,4,5,2,1,5,0,6,9,7};
+   //using a lambda function to count even numbers
+   size_t evenCount = count_if(myvec.begin(), myvec.end(), [](int i){return i % 2 == 0;}); // >=
+C++11
+   //using function pointer to count odd number in the first half of the vector
+   size_t oddCount = count_if(myvec.begin(), myvec.end()- myvec.size()/2, isOdd);
+   //using a functor to count numbers greater than 5
+   size_t greaterCount = count_if(myvec.begin(), myvec.end(), Greater(5));
+   cout << "vector size: " << myvec.size() << endl;
+   cout << "even numbers: " << evenCount << " found" << endl;
+   cout << "odd numbers: " << oddCount << " found" << endl;
+   cout << "numbers > 5: " << greaterCount << " found"<< endl;
+   return 0;
+}
+Output
+vector size: 15
+even numbers: 7 found
+odd numbers: 4 found
+numbers > 5: 6 found

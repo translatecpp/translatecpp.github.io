@@ -1,0 +1,46 @@
+﻿   }
+public:
+   any_methods() = default;
+   template<class T>
+   any_methods( tag_t<T> ): vtable(get_vtable(tag<T>)) {}
+   any_methods& operator=(any_methods const&)=default;
+   template<class T>
+   void change_type( tag_t<T> ={} ) { vtable = get_vtable(tag<T>); }
+   template<class any_method>
+   auto get_invoker( tag_t<any_method> ={} ) const {
+     return std::get<typename any_method_function<any_method>::type>( *vtable );
+   }
+};
+We could specialize this for a cases where the vtable is small (for example, 1 item), and use direct pointers stored
+in-class in those cases for efficiency.
+Now we start the super_any. I use super_any_t to make the declaration of super_any a bit easier.
+template<class...methods>
+struct super_any_t;
+This searches the methods that the super any supports for SFINAE and better error messages:
+template<class super_any, class method>
+struct super_method_applies_helper : std::false_type {};
+template<class M0, class...Methods, class method>
+struct super_method_applies_helper<super_any_t<M0, Methods...>, method> :
+std::integral_constant<bool, std::is_same<M0, method>{} ||
+super_method_applies_helper<super_any_t<Methods...>, method>{}>
+{};
+template<class...methods, class method>
+auto super_method_test( super_any_t<methods...> const&, tag_t<method> )
+{
+   return std::integral_constant<bool, super_method_applies_helper< super_any_t<methods...>, method
+>{} && method::is_const >{};
+}
+template<class...methods, class method>
+auto super_method_test( super_any_t<methods...>&, tag_t<method> )
+{
+   return std::integral_constant<bool, super_method_applies_helper< super_any_t<methods...>, method
+>{} >{};
+}
+template<class super_any, class method>
+struct super_method_applies:
+     decltype( super_method_test( std::declval<super_any>(), tag<method> ) )
+{};
+Next we create the any_method type. An any_method is a pseudo-method-pointer. We create it globally and constly
+using syntax like:
+const auto print=make_any_method( [](auto&&self, auto&&os){ os << self; } );
+or in C++17:

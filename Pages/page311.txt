@@ -1,0 +1,38 @@
+﻿std :atomic_int_fast8_t   std: :atomic<std: :int_fast8_t>   
+std :atomic_uint_fast8_t  std: :atomic<std: :uint_fast8_t>  
+std :atomic_int_fast16_t  std: :atomic<std: :int_fast16_t>  
+std :atomic_uint_fast16_t std: :atomic<std: :uint_fast16_t> 
+std :atomic_int_fast32_t  std: :atomic<std: :int_fast32_t>  
+std :atomic_uint_fast32_t std: :atomic<std: :uint_fast32_t> 
+std :atomic_int_fast64_t  std: :atomic<std: :int_fast64_t>  
+std :atomic_uint_fast64_t std: :atomic<std: :uint_fast64_t> 
+std :atomic_intptr_t      std: :atomic<std: :intptr_t>      
+std :atomic_uintptr_t     std: :atomic<std: :uintptr_t>     
+std :atomic_size_t        std: :atomic<std: :size_t>        
+std :atomic_ptrdiff_t     std: :atomic<std: :ptrdiff_t>     
+std :atomic_intmax_t      std: :atomic<std: :intmax_t>      
+std : atomic_uintmax_t    std: :atomic<std: :uintmax_t>     
+Simple example of using std::atomic_int
+#include <iostream>        //   std::cout
+#include <atomic>          //  std::atomic,  std::memory_order_relaxed
+#include <thread>          //  std::thread
+std::atomic_int foo (0);
+void set_foo(int x) {
+   foo.store(x,std::memory_order_relaxed);       // set value atomically
+}
+void print_foo() {
+   int x;
+   do {
+     x = foo.load(std::memory_order_relaxed); // get value atomically
+   } while (x==0);
+   std::cout << "foo: " << x << '\n';
+}
+int main ()
+{
+   std::thread first (print_foo);
+   std::thread second (set_foo,10);
+   first.join();
+   //second.join();
+   return 0;
+}
+//output: foo: 10

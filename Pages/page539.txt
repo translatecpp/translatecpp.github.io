@@ -1,0 +1,29 @@
+﻿       };
+       A a;
+       X& lx = a; // calls #1
+       X&& rx = a; // calls #2
+       3.4. F1 is not a function template specialization, but F2 is, or
+       template <class T> void f(T ); // #1
+       void f(int );                      // #2
+       f(42); // calls #2, the non-template
+       3.5. F1 and F2 are both function template specializations, but F1 is more specialized than F2.
+       template <class T> void f(T ); // #1
+       template <class T> void f(T* ); // #2
+       int* p;
+       f(p); // calls #2, more specialized
+The ordering here is significant. The better conversion sequence check happens before the template vs non-
+template check. This leads to a common error with overloading on forwarding reference:
+struct A {
+      A(A const& ); // #1
+      template <class T>
+      A(T&& );       // #2, not constrained
+};
+A a;
+A b(a); // calls #2!
+          // #1 is not a template but #2 resolves to
+          // A(A& ), which is a less cv-qualified reference than #1
+          // which makes it a better implicit conversion sequence
+If there's no single best viable candidate at the end, the call is ambiguous:
+void f(double ) { }
+void f(float ) { }
+f(42); // error: ambiguous

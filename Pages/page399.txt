@@ -1,0 +1,37 @@
+﻿Chapter 75: Preprocessor
+The C preprocessor is a simple text parser/replacer that is run before the actual compilation of the code. Used to
+extend and ease the use of the C (and later C++) language, it can be used for:
+a. Including other files using #include
+b. Define a text-replacement macro using #define
+c. Conditional Compilation using#if #ifdef
+d. Platform/Compiler specific logic (as an extension of conditional compilation)
+Section 75.1: Include Guards
+A header file may be included by other header files. A source file (compilation unit) that includes multiple headers
+may therefore, indirectly, include some headers more than once. If such a header file that is included more than
+once contains definitions, the compiler (after preprocessing) detects a violation of the One Definition Rule (e.g. §3.2
+of the 2003 C++ standard) and therefore issues a diagnostic and compilation fails.
+Multiple inclusion is prevented using "include guards", which are sometimes also known as header guards or macro
+guards. These are implemented using the preprocessor #define, #ifndef, #endif directives.
+e. g.
+// Foo.h
+#ifndef FOO_H_INCLUDED
+#define FOO_H_INCLUDED
+class Foo // a class definition
+{
+};
+#endif
+The key advantage of using include guards is that they will work with all standard-compliant compilers and
+preprocessors.
+However, include guards also cause some problems for developers, as it is necessary to ensure the macros are
+unique within all headers used in a project. Specifically, if two (or more) headers use FOO_H_INCLUDED as their
+include guard, the first of those headers included in a compilation unit will effectively prevent the others from being
+included. Particular challenges are introduced if a project uses a number of third-party libraries with header files
+that happen to use include guards in common.
+It is also necessary to ensure that the macros used in include guards do not conflict with any other macros defined
+in header files.
+Most C++ implementations also support the #pragma once directive which ensures the file is only included once
+within a single compilation. This is a de facto standard directive, but it is not part of any ISO C++ standard. For
+example:
+// Foo.h
+#pragma once
+class Foo

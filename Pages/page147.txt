@@ -1,0 +1,33 @@
+﻿incomplete type.
+char* str = new char[10]; // str = 0x010
+++str;                      // str = 0x011 in this case sizeof(char) = 1 byte
+int* arr = new int[10];     // arr = 0x00100
+++arr;                      // arr = 0x00104 if sizeof(int) = 4 bytes
+void* ptr = (void*)new char[10];
+++ptr; // void is incomplete.
+If a pointer to the end element is incremented, then the pointer points to one element past the end of the array.
+Such a pointer cannot be dereferenced, but it can be decremented.
+Incrementing a pointer to the one-past-the-end element in the array, or decrementing a pointer to the first element
+in an array yields undefined behavior.
+A pointer to a non-array object can be treated, for the purposes of pointer arithmetic, as though it were an array of
+size 1.
+Addition / Subtraction
+Integer values can be added to pointers; they act as incrementing, but by a specific number rather than by 1.
+Integer values can be subtracted from pointers as well, acting as pointer decrementing. As with
+incrementing/decrementing, the pointer must point to a complete type.
+char* str = new char[10]; // str = 0x010
+str += 2;                   // str = 0x010 + 2 * sizeof(char) = 0x012
+int* arr = new int[10];     // arr = 0x100
+arr += 2;                   // arr = 0x100 + 2 * sizeof(int) = 0x108, assuming sizeof(int) == 4.
+Pointer Differencing
+The difference between two pointers to the same type can be computed. The two pointers must be within the same
+array object; otherwise undefined behavior results.
+Given two pointers P and Q in the same array, if P is the ith element in the array, and Q is the jth element, then P -
+Q shall be i - j. The type of the result is std::ptrdiff_t, from <cstddef>.
+char* start = new char[10];   // str
+char* test = &start[5];
+std::ptrdiff_t diff = test - start;
+std::ptrdiff_t diff = start - test;
+= 0x010
+//Equal to 5.
+//Equal to -5; ptrdiff_t is signed

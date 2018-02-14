@@ -1,0 +1,40 @@
+﻿     {
+      return data > _than;
+    }
+};
+int main()
+{
+   vector<int> myvec {2, 5, 6, 10, 56, 7, 48, 89, 850, 7, 456};
+   //with a lambda function
+   vector<int>::iterator gt10 = find_if(myvec.begin(), myvec.end(), [](int x){return x>10;}); // >=
+C++11
+   //with a function pointer
+   vector<int>::iterator pow10 = find_if(myvec.begin(), myvec.end(), multOf10);
+   //with functor
+   vector<int>::iterator gt5 = find_if(myvec.begin(), myvec.end(), Greater(5));
+   //not Found
+   vector<int>::iterator nf = find_if(myvec.begin(), myvec.end(), Greater(1000)); // nf points to
+myvec.end()
+   //check if pointer points to myvec.end()
+   if(nf != myvec.end()) {
+      cout << "nf points to: " << *nf << endl;
+   }
+   else {
+      cout << "item not found" << endl;
+   }
+   cout <<   "First item >   10: " <<  *gt10  << endl;
+   cout <<   "First Item n * 10: " <<  *pow10 << endl;
+   cout <<   "First Item >    5: " <<  *gt5   << endl;
+   return 0;
+}
+Output
+item  not found        
+First item >    10: 56 
+First Item n *  10: 10 
+First Item >    5:  6  
+Section 63.7: Using std::nth_element To Find The Median (Or
+Other Quantiles)
+The std ::nth element algorithm takes three iterators: an iterator to the beginning, nth position, and end. Once the
+function returns, the nth element (by order) will be the nth smallest element. (The function has more elaborate
+overloads, e.g., some taking comparison functors; see the above link for all the variations.)
+Note This function is very efficient - it has linear complexity.

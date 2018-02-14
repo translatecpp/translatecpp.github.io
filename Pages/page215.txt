@@ -1,0 +1,42 @@
+﻿Chapter 39: Virtual Member Functions
+Section 39.1: Final virtual functions
+C++11 introduced final specifier which forbids method overriding if appeared in method signature:
+class Base {
+public:
+    virtual void foo() {
+       std::cout << "Base::Foo\n";
+    }
+};
+class Derived1 : public Base {
+public:
+      // Overriding Base::foo
+      void foo() final {
+          std::cout << "Derived1::Foo\n";
+      }
+};
+class Derived2 : public Derived1 {
+public:
+     // Compilation error: cannot override final method
+     virtual void foo() {
+          std::cout << "Derived2::Foo\n";
+     }
+};
+The specifier final can only be used with 'virtual' member function and can't be applied to non-virtual member
+functions
+Like final, there is also an specifier caller 'override' which prevent overriding of virtual functions in the derived
+class.
+The specifiers override and final may be combined together to have desired effect:
+class Derived1 : public Base {
+public:
+      void foo() final override {
+          std::cout << "Derived1::Foo\n";
+      }
+};
+Section 39.2: Using override with virtual in C++11 and later
+The specifier override has a special meaning in C++11 onwards, if appended at the end of function signature. This
+signifies that a function is •
+    • Overriding the function present in base class &
+    • The Base class function is virtual
+There is no run time significance of this specifier as is mainly meant as an indication for compilers
+The example below will demonstrate the change in behaviour with our without using override.
+Without override:

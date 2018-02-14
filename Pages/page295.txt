@@ -1,0 +1,13 @@
+﻿       irreflexivity invariant) equivalent to itself.
+In terms of C++ this means if you have two objects of a given type, you should return the following values when
+compared with the operator <.
+X    a;
+X    b;
+Condition:            Test: Result 
+a is equivalent to b: a < b false  
+a is equivalent to b  b < a false  
+a is less than b      a < b true   
+a is less than b      b < a false  
+b is less than a      a < b false  
+b is less than a      b < a true   
+How you define equivalent/less is totally dependent on the type of your object.

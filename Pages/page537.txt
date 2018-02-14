@@ -1,0 +1,44 @@
+﻿   private:
+     static void f(int x);
+};
+C::f(42); // Error! Calls private C::f(int) even though public C::f(double) is viable.
+Similarly, overload resolution happens without checking whether the resulting call is well-formed with regards to
+explicit:
+struct X {
+     explicit X(int );
+     X(char );
+};
+void foo(X );
+foo({4}); // X(int) is better much, but expression is
+           // ill-formed because selected constructor is explicit
+Section 105.7: Overloading within a class hierarchy
+The following examples will use this class hierarchy:
+struct A { int m; };
+struct B : A {};
+struct C : B {};
+The conversion from derived class type to base class type is preferred to user-defined conversions. This applies
+when passing by value or by reference, as well as when converting pointer-to-derived to pointer-to-base.
+struct Unrelated {
+     Unrelated(B b);
+};
+void f(A a);
+void f(Unrelated u);
+B b;
+f(b); // calls f(A)
+A pointer conversion from derived class to base class is also better than conversion to void*.
+void f(A* p);
+void f(void* p);
+B b;
+f(&b); // calls f(A*)
+If there are multiple overloads within the same chain of inheritance, the most derived base class overload is
+preferred. This is based on a similar principle as virtual dispatch: the "most specialized" implementation is chosen.
+However, overload resolution always occurs at compile time and will never implicitly down-cast.
+void f(const A& a);
+void f(const B& b);
+C c;
+f(c); // calls f(const B&)
+B b;
+A& r = b;
+f(r); // calls f(const A&); the f(const B&) overload is not viable
+For pointers to members, which are contravariant with respect to the class, a similar rule applies in the opposite
+direction: the least derived derived class is preferred.

@@ -1,0 +1,4 @@
+﻿     The alignment requirement of int is: 4
+If applied to an array, it yields the alignment requirement of the element type. If applied to a reference type, it
+yields the alignment requirement of the referenced type. (References themselves have no alignment, since they are
+not objects.)

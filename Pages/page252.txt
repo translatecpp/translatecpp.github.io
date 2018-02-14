@@ -1,0 +1,40 @@
+﻿// String to tokenize
+const std::string str{ "The ,qu\\,ick ,\tbrown, fox" };
+const std::regex re{ "\\s*((?:[A\\\\,]|\\\\.)*?)\\s*(?:,|$)" };
+// Vector to store tokens
+const std::vector<std::string> tokens{
+     std::sregex_token_iterator(str.begin(), str.end(), re, 1),
+     std::sregex_token_iterator()
+};
+Live Example
+See the regex_token_iterator Example for more details.
+Section 48.2: Conversion to (const) char*
+In order to get const char* access to the data of a std ::string you can use the string's c_str() member function.
+Keep in mind that the pointer is only valid as long as the std ::string object is within scope and remains
+unchanged, that means that only const methods may be called on the object.
+Version > C++17
+The data() member function can be used to obtain a modifiable char*, which can be used to manipulate the
+std ::string object's data.
+Version > C++11
+A modifiable char* can also be obtained by taking the address of the first character: &s[0]. Within C++11, this is
+guaranteed to yield a well-formed, null-terminated string. Note that &s[0] is well-formed even if s is empty,
+whereas &s.front() is undefined if s is empty.
+Version > C++11
+std::string str("This is a string.");
+const char* cstr = str.c_str(); // cstr points to: "This is a string.\0"
+const char* data = str.data(); // data points to: "This is a string.\0"
+std::string str("This is a string.");
+// Copy the contents of str to untie lifetime from the std::string object
+std::unique_ptr<char []> cstr = std::make_unique<char[]>(str.size() + 1);
+// Alternative to the line above (no exception safety):
+// char* cstr_unsafe = new char[str.size() + 1];
+std::copy(str.data(), str.data() + str.size(), cstr);
+cstr[str.size()] = '\0'; // A null-terminator needs to be added
+// delete[] cstr_unsafe;
+std::cout << cstr.get();
+Section 48.3: Using the std::string_view class
+Version > C++17
+C++17 introduces std ::string_view, which is simply a non-owning range of const chars, implementable as either
+a pair of pointers or a pointer and a length. It is a superior parameter type for functions that requires non-
+modifiable string data. Before C++17, there were three options for this:
+void foo(std::string const& s);        // pre-C++17, single argument, could incur

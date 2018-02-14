@@ -1,0 +1,43 @@
+﻿A using declaration introduces a single name into the current scope that was previously declared elsewhere.
+Section 47.1: Importing names individually from a namespace
+Once using is used to introduce the name cout from the namespace std into the scope of the main function, the
+std ::cout object can be referred to as cout alone.
+#include <iostream>
+int main() {
+     using std::cout;
+     cout << "Hello, world!\n";
+}
+Section 47.2: Redeclaring members from a base class to
+avoid name hiding
+If a using-declaration occurs at class scope, it is only allowed to redeclare a member of a base class. For example,
+using std ::cout is not allowed at class scope.
+Often, the name redeclared is one that would otherwise be hidden. For example, in the below code, d1.foo only
+refers to Derived1 ::foo(const char*) and a compilation error will occur. The function Base ::foo(int) is hidden
+not considered at all. However, d2.foo(42) is fine because the using-declaration brings Base::foo(int) into the set
+of entities named foo in Derived2. Name lookup then finds both foos and overload resolution selects Base ::foo.
+struct Base {
+     void foo(int);
+};
+struct Derived1 : Base {
+     void foo(const char*);
+};
+struct Derived2 : Base {
+     using Base::foo;
+     void foo(const char*);
+};
+int main() {
+     Derived1 d1;
+     d1.foo(42); // error
+     Derived2 d2;
+     d2.foo(42); // OK
+}
+Section 47.3: Inheriting constructors
+Version > C++11
+As a special case, a using-declaration at class scope can refer to the constructors of a direct base class. Those
+constructors are then inherited by the derived class and can be used to initialize the derived class.
+struct Base {
+      Base(int x, const char* s);
+};
+struct Derived1 : Base {
+      Derived1(int x, const char* s) : Base(x, s) {}
+};

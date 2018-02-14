@@ -1,0 +1,40 @@
+﻿aesthetics (e.g. the + character is commonly recognized as the addition symbol both within C++ programming as
+well as in elementary math).
+C++ handles these character sequences with a special syntax; but, in essence, each occurrence of an operator is
+reduced to a function call. For example, the following C++ expression:
+3+3
+is equivalent to the following function call:
+operator+(3, 3)
+All operator function names start with operator.
+While in C++'s immediate predecessor, C, operator function names cannot be assigned different meanings by
+providing additional definitions with different type signatures, in C++, this is valid. "Hiding" additional function
+definitions under one unique function name is referred to as operator overloading in C++, and is a relatively
+common, but not universal, convention in C++.
+Section 1.5: Visibility of function prototypes and declarations
+In C++, code must be declared or defined before usage. For example, the following produces a compile time error:
+int main()
+{
+   foo(2); // error: foo is called, but has not yet been declared
+}
+void foo(int x) // this later definition is not known in main
+{
+}
+There are two ways to resolve this: putting either the definition or declaration of foo() before its usage in main().
+Here is one example:
+void foo(int x) {} //Declare the foo function and body first
+int main()
+{
+   foo(2); // OK: foo is completely defined beforehand, so it can be called here.
+}
+However it is also possible to "forward-declare" the function by putting only a "prototype" declaration before its
+usage and then defining the function body later:
+void foo(int); // Prototype declaration of foo, seen by main
+                  // Must specify return type, name, and argument list types
+int main()
+{
+   foo(2); // OK: foo is known, called even though its body is not yet defined
+}
+void foo(int x) //Must match the prototype
+{
+     // Define body of foo here
+}

@@ -1,0 +1,40 @@
+﻿class Top
+{
+private:
+     virtual Top* virtual_clone() const = 0;
+public:
+     unique_ptr<Top> clone() const
+     { return up( virtual_clone() ); }
+     virtual ~Top() = default;         // Necessary for 'delete' via Top*.
+};
+class D : public Top
+{
+private:
+     D* /* ? Covariant return */ virtual_clone() const override
+     { return new D( *this ); }
+public:
+     unique_ptr<D> /* ? Apparent covariant return */ clone() const
+     { return up( virtual_clone() ); }
+};
+class DD : public D
+{
+private:
+     int answer_ = 42;
+     DD* /* ? Covariant return */ virtual_clone() const override
+     { return new DD( *this ); }
+public:
+     int answer() const
+     { return answer_;}
+     unique_ptr<DD> /* ? Apparent covariant return */ clone() const
+     { return up( virtual_clone() ); }
+};
+#include <iostream>
+using namespace std;
+int main()
+{
+     auto p1 = unique_ptr<DD>(new DD());
+     auto p2 = p1->clone();
+     // Correct dynamic type DD for *p2 is guaranteed by the static type checking.
+     cout << p2->answer() << endl;            // "42"
+     // Cleanup is automated via unique_ptr.
+  }

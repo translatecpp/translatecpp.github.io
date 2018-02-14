@@ -1,0 +1,6 @@
+﻿Note: In the example std ::async is launched with policy std ::launch_deferred. This is to avoid a new thread
+being created in every call. In the case of our example, the calls to std ::async are made out of order, the they
+synchronize at the calls for std ::future ::get().
+std:: launch_async forces a new thread to be created in every call.
+The default policy is std ::launch ::deferred | std ::launch ::async, meaning the implementation determines the
+policy for creating new threads.

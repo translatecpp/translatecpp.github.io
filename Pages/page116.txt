@@ -1,0 +1,34 @@
+﻿     virtual C++
+    1. The virtual keyword declares a virtual function or a virtual base class.
+       virtual [type-specifiers] member-function-declarator
+       virtual [access-specifier] base-class-name
+Parameters
+    1. type-specifiers Specifies the return type of the virtual member function.
+    2. member-function-declarator Declares a member function.
+    3. access-specifier Defines the level of access to the base class, public, protected or private. Can appear before
+      or after the virtual keyword.
+    4. base-class-name Identifies a previously declared class type
+     this pointer
+    1. The this pointer is a pointer accessible only within the nonstatic member functions of a class, struct, or union
+      type. It points to the object for which the member function is called. Static member functions do not have a
+      this pointer.
+       this->member-identifier
+An object's this pointer is not part of the object itself; it is not reflected in the result of a sizeof statement on the
+object. Instead, when a nonstatic member function is called for an object, the address of the object is passed by the
+compiler as a hidden argument to the function. For example, the following function call:
+myDate.setMonth( 3 );
+can be interpreted this way:
+setMonth( &myDate, 3 );
+The object's address is available from within the member function as the this pointer. Most uses of this are implicit.
+It is legal, though unnecessary, to explicitly use this when referring to members of the class. For example:
+void Date::setMonth( int mn )
+{
+    month = mn;              // These three statements
+     this->month = mn;       // are equivalent
+     (*this).month = mn;
+}
+The expression *this is commonly used to return the current object from a member function: return *this; The this
+pointer is also used to guard against self-reference:
+if (&Object != this) {
+// do not execute in cases of self-reference
+    try, throw, and catch Statements (C++)

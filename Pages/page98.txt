@@ -1,0 +1,41 @@
+﻿You should almost always mark member functions as const when possible. Only const member functions can be
+called on a const MyClass.
+static methods cannot be declared as const. This is because a static method belongs to a class and is not called
+on object; therefore it can never modify object's internal variables. So declaring static methods as const would be
+redundant.
+Section 18.3: Const local variables
+Declaration and usage.
+// a is const int, so it can't be
+const int a = 15;
+a = 12;            // Error: can't
+a += 1;            // Error: can't
+changed
+assign new value to const variable
+assign new value to const variable
+Binding of references and pointers
+int &b = a;        // Error: can't bind non-const reference to const variable
+const int &c = a; // OK; c is a const reference
+int *d = &a;       // Error: can't bind pointer-to-non-const to const variable
+const int *e = &a // OK; e is a pointer-to-const
+int f = 0;
+e = &f;            // OK; e is a non-const pointer-to-const,
+                    // which means that it can be rebound to new int* or const int*
+*e = 1
+// Error: e is a pointer-to-const which means that
+// the value it points to can't be changed through dereferencing e
+int *g = &f;
+*g = 1;           // OK; this value still can be changed through dereferencing
+                    // a pointer-not-to-const
+Section 18.4: Const pointers
+int a = 0, b = 2;
+const int* pA = &a; // pointer-to-const. 'a' can't be changed through this
+int* const pB = &a; // const pointer. 'a' can be changed, but this pointer can't.
+const int* const pC = &a; // const pointer-to-const.
+//Error: Cannot assign to a const reference
+*pA = b;
+pA = &b;
+*pB = b;
+//Error: Cannot assign to const pointer
+pB = &b;
+//Error: Cannot assign to a const reference
+*pC = b;

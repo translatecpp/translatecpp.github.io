@@ -1,0 +1,51 @@
+﻿virtual void f() { std::cout << "One." << std::endl; }
+};
+struct Two : One {
+      void f() override {
+          One::f(); // this->One::f();
+          std::cout << "Two." << std::endl;
+      }
+};
+struct Three : Two {
+     void f() override {
+         Two::f(); // this->Two::f();
+         std::cout << "Three." << std::endl;
+     }
+};
+// ...
+Three t;
+t.f();      // Normal syntax.
+t.Two::f(); // Calls version of f() defined in Two.
+t.One::f(); // Calls version of f() defined in One.
+Section 42.4: Virtual Member Functions
+Member functions can also be declared virtual. In this case, if called on a pointer or reference to an instance, they
+will not be accessed directly; rather, they will look up the function in the virtual function table (a list of pointers-to-
+member-functions for virtual functions, more commonly known as the vtable or vftable), and use that to call the
+version appropriate for the instance's dynamic (actual) type. If the function is called directly, from a variable of a
+class, no lookup is performed.
+struct Base {
+     virtual void func() { std::cout << "In Base." << std::endl; }
+};
+struct Derived : Base {
+      void func() override { std::cout << "In Derived." << std::endl; }
+};
+void slicer(Base x) { x.func(); }
+// ...
+Base b;
+Derived d;
+Base *pb = &b, *pd = &d; // Pointers.
+Base &rb = b, &rd = d; // References.
+b.func();   // Output: In Base.
+d.func();   // Output: In Derived
+pb->func();
+pd->func();
+rb.func();
+rd.func();
+// Output:
+// Output:
+// Output:
+// Output:
+In Base.
+In Derived
+In Base.
+In Derived

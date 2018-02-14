@@ -1,0 +1,39 @@
+﻿Section 69.1: break
+Jumps out of the nearest enclosing loop or switch statement.
+// print the numbers to a file, one per line
+for (const int num : num_list) {
+errno = 0;
+     fprintf(file, "%d\n", num);
+     if (errno == ENOSPC) {
+        fprintf(stderr, "no space left on device; output will be truncated\n");
+        break;
+     }
+}
+Section 69.2: continue
+Jumps to the end of the smallest enclosing loop.
+int sum = 0;
+for (int i = 0; i < N; i++) {
+     int x;
+     std ::cin >> x;
+     if (x < 0) continue;
+     sum += x;
+     // equivalent to: if (x >= 0) sum += x;
+}
+Section 69.3: do
+Introduces a do-while loop.
+// Gets the next non-whitespace character from standard input
+char read_char() {
+char c;
+do {
+        c = getchar();
+     } while (isspace(c));
+     return c;
+}
+Section 69.4: while
+Introduces a while loop.
+int i = 0;
+// print 10 asterisks
+while (i < 10) {
+putchar('*');
+i++;
+}

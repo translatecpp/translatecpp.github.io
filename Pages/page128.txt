@@ -1,0 +1,36 @@
+﻿Section 25.6: Using std::pair
+The struct template std::pair can bundle together exactly two return values, of any two types:
+#include <utility>
+std::pair<int, int> foo(int a, int b) {
+     return std::make_pair(a+b, a-b);
+}
+With C++11 or later, an initializer list can be used instead of std ::make_pair:
+Version > C++11
+#include <utility>
+std::pair<int, int> foo(int a, int b) {
+      return {a+b, a-b};
+}
+The individual values of the returned std ::pair can be retrieved by using the pair's first and second member
+objects:
+std::pair<int, int> mrvs = foo(5, 12);
+std::cout << mrvs.first + mrvs.second << std::endl;
+Output:
+      10
+Section 25.7: Using std::array
+Version > C++11
+The container std ::array can bundle together a fixed number of return values. This number has to be known at
+compile-time and all return values have to be of the same type:
+std::array<int, 4> bar(int a, int b) {
+      return { a + b, a - b, a * b, a / b };
+}
+This replaces c style arrays of the form int bar[4]. The advantage being that various c++ std functions can now be
+used on it. It also provides useful member functions like at which is a safe member access function with bound
+checking, and size which allows you to return the size of the array without calculation.
+Section 25.8: Using Output Iterator
+Several values of the same type can be returned by passing an output iterator to the function. This is particularly
+common for generic functions (like the algorithms of the standard library).
+Example:
+template<typename Incrementable, typename OutputIterator>
+void generate_sequence(Incrementable from, Incrementable to, OutputIterator output) {
+     for (Incrementable k = from; k != to; ++k)
+         *output++ = k;

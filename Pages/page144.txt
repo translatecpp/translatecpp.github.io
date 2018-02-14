@@ -1,0 +1,39 @@
+﻿Chapter 31: Pointers
+A pointer is an address that refers to a location in memory. They're commonly used to allow functions or data
+structures to know of and modify memory without having to copy the memory referred to. Pointers are usable with
+both primitive (built-in) or user-defined types.
+Pointers make use of the "dereference" * , "address of" & , and "arrow" -> operators. The '*' and '->' operators are
+used to access the memory being pointed at, and the & operator is used to get an address in memory.
+Section 31.1: Pointer Operations
+There are two operators for pointers: Address-of operator (&): Returns the memory address of its operand.
+Contents-of (Dereference) operator(*): Returns the value of the variable located at the address specified by its
+operator.
+int var = 20;
+int *ptr;
+ptr = &var;
+cout << var << endl;
+//Outputs 20 (The value of var)
+cout << ptr << endl;
+//Outputs 0x234f119 (var's memory location)
+cout << *ptr << endl;
+//Outputs 20(The value of the variable stored in the pointer ptr
+The asterisk (*) is used in declaring a pointer for simple purpose of indicating that it is a pointer. Don't confuse this
+with the dereference operator, which is used to obtain the value located at the specified address. They are simply
+two different things represented with the same sign.
+Section 31.2: Pointer basics
+Version < C++11
+Note: in all the following, the existence of the C++11 constant nullptr is assumed. For earlier versions, replace
+nullptr with NULL, the constant that used to play a similar role.
+Creating a pointer variable
+A pointer variable can be created using the specific * syntax, e.g. int *pointer_to_int;.
+When a variable is of a pointer type (int *), it just contains a memory address. The memory address is the location
+at which data of the underlying type (int) is stored.
+The difference is clear when comparing the size of a variable with the size of a pointer to the same type:
+// Declare a struct type 'big_struct' that contains
+// three long long ints.
+typedef struct {
+      long long int fool;
+      long long int foo2;
+      long long int foo3;
+} big_struct;
+// Create a variable 'bar' of type 'big_struct'

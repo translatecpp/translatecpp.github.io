@@ -1,0 +1,49 @@
+﻿public:
+   Value() : array_(new Inner[NUM_INNER]){}
+   ~Value() {delete[] array_;}
+   Value(const Value &val) : array_(new Inner[NUM_INNER])
+   {
+     for(int i = 0; i < NUM_INNER; ++i)
+       array_[i] = val.array_[i];
+   }
+   Value &operator=(const Value &val)
+   {
+     for(int i = 0; i < NUM_INNER; ++i)
+     array_[i] = val.array_[i];
+     return *this;
+   }
+};
+Version > C++11
+Move semantics allow a type like Value to avoid truly copying its referenced data. If the user uses the value in a way
+that provokes a move, the "copied" from object can be left empty of the data it referenced:
+struct Inner {int i;};
+constexpr auto NUM_INNER = 5;
+class Value
+{
+private:
+   Inner *array_; //Normally has reference semantics.
+public:
+   Value() : array_(new Inner[NUM_INNER]){}
+   //OK to delete even if nullptr
+   ~Value() {delete[] array_;}
+   Value(const Value &val) : array_(new Inner[NUM_INNER])
+   {
+     for(int i = 0; i < NUM_INNER; ++i)
+       array_[i] = val.array_[i];
+   }
+   Value &operator=(const Value &val)
+   {
+     for(int i = 0; i < NUM_INNER; ++i)
+     array_[i] = val.array_[i];
+     return *this;
+   }
+   //Movement means no memory allocation.
+   //Cannot throw exceptions.
+   Value(Value &&val) noexcept : array_(val.array_)
+   {
+     //We've stolen the old value.
+     val.array_ = nullptr;
+   }
+   //Cannot throw exceptions.
+   Value &operator=(Value &&val) noexcept
+   {

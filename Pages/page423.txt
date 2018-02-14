@@ -1,0 +1,45 @@
+﻿using five = integral_constant<5>;
+Empty custom deleter for unique_ptr
+A nice motivating example can come from trying to combine the empty base optimization with a custom deleter for
+unique_ptr. Different C API deleters have different return types, but we don't care - we just want something to
+work for any function:
+template <auto DeleteFn>
+struct FunctionDeleter {
+template <class T>
+void operator()(T* ptr) const {
+          DeleteFn(ptr);
+     }
+};
+template <T, auto DeleteFn>
+using unique_ptr_deleter = std::unique_ptr<T, FunctionDeleter<DeleteFn>>;
+And now you can simply use any function pointer that can take an argument of type T as a template non-type
+parameter, regardless of return type, and get a no-size overhead unique_ptr out of it:
+unique_ptr_deleter<std::FILE, std::fclose> p;
+Section 77.11: Template template parameters
+Sometimes we would like to pass into the template a template type without fixing its values. This is what template
+template parameters are created for. Very simple template template parameter examples:
+template <class T>
+struct Tag1 { };
+template <class T>
+struct Tag2 { };
+template <template <class> class Tag>
+struct IntTag {
+    typedef Tag<int> type;
+};
+int main() {
+    IntTag<Tag1>::type t;
+}
+Version > C++11
+#include <vector>
+#include <iostream>
+template <class T, template <class...> class C, class U>
+C<T> cast_all(const C<U> &c) {
+    C<T> result(c.begin(), c.end());
+    return result;
+}
+int main() {
+    std::vector<float> vf = {1.2, 2.6, 3.7};
+    auto vi = cast_all<int>(vf);
+    for(auto &&i: vi) {
+       std::cout << i << std::endl;
+    }

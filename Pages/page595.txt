@@ -1,0 +1,47 @@
+﻿Some classes do have a precisely defined moved-from state. The most important case is that of
+std ::unique_ptr<T>, which is guaranteed to be null after being moved from.
+Section 121.6: Result of some pointer comparisons
+If two pointers are compared using <, >, <=, or >=, the result is unspecified in the following cases:
+   • The pointers point into different arrays. (A non-array object is considered an array of size 1.)
+int x;
+int y;
+const bool b1
+int a[10];
+const bool b2
+const bool b3
+const bool b4
+&x < &y;
+// unspecified
+&a[0] < &a[1];        //
+&a[0] < &x;           //
+                                                                                                 (a + 9) < (a + 10); //
+                                                                                                 //
+true
+unspecified
+true
+note: a+10 points past the end of the array
+     • The pointers point into the same object, but to members with different access control.
+       class A {
+       public:
+       int x;
+       int y;
+           bool f1() { return &x < &y; } // true; x comes before y
+         bool f2() { return &x < &z; } // unspecified
+         private:
+         int z;
+       };
+Section 121.7: Static cast from bogus void* value
+If a void* value is converted to a pointer to object type, T*, but is not properly aligned for T, the resulting pointer
+value is unspecified. Example:
+// Suppose that alignof(int) is 4
+int x = 42;
+void* p1 = &x;
+// Do some pointer arithmetic...
+void* p2 = static_cast<char*>(p1) + 2;
+int* p3 = static_cast<int*>(p2);
+The value of p3 is unspecified because p2 cannot point to an object of type int; its value is not a properly aligned
+address.
+Section 121.8: Order of initialization of globals across TU
+Whereas inside a Translation Unit, order of initialization of global variables is specified, order of initialization across
+Translation Units is unspecified.
+So program with following files

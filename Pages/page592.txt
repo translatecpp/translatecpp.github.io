@@ -1,0 +1,42 @@
+﻿Section 121.1: Value of an out-of-range enum
+If a scoped enum is converted to an integral type that is too small to hold its value, the resulting value is
+unspecified. Example:
+enum class E {
+     X = 1,
+     Y = 1000,
+};
+// assume 1000 does not fit into a char
+char c1 = static_cast<char>(E::X); // c1 is 1
+char c2 = static_cast<char>(E::Y); // c2 has an unspecified value
+Also, if an integer is converted to an enum and the integer's value is outside the range of the enum's values, the
+resulting value is unspecified. Example:
+enum Color {
+     RED = 1,
+     GREEN = 2,
+     BLUE = 3,
+};
+Color c = static_cast<Color>(4);
+However, in the next example, the behavior is not unspecified, since the source value is within the range of the
+enum, although it is unequal to all enumerators:
+enum Scale {
+     ONE = 1,
+     TWO = 2,
+     FOUR = 4,
+};
+Scale s = static_cast<Scale>(3);
+Here s will have the value 3, and be unequal to ONE, TWO, and FOUR.
+Section 121.2: Evaluation order of function arguments
+If a function has multiple arguments, it is unspecified what order they are evaluated in. The following code could
+print x = 1, y = 2 or x = 2, y = 1 but it is unspecified which.
+int f(int x, int y) {
+     printf("x = %d, y = %d\n", x, y);
+}
+int get_val() {
+     static int x = 0;
+     return ++x;
+}
+int main() {
+     f(get_val(), get_val());
+}
+Version > C++17
+In C++17, the order of evaluation of function arguments remains unspecified.

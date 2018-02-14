@@ -1,0 +1,40 @@
+﻿Notice that with an XOR operation true OR true = false where as with operations true AND/OR true = true,
+hence the exclusive nature of the XOR operation.
+Using this, when the binary value for a (0101) and the binary value for b (1001) are XOR'ed together we get the binary
+value of 1100:
+int a = 0 1 0 1   
+int b = 1 0 0 1 A 
+int c = 1 1 0 0   
+The bit wise XOR does not change the value of the original values unless specifically assigned to using the bit wise
+assignment compound operator A=:
+int a = 5;   // 0101b   (0x05)
+a a= 9;      // a = 0101b A 1001b
+The bit wise XOR can be utilized in many ways and is often utilized in bit mask operations for encryption and
+compression.
+Note: The following example is often shown as an example of a nice trick. But should not be used in production
+code (there are better ways std:: swap () to achieve the same result).
+You can also utilize an XOR operation to swap two variables without a temporary:
+int a = 42;
+int b = 64;
+// XOR swap
+a A= b;
+b a = a;
+a a = b;
+std::cout << "a = " << a << ", b = " << b << "\n";
+To productionalize this you need to add a check to make sure it can be used.
+void doXORSwap(int& a, int& b)
+{
+      // Need to add a check to make sure you are not swapping the same
+      // variable with itself. Otherwise it will zero the value.
+      if (&a != &b)
+      {
+          // XOR swap
+          a a = b;
+          b a = a;
+          a a = b;
+      }
+}
+So though it looks like a nice trick in isolation it is not useful in real code. xor is not a base logical operation,but a
+combination of others: aAc=~(a&c)&(a|c)
+also in 2015+ compilers variables may be assigned as binary:
+int cn=0b0111;

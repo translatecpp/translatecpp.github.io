@@ -1,0 +1,45 @@
+﻿Storage class specifiers are keywords that can be used in declarations. They do not affect the type of the
+declaration, but typically modify the way in which the entity is stored.
+Section 133.1: extern
+The extern storage class specifier can modify a declaration in one of the three following ways, depending on
+context:
+   1. It can be used to declare a variable without defining it. Typically, this is used in a header file for a variable that
+     will be defined in a separate implementation file.
+       // global scope
+       int x;             // definition; x will be default-initialized
+       extern int y;      // declaration; y is defined elsewhere, most likely another TU
+       extern int z = 42; // definition; "extern" has no effect here (compiler may warn)
+   2.  It gives external linkage to a variable at namespace scope even if const or constexpr would have otherwise
+      caused it to have internal linkage.
+// global scope
+const int w = 42;
+static const int x = 42;
+extern const int y = 42;
+namespace {
+                                                                                         extern const int z = 42;
+}
+// internal linkage in C++; external linkage in C
+// internal linkage in both C++ and C
+// external linkage in both C++ and C
+// however, this has internal linkage since
+// it's in an unnamed namespace
+    3. It redeclares a variable at block scope if it was previously declared with linkage. Otherwise, it declares a new
+       variable with linkage, which is a member of the nearest enclosing namespace.
+       // global scope
+       namespace {
+       int x = 1;
+       struct C {
+                int x = 2;
+                void f() {
+                    extern int x;             // redeclares namespace-scope x
+                    std::cout << x << '\n'; // therefore, this prints 1, not 2
+                }
+           };
+       }
+       void g() {
+           extern int y; // y has external linkage; refers to global y defined elsewhere
+       }
+A function can also be declared extern, but this has no effect. It is usually used as a hint to the reader that a
+function declared here is defined in another translation unit. For example:
+  void f();          // typically a forward declaration; f defined later in this TU
+  extern void g(); // typically not a forward declaration; g defined in another TU

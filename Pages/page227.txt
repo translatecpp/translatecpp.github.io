@@ -1,0 +1,43 @@
+﻿          name = new char[std::strlen(other.name) + 1];
+          std::strcpy(name, other.name);
+          age = other.age;
+     }
+     return *this;
+}
+But this approach has some problems. It fails the strong exception guarantee - if new[ ] throws, we've already
+cleared the resources owned by this and cannot recover. We're duplicating a lot of the logic of copy construction in
+copy assignment. And we have to remember the self-assignment check, which usually just adds overhead to the
+copy operation, but is still critical.
+To satisfy the strong exception guarantee and avoid code duplication (double so with the subsequent move
+assignment operator), we can use the copy-and-swap idiom:
+class person {
+char* name;
+int age;
+public:
+     /* all the other functions ... */
+     friend void swap(person& lhs, person& rhs) {
+          using std::swap; // enable ADL
+          swap(lhs.name, rhs.name);
+          swap(lhs.age, rhs.age);
+     }
+     person& operator=(person rhs) {
+          swap(*this, rhs);
+          return *this;
+     }
+};
+Why does this work? Consider what happens when we have
+person p1 = ...;
+person p2 = ...;
+p1 = p2;
+First, we copy-construct rhs from p2 (which we didn't have to duplicate here). If that operation throws, we don't do
+anything in operator= and p1 remains untouched. Next, we swap the members between *this and rhs, and then
+rhs goes out of scope. When operator=, that implicitly cleans the original resources of this (via the destructor,
+which we didn't have to duplicate). Self-assignment works too - it's less efficient with copy-and-swap (involves an
+extra allocation and deallocation), but if that's the unlikely scenario, we don't slow down the typical use case to
+account for it.
+Version > C++11
+The above formulation works as-is already for move assignment.
+p1 = std::move(p2);
+Here, we move-construct rhs from p2, and all the rest is just as valid. If a class is movable but not copyable, there is
+no need to delete the copy-assignment, since this assignment operator will simply be ill-formed due to the deleted
+copy constructor.

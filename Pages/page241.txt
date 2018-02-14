@@ -1,0 +1,44 @@
+﻿namespace Foo
+{
+     class C;
+}
+/***** bar.h *****/
+namespace Bar
+{
+     class C;
+}
+/***** baz.h *****/
+#include "foo.h"
+using namespace Foo;
+/***** main.cpp *****/
+#include "bar.h"
+#include "baz.h"
+using namespace Bar;
+C c; // error: Ambiguity between Bar::C and Foo::C
+A using-directive cannot occur at class scope.
+Section 45.5: Making namespaces
+Creating a namespace is really easy:
+//Creates namespace foo
+namespace Foo
+{
+     //Declares function bar in namespace foo
+     void bar() {}
+}
+To call bar, you have to specify the namespace first, followed by the scope resolution operator :::
+Foo::bar();
+It is allowed to create one namespace in another, for example:
+namespace A
+{
+     namespace B
+     {
+         namespace C
+         {
+             void bar() {}
+         }
+     }
+}
+Version > C++17
+The above code could be simplified to the following:
+namespace A::B::C
+{
+     void bar() {}

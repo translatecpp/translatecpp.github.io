@@ -1,0 +1,9 @@
+﻿Section 64.7: C++20
+C++20 is the upcoming standard of C++, currently in development, based upon the C++17 standard. It's progress
+can be tracked on the official ISO cpp website.
+The following features are simply what has been accepted for the next release of the C++ standard, targeted for
+2020.
+Language Extensions
+No language extensions have been accepted for now.
+Library Extensions
+No library extensions have been accepted for now.

@@ -1,0 +1,29 @@
+﻿Example usage:
+std::vector<int> digits;
+generate_sequence(0, 10, std::back_inserter(digits));
+// digits now contains {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+Section 25.9: Using std::vector
+A std ::vector can be useful for returning a dynamic number of variables of the same type. The following example
+uses int as data type, but a std ::vector can hold any type that is trivially copyable:
+#include <vector>
+#include <iostream>
+// the following function returns all integers between and including 'a' and 'b' in a vector
+// (the function can return up to std::vector::max_size elements with the vector, given that
+// the system's main memory can hold that many items)
+std::vector<int> fillVectorFrom(int a, int b) {
+std::vector<int> temp;
+for (int i = a; i <= b; i++) {
+temp.push_back(i);
+     }
+     return temp;
+}
+int main() {
+     // assigns the filled vector created inside the function to the new vector 'v'
+     std::vector<int> v = fillVectorFrom(1, 10);
+     // prints "1 2 3 4 5 6 7 8 9 10 "
+     for (int i = 0; i < v.size(); i++) {
+     std::cout << v[i] << " ";
+     }
+     std::cout << std::endl;
+     return 0;
+}

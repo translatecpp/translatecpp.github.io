@@ -1,0 +1,41 @@
+﻿});
+and you have recursion in a lambda with no serious restrictions or significant overhead.
+Section 73.5: Default capture
+By default, local variables that are not explicitly specified in the capture list, cannot be accessed from within the
+lambda body. However, it is possible to implicitly capture variables named by the lambda body:
+int a = 1;
+int b = 2;
+// Default capture by value
+[=]() { return a + b; }; // OK; a and b are captured by value
+// Default capture by reference
+[&]() { return a + b; }; // OK; a and b are captured by reference
+Explicit capturing can still be done alongside implicit default capturing. The explicit capture definition will override
+the default capture:
+int a = 0;
+int b = 1;
+[=, &b]() {
+     a = 2; // Illegal; 'a' is capture by value, and lambda is not 'mutable'
+     b = 2; // OK; 'b' is captured by reference
+};
+Section 73.6: Class lambdas and capture of this
+A lambda expression evaluated in a class' member function is implicitly a friend of that class:
+class Foo
+{
+private:
+     int i;
+public:
+     Foo(int val) : i(val) {}
+     // definition of a member function
+     void Test()
+     {
+          auto lamb = [](Foo &foo, int val)
+          {
+              // modification of a private member variable
+              foo.i = val;
+          };
+          // lamb is allowed to access a private member, because it is a friend of Foo
+          lamb(*this, 30);
+     }
+};
+Such a lambda is not only a friend of that class, it has the same access as the class it is declared within has.
+Lambdas can capture the this pointer which represents the object instance the outer function was called on. This

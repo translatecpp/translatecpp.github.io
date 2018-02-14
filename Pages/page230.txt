@@ -1,0 +1,43 @@
+﻿Section 42.2: Encapsulation
+A common use of member functions is for encapsulation, using an accessor (commonly known as a getter) and a
+mutator (commonly known as a setter) instead of accessing fields directly.
+class Encapsulator {
+     int encapsulated;
+   public:
+     int get_encapsulated() const { return encapsulated; }
+     void set_encapsulated(int e) { encapsulated = e; }
+     void some_func() {
+         do_something_with(encapsulated);
+     }
+};
+Inside the class, encapsulated can be freely accessed by any non-static member function; outside the class, access
+to it is regulated by member functions, using get_encapsulated() to read it and set_encapsulated() to modify it.
+This prevents unintentional modifications to the variable, as separate functions are used to read and write it. [There
+are many discussions on whether getters and setters provide or break encapsulation, with good arguments for
+both claims; such heated debate is outside the scope of this example.]
+Section 42.3: Name Hiding & Importing
+When a base class provides a set of overloaded functions, and a derived class adds another overload to the set, this
+hides all of the overloads provided by the base class.
+struct HiddenBase {
+     void f(int) { std::cout << "int" << std::endl; }
+     void f(bool) { std::cout << "bool" << std::endl; }
+     void f(std::string) { std::cout << "std::string" << std::endl; }
+};
+struct HidingDerived : HiddenBase {
+     void f(float) { std::cout << "float" << std::endl; }
+};
+// ...
+HiddenBase hb;
+HidingDerived hd;
+std ::string s;
+hb.f(1);    //  Output: int
+hb.f(true); // Output: bool
+hb.f(s); // Output: std::string;
+hd.f(1.f);  // Output:   float
+hd.f(3);    // Output:   float
+hd.f(true); // Output: float
+hd.f(s); // Error: Can't convert from std::string to float.
+This is due to name resolution rules: During name lookup, once the correct name is found, we stop looking, even if
+we clearly haven't found the correct version of the entity with that name (such as with hd.f(s)); due to this,
+overloading the function in the derived class prevents name lookup from discovering the overloads in the base
+class. To avoid this, a using-declaration can be used to "import" names from the base class into the derived class, so

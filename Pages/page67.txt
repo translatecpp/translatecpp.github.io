@@ -1,0 +1,34 @@
+﻿Then result contains the string representation of the foo object.
+Section 14.2: Printing collections with iostream
+Basic printing
+std ::ostream_iterator allows to print contents of an STL container to any output stream without explicit loops.
+The second argument of std ::ostream_iterator constructor sets the delimiter. For example, the following code:
+std::vector<int> v = {1,2,3,4};
+std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " ! "));
+will print
+1 ! 2 ! 3 ! 4 !
+Implicit type cast
+std ::ostream_iterator allows to cast container's content type implicitly. For example, let's tune std ::cout to print
+floating-point values with 3 digits after decimal point:
+std::cout << std::setprecision(3);
+std ::fixed(std::cout);
+and instantiate std ::ostream_iterator with float, while the contained values remain int:
+std::vector<int> v = {1,2,3,4};
+std::copy(v.begin(), v.end(), std::ostream_iterator<float>(std::cout, " ! "));
+so the code above yields
+1.000 ! 2.000 ! 3.000 ! 4.000 !
+despite std::vector holds ints.
+Generation and transformation
+std ::generate, std ::generate_n and std — transform functions provide a very powerful tool for on-the-fly data
+manipulation. For example, having a vector:
+std::vector<int> v = {1,2,3,4,8,16};
+we can easily print boolean value of "x is even" statement for each element:
+std::boolalpha(std::cout); // print booleans alphabetically
+std::transform(v.begin(), v.end(), std::ostream_iterator<bool>(std::cout, " "),
+[](int val) {
+     return (val % 2) == 0;
+});
+or print the squared element:
+std::transform(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " "),
+[](int val) {
+     return val * val;

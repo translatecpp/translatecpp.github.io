@@ -1,0 +1,36 @@
+﻿      return 0;
+Section 80.9: Thread operations
+When you start a thread, it will execute until it is finished.
+Often, at some point, you need to (possibly - the thread may already be done) wait for the thread to finish, because
+you want to use the result for example.
+int n;
+std::thread thread{ calculateSomething, std::ref(n) };
+//Doing some other stuff
+//We need 'n' now!
+//Wait for the thread to finish - if it is not already done
+thread.join();
+//Now 'n' has the result of the calculation done in the seperate thread
+std::cout << n << '\n';
+You can also detach the thread, letting it execute freely:
+std::thread thread{ doSomething };
+//Detaching the thread, we don't need it anymore (for whatever reason)
+thread.detach();
+//The thread will terminate when it is done, or when the main thread returns
+Section 80.10: Thread-local storage
+Thread-local storage can be created using the thread_local keyword. A variable declared with the thread_local
+specifier is said to have thread storage duration.
+    •  Each thread in a program has its own copy of each thread-local variable.
+    •  A thread-local variable with function (local) scope will be initialized the first time control passes through its
+      definition. Such a variable is implicitly static, unless declared extern.
+    •  A thread-local variable with namespace or class (non-local) scope will be initialized as part of thread startup.
+    •  Thread-local variables are destroyed upon thread termination.
+    •  A member of a class can only be thread-local if it is static. There will therefore be one copy of that variable
+      per thread, rather than one copy per (thread, instance) pair.
+Example:
+void debug_counter() {
+      thread_local int count = 0;
+      Logger::log("This function has been called %d times by this thread", ++count);
+}
+Section 80.11: Reassigning thread objects
+We can create empty thread objects and assign work to them later.
+If we assign a thread object to another active, joinable thread, std — terminate will automatically be called before

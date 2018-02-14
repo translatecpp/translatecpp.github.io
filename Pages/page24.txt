@@ -1,0 +1,35 @@
+﻿Section 7.1: Remove rightmost set bit
+C-style bit-manipulation
+template <typename T>
+T rightmostSetBitRemoved(T n)
+{
+     // static_assert(std::is_integral<T>::value && !std::is_signed<T>::value, "type should be
+unsigned"); // For c++11 and later
+return n & (n - 1);
+}
+Explanation
+    • if n is zero, we have 0 & 0xFF.. FF which is zero
+    • else n can be written 0bxxxxxx10..00 and n - 1 is 0bxxxxxx011..11, so n & (n - 1) is 0bxxxxxx000..00.
+Section 7.2: Set all bits
+C-style bit-manipulation
+x = -1; // -1 == 1111 1111 ... 1111b
+(See here for an explanation of why this works and is actually the best approach.)
+Using std::bitset
+std::bitset<10> x;
+x.set(); // Sets all bits to '1'
+Section 7.3: Toggling a bit
+C-style bit-manipulation
+A bit can be toggled using the XOR operator (A).
+// Bit x will be the opposite value of what it is currently
+number A= 1LL << x;
+Using std::bitset
+std::bitset<4> num(std::string("0100"));
+num.flip(2); // num is now 0000
+num.flip(0); // num is now 0001
+num.flip(); // num is now 1110 (flips all bits)
+Section 7.4: Checking a bit
+C-style bit-manipulation
+The value of the bit can be obtained by shifting the number to the right x times and then performing bitwise AND
+(&) on it:
+(number >> x) & 1LL; // 1 if the 'x'th bit of 'number' is set, 0 otherwise
+The right-shift operation may be implemented as either an arithmetic (signed) shift or a logical (unsigned) shift. If

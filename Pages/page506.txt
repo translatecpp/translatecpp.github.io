@@ -1,0 +1,31 @@
+﻿Case 2: ParamType is a Universal Reference or Forward Reference. In this case type deduction is the same as in case
+1 if the expr is an rvalue. If expr is an lvalue, both T and ParamType are deduced to be lvalue references.
+template<typename T>
+void f(T&& param); // param is a universal reference
+int x = 27;
+const int cx = x;
+const int& rx = x;
+// x is an int
+// cx is a const int
+// rx is a reference to x as a const int
+f(x) ;
+f(cx)
+f(rx)
+f(27)
+// x is lvalue, so T is int&, param's type is also int&
+//   cx is lvalue, so T is  const int&, param's type is also const   int&
+//   rx is lvalue, so T is  const int&, param's type is also const   int&
+//   27 is rvalue, so T is  int, param's type is therefore int&&
+Case 3: ParamType is Neither a Pointer nor a Reference. If expr is a reference the reference part is ignored. If expr is
+const that is ignored as well. If it is volatile that is also ignored when deducing T's type.
+template<typename T>
+void f(T param);         // param is now passed by value
+int x = 27;
+const int cx = x;
+const int& rx = x;
+// x  is an int                           
+// cx is a  const int                     
+// rx is a  reference to x as a const int 
+f(x);  // T' s and param' s types are both int       
+f(cx); // T' s and param' s types are again both int 
+f(rx); // T' s and param' s types are still both int 

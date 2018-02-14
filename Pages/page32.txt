@@ -1,0 +1,45 @@
+﻿                                                                                                                          -> int
+int const  a[]  = {3, 1, 4, 1,  5, 9, 2, 6, 5, 4};             
+Size const n    = n items(  a ) •                              
+int        b[n] = {};       //  An array of the same size as a 
+(void) b;
+cout <}
+The C idiom for array size, sizeof(a)/sizeof(a[0]), will accept a pointer as argument and will then generally yield
+an incorrect result.
+For C++11
+using C++11 you can do:
+std::extent<decltype(MyArray)>::value;
+Example:
+char MyArray[] = { 'X','o','c','e' };
+const auto n = std::extent<decltype(MyArray)>::value;
+std::cout << n << "\n"; // Prints 4
+Up till C++17 (forthcoming as of this writing) C++ had no built-in core language or standard library utility to obtain
+the size of an array, but this can be implemented by passing the array by reference to a function template, as shown
+above. Fine but important point: the template size parameter is a size_t, somewhat inconsistent with the signed
+Size function result type, in order to accommodate the g++ compiler which sometimes insists on size_t for
+template matching.
+With C++17 and later one may instead use std::size, which is specialized for arrays.
+Section 9.5: Expanding dynamic size array by using
+std::vector
+// Example of std::vector
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+int int_from( std::istream& in ) { int x = 0; in >> x; return x; }
+int main()
+{
+     cout << "Sorting integers provided by you.\n";
+     cout << "You can indicate EOF via F6 in Windows or Ctrl+D in Unix-land.\n";
+     vector<int> a;       // ? Zero size by default.
+     while( cin )
+     {
+         cout << "One number, please, or indicate EOF: ";
+         int const x = int_from( cin );
+         if( !cin.fail() ) { a.push_back( x ); }   // Expands as necessary.
+     }
+     sort( a.begin(), a.end() );
+     int const n = a.size();
+as an expanding dynamic size array.
+      // std::sort
+      // std::vector

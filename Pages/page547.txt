@@ -1,0 +1,40 @@
+﻿Section 107.1: Basic Pimpl idiom
+Version > C++11
+In the header file:
+// widget.h
+#include <memory> // std::unique_ptr
+#include <experimental/propagate_const>
+class Widget
+{
+     public:
+         Widget();
+         ~Widget();
+         void DoSomething();
+     private:
+         // the pimpl idiom is named after the typical variable name used
+         // ie, pimpl:
+         struct impl;                     // forward declaration
+         std::experimental::propagate_const<std::unique_ptr< Impl >> pimpl; // ptr to actual
+implementation
+};
+In the implementation file:
+// widget.cpp
+#include "widget.h"
+#include "reallycomplextype.h" // no need to include this header inside widget.h
+struct Widget::Impl
+{
+     // the attributes needed from Widget go here
+     ReallyComplexType rct;
+};
+Widget::Widget() :
+     pImpl(std::make_unique<Impl>())
+{}
+Widget::~Widget() = default;
+void Widget::DoSomething()
+{
+     // do the stuff here with pimpl
+}
+The pimpl contains the Widget state (or some/most of it). Instead of the Widget description of state being exposed
+in the header file, it can be only exposed within the implementation.
+pimpl stands for "pointer to implementation". The "real" implementation of Widget is in the pimpl.
+Danger: Note that for this to work with unique_ptr, ~Widget() must be implemented at a point in a file where the

@@ -1,0 +1,42 @@
+﻿int& r = x; // error
+struct S {
+     void f();
+     void g() const;
+};
+const S s;
+s.f(); // error
+s.g(); // OK
+Section 23.3: volatile
+A type qualifier; when applied to a type, produces the volatile-qualified version of the type. Volatile qualification
+plays the same role as const qualification in the type system, but volatile does not prevent objects from being
+modified; instead, it forces the compiler to treat all accesses to such objects as side effects.
+In the example below, if memory_mapped_port were not volatile, the compiler could optimize the function so that it
+performs only the final write, which would be incorrect if sizeof(int) is greater than 1. The volatile qualification
+forces it to treat all sizeof(int) writes as different side effects and hence perform all of them (in order).
+extern volatile char memory_mapped_port;
+void write_to_device(int x) {
+     const char* p = reinterpret_cast<const char*>(&x);
+     for (int i = 0; i < sizeof(int); i++) {
+     memory_mapped_port = p[i];
+     }
+}
+Section 23.4: signed
+A keyword that is part of certain integer type names.
+    •  When used alone, int is implied, so that signed, signed int, and int are the same type.
+    • When combined with char, yields the type signed char, which is a different type from char, even if char is
+      also signed. signed char has a range that includes at least -127 to +127, inclusive.
+    • When combined with short, long, or long long, it is redundant, since those types are already signed.
+    •  signed cannot be combined with bool, wchar_t, char16_t, or char32_t.
+Example:
+signed char celsius_temperature;
+std::cin >> celsius_temperature;
+if (celsius_temperature < -35) {
+std::cout << "cold day, eh?\n";
+}
+Section 23.5: unsigned
+A type specifier that requests the unsigned version of an integer type.
+    •  When used alone, int is implied, so unsigned is the same type as unsigned int.
+    •  The type unsigned char is different from the type char, even if char is unsigned. It can hold integers up to at
+      least 255.
+    •  unsigned can also be combined with short, long, or long long. It cannot be combined with bool, wchar_t,
+      char16_t, or char32_t.

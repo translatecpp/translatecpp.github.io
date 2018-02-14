@@ -1,0 +1,46 @@
+﻿     // TODO: Reuse this on BSD, MAC ...
+     [[maybe_unused]] std::string createLinuxConfigFilePath(const std::string &relativePath);
+std::string createConfigFilePath(const std::string &relativePath) {
+#if OS == "WINDOWS"
+       return createWindowsConfigFilePath(relativePath);
+#elif OS == "LINUX"
+       return createLinuxConfigFilePath(relativePath);
+#else
+#error "OS is not yet supported"
+#endif
+}
+See the proposal for more detailed examples on how [ [maybe_unused ]] can be used.
+Section 123.5: [[noreturn]]
+Version > C++11
+C++11 introduced the [ [noreturn] ] attribute. It can be used for a function to indicate that the function does not
+return to the caller by either executing a return statement, or by reaching the end if it's body (it is important to note
+that this does not apply to void functions, since they do return to the caller, they just do not return any value). Such
+a function may end by calling std — terminate or std ::exit, or by throwing an exception. It is also worth noting
+that such a function can return by executing longjmp.
+For instance, the function below will always either throw an exception or call std — terminate, so it is a good
+candidate for [[noreturn]]:
+[[noreturn]] void ownAssertFailureHandler(std::string message) {
+     std::cerr << message << std—endl;
+     if (THROW_EXCEPTION_ON_ASSERT)
+         throw AssertException(std::move(message));
+     std ::terminate();
+}
+This kind of functionality allows the compiler to end a function without a return statement if it knows the code will
+never be executed. Here, because the call to ownAssertFailureHandler (defined above) in the code below will
+never return, the compiler does not need to add code below that call:
+std::vector<int> createSequence(int end) {
+     if (end > 0) {
+         std::vector<int> sequence;
+         sequence.reserve(end+1);
+         for (int i = 0; i <= end; ++i)
+         sequence.push_back(i);
+         return sequence;
+     }
+     ownAssertFailureHandler("Negative number passed to createSequence()"s);
+     // return std::vector<int>{}; //< Not needed because of [[noreturn]]
+}
+It is undefined behavior if the function will actually return, so the following is not allowed:
+[[noreturn]] void assertPositive(int number) {
+if (number >= 0)
+return;
+     else

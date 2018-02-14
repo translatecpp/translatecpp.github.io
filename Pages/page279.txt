@@ -1,0 +1,40 @@
+﻿before using the binary search algorithm.
+To find the first element in a vector that satisfies a condition, std ::find_if can be used. In addition to the two
+parameters given to std ::find, std ::find_if accepts a third argument which is a function object or function
+pointer to a predicate function. The predicate should accept an element from the container as an argument and
+return a value convertible to bool, without modifying the container:
+Version < C++11
+bool isEven(int val) {
+      return (val % 2 == 0);
+}
+struct moreThan {
+      moreThan(int limit) : _limit(limit) {}
+      bool operator()(int val) {
+          return val > _limit;
+      }
+      int _limit;
+};
+static const int arr[] = {1, 3, 7, 8};
+std::vector<int> v (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+std::vector<int>::iterator it = std::find_if(v.begin(), v.end(), isEven);
+// 'it' points to 8, the first even element
+std::vector<int>::iterator missing = std::find_if(v.begin(), v.end(), moreThan(10));
+// 'missing' is v.end(), as no element is greater than 10
+Version > C++11
+// find the first value that is even
+std::vector<int> v = {1, 3, 7, 8};
+auto it = std::find_if(v.begin(), v.end(), [](int val){return val % 2 == 0;});
+// 'it' points to 8, the first even element
+auto missing = std::find_if(v.begin(), v.end(), [](int val){return val > 10;});
+// 'missing' is v.end(), as no element is greater than 10
+Section 50.9: Concatenating Vectors
+One std ::vector can be append to another by using the member function insert():
+std::vector<int> a = {0, 1, 2, 3, 4};
+std::vector<int> b = {5, 6, 7, 8, 9};
+a.insert(a.end(), b.begin(), b.end());
+However, this solution fails if you try to append a vector to itself, because the standard specifies that iterators given
+to insert() must not be from the same range as the receiver object's elements.
+Version > c++11
+Instead of using the vector's member functions, the functions std::begin() and std::end() can be used:
+a.insert(std::end(a), std::begin(b), std::end(b));
+This is a more general solution, for example, because b can also be an array. However, also this solution doesn't

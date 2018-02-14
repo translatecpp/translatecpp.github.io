@@ -1,0 +1,42 @@
+﻿Breaking It Down
+const int array[] = { 1, 2, 3, 4, 5 };
+This line creates a new integer array with 5 values. C arrays are just pointers to memory where each value is stored
+together in a contiguous block.
+const int* first = array;
+const int* afterLast = first + sizeof(array) / sizeof(array[0]);
+These lines create two pointers. The first pointer is given the value of the array pointer, which is the address of the
+first element in the array. The sizeof operator when used on a C array returns the size of the array in bytes.
+Divided by the size of an element this gives the number of elements in the array. We can use this to find the
+address of the block after the array.
+for (const int* i = first; i < afterLast; ++i) {
+Here we create a pointer which we will use as an iterator. It is initialized with the address of the first element we
+want to iterate over, and we'll continue to iterate as long as i is less than afterLast, which means as long as i is
+pointing to an address within array.
+     std::cout << *i << std::endl;
+Finally, within the loop we can access the value our iterator i is pointing to by dereferencing it. Here the
+dereference operator * returns the value at the address in i.
+Section 10.7: Write your own generator-backed iterator
+A common pattern in other languages is having a function that produces a "stream" of objects, and being able to
+use loop-code to loop over it.
+We can model this in C++ as
+template<class T>
+struct generator_iterator {
+   using difference_type=std::ptrdiff_t;
+   using value_type=T;
+   using pointer=T*;
+   using reference=T;
+   using iterator_category=std::input_iterator_tag;
+   std::optional<T> state;
+   std::function< std::optional<T>() > operation;
+   // we store the current element in "state" if we have one:
+   T operator*() const {
+     return *state;
+   }
+   // to advance, we invoke our operation. If it returns a nullopt
+   // we have reached the end:
+   generator_iterator& operator++() {
+   state = operation();
+   return *this;
+   }
+   generator_iterator operator++(int) {
+     auto r = *this;

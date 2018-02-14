@@ -1,0 +1,31 @@
+﻿}
+The Compilation Process
+Since header files are often part of a compilation process workflow, a typical compilation process making use of the
+header/source file convention will usually do the following.
+Assuming that the header file and source code file is already in the same directory, a programmer would execute
+the following commands:
+g++ -c my_function.cpp        # Compiles the source file my_function.cpp
+                               #  --> object file my_function.o
+g++ main.cpp my_function.o # Links the object file containing the
+                               #  implementation of int my_function()
+                               #  to the compiled, object version of main.cpp
+                               #  and then produces the final executable a.out
+Alternatively, if one wishes to compile main. cpp to an object file first, and then link only object files together as the
+final step:
+g++ -c my_function.cpp
+g++ -c main.cpp
+g++ main.o my_function.o
+Section 46.2: Templates in Header Files
+Templates require compile-time generation of code: a templated function, for example, will be effectively turned
+into multiple distinct functions once a templated function is parameterized by use in source code.
+This means that template function, member function, and class definitions cannot be delegated to a separate
+source code file, as any code that will use any templated construct requires knowledge of its definition to generally
+generate any derivative code.
+Thus, templated code, if put in headers, must also contain its definition. An example of this is below:
+// templated_function.h
+template <typename T>
+T* null_T_pointer() {
+   T* type_point = NULL; // or, alternatively, nullptr instead of NULL
+                          // for C++11 or later
+   return type_point;
+}

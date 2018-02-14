@@ -1,0 +1,38 @@
+﻿int x = 12345;
+signed char sc = x; // sc has an implementation-defined value
+unsigned char uc = x; // uc is initialized to 57 (i.e., 12345 modulo 256)
+Section 71.6: Underlying type (and hence size) of an enum
+If the underlying type is not explicitly specified for an unscoped enumeration type, it is determined in an
+implementation-defined manner.
+enum E {
+     RED,
+     GREEN,
+     BLUE,
+};
+using T = std::underlying_type<E>::type; // implementation-defined
+However, the standard does require the underlying type of an enumeration to be no larger than int unless both
+int and unsigned int are unable to represent all the values of the enumeration. Therefore, in the above code, T
+could be int, unsigned int, or short, but not long long, to give a few examples.
+Note that an enum has the same size (as returned by sizeof) as its underlying type.
+Section 71.7: Numeric value of a pointer
+The result of casting a pointer to an integer using reinterpret_cast is implementation-defined, but "... is intended
+to be unsurprising to those who know the addressing structure of the underlying machine."
+int x = 42;
+int* p = &x;
+long addr = reinterpret_cast<long>(p);
+std::cout << addr << "\n"; // prints some numeric address,
+                             // probably in the architecture's native address format
+Likewise, the pointer obtained by conversion from an integer is also implementation-defined.
+The right way to store a pointer as an integer is using the uintptr_t or intptr_t types:
+// 'uintptr_t' was not in C++03. It's in C99, in <stdint.h>, as an optional type
+#include <stdint.h>
+uintptr_t uip;
+Version > C++11
+// There is an optional 'std::uintptr_t' in C++11
+#include <cstdint>
+std::uintptr_t uip;
+C++11 refers to C99 for the definition uintptr_t (C99 standard, 6.3.2.3):
+     an unsigned integer type with the property that any valid pointer to void can be converted to this type,
+     then converted back to pointer to void, and the result will compare equal to the original pointer.
+While, for the majority of modern platforms, you can assume a flat address space and that arithmetic on uintptr_t
+is equivalent to arithmetic on char *, it's entirely possible for an implementation to perform any transformation

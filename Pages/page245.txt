@@ -1,0 +1,44 @@
+﻿Section 45.10: Aliasing a long namespace
+This is usually used for renaming or shortening long namespace references such referring to components of a
+library.
+namespace boost
+{
+     namespace multiprecision
+     {
+        class Number ...
+     }
+}
+namespace Namel = boost::multiprecision;
+// Both Type declarations are equivalent
+boost::multiprecision::Number X // Writing the full namespace path, longer
+Name1::Number Y                  // using the name alias, shorter
+Section 45.11: Alias Declaration scope
+Alias Declaration are affected by preceding using statements
+namespace boost
+{
+     namespace multiprecision
+     {
+         class Number ...
+     }
+}
+using namespace boost;
+// Both Namespace are equivalent
+namespace Name1 = boost::multiprecision;
+namespace Name2 = multiprecision;
+However, it is easier to get confused over which namespace you are aliasing when you have something like this:
+namespace boost
+{
+     namespace multiprecision
+     {
+         class Number ...
+     }
+}
+namespace numeric
+{
+     namespace multiprecision
+     {
+         class Number ...
+     }
+}
+using namespace numeric;
+using namespace boost;

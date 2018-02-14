@@ -1,0 +1,26 @@
+﻿The produced object files can be put in special archives called static libraries, for easier reusing later on.
+It's at this stage that "regular" compiler errors, like syntax errors or failed overload resolution errors, are reported.
+In order to stop the process after the compile step, we can use the -S option:
+g++ -Wall -ansi -S prog.cpp
+Assembling
+The assembler creates object code. On a UNIX system you may see files with a .o suffix (.OBJ on MSDOS) to indicate
+object code files. In this phase the assembler converts those object files from assembly code into machine level
+instructions and the file created is a relocatable object code. Hence, the compilation phase generates the
+relocatable object program and this program can be used in different places without having to compile again.
+To stop the process after the assembly step, you can use the -c option:
+g++ -Wall -ansi -c prog.cpp
+Linking
+The linker is what produces the final compilation output from the object files the assembler produced. This output
+can be either a shared (or dynamic) library (and while the name is similar, they don't have much in common with
+static libraries mentioned earlier) or an executable.
+It links all the object files by replacing the references to undefined symbols with the correct addresses. Each of
+these symbols can be defined in other object files or in libraries. If they are defined in libraries other than the
+standard library, you need to tell the linker about them.
+At this stage the most common errors are missing definitions or duplicate definitions. The former means that either
+the definitions don't exist (i.e. they are not written), or that the object files or libraries where they reside were not
+given to the linker. The latter is obvious: the same symbol was defined in two different object files or libraries.
+Section 138.7: Compiling with Code::Blocks (Graphical
+interface)
+   1. Download and install Code::Blocks here. If you're on Windows, be careful to select a file for which the name
+      contains mingw, the other files don't install any compiler.
+   2. Open Code::Blocks and click on "Create a new project":

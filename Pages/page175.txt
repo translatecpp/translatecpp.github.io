@@ -1,0 +1,46 @@
+﻿(sometimes called a "HAS-A" relationship). For example, a Stack class could inherit privately from a Vector class.
+Private inheritance bears a much greater similarity to aggregation than to public inheritance.
+Protected inheritance is almost never used, and there's no general agreement on what sort of relationship it
+embodies.
+Section 35.5: Friendship
+The friend keyword is used to give other classes and functions access to private and protected members of the
+class, even through they are defined outside the class's scope.
+class Animal{
+private:
+     double weight;
+double height;
+public:
+     friend void printWeight(Animal animal);
+     friend class AnimalPrinter;
+     // A common use for a friend function is to overload the operator<< for streaming.
+     friend std::ostream& operator<<(std::ostream& os, Animal animal);
+};
+void printWeight(Animal animal)
+{
+     std::cout << animal.weight << "\n";
+}
+class AnimalPrinter
+{
+public:
+     void print(const Animal& animal)
+     {
+          // Because of the 'friend class AnimalPrinter;" declaration, we are
+          // allowed to access private members here.
+          std::cout << animal.weight << ", " << animal.height << std::endl;
+     }
+}
+std::ostream& operator<<(std::ostream& os, Animal animal)
+{
+     os << "Animal height: " << animal.height << "\n";
+     return os;
+}
+int main() {
+     Animal animal = {10, 5};
+     printWeight(animal);
+     AnimalPrinter aPrinter;
+     aPrinter.print(animal);
+     std::cout << animal;
+}
+10
+10, 5
+Animal height: 5

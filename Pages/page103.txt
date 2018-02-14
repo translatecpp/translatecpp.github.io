@@ -1,0 +1,45 @@
+﻿}
+Note that PrivateHolderDerived member function cannot access PrivateHolder::private_value, while friend
+function can do it.
+Section 20.2: Friend method
+Methods may declared as friends as well as functions:
+class Accesser {
+public:
+     void private_accesser();
+};
+class PrivateHolder {
+public:
+     PrivateHolder(int val) : private_value(val) {}
+friend void Accesser::private_accesser();
+private:
+     int private_value;
+};
+void Accesser::private_accesser() {
+     PrivateHolder ph(10);
+     // OK: this method is declares as friend.
+     std::cout << ph.private_value << std::endl;
+}
+Section 20.3: Friend class
+A whole class may be declared as friend. Friend class declaration means that any member of the friend may access
+private and protected members of the declaring class:
+class Accesser {
+public:
+     void private_accesser1();
+     void private_accesser2();
+};
+class PrivateHolder {
+public:
+     PrivateHolder(int val) : private_value(val) {}
+friend class Accesser;
+private:
+     int private_value;
+};
+void Accesser::private_accesser1() {
+     PrivateHolder ph(10);
+     // OK.
+     std::cout << ph.private_value << std::endl;
+}
+void Accesser::private_accesser2() {
+     PrivateHolder ph(10);
+     // OK.
+     std::cout << ph.private_value + 1 << std::endl;

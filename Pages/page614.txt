@@ -1,0 +1,54 @@
+﻿Furthermore, in a const correct class, all passed-by-reference function parameters will be const correct, as
+discussed in Const Correct Function Parameters, so that they can only be modified when the function explicitly
+needs to modify them.
+First, let's look at this cv-qualifiers:
+// Assume class Field, with member function "void insert_value(int);".
+class ConstIncorrect {
+    Field fld;
+public:
+  ConstIncorrect(Field& f); // Modifies.
+Field& getField();
+void setField(Field& f);
+// Might modify. Also exposes member as non-const reference,
+// allowing indirect modification.
+// Modifies.
+    void doSomething(int i);
+    void doNothing();
+};
+// Might modify.
+// Might modify.
+ConstIncorrect::ConstIncorrect(Field& f) : fld(f) {} // Modifies.
+Field& ConstIncorrect::getField() { return fld; }     // Doesn't modify.
+void ConstIncorrect::setField(Field& f) { fld = f; } // Modifies.
+void ConstIncorrect::doSomething(int i) {             // Modifies.
+    fld.insert_value(i);
+}
+void ConstIncorrect::doNothing() {}                   // Doesn't modify.
+class ConstCorrectCVQ {
+    Field fld;
+public:
+  ConstCorrectCVQ(Field& f);      // Modifies.
+const Field& getField() const;
+void setField(Field& f);
+// Doesn't modify. Exposes member as const reference,
+// preventing indirect modification.
+// Modifies.
+    void doSomething(int i);
+    void doNothing() const;
+};
+// Modifies.
+// Doesn't modify.
+ConstCorrectCVQ::ConstCorrectCVQ(Field& f) : fld(f) {}
+Field& ConstCorrectCVQ::getField() const { return fld; }
+void ConstCorrectCVQ::setField(Field& f) { fld = f; }
+void ConstCorrectCVQ::doSomething(int i) {
+fld.insert_value(i);
+}
+void ConstCorrectCVQ::doNothing() const {}
+// This won't work.
+// No member functions can be called on const ConstIncorrect instances.
+void const_correct_func(const ConstIncorrect& c) {
+    Field f = c.getField();
+    c.do_nothing();
+}
+// But this will.

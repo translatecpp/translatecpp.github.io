@@ -1,0 +1,51 @@
+﻿Section 98.1: Template parameter deduction for constructors
+Prior to C++17, template deduction cannot deduce the class type for you in a constructor. It must be explicitly
+specified. Sometimes, however, these types can be very cumbersome or (in the case of lambdas) impossible to
+name, so we got a proliferation of type factories (like make_pair(), make_tuple(), back_inserter(), etc.).
+Version > C++17
+This is no longer necessary:
+std::pair p(2, 4.5);     // std::pair<int, double>
+std::tuple t(4, 3, 2.5); // std::tuple<int, int, double>
+std::copy_n(vi1.begin(), 3,
+     std::back_insert_iterator(vi2)); // constructs a back_insert_iterator<std::vector<int>>
+std::lock_guard lk(mtx); // std::lock_guard<decltype(mtx)>
+Constructors are considered to deduce the class template parameters, but in some cases this is insufficient and we
+can provide explicit deduction guides:
+template <class Iter>
+vector(Iter, Iter) -> vector<typename iterator_traits<Iter>::value_type>
+int array[] = {1, 2, 3};
+std::vector v(std::begin(array), std::end(array)); // deduces std::vector<int>
+Section 98.2: Auto Type Deduction
+Version > C++11
+Type deduction using the auto keyword works almost the same as Template Type Deduction. Below are a few
+examples:
+auto x = 27;
+const auto cx = x;
+const auto& rx = x;
+int
+// (x is neither a pointer nor a reference), x's type is int
+// (cx is neither a pointer nor a reference), cs's type is const int
+// (rx is a non-universal reference), rx's type is a reference to a const
+auto&& uref1 = x;
+auto&& uref2 = cx;
+auto&& uref3 = 27;
+// x is int and lvalue, so uref1's type is int&
+// cx is const int and lvalue, so uref2's type is const int &
+// 27 is an int and rvalue, so uref3's type is int&&
+The differences are outlined below:
+auto x1 = 27;        // 
+auto x2(27);         // 
+auto x3 = { 27 };    // 
+auto x4{ 27 };       // 
+                     // 
+                     // 
+auto x5 = { 1, 2.0 } // 
+type is int, value is 27
+type is int, value is 27
+type is std::initializer_list<int>, value is { 27 }
+type is std::initializer_list<int>, value is { 27 }
+in some compilers type may be deduced as an int with a
+value of 27. See remarks for more information.
+error! can't deduce T for std::initializer_list<t>
+As you can see if you use braced initializers, auto is forced into creating a variable of type
+std ::initializer_list<T>. If it can't deduce the of T, the code is rejected.

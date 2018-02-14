@@ -1,0 +1,36 @@
+﻿char c1, c2, c3;
+std::istringstream("a b c") >> cl >> c2 >> c3;
+std::cout << "Default behavior:     cl = " << cl << "  c2 = " << c2 << "  c3 = " <<  c3 << '\n';
+std::istringstream("a b c") >> std::noskipws >> cl >> c2 >> c3;
+std::cout << "noskipws behavior:    cl = " << cl << "  c2 = " << c2 << "  c3 = " <<  c3 << '\n';
+// Output: Default behavior: cl     = a  c2 = b  c3 = c
+// noskipws behavior: c1 = a c2     =    c3 = b
+Default is std::ios base::skipws.
+std::auoted(s[. delimf. escape 1 ]) [C++14] - inserts or extracts quoted strings with embedded spaces.
+s - the string to insert or extract.
+delim - the character to use as the delimiter, " by default.
+escape - the character to use as the escape character, \ by default.
+#include <sstream>
+std::stringstream ss;
+std::string in = "String with spaces. and embedded \"quotes\" too";
+std::string out;
+ss << std::quoted(in);
+std::cout << "read in     [" << in << "]\n"
+           << "stored as  f" << ss.str() << "]\n";
+ss >> std::quoted(out);
+std::cout << "written out [" << out << "]\n";
+// Output:
+// read in [String with spaces. and embedded "quotes" too]
+// stored as ["String with spaces. and embedded \"quotes\" too"]
+// written out [String with spaces. and embedded "quotes" too]
+For more information see the link above.
+Section 15.2: Output stream manipulators
+std::ends - inserts a null character ' \0' to output stream. More formally this manipulator's declaration looks like
+template <class charT. class traits>
+std::basic_ostream<charT. traits>& ends(std::basic_ostream<charT. traits>& os);
+and this manipulator places character by calling os.put(charT()) when used in an expression
+os << std ::ends;
+std::endl and std::flush both flush output stream out by calling out.flush(). It causes immediately producing
+output. But std ::endl inserts end of line ' \n' symbol before flushing.
+std::cout << "First line." << std::endl << "Second line. " << std::flush
+            << "Still second line.";

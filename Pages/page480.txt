@@ -1,0 +1,49 @@
+﻿Note that using a non-lambda can make things hairy, as we use the type for a lookup step. This can be fixed, but
+would make this example longer than it already is. So always initialize an any method from a lambda, or from a
+type parametarized on a lambda.
+template<class Sig, bool const_method, class F>
+struct any_method {
+using signature=Sig;
+enum{is_const=const_method};
+private:
+                                                       F f;
+                                                       public:
+   template<class Any,
+     // SFINAE testing that one of the Anys's matches this type:
+     std::enable_if_t< super_method_applies< Any&&, any_method >{}, int>* =nullptr
+   >
+   friend auto operator->*( Any&& self, any_method const& m ) {
+     // we don't use the value of the any_method, because each any_method has
+     // a unique type (!) and we check that one of the auto*'s in the super_any
+     // already has a pointer to us. We then dispatch to the corresponding
+     // any_method_data...
+     return [&self, invoke = self.get_invoker(tag<any_method>), m](auto&&...args)->decltype(auto)
+     {
+       return invoke( decltype(self)(self), &m, decltype(args)(args)... );
+     };
+   }
+   any_method( F fin ):f(std::move(fin)) {}
+   template<class...Args>
+   decltype(auto) operator()(Args&&...args)const {
+     return f(std ::forward<Args>(args)...);
+   }
+};
+A factory method, not needed in C++17 I believe:
+template<class Sig, bool is_const=false, class F>
+any_method<Sig, is_const, std::decay_t<F>>
+make_any_method( F&& f ) {
+return {std::forward<F>(f)};
+}
+This is the augmented any. It is both an any, and it carries around a bundle of type-erasure function pointers that
+change whenever the contained any does:
+template<class... methods>
+struct super_any_t:boost::any, any_methods<methods...> {
+using vtable=any_methods<methods...>;
+public:
+   template<class T,
+     std::enable_if_t< !std::is_base_of<super_any_t, std::decay_t<T>>{}, int> =0
+   >
+   super_any_t( T&& t ):
+     boost::any( std::forward<T>(t) )
+   {
+     using dT=std::decay_t<T>;

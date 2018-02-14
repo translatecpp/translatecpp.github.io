@@ -1,0 +1,46 @@
+﻿     /* This block of code will never execute, because std::runtime_error inherits
+        from std::exception, and all exceptions of type std::exception were already
+        caught by the previous catch clause. */
+Another possibility is the catch-all handler, which will catch any thrown object:
+try {
+     throw 10;
+} catch (...) {
+     std::cout << "caught an exception";
+}
+Section 72.2: Rethrow (propagate) exception
+Sometimes you want to do something with the exception you catch (like write to log or print a warning) and let it
+bubble up to the upper scope to be handled. To do so, you can rethrow any exception you catch:
+try {
+     ... // some code here
+} catch (const SomeException& e) {
+     std::cout << "caught an exception";
+     throw;
+}
+Using throw; without arguments will re-throw the currently caught exception.
+Version > C++11
+To rethrow a managed std ::exception_ptr, the C++ Standard Library has the rethrow_exception function that
+can be used by including the <exception> header in your program.
+#include <iostream>
+#include <string>
+#include <exception>
+#include <stdexcept>
+void handle_eptr(std::exception_ptr eptr) // passing by value is ok
+{
+     try {
+         if (eptr) {
+              std::rethrow_exception(eptr);
+         }
+     } catch(const std::exception& e) {
+         std::cout << "Caught exception \"" << e.what() << "\"\n";
+     }
+}
+int main()
+{
+     std::exception_ptr eptr;
+     try {
+         std::string().at(1); // this generates an std::out_of_range
+     } catch(...) {
+         eptr = std::current_exception(); // capture
+     }
+     handle_eptr(eptr);
+} // destructor for std::out_of_range called here, when the eptr is destructed

@@ -1,0 +1,44 @@
+﻿Section 4.2: Unary Operators
+Unary operators act on the object upon which they are called and have high precedence. (See Remarks)
+When used postfix, the action occurs only after the entire operation is evaluated, leading to some interesting
+arithmetics:
+int a = 1;
+++a;             // result:  2
+a--;             // result:  1
+int minusa=-a; // result: -1
+bool b = true;
+!b; // result: true
+a=4;
+int c =  a++/2;      //  equal to:  (a==4) 4  / 2   result: 2  ('a' incremented postfix)
+cout <<  a << endl;  //  prints 5!
+int d =  ++a/2;      //  equal to:  (a+1) == 6  / 2 result: 3
+int arr[4] =   {1,2,3,4};
+int *ptr1 = &arr[0];     // points to arr[0] which is 1
+int *ptr2 = ptr1++;      // ptr2 points to arr[0] which is still 1; ptr1 incremented
+std::cout << *ptr1++ << std::endl; // prints 2
+int e = arr[0]++;        // receives the value of arr[0] before it is incremented
+std::cout << e << std::endl;       // prints 1
+std::cout << *ptr2 << std::endl; // prints arr[0] which is now 2
+Section 4.3: Arithmetic operators
+Arithmetic operators in C++ have the same precedence as they do in mathematics:
+Multiplication and division have left associativity(meaning that they will be evaluated from left to right) and they
+have higher precedence than addition and subtraction, which also have left associativity.
+We can also force the precedence of expression using parentheses ( ). Just the same way as you would do that in
+normal mathematics.
+// volume of a spherical shell = 4 pi RA3 - 4 pi rA3
+double vol = 4.0*pi*R*R*R/3.0 - 4.0*pi*r*r*r/3.0;
+//Addition:
+int a = 2+4/2;
+int b = (3+3)/2;
+// equal to: 2+(4/2)
+// equal to: (3+3)/2
+result: 4
+result: 3
+//With Multiplication
+int c = 3+4/2*6;         // equal to: 3+((4/2)*6)     result: 15
+int d = 3*(3+6)/9;       // equal to: (3*(3+6))/9     result: 3
+//Division and Modulo
+int g = 3-3%1;
+int h = 3-(3%1);
+// equal to: 3 % 1 = 0 3 - 0 = 3
+// equal to: 3 % 1 = 0 3 - 0 = 3

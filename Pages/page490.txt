@@ -1,0 +1,34 @@
+﻿Section 93.1: Type Properties
+Version > C++11
+Type properties compare the modifiers that can be placed upon different variables. The usefulness of these type
+traits is not always obvious.
+Note: The example below would only offer an improvement on a non-optimizing compiler. It is a simple a proof of
+concept, rather than complex example.
+e.g. Fast divide by four.
+template<typename T>
+inline T FastDivideByFour(cont T &var) {
+   // Will give an error if the inputted type is not an unsigned integral type.
+   static_assert(std::is_unsigned<T>::value && std::is_integral<T>::value,
+      "This function is only designed for unsigned integral types.");
+   return (var >> 2);
+}
+Is Constant:
+This will evaluate as true when type is constant.
+std::cout << std::is_const<const int>::value << "\n"; // Prints true.
+std::cout << std::is_const<int>::value << "\n"; // Prints false.
+Is Volatile:
+This will evaluate as true when the type is volatile.
+std::cout << std::is_volatile<static volatile int>::value << "\n"; // Prints true.
+std::cout << std::is_const<const int>::value << "\n"; // Prints false.
+Is signed:
+This will evaluate as true for all signed types.
+std::cout << std::is_signed<int>::value << "\n"; // Prints true.
+std::cout << std::is_signed<float>::value << "\n"; // Prints true.
+std::cout << std::is_signed<unsigned int>::value << "\n"; // Prints false.
+std::cout << std::is_signed<uint8_t>::value << "\n"; // Prints false.
+Is Unsigned:
+Will evaluate as true for all unsigned types.
+std::cout << std::is_unsigned<unsigned int>::value << "\n"; // Prints true.
+std::cout << std::is_signed<uint8_t>::value << "\n"; // Prints true.
+std::cout << std::is_unsigned<int>::value << "\n"; // Prints false.
+std::cout << std::is_signed<float>::value << "\n"; // Prints false.

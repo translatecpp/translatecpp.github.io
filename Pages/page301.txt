@@ -1,0 +1,54 @@
+﻿int main(int argc, char *argv[])
+{
+      B anObjB;
+      anObjB.DoSomethingOnA();
+}
+Section 53.3: Binding std::function to a different callable
+types
+/*
+  *  This example show some ways of using std::function to call
+  *  a) C-like function
+  *  b) class-member function
+  *  c) operator()
+  *  d) lambda function
+  *
+  *  Function call can be made:
+  *  a) with right arguments
+  *  b) argumens with different order, types and count
+  */
+#include <iostream>
+#include <functional>
+#include <iostream>
+#include <vector>
+using std::cout;
+using std::endl;
+using namespace std::placeholders;
+// simple function to be called
+double foo_fn(int x, float y, double z)
+{
+   double res = x + y + z;
+   std::cout << "foo_fn called with arguments: "
+              << x << ", " << y << ", " << z
+   << " result is : " << res
+   << std ::endl;
+   return res;
+}
+// structure with member function to call
+struct foo_struct
+{
+     // member function to call
+     double foo_fn(int x, float y, double z)
+     {
+          double res = x + y + z;
+          std::cout << "foo_struct::foo_fn called with arguments: "
+                  << x << ", " << y << ", " << z
+          << " result is : " << res
+          << std ::endl;
+          return res;
+     }
+     // this member function has different signature - but it can be used too
+     // please not that argument order is changed too
+     double foo_fn_4(int x, double z, float y, long xx)
+     {
+          double res = x + y + z + xx;
+          std::cout << "foo_struct::foo_fn_4 called with arguments: "

@@ -1,0 +1,42 @@
+﻿It is a good habit to provides "helper helper templates" that let you directly access the value:
+template <typename T>
+constexpr bool is_pointer_v = is_pointer<T>::value;
+Version > C++17
+In C++17 and above, most helper templates already provide a _v version, e.g.:
+template< class T > constexpr bool is_pointer_v = is_pointer<T>::value;
+template< class T > constexpr bool is_reference_v = is_reference<T>::value;
+Section 17.8: Calculating power with C++11 (and higher)
+With C++11 and higher calculations at compile time can be much easier. For example calculating the power of a
+given number at compile time will be following:
+template <typename T>
+constexpr T calculatePower(T value, unsigned power) {
+     return power == 0 ? 1 : value * calculatePower(value, power-1);
+}
+Keyword constexpr is responsible for calculating function in compilation time, then and only then, when all the
+requirements for this will be met (see more at constexpr keyword reference) for example all the arguments must
+be known at compile time.
+Note: In C++11 constexpr function must compose only from one return statement.
+Advantages: Comparing this to the standard way of compile time calculation, this method is also useful for runtime
+calculations. It means, that if the arguments of the function are not known at the compilation time (e.g. value and
+power are given as input via user), then function is run in a compilation time, so there's no need to duplicate a code
+(as we would be forced in older standards of C++).
+E.g.
+void useExample() {
+     constexpr int compileTimeCalculated = calculatePower(3, 3); // computes at compile time,
+                                 // as both arguments are known at compilation time
+                                 // and used for a constant expression.
+}
+     int value;
+     std ::cin >> value;
+     int runtimeCalculated = calculatePower(value, 3);     // runtime calculated,
+                                       // because value is known only at runtime.
+Version > C++17
+Another way to calculate power at compile time can make use of fold expression as follows:
+#include <iostream>
+#include <utility>
+template <class T, T V, T N, class I = std::make_integer_sequence<T, N>>
+struct power;
+template <class T, T V, T N, T... Is>
+struct power<T, V, N, std::integer_sequence<T, Is...>> {
+    static constexpr T value = (static_cast<T>(1) * ... * (V * static_cast<bool>(Is + 1)));
+};

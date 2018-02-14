@@ -1,0 +1,39 @@
+﻿          ° Use make_unique()
+          ° Use nullptr
+    •  Performance checks
+          ° Find unneeded copies
+          ° Find inefficient algorithm calls
+The list might not be that large, as Clang already has a lot of compiler warnings, however it will bring you one step
+closer to a high quality code base.
+Other tools
+Other tools with similar purpose exist, like:
+    •  the visual studio static analyzer as external tool
+    •  clazy, a Clang compiler plugin for checking Qt code
+Conclusion
+A lot static analysis tools exist for C++, both build-in in the compiler as external tools. Trying them out doesn't take
+that much time for easy setups and they will find bugs you might miss in code review.
+Section 142.2: Segfault analysis with GDB
+Lets use the same code as above for this example.
+#include <iostream>
+void fail() {
+     int *p1 ;
+     int *p2(NULL);
+     int *p3 = pi ;
+     if (p3) {
+          std::cout << *p2 << std::endl;
+     }
+}
+int main() {
+     fail();
+}
+First lets compile it
+g++ -g -o main main.cpp
+Lets run it with gdb
+gdb ./main
+Now we will be in gdb shell. Type run.
+(gdb) run
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /home/opencog/code-snippets/stackoverflow/a.out
+Program received signal SIGSEGV, Segmentation fault.
+0x0000000000400850 in fail () at debugging_with_gdb.cc:11

@@ -1,0 +1,41 @@
+﻿Chapter 81: Thread synchronization
+structures
+Working with threads might need some synchronization techniques if the threads interact. In this topic, you can
+find the different structures which are provided by the standard library to solve these issues.
+Section 81.1: std::condition_variable_any, std::cv_status
+A generalization of std::condition_variable, std::condition_variable_any works with any type of
+BasicLockable structure.
+std ::cv_status as a return status for a condition variable has two possible return codes:
+    • std::cv_status::no_timeout: There was no timeout, condition variable was notified
+    • std::cv_status::no_timeout: Condition variable timed out
+Section 81.2: std::shared_lock
+A shared_lock can be used in conjunction with a unique lock to allow multiple readers and exclusive writers.
+#include <unordered_map>
+#include <mutex>
+#include <shared_mutex>
+#include <thread>
+#include <string>
+#include <iostream>
+class PhoneBook {
+     public:
+         string getPhoneNo( const std::string & name )
+         {
+             shared_lock<shared_timed_mutex> r(_protect);
+             auto it = _phonebook.find( name );
+             if ( it == _phonebook.end() )
+             return (*it).second;
+             return "";
+         }
+         void addPhoneNo ( const std::string & name, const std::string & phone )
+         {
+             unique_lock<shared_timed_mutex> w(_protect);
+             _phonebook[name] = phone;
+         }
+         shared_timed_mutex _protect;
+         unordered_map<string,string> _phonebook;
+     };
+Section 81.3: std::call_once, std::once_flag
+std ::call_once ensures execution of a function exactly once by competing threads. It throws std ::system_error
+in case it cannot complete its task.
+Used in conjunction with std ::once_flag.
+#include <mutex>

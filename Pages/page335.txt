@@ -1,0 +1,37 @@
+﻿   //print minimum of pairVector
+   cout << "min pair from PairLessThanFunction: " << (*minPairFunction).second << endl;
+   return 0;
+}
+Output
+min int from default: 6
+min pair from PairLessThanFunction: 2
+Section 63.6: std::find_if
+template <class InputIterator, class UnaryPredicate>
+InputIterator find_if (InputIterator first, InputIterator last, UnaryPredicate pred);
+Effects
+Finds the first element in a range for which the predicate function pred returns true.
+Parameters
+first => iterator pointing to the beginning of the range last => iterator pointing to the end of the range pred =>
+predicate function(returns true or false)
+Return
+An iterator that points to the first element within the range the predicate function pred returns true for. The
+iterator points to last if val is not found
+Example
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+/*
+     define some functions to use as predicates
+*/
+//Returns true if x is multiple of 10
+bool multOf10(int x) {
+return x % 10 == 0;
+}
+//returns true if item greater than passed in parameter
+class Greater {
+int _than;
+public:
+   Greater(int th):_than(th){
+   }
+   bool operator()(int data) const

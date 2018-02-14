@@ -1,0 +1,48 @@
+﻿Section 143.3: Optimizing by executing less code
+The most straightforward approach to optimizing is by executing less code. This approach usually gives a fixed
+speed-up without changing the time complexity of the code.
+Even though this approach gives you a clear speedup, this will only give noticable improvements when the code is
+called a lot.
+Removing useless code
+void func(const A *a); // Some random function
+// useless memory allocation + deallocation for the instance
+auto a1 = std::make_unique<A>();
+func(a1.get());
+// making use of a stack object prevents
+auto a2 = A{};
+func(&a2);
+Version > C++14
+From C++14, compilers are allowed to optimize this code to remove the allocation and matching deallocation.
+Doing code only once
+std::map<std::string, std::unique_ptr<A>> lookup;
+// Slow insertion/lookup
+// Within this function, we will traverse twice through the map lookup an element
+// and even a thirth time when it wasn't in
+const A *lazyLookupSlow(const std::string &key) {
+if (lookup.find(key) != lookup.cend())
+         lookup.emplace_back(key, std ::make_unique<A>());
+     return lookup[key].get();
+}
+// Within this function, we will have the same noticeable effect as the slow variant while going at
+double speed as we only traverse once through the code
+const A *lazyLookupSlow(const std::string &key) {
+auto &value = lookup[key];
+if (!value)
+         value = std::make_unique<A>();
+     return value.get();
+}
+A similar approach to this optimization can be used to implement a stable version of unique
+std::vector<std::string> stableUnique(const std::vector<std::string> &v) {
+     std::vector<std::string> result;
+     std::set<std::string> checkUnique;
+     for (const auto &s : v) {
+         // As insert returns if the insertion was successful, we can deduce if the element was
+already in or not
+         // This prevents an insertion, which will traverse through the map for every unique element
+         // As a result we can almost gain 50% if v would not contain any duplicates
+         if (checkUnique.insert(s).second)
+         result.push_back(s);
+     }
+     return result;
+}
+Preventing useless reallocating and copying/moving

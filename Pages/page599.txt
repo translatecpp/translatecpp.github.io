@@ -1,0 +1,39 @@
+﻿Note: The implementation details of Finally/onExit are omitted in the example, see Finally/ScopeExit.
+Section 123.3: [[deprecated]] and [[deprecated("reason")]]
+Version > C++14
+C++14 introduced a standard way of deprecating functions via attributes. [ [deprecated] ] can be used to indicate
+that a function is deprecated. [ [deprecated("reason") ] ] allows adding a specific reason which can be shown by
+the compiler.
+void function(std::unique_ptr<A> &&a);
+// Provides specific message which helps other programmers fixing there code
+[[deprecated("Use the variant with unique_ptr instead, this function will be removed in the next
+release")]]
+void function(std::auto_ptr<A> a);
+// No message, will result in generic warning if called.
+[[deprecated]]
+void function(A *a);
+This attribute may be applied to:
+     • the declaration of a class
+     • a typedef-name
+     • a variable
+     • a non-static data member
+     • a function
+     • an enumeration
+     • a template specialization
+(ref. c++14 standard draft: 7.6.5 Deprecated attribute)
+Section 123.4: [[maybe_unused]]
+The [ [maybe_unused] ] attribute is created for indicating in code that certain logic might not be used. This if often
+linked to preprocessor conditions where this might be used or might not be used. As compilers can give warnings
+on unused variables, this is a way of suppressing them by indicating intent.
+A typical example of variables which are needed in debug builds while unneeded in production are return values
+indicating success. In the debug builds, the condition should be asserted, though in production these asserts have
+been removed.
+[[maybe_unused]] auto mapInsertResult = configuration.emplace("LicenseInfo",
+stringifiedLicenseInfo);
+assert(mapInsertResult.second); // We only get called during startup, so we can't be in the map
+A more complex example are different kind of helper functions which are in an unnamed namespace. If these
+functions aren't used during compilation, a compiler might give a warning on them. Ideally you would like to guard
+them with the same preprocessor tags as the caller, though as this might become complex the [ [maybe_unused] ]
+attribute is a more maintainable alternative.
+namespace {
+          [[maybe_unused]] std::string createWindowsConfigFilePath(const std::string &relativePath);

@@ -1,0 +1,44 @@
+﻿First we use a tag to pass around types:
+template<class T>struct tag_t{constexpr tag_t(){};};
+template<class T>constexpr tag_t<T> tag{};
+This trait class gets the signature stored with an any_method:
+This creates a function pointer type, and a factory for said function pointers, given an any_method:
+template<class any_method>
+using any_sig_from_method = typename any_method::signature;
+template<class any_method, class Sig=any_sig_from_method<any_method>>
+struct any_method_function;
+template<class any_method, class R, class...Args>
+struct any_method_function<any_method, R(Args...)>
+{
+   template<class T>
+   using decorate = std::conditional_t< any_method::is_const, T const, T >;
+   using any = decorate<boost::any>;
+   using type = R(*)(any&, any_method const*, Args&&...);
+   template<class T>
+   type operator()( tag_t<T> )const{
+     return +[](any& self, any_method const* method, Args&&...args) {
+                 return (*method)( boost::any_cast<decorate<T>&>(self), decltype(args)(args)... );
+     };
+   }
+};
+any_method_function ::type is the type of a function pointer we will store alongside the instance.
+any_method_function ::operator() takes a tag_t<T> and writes a custom instance of the
+any_method_function ::type that assumes the any& is going to be a T.
+We want to be able to type-erase more than one method at a time. So we bundle them up in a tuple, and write a
+helper wrapper to stick the tuple into static storage on a per-type basis and maintain a pointer to them.
+template<class...any_methods>
+using any_method_tuple = std::tuple< typename any_method_function<any_methods>::type... >;
+template<class...any_methods, class T>
+any_method_tuple<any_methods...> make_vtable( tag_t<T> ) {
+return std::make_tuple(
+any_method_function<any_methods>{}(tag<T>)...
+   );
+}
+template<class...methods>
+struct any_methods {
+private:
+   any_method_tuple<methods...> const* vtable = 0;
+   template<class T>
+   static any_method_tuple<methods...> const* get_vtable( tag_t<T> ) {
+     static const auto table = make_vtable<methods...>(tag<T>);
+     return Stable;

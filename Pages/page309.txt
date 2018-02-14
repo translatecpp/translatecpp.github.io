@@ -1,0 +1,16 @@
+﻿#include <iostream>
+#include <utility>
+int main()
+{
+     std::pair<int,int> p = std::make_pair(1,2); //Creating the pair
+     std::cout << p.first << " " << p.second << std::endl; //Accessing the elements
+     //We can also create a pair and assign the elements later
+     std::pair<int,int> p1;
+     p1.first = 3;
+     p1.second = 4;
+     std::cout << p1.first << " " << p1.second << std::endl;
+     //We can also create a pair using a constructor
+     std::pair<int,int> p2 = std::pair<int,int>(5, 6);
+     std::cout << p2.first << " " << p2.second << std::endl;
+     return 0;
+}

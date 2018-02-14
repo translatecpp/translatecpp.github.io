@@ -1,0 +1,42 @@
+﻿C cl ; // Compile ERROR: C has no (implicitly defined) default constructor
+Version < c++11
+To prevent implicit default constructor creation, a common technique is to declare it as private (with no definition).
+The intention is to cause a compile error when someone tries to use the constructor (this either results in an Access
+to private error or a linker error, depending on the compiler).
+To be sure a default constructor (functionally similar to the implicit one) is defined, a developer could write an
+empty one explicitly.
+Version > c++11
+In C++11, a developer can also use the delete keyword to prevent the compiler from providing a default
+constructor.
+class C{
+int i;
+public:
+      // default constructor is explicitly deleted
+      C() = delete;
+};
+C c1 ; // Compile ERROR: C has its default constructor deleted
+Furthermore, a developer may also be explicit about wanting the compiler to provide a default constructor.
+class C{
+int i;
+public:
+     // does have automatically generated default constructor (same as implicit one)
+     C() = default;
+     C( int i ) : i(i){}
+};
+C c1 ; // default constructed
+C c2( 1 ); // constructed with the int taking constructor
+Version > c++14
+You can determine whether a type has a default constructor (or is a primitive type) using
+std::is_default_constructible from <type_traits>:
+class C1{ };
+class C2{ public: C2(){} };
+class C3{ public: C3(int){} };
+using std::cout; using std::boolalpha; using std::endl;
+using std::is_default_constructible;
+cout  << boolalpha << is_default_constructible<int>() << endl; // prints true
+cout  << boolalpha <<             is_default_constructible<C1>() << endl; // prints  true
+cout  << boolalpha <<             is_default_constructible<C2>() << endl; // prints  true
+cout  << boolalpha <<             is_default_constructible<C3>() << endl; // prints false
+Version = c++11
+In C++11, it is still possible to use the non-functor version of std::is_default_constructible:
+cout << boolalpha << is_default_constructible<C1>::value << endl; // prints true

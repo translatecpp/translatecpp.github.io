@@ -1,0 +1,46 @@
+﻿    •  _STDC_VERSION___has implementation-dependent meaning, and its value is usually the C version, similarly
+      to how __cplusplus is the C++ version. (Or is not even defined, if the compiler decides not to support this
+      macro.)
+    •  _STDC_MB_MIGHT_NEQ_WC____is defined to 1, if values of the narrow encoding of the basic character set might
+      not be equal to the values of their wide counterparts (e.g. if (uintmax_t) 'x' != (uintmax_t)L'x')
+    •  _STDC_ISO_10646___is defined if wchar_t is encoded as Unicode, and expands to an integer constant in the
+      form yyyymmL, indicating the latest Unicode revision supported.
+    •  _STDCPP_STRICT_POINTER_SAFETY____is defined to 1, if the implementation has strict pointer safety (otherwise
+      it has relaxed pointer safety)
+    •  _STDCPP_THREADS___is defined to 1, if the program can have more than one thread of execution (applicable
+      to freestanding implementation — hosted implementations can always have more than one thread)
+It is also worth mentioning_func_, which is not an macro, but a predefined function-local variable. It contains the
+name of the function it is used in, as a static character array in an implementation-defined format.
+On top of those standard predefined macros, compilers can have their own set of predefined macros. One must
+refer to the compiler documentation to learn those. E.g.:
+    •  gcc
+    •  Microsoft Visual C++
+    •  clang
+    •  Intel C++ Compiler
+Some of the macros are just to query support of some feature:
+#ifdef ___cplusplus // if compiled by C++ compiler
+extern "C"{ // C code has to be decorated
+    // C library header declarations here
+}
+#endif
+Others are very useful for debugging:
+Version > c++11
+bool success = doSomething( /*some arguments*/ );
+if( !success ){
+      std::cerr << "ERROR: doSomething() failed on line " << ______LINE__ - 2
+                << " in function " << ____func__ << "()"
+                << " in file " << __FILE__
+                << std ::endl;
+}
+And others for trivial version control:
+int main( int argc, char *argv[] ){
+      if( argc == 2 && std::string( argv[1] ) == "-v" ){
+          std::cout << "Hello World program\n"
+                    << "v 1.1 \n" // I have to remember to update this manually
+                    << "compiled: " <<  DATE  << ' ' <<  TIME  // this updates automagically
+                    << std ::endl;
+      }
+      else{
+          std::cout << "Hello World!\n";
+      }
+}

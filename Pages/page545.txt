@@ -1,0 +1,46 @@
+﻿         // Move constructor (without swap()).
+         // Takes other's HeapHelper<T>*.
+         // Takes other's StackHelper<T>, by forcing the use of StackHelper<T>'s move constructor.
+         // Replaces other's HeapHelper<T>* with nullptr, to keep other from deleting our shiny
+         // new helper when it's destroyed.
+         OperationsManager(MyType&& other) noexcept
+         : h_helper(other.h_helper),
+         s_helper(std::move(other.s_helper)) {
+         other.h_helper = nullptr;
+         }
+         // Move constructor (with swap()).
+         // Places our members in the condition we want other's to be in, then switches members
+         // with other.
+         // OperationsManager(MyType&& other) noexcept : h_helper(nullptr) {
+         // swap(*this, other);
+         // }
+         // Copy/move helper.
+         friend void swap(MyType& left, MyType& right) noexcept {
+             std::swap(left.h_helper, right.h_helper);
+             std::swap(left.s_helper, right.s_helper);
+         }
+     };
+Section 106.4: Re-use a moved object
+You can re-use a moved object:
+void consumingFunction(std::vector<int> vec) {
+     // Some operations
+}
+int main() {
+     // initialize vec with 1, 2, 3, 4
+     std::vector<int> vec{1, 2, 3, 4};
+     // Send the vector by move
+     consumingFunction(std::move(vec));
+     // Here the vec object is in an indeterminate state.
+     // Since the object is not destroyed, we can assign it a new content.
+     // We will, in this case, assign an empty value to the vector,
+     // making it effectively empty
+     vec = {};
+     // Since the vector as gained a determinate value, we can use it normally.
+     vec.push_back(42);
+     // Send the vector by move again.
+     consumingFunction(std::move(vec));
+}
+Section 106.5: Move assignment
+Similarly to how we can assign a value to an object with an lvalue reference, copying it, we can also move the values
+from an object to another without constructing a new one. We call this move assignment. We move the values from
+one object to another existing object.

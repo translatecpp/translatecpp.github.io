@@ -1,0 +1,47 @@
+﻿The C# language also supports a similar construct although with a different terminology and syntax: events play the
+role of signals, and delegates are the slots. Additionally, a delegate can be a local variable, much like a function
+pointer, while a slot in Qt must be a class member declared as such.
+Section 112.3: Factory Pattern
+Factory pattern decouples object creation and allows creation by name using a common interface:
+class Animal{
+public:
+     virtual std::shared_ptr<Animal> clone() const = 0;
+     virtual std::string getname() const = 0;
+};
+class Bear: public Animal{
+public:
+     virtual std::shared_ptr<Animal> clone() const override
+     {
+          return std ::make_shared<Bear>(*this);
+     }
+     virtual std::string getname() const override
+     {
+          return "bear";
+     }
+};
+class Cat: public Animal{
+public:
+     virtual std::shared_ptr<Animal> clone() const override
+     {
+          return std ::make_shared<Cat>(*this);
+     }
+     virtual std::string getname() const override
+     {
+          return "cat";
+     }
+};
+class AnimalFactory{
+public:
+     static std::shared_ptr<Animal> getAnimal( const std::string& name )
+     {
+       if ( name == "bear" )
+          return std::make_shared<Bear>();
+       if ( name == "cat" )
+          return std::shared_ptr<Cat>();
+     return nullptr;
+     }
+};
+Section 112.4: Builder Pattern with Fluent API
+The Builder Pattern decouples the creation of the object from the object itself. The main idea behind is that an
+object does not have to be responsible for its own creation. The correct and valid assembly of a complex object
+may be a complicated task in itself, so this task can be delegated to another class.

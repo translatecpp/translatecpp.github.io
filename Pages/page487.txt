@@ -1,0 +1,30 @@
+﻿Section 91.10: Type punning conversion
+A pointer (resp. reference) to an object type can be converted to a pointer (resp. reference) to any other object type
+using reinterpret_cast. This does not call any constructors or conversion functions.
+int x = 42;
+char* p = static_cast<char*>(&x);      // error: static_cast cannot perform this conversion
+char* p = reinterpret_cast<char*>(&x); // OK
+*p = 'z';                              // maybe this modifies x (see below)
+Version > C++11
+The result of reinterpret_cast represents the same address as the operand, provided that the address is
+appropriately aligned for the destination type. Otherwise, the result is unspecified.
+int x = 42;
+char& r = reinterpret_cast<char&>(x);
+const void* px = &x;
+const void* pr = &r;
+assert(px == pr); // should never fire
+Version < C++11
+The result of reinterpret_cast is unspecified, except that a pointer (resp. reference) will survive a round trip from
+the source type to the destination type and back, as long as the destination type's alignment requirement is not
+stricter than that of the source type.
+int x = 123;
+unsigned int& r1 = reinterpret_cast<unsigned int&>(x);
+int& r2 = reinterpret_cast<int&>(r1 );
+r2 = 456; // sets x to 456
+On most implementations, reinterpret_cast does not change the address, but this requirement was not
+standardized until C++11.
+reinterpret_cast can also be used to convert from one pointer-to-data-member type to another, or one pointer-
+to-member-function type to another.
+Use of reinterpret_cast is considered dangerous because reading or writing through a pointer or reference
+obtained using reinterpret_cast may trigger undefined behaviour when the source and destination types are
+unrelated.

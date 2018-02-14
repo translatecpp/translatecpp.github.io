@@ -1,0 +1,38 @@
+﻿Note that a range-and-a-half version of mismatch() existed prior to C++14, but this is unsafe in the case that the
+second string is the shorter of the two.
+Version < C++14
+We can still use the range-and-a-half version of std ::mismatch(), but we need to first check that the first string is at
+most as big as the second:
+bool isPrefix = prefix.size() <= string.size() &&
+     std::mismatch(prefix.begin(), prefix.end(),
+          string.begin(), string.end()).first == prefix.end();
+Version > C++17
+With std ::string_view, we can write the direct comparison we want without having to worry about allocation
+overhead or making copies:
+bool isPrefix(std::string_view prefix, std::string_view full)
+{
+     return prefix == full.substr(0, prefix.size());
+}
+Section 48.12: Looping through each character
+Version > C++11
+std ::string supports iterators, and so you can use a ranged based loop to iterate through each character:
+std::string str = "Hello World!";
+for (auto c : str)
+std ::cout << c;
+You can use a "traditional" for loop to loop through every character:
+std::string str = "Hello World!";
+for (std::size_t i = 0; i < str.length(); ++i)
+std::cout << str[i];
+Section 48.13: Conversion to integers/floating point types
+A std ::string containing a number can be converted into an integer type, or a floating point type, using
+conversion functions.
+Note that all of these functions stop parsing the input string as soon as they encounter a non-numeric character, so
+"123abc" will be converted into 123.
+The std ::ato* family of functions converts C-style strings (character arrays) to integer or floating-point types:
+std::string ten = "10";
+double num1 = std::atof(ten.c_str() );
+int num2 = std::atoi(ten.c_str());
+long num3 = std::atol(ten.c_str());
+Version > C++11
+long long num4 = std::atoll(ten.c_str());
+However, use of these functions is discouraged because they return 0 if they fail to parse the string. This is bad

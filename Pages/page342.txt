@@ -1,0 +1,44 @@
+﻿    •  What is the value of __cplusplus for C++11?
+    •  Suffix return type syntax
+    •  Preventing narrowing
+    •  Right-angle brackets
+    •  static_assert compile-time assertions
+    •  Raw string literals
+    •  Attributes
+    •  Alignment
+    •  C99 features
+Library Extensions
+General
+    •  unique_ptr
+    •  shared_ptr
+    •  weak_ptr
+    •  Garbage collection ABI
+    •  tuple
+    •  Type traits
+    •  function and bind
+    •  Regular Expressions
+    •  Time utilities
+    •  Random number generation
+    •  Scoped allocators
+Containers and Algorithms
+    •  Algorithms improvements
+    •  Container improvements
+    •  unordered_* containers
+    •  std::array
+    •  forward_list
+Concurrency
+    •  Threads
+    •  Mutual exclusion
+    •  Locks
+    •  Condition variables
+    •  Atomics
+    •  Futures and promises
+    •  async
+    •  Abandoning a process
+Section 64.4: C++14
+The C++14 standard is often referred to as a bugfix for C++11. It contains only a limited list of changes of which
+most are extensions to the new features in C++11. Below you can find an overview of the changes as they have
+been grouped on the isocpp FAQ with links to more detailed documentation.
+Language Extensions
+     • Binary literals
+     • Generalized return type deduction

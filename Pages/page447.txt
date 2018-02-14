@@ -1,0 +1,46 @@
+﻿The term rule of zero was introduced by R. Martinho Fernandes
+Section 82.2: Rule of Five
+Version > C++11
+C++11 introduces two new special member functions: the move constructor and the move assignment operator.
+For all the same reasons that you want to follow the Rule of Three in C++03, you usually want to follow the Rule of
+Five in C++11: If a class requires ONE of five special member functions, and if move semantics are desired, then it
+most likely requires ALL FIVE of them.
+Note, however, that failing to follow the Rule of Five is usually not considered an error, but a missed optimisation
+opportunity, as long as the Rule of Three is still followed. If no move constructor or move assignment operator is
+available when the compiler would normally use one, it will instead use copy semantics if possible, resulting in a
+less efficient operation due to unnecessary copy operations. If move semantics aren't desired for a class, then it has
+no need to declare a move constructor or assignment operator.
+Same example as for the Rule of Three:
+class Person
+{
+     char* name;
+     int age;
+public:
+     // Destructor
+     ~Person() { delete [] name; }
+     // Implement Copy Semantics
+     Person(Person const& other)
+          : name(new char[std::strlen(other.name) + 1])
+          , age(other.age)
+     {
+          std::strcpy(name, other.name);
+     }
+     Person &operator=(Person const& other)
+     {
+          // Use copy and swap idiom to implement assignment.
+          Person copy(other);
+          swap(*this, copy);
+          return *this;
+     }
+     // Implement Move Semantics
+     // Note: It is usually best to mark move operators as noexcept
+     //        This allows certain optimizations in the standard library
+     //        when the class is used in a container.
+     Person(Person&& that) noexcept
+          : name(nullptr)                // Set the state so we know it is undefined
+          , age(0)
+     {
+          swap(*this, that);
+     }
+     Person& operator=(Person&& that) noexcept
+     {

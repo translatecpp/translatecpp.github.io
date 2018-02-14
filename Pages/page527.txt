@@ -1,0 +1,41 @@
+﻿foo.h:
+class Foo {
+public:
+double x;
+private:
+int y;
+};
+Foo get_foo();
+foo.cpp:
+#include "foo.h"
+Foo get_foo() { /* implementation */ }
+main.cpp:
+// I want access to the private member, so I am going to replace Foo with my own type
+class Foo {
+public:
+double x;
+int y;
+};
+Foo get_foo(); // declare this function ourselves since we aren't including foo.h
+int main() {
+     Foo foo = get_foo();
+     // do something with foo.y
+}
+The above program exhibits undefined behavior because it contains two definitions of the class ::Foo, which has
+external linkage, in different translation units, but the two definitions are not identical. Unlike redefinition of a class
+within the same translation unit, this problem is not required to be diagnosed by the compiler.
+Section 104.14: Modifying a const object
+Any attempt to modify a const object results in undefined behavior. This applies to const variables, members of
+const objects, and class members declared const. (However, a mutable member of a const object is not const.)
+Such an attempt can be made through const_cast:
+const int x = 123;
+const_cast<int&>(x) = 456;
+std ::cout << x << '\n';
+A compiler will usually inline the value of a const int object, so it's possible that this code compiles and prints 123.
+Compilers can also place const objects' values in read-only memory, so a segmentation fault may occur. In any
+case, the behavior is undefined and the program might do anything.
+The following program conceals a far more subtle error:
+#include <iostream>
+class Foo* instance;
+                                                    class Foo {
+                                                    public:

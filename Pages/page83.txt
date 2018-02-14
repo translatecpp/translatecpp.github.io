@@ -1,0 +1,40 @@
+﻿in this case if case 1 is satisfied then block 1 is executed , what we really want is only the blockl to be processed but
+instead once the block1 is processed remaining blocks,block2,block3 and blockdefault are also processed even
+though only case 1 was satified.To avoid this we use break at the end of each block like :
+switch(condition){
+case 1 : blockl;
+break;
+case 2: block2;
+          break;
+case 3: block3;
+          break;
+                                                 default: blockdefault;
+                                                 break;
+}
+so only one block is processed and the control moves out of the switch loop.
+break can also be used in other conditional and non conditional loops like if,while,for etc;
+example:
+if(condition1){
+    if(condition2){
+      break;
+      }
+}
+The continue instruction:
+The continue instruction causes the program to skip the rest of the loop in the present iteration as if the end of the
+statement block would have been reached, causing it to jump to the following iteration.
+The syntax is
+continue;
+Example consider the following :
+for(int i=0;i<10;i++){
+if(i%2==0)
+continue;
+cout<<"\n @"<<i;
+}
+which produces the output:
+  @1
+  @3
+  @5
+  @7
+  @9
+i this code whenever the condition i%2==0 is satisfied continue is processed,this causes the compiler to skip all the
+remaining code( printing @ and i) and increment/decrement statement of the loop gets executed.

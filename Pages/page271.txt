@@ -1,0 +1,43 @@
+﻿std::vector<int> v(v2);
+std::vector<int> v = v2;
+Version > C++11
+Move construction (from another vector only), which moves data from v2:
+std ::vector<int> v(std ::move(v2));
+std::vector<int> v = std::move(v2);
+Iterator (range) copy-construction, which copies elements into v:
+// from another vector
+std::vector<int> v(v2.begin(), v2.begin() + 3); // v becomes {v2[0], v2[1], v2[2]}
+// from an array
+int z[] = { 1, 2, 3, 4 };
+std::vector<int> v(z, z + 3);                      // v becomes {1, 2, 3}
+// from a list
+std::list<int> list1{ 1, 2, 3 };
+std::vector<int> v(list1.begin(), list1.end()); // v becomes {1, 2, 3}
+Version > C++11
+Iterator move-construction, using std::make move iterator, which moves elements into v:
+// from another vector
+std::vector<int> v(std ::make_move_iterator(v2.begin()),
+                     std ::make_move_iterator(v2.end());
+// from a list
+std::list<int> list1{ 1, 2, 3 };
+std::vector<int> v(std ::make_move_iterator(list1.begin()),
+                     std ::make_move_iterator(list1.end()));
+With the help of the assign(), member function, a std ::vector can be reinitialized after its construction:
+v.assign(4, 100);                        // v becomes {100, 100, 100, 100}
+v.assign(v2.begin(), v2.begin() + 3); // v becomes {v2[0], v2[1], v2[2]}
+int z[] = { 1, 2, 3, 4 };
+v.assign(z + 1, z + 4);                  // v becomes {2, 3, 4}
+Section 50.3: Deleting Elements
+Deleting the last element:         
+std::vector<int> v{ 1, 2,  3 };    
+v.pop_back();                      
+Deleting all elements:             
+std::vector<int> v{ 1, 2,  3 };    
+v.clear();                         
+Deleting element by index:         
+std::vector<int> v{ 1, 2,  3, 4, 5 
+v.erase(v.begin() + 3);            
+      // v becomes {1, 2}
+      // v becomes an empty vector
+6 };
+      // v becomes {1, 2, 3, 5, 6}

@@ -1,0 +1,38 @@
+﻿The const applies to accesses to member variables of the closure type, and captured variables that are members of
+the closure (all appearances to the contrary):
+int a = 0;
+[a]() {
+      a = 2;      // Illegal, 'a' is accessed via 'const'
+      decltype(a) a1 = 1;
+      a1 = 2; // valid: variable 'a1' is not const
+};
+To remove the const, you have to specify the keyword mutable on the lambda:
+int a = 0;
+[a]() mutable {
+      a = 2;      // OK, 'a' can be modified
+      return a;
+};
+Because a was captured by value, any modifications done by calling the lambda will not affect a. The value of a was
+copied into the lambda when it was constructed, so the lambda's copy of a is separate from the external a variable.
+int a = 5 ;
+auto plus5Val = [a] (void) { return a + 5 ; } ;
+auto plus5Ref = [&a] (void) {return a + 5 ; } ;
+a = 7 ;
+std::cout << a << ", value " << plus5Val() << ", reference " << plus5Ref() ;
+// The result will be "7, value 10, reference 12"
+Section 73.4: Recursive lambdas
+Let's say we wish to write Euclid's gcd() as a lambda. As a function, it is:
+int gcd(int a, int b) {
+     return b == 0 ? a : gcd(b, a%b);
+}
+But a lambda cannot be recursive, it has no way to invoke itself. A lambda has no name and using this within the
+body of a lambda refers to a captured this (assuming the lambda is created in the body of a member function,
+otherwise it is an error). So how do we solve this problem?
+Use std::function
+We can have a lambda capture a reference to a not-yet constructed std ::function:
+std::function<int(int, int)> gcd = [&](int a, int b){
+     return b == 0 ? a : gcd(b, a%b);
+};
+This works, but should be used sparingly. It's slow (we're using type erasure now instead of a direct function call),
+it's fragile (copying gcd or returning gcd will break since the lambda refers to the original object), and it won't work
+with generic lambdas.

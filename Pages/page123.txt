@@ -1,0 +1,37 @@
+﻿Chapter 25: Returning several values from
+a function
+There are many situations where it is useful to return several values from a function: for example, if you want to
+input an item and return the price and number in stock, this functionality could be useful. There are many ways to
+do this in C++, and most involve the STL. However, if you wish to avoid the STL for some reason, there are still
+several ways to do this, including structs/classes and arrays.
+Section 25.1: Using std::tuple
+Version > C++11
+The type std ::tuple. can bundle any number of values, potentially including values of different types, into a single
+return object:
+std::tuple<int, int, int, int> foo(int a, int b) { // or auto (C++14)
+     return std::make_tuple(a + b, a - b, a * b, a / b);
+}
+In C++17, a braced initializer list can be used:
+Version > C++17
+std::tuple<int, int, int, int> foo(int a, int b) {
+      return {a + b, a - b, a * b, a / b};
+}
+Retrieving values from the returned tuple can be cumbersome, requiring the use of the std::get template
+function:
+auto mrvs = foo(5, 12);
+auto   add = std::get<0>(mrvs);
+auto   sub = std::get<1>(mrvs);
+auto   mul = std::get<2>(mrvs);
+auto   div = std::get<3>(mrvs);
+If the types can be declared before the function returns, then std::tie. can be employed to unpack a tuple into
+existing variables:
+int add, sub, mul, div;
+std::tie(add, sub, mul, div) = foo(5, 12);
+If one of the returned values is not needed, std::ignore. can be used:
+std::tie(add, sub, std::ignore, div) = foo(5, 12);
+Version > C++17
+Structured bindings can be used to avoid std ::tie:
+auto [add, sub, mul, div] = foo(5,12);
+If you want to return a tuple of lvalue references instead of a tuple of values, use std ::tie in place of
+std::make tuple.
+std::tuple<int&, int&> minmax( int& a, int& b ) {

@@ -1,0 +1,44 @@
+﻿};
+An example throw catch:
+try {
+     throw(Except("Couldn't do what you were expecting", -12, -34));
+                                             } catch (const Except& e) {
+                                             std ::cout<<e.what()
+               <<"\nError number: "<<e.getErrorNumber()
+               <<"\nError offset: "<<e.getErrorOffset();
+}
+As you are not only just throwing a dumb error message, also some other values representing what the error
+exactly was, your error handling becomes much more efficient and meaningful.
+There's an exception class that let's you handle error messages nicely :std:: runtime_error
+You can inherit from this class too:
+#include <stdexcept>
+class Except: virtual public std::runtime_error {
+protected:
+     int error_number;
+     int error_offset;
+public:
+     /**  Constructor (C++ STL  string, int, int).
+      *  @param  msg The error  message
+      *  @param  err_num Error  number
+      *  @param  err_off Error  offset
+      */
+     explicit
+     Except(const std::string& msg, int err_num, int err_off):
+          std::runtime_error(msg)
+          {
+              error_number = err_num;
+              error_offset = err_off;
+          }
+     /** Destructor.
+      *  Virtual to allow for subclassing.
+      */
+     virtual ~Except() throw () {}
+     /** Returns error number.
+      *  @return #error_number
+      */
+     virtual int getErrorNumber() const throw() {
+          return error_number;
+     }
+     /**Returns error offset.
+///< Error number
+///< Error offset

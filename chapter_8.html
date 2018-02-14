@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="bookStyle.css" rel="stylesheet">
+    <title>CHAPTER 8</title>
+</head>
+<body>
+<div class="container">
+    <div class="block"><p class="word">﻿Bit</p></div>
+    <div class="block"><p class="word">fields</p></div>
+    <div class="block"><p class="word">tightly</p></div>
+    <div class="block"><p class="word">pack</p></div>
+    <div class="block"><p class="word">C</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">C++</p></div>
+    <div class="block"><p class="word">structures</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">reduce</p></div>
+    <div class="block"><p class="word">size.</p></div>
+    <div class="block"><p class="word">This</p></div>
+    <div class="block"><p class="word">appears</p></div>
+    <div class="block"><p class="word">painless:</p></div>
+    <div class="block"><p class="word">specify</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">bits</p></div>
+    <div class="block"><p class="word">for
+    </p></div>
+</body>
+</html></div>
+<div class="container">
+    <div class="block"><p class="word">members,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">compiler</p></div>
+    <div class="block"><p class="word">does</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">work</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">co-mingling</p></div>
+    <div class="block"><p class="word">bits.</p></div>
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">restriction</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">inability</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">take</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">address</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">a</p></div>
+    <div class="block"><p class="word">bit
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">field</p></div>
+    <div class="block"><p class="word">member,</p></div>
+    <div class="block"><p class="word">since</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">stored</p></div>
+    <div class="block"><p class="word">co-mingled.</p></div>
+    <div class="block"><p class="word">sizeof()</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">also</p></div>
+    <div class="block"><p class="word">disallowed.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">cost</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">bit</p></div>
+    <div class="block"><p class="word">fields</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">slower</p></div>
+    <div class="block"><p class="word">access,</p></div>
+    <div class="block"><p class="word">as</p></div>
+    <div class="block"><p class="word">memory</p></div>
+    <div class="block"><p class="word">must</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">retrieved</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">bitwise</p></div>
+    <div class="block"><p class="word">operations</p></div>
+    <div class="block"><p class="word">applied</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">extract</p></div>
+    <div class="block"><p class="word">or
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">modify</p></div>
+    <div class="block"><p class="word">member</p></div>
+    <div class="block"><p class="word">values.</p></div>
+    <div class="block"><p class="word">These</p></div>
+    <div class="block"><p class="word">operations</p></div>
+    <div class="block"><p class="word">also</p></div>
+    <div class="block"><p class="word">add</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">executable</p></div>
+    <div class="block"><p class="word">size.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Section</p></div>
+    <div class="block"><p class="word">8.1:</p></div>
+    <div class="block"><p class="word">Declaration</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">Usage
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">struct</p></div>
+    <div class="block"><p class="word">FileAttributes
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">unsigned</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">Readonly:</p></div>
+    <div class="block"><p class="word">1;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">unsigned</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">Hidden:</p></div>
+    <div class="block"><p class="word">1;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Here,</p></div>
+    <div class="block"><p class="word">each</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">these</p></div>
+    <div class="block"><p class="word">two</p></div>
+    <div class="block"><p class="word">fields</p></div>
+    <div class="block"><p class="word">will</p></div>
+    <div class="block"><p class="word">occupy</p></div>
+    <div class="block"><p class="word">1</p></div>
+    <div class="block"><p class="word">bit</p></div>
+    <div class="block"><p class="word">in</p></div>
+    <div class="block"><p class="word">memory.</p></div>
+    <div class="block"><p class="word">It</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">specified</p></div>
+    <div class="block"><p class="word">by</p></div>
+    <div class="block"><p class="word">:</p></div>
+    <div class="block"><p class="word">1</p></div>
+    <div class="block"><p class="word">expression</p></div>
+    <div class="block"><p class="word">after</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">variable</p></div>
+    <div class="block"><p class="word">names.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Base</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">bit</p></div>
+    <div class="block"><p class="word">field</p></div>
+    <div class="block"><p class="word">could</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">any</p></div>
+    <div class="block"><p class="word">integral</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">(8-bit</p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">64-bit</p></div>
+    <div class="block"><p class="word">int).</p></div>
+    <div class="block"><p class="word">Using</p></div>
+    <div class="block"><p class="word">unsigned</p></div>
+    <div class="block"><p class="word">type</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">recommended,
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">otherwise</p></div>
+    <div class="block"><p class="word">surprises</p></div>
+    <div class="block"><p class="word">may</p></div>
+    <div class="block"><p class="word">come.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">If</p></div>
+    <div class="block"><p class="word">more</p></div>
+    <div class="block"><p class="word">bits</p></div>
+    <div class="block"><p class="word">are</p></div>
+    <div class="block"><p class="word">required,</p></div>
+    <div class="block"><p class="word">replace</p></div>
+    <div class="block"><p class="word">"1"</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">number</p></div>
+    <div class="block"><p class="word">of</p></div>
+    <div class="block"><p class="word">bits</p></div>
+    <div class="block"><p class="word">required.</p></div>
+    <div class="block"><p class="word">For</p></div>
+    <div class="block"><p class="word">example:
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">struct</p></div>
+    <div class="block"><p class="word">Date
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">{
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">unsigned</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Year</p></div>
+    <div class="block"><p class="word">:</p></div>
+    <div class="block"><p class="word">13;</p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word">2A13</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">8192,</p></div>
+    <div class="block"><p class="word">enough</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word">"year"</p></div>
+    <div class="block"><p class="word">representation</p></div>
+    <div class="block"><p class="word">for</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">long</p></div>
+    <div class="block"><p class="word">time
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">unsigned</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Month:</p></div>
+    <div class="block"><p class="word">4;</p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">2A4</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">16,</p></div>
+    <div class="block"><p class="word">enough</p></div>
+    <div class="block"><p class="word">to</p></div>
+    <div class="block"><p class="word">represent</p></div>
+    <div class="block"><p class="word">1-12</p></div>
+    <div class="block"><p class="word">month</p></div>
+    <div class="block"><p class="word">values.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">unsigned</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">int</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">Day:</p></div>
+    <div class="block"><p class="word">5;</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">//</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">32
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">};
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">The</p></div>
+    <div class="block"><p class="word">whole</p></div>
+    <div class="block"><p class="word">structure</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">using</p></div>
+    <div class="block"><p class="word">just</p></div>
+    <div class="block"><p class="word">22</p></div>
+    <div class="block"><p class="word">bits,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">with</p></div>
+    <div class="block"><p class="word">normal</p></div>
+    <div class="block"><p class="word">compiler</p></div>
+    <div class="block"><p class="word">settings,</p></div>
+    <div class="block"><p class="word">sizeof</p></div>
+    <div class="block"><p class="word">this</p></div>
+    <div class="block"><p class="word">structure</p></div>
+    <div class="block"><p class="word">would</p></div>
+    <div class="block"><p class="word">be</p></div>
+    <div class="block"><p class="word">4</p></div>
+    <div class="block"><p class="word">bytes.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Usage</p></div>
+    <div class="block"><p class="word">is</p></div>
+    <div class="block"><p class="word">pretty</p></div>
+    <div class="block"><p class="word">simple.</p></div>
+    <div class="block"><p class="word">Just</p></div>
+    <div class="block"><p class="word">declare</p></div>
+    <div class="block"><p class="word">the</p></div>
+    <div class="block"><p class="word">variable,</p></div>
+    <div class="block"><p class="word">and</p></div>
+    <div class="block"><p class="word">use</p></div>
+    <div class="block"><p class="word">it</p></div>
+    <div class="block"><p class="word">like</p></div>
+    <div class="block"><p class="word">ordinary</p></div>
+    <div class="block"><p class="word">structure.
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">Date</p></div>
+    <div class="block"><p class="word">d;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">d.Year</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">2016;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">d.Month</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word">7;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">d.Day</p></div>
+    <div class="block"><p class="word">=</p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">22;
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word">std::cout</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">"Year:"</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">d.Year</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">std::endl</p></div>
+    <div class="block"><p class="word"><<
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">"Month:"</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">d.Month</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">std::endl</p></div>
+    <div class="block"><p class="word"><<
+    </p></div>
+    </body></html></div>
+<div class="container">
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word"></p></div>
+    <div class="block"><p class="word">"Day:"</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">d.Day</p></div>
+    <div class="block"><p class="word"><<</p></div>
+    <div class="block"><p class="word">std::endl;</p></div>
+    </body></html></div>
+<div class="container"><a href="chapter_"><p>NEXT CHAPTER </p></a><a href="index.html"><p> HOME </p></a></div>

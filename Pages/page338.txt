@@ -1,0 +1,38 @@
+﻿   //create vector
+   vector<int> intVec{4,6,8,9,10,30,55,100,45,2,4,7,9,43,48};
+   //count occurences of 9, 55, and 101
+   size_t count_9 = count(intVec.begin(), intVec.end(), 9); //occurs twice
+   size_t count_55 = count(intVec.begin(), intVec.end(), 55); //occurs once
+   size_t count_101 = count(intVec.begin(), intVec.end(), 101); //occurs once
+   //print result
+   cout << "There are " << count_9 << " 9s"<< endl;
+   cout << "There is " << count_55 << " 55"<< endl;
+   cout << "There is " << count_101 << " 101"<< ends;
+   //find the first element == 4 in the vector
+   vector<int>::iterator itr_4 = find(intVec.begin(), intVec.end(), 4);
+   //count its occurences in the vector starting from the first one
+   size_t count_4 = count(itr_4, intVec.end(), *itr_4); // should be 2
+   cout << "There are " << count_4 << " " << *itr_4 << endl;
+   return 0;
+}
+Output
+There are 2 9s
+There is 1 55
+There is 0 101
+There are 2 4
+Section 63.9: std::count_if
+template <class InputIterator, class UnaryPredicate>
+typename iterator_traits<InputIterator>::difference_type
+count_if (InputIterator first, InputIterator last, UnaryPredicate red);
+Effects
+Counts the number of elements in a range for which a specified predicate function is true
+Parameters
+first => iterator pointing to the beginning of the range last => iterator pointing to the end of the range red =>
+predicate function(returns true or false)
+Return
+The number of elements within the specified range for which the predicate function returned true.
+Example
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;

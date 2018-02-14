@@ -1,0 +1,43 @@
+﻿Multiple inheritance may be helpful in certain cases but, sometimes odd sort of problem encounters while using
+multiple inheritance.
+For example: Two base classes have functions with same name which is not overridden in derived class and if you
+write code to access that function using object of derived class, compiler shows error because, it cannot determine
+which function to call. Here is a code for this type of ambiguity in multiple inheritance.
+class basel
+{
+   public:
+       void funtion( )
+       { //code for basel function }
+};
+class base2
+{
+      void function( )
+       { // code for base2 function }
+};
+class derived : public basel, public base2
+{
+};
+int main()
+{
+     derived obj;
+   // Error because compiler can't figure out which function to call
+   //either function( ) of base1 or base2 .
+   obj.function( )
+}
+But, this problem can be solved using scope resolution function to specify which function to class either base1 or
+base2:
+int main()
+{
+     obj.base1::function( ); // Function of class base1 is called.
+     obj.base2::function( ); // Function of class base2 is called.
+}
+Section 35.14: Non-static member functions
+A class can have non-static member functions, which operate on individual instances of the class.
+                                                    class CL {
+                                                    public:
+     void member_function() {}
+};
+These functions are called on an instance of the class, like so:
+CL instance;
+instance.member_function();
+They can be defined either inside or outside the class definition; if defined outside, they are specified as being in

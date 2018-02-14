@@ -1,0 +1,38 @@
+﻿Chapter 71: Implementation-defined
+behavior
+Section 71.1: Size of integral types
+The following types are defined as integral types:
+    • char
+    • Signed integer types
+    • Unsigned integer types
+    • char16_t and char32_t
+    • bool
+    • wchar_t
+With the exception of sizeof(char) / sizeof(signed char) / sizeof(unsigned char), which is split between §
+3.9.1.1 [basic.fundamental/1] and § 5.3.3.1 [expr.sizeof], and sizeof(bool), which is entirely implementation-
+defined and has no minimum size, the minimum size requirements of these types are given in section § 3.9.1
+[basic.fundamental] of the standard, and shall be detailed below.
+Size of char
+All versions of the C++ standard specify, in § 5.3.3.1, that sizeof yields 1 for unsigned char, signed char, and char
+(it is implementation defined whether the char type is signed or unsigned).
+Version > C++14
+char is large enough to represent 256 different values, to be suitable for storing UTF-8 code units.
+Size of signed and unsigned integer types
+The standard specifies, in § 3.9.1.2, that in the list of standard signed integer types, consisting of signed char, short
+int, int, long int, and long long int, each type will provide at least as much storage as those preceding it in the
+list. Furthermore, as specified in § 3.9.1.3, each of these types has a corresponding standard unsigned integer type,
+unsigned char, unsigned short int, unsigned int, unsigned long int, and unsigned long long int, which has
+the same size and alignment as its corresponding signed type. Additionally, as specified in § 3.9.1.1, char has the
+same size and alignment requirements as both signed char and unsigned char.
+Version < C++11
+Prior to C++11, long long and unsigned long long were not officially part of the C++ standard. However, after
+their introduction to C, in C99, many compilers supported long long as an extended signed integer type, and
+unsigned long long as an extended unsigned integer type, with the same rules as the C types.
+The standard thus guarantees that:
+1 ==   sizeof(char)  == sizeof(signed char) == sizeof(unsigned char)
+   <=  sizeof(short) ==  sizeof(unsigned short)
+   <=   sizeof(int)  ==  sizeof(unsigned int)
+   <=  sizeof(long)  ==  sizeof(unsigned  long)
+Version > C++11
+  <= sizeof(long long) == sizeof(unsigned long long)
+Specific minimum sizes for each type are not given by the standard. Instead, each type has a minimum range of

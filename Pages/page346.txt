@@ -1,0 +1,28 @@
+﻿       }
+    for(int i = 0; i <= 9; i++) {
+        std::cout << actual_distribution[i] << " ";
+    }
+    return 0;
+}
+This code creates a random number generator, and a distribution that generates integers in the range [0,9] with
+equal likelihood. It then counts how many times each result was generated.
+The template parameter of std::uniform int distribution<T> specifies the type of integer that should be
+generated. Use std::uniform real distribution<T> to generate floats or doubles.
+Section 65.3: Using the generator for multiple distributions
+The random number generator can (and should) be used for multiple distributions.
+#include <iostream>
+#include <random>
+int main()
+{
+    std::default_random_engine pseudo_random_generator;
+    std::uniform_int_distribution<int> int_distribution(0, 9);
+    std ::uniform_real_distribution<float> float_distribution(0.0, 1.0);
+    std::discrete_distribution<int> rigged_dice({1,1,1,1,1,100});
+    std::cout << int_distribution(pseudo_random_generator) << std::endl;
+    std::cout << float_distribution(pseudo_random_generator) << std::endl;
+    std::cout << (rigged_dice(pseudo_random_generator) + 1) << std::endl;
+    return 0;
+}
+In this example, only one generator is defined. It is subsequently used to generate a random value in three
+different distributions. The rigged_dice distribution will generate a value between 0 and 5, but almost always
+generates a 5, because the chance to generate a 5 is 100 / 105.

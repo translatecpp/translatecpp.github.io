@@ -1,0 +1,44 @@
+﻿         }
+}
+Matrix<double, cols, rows> d = a + b + c; // d(x, y) = 6
+As illustrated above, being able to overload operator+() provides you with a notation which mimics the natural
+mathematical notation for matrices.
+Unfortunately, the previous implementation is also highly inefficient compared to an equivalent "hand-crafted"
+version.
+To understand why, you have to consider what happens when you write an expression such as Matrix d = a + b
++ c. This in fact expands to ((a + b) + c) or operator+(operator+(a, b), c). In other words, the loop inside
+operator+() is executed twice, whereas it could have been easily performed in a single pass. This also results in 2
+temporaries being created, which further degrades performance. In essence, by adding the flexibility to use a
+notation close to its mathematical counterpart, you have also made the Matrix class highly inefficient.
+For example, without operator overloading, you could implement a far more efficient Matrix summation using a
+single pass:
+template< typename T, std ::size. _t COL, std l::size_t ROW>  
+Matrix<T, COL, ROW>    add3(const Matrix<T,   COL, ROW>& a,   
+                            const Matrix<T,   COL, ROW>& b,   
+                            const Matrix<T,   COL, ROW>& c)   
+{
+      Matrix<T, COL, ROW> result;
+      for (size_t y = 0; y != ROW; ++y) {
+          for (size_t x = 0; x != COL; ++x) {
+              result(x, y) = a(x, y) + b(x, y) + c(x, y);
+          }
+      }
+      return result;
+}
+The previous example however has its own disadvantages because it creates a far more convoluted interface for
+the Matrix class (you would have to consider methods such as Matrix::add2(), Matrix::AddMultiply() and so
+on).
+Instead let us take a step back and see how we can adapt operator overloading to perform in a more efficient way
+The problem stems from the fact that the expression Matrix d = a + b + c is evaluated too "eagerly" before you
+have had an opportunity to build the entire expression tree. In other words, what you really want to achieve is to
+evaluate a + b + c in one pass and only once you actually need to assign the resulting expressing to d.
+This is the core idea behind expression templates: instead of having operator+() evaluate immediately the result
+of adding two Matrix instances, it will return an "expression template" for future evaluation once the entire
+expression tree has been built.
+For example, here is a possible implementation for an expression template corresponding to the summation of 2
+types:
+template <typename LHS, typename RHS>
+class MatrixSum
+{
+public:
+      using value_type = typename LHS::value_type;

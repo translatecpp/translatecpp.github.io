@@ -1,0 +1,49 @@
+﻿Chapter 53: std::function: To wrap any
+element that is callable
+Section 53.1: Simple usage
+#include <iostream>
+#include <functional>
+std::function<void(int , const std::string&)> myFuncObj;
+void theFunc(int i, const std::string& s)
+{
+     std::cout << s << ": " << i << std::endl;
+}
+int main(int argc, char *argv[])
+{
+     myFuncObj = theFunc;
+     myFuncObj(10, "hello world");
+}
+Section 53.2: std::function used with std::bind
+Think about a situation where we need to callback a function with arguments. std ::function used with std ::bind
+gives a very powerful design construct as shown below.
+class A
+{
+public:
+     std::function<void(int, const std::string&)> m_CbFunc = nullptr;
+     void foo()
+     {
+         if (m_CbFunc)
+         {
+             m_CbFunc(100, "event fired");
+         }
+     }
+};
+class B
+{
+public:
+     B()
+     {
+         auto aFunc = std::bind(&B::eventHandler, this, std::placeholders::_1,
+std::placeholders::_2);
+         anObjA.m_CbFunc = aFunc;
+     }
+     void eventHandler(int i, const std::string& s)
+     {
+         std::cout << s << ": " << i << std::endl;
+     }
+     void DoSomethingOnA()
+     {
+         anObjA.foo();
+     }
+     A anObjA;
+};

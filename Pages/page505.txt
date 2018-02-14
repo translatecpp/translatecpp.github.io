@@ -1,0 +1,44 @@
+﻿When auto is used as the return type of a function, it specifies that the function has a trailing return type.
+                                                         auto f() -> int {
+                                                         return 42;
+}
+Version > C++14
+C++14 allows, in addition to the usages of auto allowed in C++11, the following:
+    1. When used as the return type of a function without a trailing return type, specifies that the function's return
+       type should be deduced from the return statements in the function's body, if any.
+       // f returns int:
+       auto f() { return 42; }
+       // g returns void:
+       auto g() { std::cout << "hello, world!\n"; }
+   2. When used in the parameter type of a lambda, defines the lambda to be a generic lambda.
+       auto triple = [](auto x) { return 3*x; };
+       const auto x = triple(42); // x is a const int with value 126
+The special form decltype(auto) deduces a type using the type deduction rules of decltype rather than those of
+auto.
+int* p = new int(42);
+auto x = *p;          // x has type int
+decltype(auto) y = *p; // y is a reference to *p
+In C++03 and earlier, the auto keyword had a completely different meaning as a storage class specifier that was
+inherited from C.
+Section 98.3: Template Type Deduction
+Template Generic Syntax
+template<typename T>
+void f(ParamType param);
+f(expr);
+Case 1: ParamType is a Reference or Pointer, but not a Universal or Forward Reference. In this case type deduction
+works this way. The compiler ignores the reference part if it exists in expr. The compiler then pattern-matches
+expr's type against ParamType to determing T.
+template<typename T>
+void f(T& param);       //param is a reference
+int x = 27;
+const int cx = x;
+const int& rx = x;
+// x is an int
+// cx is a const int
+// rx is a reference to x as a const int
+f(x);
+f(cx);
+f(rx);
+// T is int, param's type is int&
+// T is const int, param's type is const int&
+// T is const int, param's type is const int&

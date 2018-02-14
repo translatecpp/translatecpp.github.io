@@ -1,0 +1,26 @@
+﻿          ownAssertFailureHandler("Positive number expected"s); //< [[noreturn]]
+Note that the [ [noreturn] ] is mostly used in void functions. However, this is not a requirement, allowing the
+functions to be used in generic programming:
+template<class InconsistencyHandler>
+double fortyTwoDivideBy(int i) {
+if (i == 0)
+           i = InconsistencyHandler::correct(i);
+      return 42. / i;
+}
+struct InconsistencyThrower {
+      static [[noreturn]] int correct(int i) { ownAssertFailureHandler("Unknown inconsistency"s); }
+}
+struct InconsistencyChangeToOne {
+      static int correct(int i) { return 1; }
+}
+double fortyTwo = fortyTwoDivideBy<InconsistencyChangeToOne>(0);
+double unreachable = fortyTwoDivideBy<InconsistencyThrower>(0);
+The following standard library functions have this attribute:
+    •  std::abort
+    •  std::exit
+    •  std::quick_exit
+    •  std::unexpected
+    •  std::terminate
+    •  std::rethrow_exception
+    •  std::throw_with_nested
+    •  std::nested_exception::rethrow_nested

@@ -1,0 +1,27 @@
+﻿                                                                                                     while(true) {
+              this_thread::sleep_for(std::chrono::seconds(5));
+              sem.wait( 1 );
+         }
+     });
+     thread s2([&]() {
+         while(true){
+              sem.wait( 2 );
+         }
+     });
+                                                                                                      thread s3([&]() {
+                                                                                                      while(true) {
+              this_thread::sleep_for(std::chrono::milliseconds(600));
+              sem.wait( 3 );
+         }
+     });
+                                                                                                      thread s4([&]() {
+                                                                                                      while(true) {
+              this_thread::sleep_for(std::chrono::seconds(5));
+              sem.notify( 4 );
+         }
+     });
+     s1.join();
+     s2.join();
+     s3.join();
+     s4.join();
+         }

@@ -1,0 +1,47 @@
+﻿class Foo
+{
+   public:
+     Foo(int data)
+     {
+         this->data = data;
+     }
+     ~Foo(){};
+     Foo(const Foo& rhs)
+     {
+             data = rhs.data;
+     }
+     int data;
+};
+int main()
+{
+    Foo foo(2); //Foo(int data) called
+    Foo foo2 = foo; // Copy Constructor called
+    cout << foo2.data << endl;
+}
+You can see here Foo foo2 = foo; in the main function I immediately assign the object before actually initializing it,
+which as said before means it's a copy constructor. And notice that I didn't need to pass the parameter int for the
+foo2 object since I automatically pulled the previous data from the object foo. Here is an example output :
+http://cpp.sh/5iu7
+Section 30.3: Copy Constructor Vs Assignment Constructor
+Ok we have briefly looked over what the copy constructor and assignment constructor are above and gave
+examples of each now let's see both of them in the same code. This code will be similar as above two. Let's take this
+// Copy vs Assignment Constructor
+#include <iostream>
+#include <string>
+using std::cout;
+using std::endl;
+class Foo
+{
+   public:
+     Foo(int data)
+     {
+          this->data = data;
+     }
+     ~Foo(){};
+     Foo(const Foo& rhs)
+     {
+              data = rhs.data;
+     }
+     Foo& operator=(const Foo& rhs)
+     {
+          data = rhs.data;

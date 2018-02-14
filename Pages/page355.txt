@@ -1,0 +1,40 @@
+﻿Section 68.1: Iteration over an enum
+There is no built-in to iterate over enumeration.
+But there are several ways
+    •  for enum with only consecutive values:
+       enum E {
+           Begin,
+           E1 = Begin,
+           E2,
+           // ..
+           En,
+           End
+       };
+       for (E e = E::Begin; e != E::End; ++e) {
+           // Do job with e
+       }
+Version > C++11
+with enum class, operator ++ has to be implemented:
+E& operator ++ (E& e)
+{
+     if (e == E::End) {
+         throw std::out_of_range("for E& operator ++ (E&)");
+     }
+     e = E(static_cast<std::underlying_type<E>::type>(e) + 1);
+     return e;
+}
+    •  using a container as std ::vector
+       enum E {
+           E1 = 4,
+           E2 = 8,
+           // ..
+           En
+       };
+       std::vector<E> build_all_E()
+       {
+           const E all[] = {E1, E2, /*..*/ En};
+           return std::vector<E>(all, all + sizeof(all) / sizeof(E));
+       }
+       std::vector<E> all_E = build_all_E();
+      and then
+       for (std::vector<E>::const_iterator it = all_E.begin(); it != all_E.end(); ++it) {

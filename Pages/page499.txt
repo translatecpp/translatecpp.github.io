@@ -1,0 +1,16 @@
+﻿It is implementation-defined whether a two's complement, one's complement, or sign-magnitude representation is
+used, since all three systems satisfy the requirement in the previous paragraph.
+Floating point types
+The value representation of floating point types is implementation-defined. Most commonly, the float and double
+types conform to IEEE 754 and are 32 and 64 bits long (so, for example, float would have 23 bits of precision which
+would follow 8 exponent bits and 1 sign bit). However, the standard does not guarantee anything. Floating point
+types often have "trap representations", which cause errors when they are used in calculations.
+Section 95.3: Arrays
+An array type has no padding in between its elements. Therefore, an array with element type T is just a sequence of
+T objects laid out in memory, in order.
+A multidimensional array is an array of arrays, and the above applies recursively. For example, if we have the
+declaration
+int a[5][3];
+then a is an array of 5 arrays of 3 ints. Therefore, a[0], which consists of the three elements a[0][0], a[0][1],
+a[0] [2], is laid out in memory before a[1], which consists of a[1][0], a[1][1], and a[1 ] [2]. This is called row
+major order.

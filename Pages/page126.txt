@@ -1,0 +1,38 @@
+﻿auto calc = foo(5, 12);
+Version < C++11
+Instead of assignment to individual fields, a constructor can be used to simplify the constructing of returned values:
+struct foo_return_type {
+     int add;
+     int sub;
+     int mul;
+     int div;
+     foo_return_type(int add, int sub, int mul, int div)
+     : add(add), sub(sub), mul(mul), div(div) {}
+};
+foo_return_type foo(int a, int b) {
+       return foo_return_type(a + b, a - b, a * b, a / b);
+}
+foo_return_type calc = foo(5, 12);
+The individual results returned by the function foo() can be retrieved by accessing the member variables of the
+struct calc:
+std::cout << calc.add << ' ' << calc.sub << ' ' << calc.mul << ' ' << calc.div << '\n';
+Output:
+      17 -7 60 0
+Note: When using a struct, the returned values are grouped together in a single object and accessible using
+meaningful names. This also helps to reduce the number of extraneous variables created in the scope of the
+returned values.
+Version > C++17
+In order to unpack a struct returned from a function, structured bindings can be used. This places the out-
+parameters on an even footing with the in-parameters:
+int a=5, b=12;
+auto[add, sub, mul, div] = foo(a, b);
+std::cout << add << ' ' << sub << ' ' << mul << ' ' << div << '\n';
+The output of this code is identical to that above. The struct is still used to return the values from the function.
+This permits you do deal with the fields individually.
+Section 25.4: Using Output Parameters
+Parameters can be used for returning one or more values; those parameters are required to be non-const pointers
+or references.
+References:
+void calculate(int a, int b, int& c, int& d, int& e, int& f) {
+     c = a + b;
+     d = a - b;

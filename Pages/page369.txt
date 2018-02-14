@@ -1,0 +1,42 @@
+﻿    •  std ::numeric_limits<long> ::min() equals LONG_MIN, which is less than or equal to -2147483647.
+    •  std ::numeric_limits<long> ::max() equals LONG_MAX, which is greater than or equal to 2147483647.
+    •  std ::numeric_limits<unsigned long> ::max() equals ULONG_MAX, which is greater than or equal to
+      4294967295.
+Version > C++11
+    •  std ::numeric_limits<long long> ::min() equals LLONG_MIN, which is less than or equal to
+      -9223372036854775807.
+    •  std ::numeric_limits<long long> ::max() equals LLONG_MAX, which is greater than or equal to
+      9223372036854775807.
+    •  std::numeric_limits<unsigned long long>::max() equals ULLONG_MAX, which is greater than or equal to
+      18446744073709551615.
+For floating-point types T, max() is the maximum finite value while min() is the minimum positive normalized value.
+Additional members are provided for floating-point types, which are also implementation-defined but satisfy
+certain guarantees provided by the C standard through the <cfloat> header.
+    •  The member digits10 gives the number of decimal digits of precision.
+          o std::numeric_limits<float>::digits10 equals FLT_DIG, which is at least 6.
+          ° std::numeric_limits<double>::digits10 equals DBL_DIG, which is at least 10.
+          ° std::numeric_limits<long double>::digits10 equals LDBL_DIG, which is at least 10.
+    •  The member min_exponent10 is the minimum negative E such that 10 to the power E is normal.
+          ° std ::numeric_limits<float> ::min_exponent10 equals FLT_MIN_10_EXP, which is at most -37.
+          ° std ::numeric_limits<double> ::min_exponent10 equals DBL_MIN_10_EXP, which is at most -37.
+           std ::numeric_limits<long double> ::min_exponent10 equals LDBL_MIN_10_EXP, which is at most -37.
+    •  The member max_exponent10 is the maximum E such that 10 to the power E is finite.
+          ° std::numeric_limits<float>::max_exponent10 equals FLT_MIN_10_EXP, which is at least 37.
+          ° std ::numeric_limits<double> ::max_exponent10 equals DBL_MIN_10_EXP, which is at least 37.
+          ° std::numeric_limits<long double>::max_exponent10 equals LDBL_MIN_10_EXP, which is at least 37.
+    •  If the member is_iec559 is true, the type conforms to IEC 559 / IEEE 754, and its range is therefore
+      determined by that standard.
+Section 71.4: Value representation of floating point types
+The standard requires that long double provides at least as much precision as double, which provides at least as
+much precision as float; and that a long double can represent any value that a double can represent, while a
+double can represent any value that a float can represent. The details of the representation are, however,
+implementation-defined.
+For a floating point type T, std ::numeric_limits<T>:: radix specifies the radix used by the representation of T.
+If std ::numeric_limits<T> ::is_iec559 is true, then the representation of T matches one of the formats defined
+by IEC 559 / IEEE 754.
+Section 71.5: Overflow when converting from integer to
+signed integer
+When either a signed or unsigned integer is converted to a signed integer type, and its value is not representable in
+the destination type, the value produced is implementation-defined. Example:
+// Suppose that on this implementation, the range of signed char is -128 to +127 and
+// the range of unsigned char is 0 to 255

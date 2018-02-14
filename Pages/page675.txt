@@ -1,0 +1,30 @@
+﻿Chapter 145: Profiling
+Section 145.1: Profiling with gcc and gprof
+The GNU gprof profiler, gprof, allows you to profile your code. To use it, you need to perform the following steps:
+   1.  Build the application with settings for generating profiling information
+   2.  Generate profiling information by running the built application
+   3.  View the generated profiling information with gprof
+In order to build the application with settings for generating profiling information, we add the -pg flag. So, for
+example, we could use
+$ gcc -pg *.cpp -o app
+or
+$ gcc -O2 -pg *.cpp -o app
+and so forth.
+Once the application, say app, is built, execute it as usual:
+$ ./app
+This should produce a file called gmon.out.
+To see the profiling results, now run
+$ gprof app gmon.out
+(note that we provide both the application as well as the generated output).
+Of course, you can also pipe or redirect:
+$ gprof app gmon.out | less
+and so forth.
+The result of the last command should be a table, whose rows are the functions, and whose columns indicate the
+number of calls, total time spent, self time spent (that is, time spent in the function excluding calls to children).
+Section 145.2: Generating callgraph diagrams with gperf2dot
+For more complex applications, flat execution profiles may be difficult to follow. This is why many profiling tools
+also generate some form of annotated callgraph information.
+gperf2dot converts text output from many profilers (Linux perf, callgrind, oprofile etc.) into a callgraph diagram.
+You can use it by running your profiler (example for gprof):
+# compile with profiling flags
+g++ *.cpp -pg

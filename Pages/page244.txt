@@ -1,0 +1,50 @@
+﻿      template <>
+      void foo<MyCustomType>() { std::cout << "Specialization"; }
+}
+    • The inline namespace allows the specialization of Outer::foo
+       // outer.h
+       // include guard omitted for simplification
+       namespace Outer
+       {
+            inline namespace Inner
+            {
+                template <typename T>
+                void foo() { std::cout << "Generic"; }
+            }
+       }
+    • Whereas the using namespace doesn't allow the specialization of Outer ::foo
+       // outer.h
+       // include guard omitted for simplification
+       namespace Outer
+       {
+           namespace Inner
+           {
+               template <typename T>
+               void foo() { std::cout << "Generic"; }
+           }
+           using namespace Inner;
+           // Specialization of 'Outer::foo' is not possible
+           // it should be 'Outer::Inner::foo'.
+       }
+Inline namespace is a way to allow several version to cohabit and defaulting to the inline one
+namespace MyNamespace
+{
+      // Inline the last version
+      inline namespace Version2
+      {
+          void foo(); // New version
+          void bar();
+      }
+      namespace Versionl // The old one
+      {
+          void foo();
+      }
+}
+And with usage
+MyNamespace::Version1::foo();
+MyNamespace::Version2::foo();
+MyNamespace::foo();
+// old version
+// new version
+// default version
+MyNamespace::Version1::foo();

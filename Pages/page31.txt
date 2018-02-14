@@ -1,0 +1,41 @@
+﻿auto main()
+     -> int
+{
+     cout << "Sorting n integers provided by you.\\n";
+     cout << "n? ";
+     int const    n   = int_from( cin );
+     int*         a   = new int[n];        // Allocation of array of n items.
+      for( int i = 1; i <= n; ++i )
+      {
+          cout << "The #" << i << " number, please: ";
+          a[i-1] = int_from( cin );
+      }
+      sort( a, a + n );
+      for( int i = 0; i < n; ++i ) { cout << a[i] << ' ' ; }
+      cout << ' \\n' ;
+      delete[] a;
+}
+A program that declares an array T a[n]; where n is determined a run-time, can compile with certain compilers
+that support C99 variadic length arrays (VLAs) as a language extension. But VLAs are not supported by standard C++.
+This example shows how to manually allocate a dynamic size array via a new[ ]-expression,
+int*         a = new int[n];            // Allocation of array of n items.
+... then use it, and finally deallocate it via a delete[ ]-expression:
+delete[] a;
+The array allocated here has indeterminate values, but it can be zero-initialized by just adding an empty
+parenthesis (), like this: new int[n] (). More generally, for arbitrary item type, this performs a value-initialization.
+As part of a function down in a call hierarchy this code would not be exception safe, since an exception before the
+delete[ ] expression (and after the new[ ]) would cause a memory leak. One way to address that issue is to
+automate the cleanup via e.g. a std ::unique_ptr smart pointer. But a generally better way to address it is to just
+use a std ::vector: that's what std ::vector is there for.
+Section 9.4: Array size: type safe at compile time
+#include // size_t, ptrdiff_t
+//------------------------------------ Machinery:
+using Size = ptrdiff_t;
+template< class Item, size_t n >
+constexpr auto n_items( Item (&)[n] ) noexcept
+-> Size
+{ return n; }
+//------------------------------------ Usage:
+#include
+using namespace std;
+auto main()

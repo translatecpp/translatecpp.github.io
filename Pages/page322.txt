@@ -1,0 +1,37 @@
+﻿Output will be:
+Set under test contains:
+10
+15
+30
+All those methods also apply to multiset. Please note that if you ask to delete an element from a multiset, and it
+is present multiple times, all the equivalent values will be deleted.
+Section 60.3: Inserting values in a set
+Three different methods of insertion can used with sets.
+    •  First, a simple insert of the value. This method returns a pair allowing the caller to check whether the insert
+      really occurred.
+    •  Second, an insert by giving a hint of where the value will be inserted. The objective is to optimize the
+      insertion time in such a case, but knowing where a value should be inserted is not the common case. Be
+      careful in that case; the way to give a hint differs with compiler versions.
+    •  Finally you can insert a range of values by giving a starting and an ending pointer. The starting one will be
+      included in the insertion, the ending one is excluded.
+#include <iostream>
+#include <set>
+int main ()
+{
+   std::set<int> sut;
+   std::set<int>::iterator it;
+   std::pair<std::set<int>::iterator,bool> ret;
+   // Basic insert
+   sut.insert(7);
+   sut.insert(5);
+   sut.insert(12);
+   ret = sut.insert(23);
+   if (ret.second==true)
+     std::cout << "# 23 has been inserted!" << std::endl;
+   ret = sut.insert(23); // since it's a set and 23 is already present in it, this insert should
+fail
+   if (ret.second==false)
+     std::cout << "# 23 already present in set!" << std::endl;
+   // Insert with hint for optimization
+   it = sut.end();
+   // This case is optimized for C++11 and above

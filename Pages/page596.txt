@@ -1,0 +1,13 @@
+﻿    • foo.cpp
+       #include <iostream>
+       int dummyFoo = ((std::cout << "foo"), 0);
+    •  bar.cpp
+       #include <iostream>
+       int dummyBar = ((std::cout << "bar"), 0);
+    •  main.cpp
+       int main() {}
+might produce as output:
+foobar
+or
+barfoo
+That may lead to Static Initialization Order Fiasco.

@@ -1,0 +1,2 @@
+﻿Impl is fully visible. You can =default it there, but if =default where Impl is undefined, the program may easily
+become ill-formed, no diagnostic required.

@@ -1,0 +1,54 @@
+﻿Chapter 73: Lambdas
+                                                     Details
+Specifies how all non-listed variables are captured. Can be = (capture by value) or & (capture by
+reference). If omitted, non-listed variables are inaccessible within the lambda-body. The default-
+capture must precede the capture-list.
+Specifies how local variables are made accessible within the lambda-body. Variables without
+prefix are captured by value. Variables prefixed with & are captured by reference. Within a class
+method, this can be used to make all its members accessible by reference. Non-listed variables
+are inaccessible, unless the list is preceded by a default-capture.
+Specifies the arguments of the lambda function.
+(optional) Normally variables captured by value are const. Specifying mutable makes them non-
+const. Changes to those variables are retained between calls.
+(optional) Specifies the exception throwing behavior of the lambda function. For example:
+noexcept or throw(std::exception).
+(optional) Any attributes for the lambda function. For example, if the lambda-body always throws
+an exception then [ [noreturn] ] can be used.
+(optional) Specifies the return type of the lambda function. Required when the return type
+cannot be determined by the compiler.
+A code block containing the implementation of the lambda function.
+Section 73.1: What is a lambda expression?
+A lambda expression provides a concise way to create simple function objects. A lambda expression is a prvalue
+whose result object is called closure object, which behaves like a function object.
+The name 'lambda expression' originates from lambda calculus, which is a mathematical formalism invented in the
+1930s by Alonzo Church to investigate questions about logic and computability. Lambda calculus formed the basis
+of LISP, a functional programming language. Compared to lambda calculus and LISP, C++ lambda expressions share
+the properties of being unnamed, and to capture variables from the surrounding context, but they lack the ability to
+operate on and return functions.
+A lambda expression is often used as an argument to functions that take a callable object. That can be simpler than
+creating a named function, which would be only used when passed as the argument. In such cases, lambda
+expressions are generally preferred because they allow defining the function objects inline.
+A lambda consists typically of three parts: a capture list [], an optional parameter list () and a body {}, all of which
+can be empty:
+ [](){}                // An empty lambda, which does and returns nothing
+                                                                                                                       Parameter
+                                                                                                                   default-capture
+capture-list
+argument-list
+mutable
+                                                                                                                   throw-specificat
+attributes
+-> return-type
+lambda-body
+Capture list
+[] is the capture list. By default, variables of the enclosing scope cannot be accessed by a lambda. Capturing a
+variable makes it accessible inside the lambda, either as a copy or as a reference. Captured variables become a part
+of the lambda; in contrast to function arguments, they do not have to be passed when calling the lambda.
+int  a = 0;                        // Define an integer variable                              
+auto f   = []()   { return a*9; }; // Error : 'a' cannot be accessed                          
+auto f   = [a]()  { return a*9; }; // OK, ' a' is "captured" by value                         
+auto f   = [&a]() { return a++; }; // OK, ' a' is "captured" by reference                     
+                                   //       Note: It is the responsibility of the programmer  
+                                   //       to ensure that a is not destroyed before  the     
+                                   //       lambda is called.                                 
+auto b   = f();                    // Call  the lambda function. a is taken f rom the capture 

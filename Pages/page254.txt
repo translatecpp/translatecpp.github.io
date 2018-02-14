@@ -1,0 +1,40 @@
+﻿std::string wstr_turned_to_str =
+std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(input_wstr);
+In order to improve usability and/or readability, you can define functions to perform the conversion:
+#include <string>
+#include <codecvt>
+#include <locale>
+using convert_t = std::codecvt_utf8<wchar_t>;
+std::wstring_convert<convert_t, wchar_t> strconverter;
+std::string to_string(std::wstring wstr)
+{
+     return strconverter.to_bytes(wstr);
+}
+std::wstring to_wstring(std::string str)
+{
+     return strconverter.from_bytes(str);
+}
+Sample usage:
+std::wstring a_wide_string = to_wstring("Hello World!");
+That's certainly more readable than std::wstring_convert<std ::codecvt_utf8<wchar_t>>() .from_bytes( "Hello
+World!").
+Please note that char and wchar_t do not imply encoding, and gives no indication of size in bytes. For instance,
+wchar_t is commonly implemented as a 2-bytes data type and typically contains UTF-16 encoded data under
+Windows (or UCS-2 in versions prior to Windows 2000) and as a 4-bytes data type encoded using UTF-32 under
+Linux. This is in contrast with the newer types char16_t and char32_t, which were introduced in C++11 and are
+guaranteed to be large enough to hold any UTF16 or UTF32 "character" (or more precisely, code point) respectively.
+Section 48.5: Lexicographical comparison
+Two std ::strings can be compared lexicographically using the operators ==, !=, <, <=, >, and >=:
+std::string str1 = "Foo";
+std::string str2 = "Bar";
+assert(!(str1 < str2));
+assert(str > str2);
+assert(!(str1 <= str2));
+assert(str1 >= str2);
+assert(!(str1 == str2));
+assert(str1 != str2);
+All these functions use the underlying std ::string ::compare() method to perform the comparison, and return for
+convenience boolean values. The operation of these functions may be interpreted as follows, regardless of the
+actual implementation:
+    • operator==:
+                  If str1.length() == str2.length() and each character pair matches, then returns true, otherwise returns

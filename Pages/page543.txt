@@ -1,0 +1,45 @@
+﻿Summing up, the C++ language and library support for moving allows drastic improvements in algorithm
+complexity, but due the support's incompleteness, at the cost of forsaking the code correctness guarantees and
+code clarity that const can provide.
+For completeness, the instrumented vector class used to measure the number of item copy operations due to copy
+constructor invocations:
+template< class Item >
+class Copy_tracking_vector
+{
+private:
+     static auto n_copy_ops()
+         -> int&
+     {
+         static int value;
+         return value;
+     }
+     vector<Item> items_;
+public:
+     static auto n() -> int { return n_copy_ops(); }
+     void push_back( Item const& o ) { items_.push_back( o ); }
+     auto begin() const { return items_.begin(); }
+     auto end() const { return items_.end(); }
+     Copy_tracking_vector(){}
+     Copy_tracking_vector( Copy_tracking_vector const& other )
+         : items_( other.items_ )
+     { n_copy_ops() += items_.size(); }
+     Copy_tracking_vector( Copy_tracking_vector&& other )
+         : items_( move( other.items_ ) )
+     {}
+};
+Section 106.3: Move constructor
+Say we have this code snippet.
+class A {
+public:
+int a;
+int b;
+     A(const A &other) {
+         this->a = other.a;
+         this->b = other.b;
+     }
+};
+To create a copy constructor, that is, to make a function that copies an object and creates a new one, we normally
+would choose the syntax shown above, we would have a constructor for A that takes an reference to another object
+of type A, and we would copy the object manually inside the method.
+Alternatively, we could have written A(const A &) = default; which automatically copies over all members,
+making use of its copy constructor.

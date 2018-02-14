@@ -1,0 +1,35 @@
+﻿Section 50.15: Find max and min Element and Respective
+Index in a Vector
+To find the largest or smallest element stored in a vector, you can use the methods std ::max element and
+std::min_element, respectively. These methods are defined in <algorithm> header. If several elements are
+equivalent to the greatest (smallest) element, the methods return the iterator to the first such element. Return
+v.end() for empty vectors.
+std::vector<int> v = {5, 2, 8, 10, 9};
+int maxElementIndex = std::max_element(v.begin(),v.end()) - v.begin();
+int maxElement = *std::max_element(v.begin(), v.end());
+int minElementIndex = std::min_element(v.begin(),v.end()) - v.begin();
+int minElement = *std::min_element(v.begin(), v.end());
+std::cout << "maxElementIndex:" << maxElementIndex << ", maxElement:" << maxElement << '\n';
+std::cout << "minElementIndex:" << minElementIndex << ", minElement:" << minElement << '\n';
+Output:
+     maxElementIndex:3, maxElement:10
+     minElementIndex:1, minElement:2
+Version > C++11
+The minimum and maximum element in a vector can be retrieved at the same time by using the method
+std::minmax element, which is also defined in <algorithm> header:
+std::vector<int> v = {5, 2, 8, 10, 9};
+auto minmax = std::minmax_element(v.begin(), v.end());
+std::cout << "minimum element: " << *minmax.first << '\n';
+std::cout << "maximum element: " << *minmax.second << '\n';
+Output:
+     minimum element: 2
+     maximum element: 10
+Section 50.16: Converting an array to std::vector
+An array can easily be converted into a std ::vector by using std::begin and std ::end:
+Version > C++11
+int values[5] = { 1, 2, 3, 4, 5 }; // source array
+std::vector<int> v(std::begin(values), std::end(values)); // copy array to new vector
+for(auto &x: v)
+     std::cout << x << " ";
+std::cout << std::endl;
+   I

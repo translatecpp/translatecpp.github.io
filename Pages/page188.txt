@@ -1,0 +1,43 @@
+﻿    • unnamed struct instance can be parameter of template method:
+       void print_square_coordinates()
+       {
+           const struct {float x; float y;} points[] = {
+               {-1, -1}, {-1, 1}, {1, -1}, {1, 1}
+           };
+           // for range relies on 'template <class T, std::size_t N> std::begin(T (&)[N])
+           for (const auto& point : points) {
+               std::cout << "{" << point.x << ", " << point.y << "}\n";
+           }
+           decltype(points[0]) topRightCorner{1, 1};
+           auto it = std::find(points, points + 4, topRightCorner);
+           std::cout << "top right corner is the "
+                      << 1 + std::distance(points, it) << "th\n";
+       }
+Section 35.12: Static class members
+A class is also allowed to have static members, which can be either variables or functions. These are considered to
+be in the class' scope, but aren't treated as normal members; they have static storage duration (they exist from the
+start of the program to the end), aren't tied to a particular instance of the class, and only one copy exists for the
+entire class.
+class Example {
+     static int num_instances;       // Static data member (static member variable).
+     int i;                          // Non-static member variable.
+   public:
+     static std::string static_str; // Static data member (static member variable).
+     static int static_func();        // Static member function.
+     // Non-static member functions can modify static member variables.
+     Example() { ++num_instances; }
+     void set_str(const std::string& str);
+};
+int         Example::num_instances;
+std::string Example::static_str = "Hello.";
+// ...
+Example one, two, three;
+// Each Example has its own "i", such that:
+// (&one.i != &two.i)
+// (&one.i != &three.i)
+// (&two.i != &three.i).
+// All three Examples share "num_instances", such that:
+// (&one.num_instances == &two.num_instances)
+// (&one.num_instances == &three.num_instances)
+// (&two.num_instances == &three.num_instances)
+Static member variables are not considered to be defined inside the class, only declared, and thus have their

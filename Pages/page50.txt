@@ -1,0 +1,43 @@
+﻿while (i < 10)
+{
+      std ::cout << i << " ";
+      ++i; // Increment counter
+}
+std::cout << std::endl; // End of line; "0 1 2 3 4 5 6 7 8 9" is printed to the console
+Version > C++17
+Note that since C++17, the first 2 statements can be combined
+while (int i = 0; i < 10)
+//... The rest is the same
+To create an infinite loop, the following construct can be used:
+while (true)
+{
+      // Do something forever (however, you can exit the loop by calling 'break'
+}
+There is another variant of while loops, namely the do...while construct. See the do-while loop example for more
+information.
+Section 12.4: Do-while loop
+A do-while loop is very similar to a while loop, except that the condition is checked at the end of each cycle, not at
+the start. The loop is therefore guaranteed to execute at least once.
+The following code will print 0, as the condition will evaluate to false at the end of the first iteration:
+int i =0;
+do
+{
+      std ::cout << i;
+      ++i; // Increment counter
+}
+while (i < 0);
+std::cout << std::endl; // End of line; 0 is printed to the console
+Note: Do not forget the semicolon at the end of while(condition);, which is needed in the do-while construct.
+In contrast to the do-while loop, the following will not print anything, because the condition evaluates to false at
+the beginning of the first iteration:
+int i =0;
+while (i < 0)
+{
+      std ::cout << i;
+      ++i; // Increment counter
+}
+std::cout << std::endl; // End of line; nothing is printed to the console
+Note: A while loop can be exited without the condition becoming false by using a break, goto, or return statement.
+int i = 0;
+do
+{

@@ -1,0 +1,24 @@
+﻿       std ::cout<<std::resetiosflags(std::ios_base::floatfield);
+       std::cout<<setiosflags(std::ios_base::fixed)<<pi<<std::endl;
+       //output: +3.141593
+       bool b = true;
+       std::cout<<std::setiosflags(std::ios_base::unitbuf|std::ios_base::boolalpha)<<b;
+       //output: true
+       return 0;
+     }
+Section 58.4: std::setw
+int val = 10;
+// val will be printed to the extreme left end of the output console:
+std::cout << val << std::endl;
+  // val will be printed in an output field of length 10 starting from right end of the field:
+std::cout << std::setw(10) << val << std::endl;
+This outputs:
+10
+         10
+1234567890
+(where the last line is there to aid in seeing the character offsets).
+Sometimes we need to set the width of the output field, usually when we need to get the output in some structured
+and proper layout. That can be done using std::setw of std::iomanip.
+The syntax for std:: setw is:
+std ::setw(int n)
+where n is the length of the output field to be set

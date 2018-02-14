@@ -1,0 +1,41 @@
+﻿                     << second << std::endl;
+      }
+private:
+      ClockTimer& subject;
+};
+int main()
+{
+     ClockTimer timer;
+     DigitalClock digitalClock(timer);
+     AnalogClock analogClock(timer);
+     timer.SetTime(14, 41, 36);
+}
+Output:
+Digital time is 14:41:36
+Analog time is 14:41 :36
+Here are the summary of the pattern:
+   1.  Objects (DigitalClock or AnalogClock object) use the Subject interfaces (Attach() or Detach()) either to
+      subscribe (register) as observers or unsubscribe (remove) themselves from being observers
+      (subject.Attach(*this);,subject.Detach(*this);.
+   2.  Each subject can have many observers( vector<Observer*> observers;).
+   3.  All observers need to implement the Observer interface. This interface just has one method, Update(), that
+      gets called when the Subject's state changes (Update(Subject &))
+   4.  In addition to the Attach() and Detach() methods, the concrete subject implements a Notify() method that
+      is used to update all the current observers whenever state changes. But in this case, all of them are done in
+      the parent class,Subject (Subject::Attach (Observers), void Subject::Detach(Observer&) and void
+      Subject::Notify().
+   5.  The Concrete object may also have methods for setting and getting its state.
+   6.  Concrete observers can be any class that implements the Observer interface. Each observer subscribe
+      (register) with a concrete subject to receive update (subject.Attach(*this); ).
+   7.  The two objects of Observer Pattern are loosely coupled, they can interact but with little knowledge of each
+      other.
+Variation:
+Signal and Slots
+Signals and slots is a language construct introduced in Qt, which makes it easy to implement the Observer pattern
+while avoiding boilerplate code. The concept is that controls (also known as widgets) can send signals containing
+event information which can be received by other controls using special functions known as slots. The slot in Qt
+must be a class member declared as such. The signal/slot system fits well with the way Graphical User Interfaces
+are designed. Similarly, the signal/slot system can be used for asynchronous I/O (including sockets, pipes, serial
+devices, etc.) event notification or to associate timeout events with appropriate object instances and methods or
+functions. No registration/deregistration/invocation code need be written, because Qt's Meta Object Compiler
+(MOC) automatically generates the needed infrastructure.

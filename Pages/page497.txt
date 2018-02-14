@@ -1,0 +1,57 @@
+﻿       alignofs. Due to this, if a member with a smaller alignof is followed by a member with a larger alignof,
+       there is a possibility that the latter member will not be aligned properly if placed immediately after the
+       former. In this case, padding (also known as an alignment member ) will be placed between the two members,
+       such that the latter member can have its desired alignment. Conversely, if a member with a larger alignof is
+       followed by a member with a smaller alignof, no padding will usually be necessary. This process is also
+       known as "packing".
+       Due to classes typically sharing the alignof of their member with the largest alignof, classes will typically be
+       aligned to the alignof of the largest built-in type they directly or indirectly contain.
+       // Assume sizeof(short) == 2, sizeof(int) == 4, and sizeof(long long) == 8.
+       // Assume 4-byte alignment is specified to the compiler.
+       struct Char { char c; };
+         // sizeof(Char)                 == 1 (sizeof(char))
+       struct Int { int i; };
+         // sizeof(Int)                  == 4 (sizeof(int))
+       struct CharInt { char c; int i; };
+         // sizeof(CharInt)              == 8 (1 (char) + 3 (padding) + 4 (int))
+       struct ShortIntCharInt { short s; int i; char c; int j; };
+         // sizeof(ShortIntCharInt) == 16 (2 (short) + 2 (padding) + 4 (int) + 1 (char) +
+         //                                     3 (padding) + 4 (int))
+       struct ShortIntCharCharInt { short s; int i; char c; char d; int j; };
+         // sizeof(ShortIntCharCharInt) == 16 (2 (short) + 2 (padding) + 4 (int) + 1 (char) +
+         //                                     1 (char) + 2 (padding) + 4 (int))
+       struct ShortCharShortInt { short s; char c; short t; int i; };
+         // sizeof(ShortCharShortInt) == 12 (2 (short) + 1 (char) + 1 (padding) + 2 (short) +
+         //                                     2 (padding) + 4 (int))
+       struct IntLLInt { int i; long long l; int j; };
+         // sizeof(IntLLInt)             == 16 (4 (int) + 8 (long long) + 4 (int))
+         // If packing isn't explicitly specified, most compilers will pack this as
+         // 8-byte alignment, such that:
+         // sizeof(IntLLInt)             == 24 (4 (int) + 4 (padding) + 8 (long long) +
+         //                                     4 (int) + 4 (padding))
+       // Assume sizeof(bool) == 1, sizeof(ShortIntCharInt) == 16, and sizeof(IntLLInt) == 24.
+       // Assume default alignment: alignof(ShortIntCharInt) == 4, alignof(IntLLInt) == 8.
+       struct ShortChar3ArrShortInt {
+       short s;
+       char c3[3] ;
+       short t;
+       int i;
+       };
+         // ShortChar3ArrShortInt has 4-byte alignment: alignof(int) >= alignof(char) &&
+         //                                              alignof(int) >= alignof(short)
+         // sizeof(ShortChar3ArrShortInt) == 12 (2 (short) + 3 (char[3]) + 1 (padding) +
+         //                                       2 (short) + 4 (int))
+         // Note that t is placed at alignment of 2, not 4. alignof(short) == 2.
+       struct Large_1 {
+           ShortIntCharInt sici;
+           bool b;
+           ShortIntCharInt tjdj;
+       };
+         // Large_1 has 4-byte alignment.
+           // alignof(ShortIntCharInt) == alignof(int) == 4
+           // alignof(b) == 1
+           // Therefore, alignof(Large_1) == 4.
+         // sizeof(Large_1) == 36 (16 (ShortIntCharInt) + 1 (bool) + 3 (padding) +
+         //                         16 (ShortIntCharInt))
+       struct Large_2 {
+           IntLLInt illi;

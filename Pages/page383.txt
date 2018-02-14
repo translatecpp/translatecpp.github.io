@@ -1,0 +1,35 @@
+﻿not passed here.
+Parameter list
+() is the parameter list, which is almost the same as in regular functions. If the lambda takes no arguments, these
+parentheses can be omitted (except if you need to declare the lambda mutable). These two lambdas are equivalent:
+auto call_foo = [x](){ x.foo(); };
+auto call_foo2 = [x]{ x.foo(); };
+Version > C++14
+The parameter list can use the placeholder type auto instead of actual types. By doing so, this argument behaves
+like a template parameter of a function template. Following lambdas are equivalent when you want to sort a vector
+in generic code:
+auto sort_cpp11 = [](std::vector<T>::const_reference lhs, std::vector<T>::const_reference rhs) {
+return lhs < rhs; };
+auto sort_cpp14 = [](const auto &lhs, const auto &rhs) { return lhs < rhs; };
+Function body
+{} is the body, which is the same as in regular functions.
+Calling a lambda
+A lambda expression's result object is a closure, which can be called using the operator() (as with other function
+objects):
+int multiplier = 5;
+auto timesFive = [multiplier](int a) { return a * multiplier; };
+std::out << timesFive(2); // Prints 10
+multiplier = 15;
+std::out << timesFive(2); // Still prints 2*5 == 10
+Return Type
+By default, the return type of a lambda expression is deduced.
+[](){ return true; };
+In this case the return type is bool.
+You can also manually specify the return type using the following syntax:
+[]() -> bool { return true; };
+Mutable Lambda
+Objects captured by value in the lambda are by default immutable. This is because the operator() of the generated
+closure object is const by default.
+auto func = [c = 0](){++c; std::cout << c;};     // fails to compile because ++c
+                                                  // tries to mutate the state of
+                                                  // the lambda.

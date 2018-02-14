@@ -1,0 +1,47 @@
+﻿A related rule is that if a non-static member function is called on an object that does not actually have the same
+type as the defining class of the function, or a derived class, then undefined behavior occurs. This is true even if the
+function does not access the object.
+struct Base {
+};
+struct Derived : Base {
+     void f() {}
+};
+struct Unrelated {};
+Unrelated u;
+Derived& r1  = reinterpret_cast<Derived&>(u); // ok
+r1.f();                                       // UB
+Base b;
+Derived& r2  = reinterpret_cast<Derived&>(b); // ok
+r2.f();                                       // UB
+Section 104.20: Invalid derived-to-base conversion for
+pointers to members
+When static_cast is used to convert T D::* to T B::*, the member pointed to must belong to a class that is a
+base class or derived class of B. Otherwise the behavior is undefined. See Derived to base conversion for pointers
+to members
+Section 104.21: Destroying an object that has already been
+destroyed
+In this example, a destructor is explicitly invoked for an object that will later be automatically destroyed.
+struct S {
+     ~S() { std::cout << "destroying S\n"; }
+};
+int main() {
+     S s;
+     s.~S();
+} // UB: s destroyed a second time here
+A similar issue occurs when a std ::unique_ptr<T> is made to point at a T with automatic or static storage duration.
+void f(std::unique_ptr<S> p);
+int main() {
+     S s;
+     std::unique_ptr<S> p(&s);
+     f(std::move(p)); // s destroyed upon return from f
+}                    // UB: s destroyed
+Another way to destroy an object twice is by having two shared_ptrs both manage the object without sharing
+ownership with each other.
+void f(std::shared_ptr<S> p1, std::shared_ptr<S> p2);
+int main() {
+     S* p = new S;
+     // I want to pass the same object twice...
+     std::shared_ptr<S> sp1(p);
+     std::shared_ptr<S> sp2(p);
+     f(sp1, sp2);
+} // UB: both sp1 and sp2 will destroy s separately

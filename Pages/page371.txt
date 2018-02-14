@@ -1,0 +1,22 @@
+﻿when casting void * to uintptr_t as long the transformation can be reversed when casting back from uintptr_t
+to void *.
+Technicalities
+    •  On XSI-conformant (X/Open System Interfaces) systems, intptr_t and uintptr_t types are required,
+      otherwise they are optional.
+    •  Within the meaning of the C standard, functions aren't objects; it isn't guaranteed by the C standard that
+      uintptr_t can hold a function pointer. Anyway POSIX (2.12.3) conformance requires that:
+            All function pointer types shall have the same representation as the type pointer to void.
+            Conversion of a function pointer to void * shall not alter the representation. A void * value
+            resulting from such a conversion can be converted back to the original function pointer type, using
+            an explicit cast, without loss of information.
+     • C99 §7.18.1:
+           When typedef names differing only in the absence or presence of the initial u are defined, they
+           shall denote corresponding signed and unsigned types as described in 6.2.5; an implementation
+           providing one of these corresponding types shall also provide the other.
+      uintptr_t might make sense if you want to do things to the bits of the pointer that you can't do as sensibly
+      with a signed integer.
+Section 71.8: Number of bits in a byte
+In C++, a byte is the space occupied by a char object. The number of bits in a byte is given by CHAR_BIT, which is
+defined in climits and required to be at least 8. While most modern systems have 8-bit bytes, and POSIX requires
+CHAR_BIT to be exactly 8, there are some systems where CHAR_BIT is greater than 8 i.e a single byte may be
+comprised of 8, 16, 32 or 64 bits.

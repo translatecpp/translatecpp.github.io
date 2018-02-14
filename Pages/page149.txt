@@ -1,0 +1,65 @@
+﻿     fn = &Class::B;    // fn now points to B within any Class
+     (p->*fn)(6);       // Pass 6 to c's (via p) function B (via fn)
+} // main()
+Unlike pointers to member variables (in the previous example), the association between the class instance and the
+member pointer need to be bound tightly together with parentheses, which looks a little strange (as though the .*
+and ->* aren't strange enough!)
+Section 32.3: Pointers to member variables
+To access a member of a class, you need to have a "handle" to the particular instance, as either the instance itself,
+or a pointer or reference to it. Given a class instance, you can point to various of its members with a pointer-to-
+member, IF you get the syntax correct! Of course, the pointer has to be declared to be of the same type as what you
+are pointing to...
+class Class {
+public:
+     int x, y,
+char m, n
+}; // Class
+z;
+o;
+int x; // Global variable
+int main() {
+Class  c;         //  
+Class  *p = &c;   //  
+int *p '_i;       //  
+p_i =  &x;        //  
+p_i =  &c.x r     //  
+                O     
+int Class:      1 _i; 
+               Q_     
+                *     
+    ■H                
+     1                
+     O                
+     1                
+    Q_ = &Class:  :x; 
+            1         
+            O         
+int i  = c. 1     i;  
+            Q_        
+            *         
+p_C_i  = &Class:  :y; 
+i = c. *p_C _i;       
+p_C_i  = &Class:  :m; 
+char Class  ::*p_ C_c 
+} // main()
+Need a Class instance to play with
+Need a Class pointer to play with
+Pointer to an int
+Now pointing to x
+Now pointing to c's x
+// Pointer to an int within Class
+// Point to x within any Class
+// Use p_c_i to fetch x from c's instance
+// Point to y within any Class
+// Use p_c_i to fetch y from c's instance
+// ERROR! m is a char, not an int!
+= &Class::m; // That's better...
+The syntax of pointer-to-member requires some extra syntactic elements:
+    •  To define the type of the pointer, you need to mention the base type, as well as the fact that it is inside a
+      class: int Class::*ptr;.
+    •  If you have a class or reference and want to use it with a pointer-to-member, you need to use the .* operator
+      (akin to the . operator).
+    •  If you have a pointer to a class and want to use it with a pointer-to-member, you need to use the ->*
+      operator (akin to the -> operator).
+Section 32.4: Pointers to static member variables
+A static member variable is just like an ordinary C/C++ variable, except with scope:

@@ -1,0 +1,41 @@
+﻿arr[1] = {1, 5};
+arr[2] = {2, 5};
+arr[3] = {0, 1};
+std::map< int, int > mp(arr,arr+4); //{0 , 1}, {1, 3}, {2, 5}
+//From std::vector of std::pair
+std::vector< std::pair<int, int> > v{ {1, 5}, {5, 1}, {3, 6}, {3, 2} };
+std::multimap< int, int > mp(v.begin(), v.end());
+                         // {1, 5}, {3, 6}, {3, 2}, {5, 1}
+Section 51.5: Checking number of elements
+The container std ::map has a member function empty(), which returns true or false, depending on whether the
+map is empty or not. The member function size() returns the number of element stored in a std ::map container:
+std::map<std::string , int> rank {{"facebook.com", 1} ,{"google.com", 2}, {"youtube.com", 3}};
+if(!rank.empty()){
+     std::cout << "Number of elements in the rank map: " << rank.size() << std::endl;
+}
+else{
+     std::cout << "The rank map is empty" << std::endl;
+}
+Section 51.6: Types of Maps
+Regular Map
+A map is an associative container, containing key-value pairs.
+#include <string>
+#include <map>
+std::map<std::string, size_t> fruits_count;
+In the above example, std ::string is the key type, and size_t is a value.
+The key acts as an index in the map. Each key must be unique, and must be ordered.
+    •  If you need mutliple elements with the same key, consider using multimap (explained below)
+    •  If your value type does not specify any ordering, or you want to override the default ordering, you may
+       provide one:
+       #include <string>
+       #include <map>
+       #include <cstring>
+       struct StrLess {
+           bool operator()(const std::string& a, const std::string& b) {
+               return strncmp(a.c_str(), b.c_str(), 8)<0;
+                      //compare only up to 8 first characters
+           }
+       }
+       std::map<std::string, size_t, StrLess> fruits_count2;
+       If StrLess comparator returns false for two keys, they are considered the same even if their actual contents
+       differ.

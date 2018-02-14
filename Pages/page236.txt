@@ -1,0 +1,34 @@
+﻿Chapter 43: Constant class member
+functions
+Section 43.1: constant member function
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+class A {
+public:
+     map<string, string> * mapOfStrings;
+public:
+     A() {
+         mapOfStrings = new map<string, string>();
+     }
+     void insertEntry(string const & key, string const & value) const {
+         (*mapOfStrings)[key] = value;           // This works? Yes it does.
+         delete mapOfStrings;                    // This also works
+         mapOfStrings = new map<string, string>(); // This * does * not work
+     }
+     void refresh() {
+         delete mapOfStrings;
+         mapOfStrings = new map<string, string>(); // Works as refresh is non const function
+     }
+     void getEntry(string const & key) const {
+         cout << mapOfStrings->at(key);
+     }
+};
+int main(int argc, char* argv[]) {
+     A var;
+     var.insertEntry("abc", "abcValue");
+     var.getEntry("abc");
+     getchar();
+     return 0;
+}

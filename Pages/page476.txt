@@ -1,0 +1,45 @@
+﻿interface, as with templates:
+struct MyType { int i; };
+ostream& operator << (ostream &os, MyType const &mc)
+{
+   return os << "MyType {" << mc.i << "}";
+}
+We can now pass an object of this class to the function defined above:
+MyType foo = { 42 };
+print_value(foo);
+Section 90.4: Erasing down to a contiguous buffer of T
+Not all type erasure involves virtual inheritance, allocations, placement new, or even function pointers.
+What makes type erasure type erasure is that it describes a (set of) behavior(s), and takes any type that supports
+that behavior and wraps it up. All information that isn't in that set of behaviors is "forgotten" or "erased".
+An array_view takes its incoming range or container type and erases everything except the fact it is a contiguous
+buffer of T.
+// helper traits for SFINAE:
+template<class T>
+using data_t = decltype( std::declval<T>().data() );
+template<class Src, class T>
+using compatible_data = std::integral_constant<bool, std::is_same< data_t<Src>, T* >{} ||
+std::is_same< data_t<Src>, std::remove_const_t<T>* >{}>;
+template<class T>
+struct array_view {
+   // the core of the class:
+   T* b=nullptr;
+   T* e=nullptr;
+   T* begin() const { return b; }
+   T* end() const { return e; }
+   // provide the expected methods of a good contiguous range:
+   T* data() const { return begin(); }
+   bool empty() const { return begin()==end(); }
+   std::size_t size() const { return end()-begin(); }
+   T& operator[](std::size_t i)const{ return begin()[i]; }
+   T& front()const{ return *begin(); }
+   T& back()const{ return *(end()-1); }
+   // useful helpers that let you generate other ranges from this one
+   // quickly and safely:
+   array_view without_front( std::size_t i=1 ) const {
+     i = (std::min)(i, size());
+     return {begin()+i, end()};
+   }
+   array_view without_back( std::size_t i=1 ) const {
+     i = (std::min)(i, size());
+     return {begin(), end()-i};
+   }

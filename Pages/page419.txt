@@ -1,0 +1,45 @@
+﻿};
+As shown above, partial template specializations may introduce completely different sets of data and function
+members.
+When a partially specialized template is instantiated, the most suitable specialization is selected. For example, let's
+define a template and two partial specializations:
+template<typename T, typename U, typename V>
+struct S {
+      static void foo() {
+          std::cout << "General case\n";
+      }
+};
+template<typename U, typename V>
+struct S<int, U, V> {
+static void foo() {
+          std::cout << "T = int\n";
+     }
+};
+template<typename V>
+struct S<int, double, V> {
+static void foo() {
+          std::cout << "T = int, U = double\n";
+     }
+};
+Now the following calls:
+S<std::string, int, double>::foo();
+S<int, float, std::string>::foo();
+S<int, double, std::string>::foo();
+will print
+General case
+T = int
+T = int, U = double
+Function templates may only be fully specialized:
+template<typename T, typename U>
+void foo(T t, U u) {
+      std::cout << "General case: " << t << " " << u << std::endl;
+}
+// OK.
+template<>
+void foo<int, int>(int a1, int a2) {
+      std::cout << "Two ints: " << a1 << " " << a2 << std::endl;
+}
+void invoke_foo() {
+      foo(1, 2.1); // Prints "General case: 1 2.1"
+      foo(1,2);    // Prints "Two ints: 1 2"
+}

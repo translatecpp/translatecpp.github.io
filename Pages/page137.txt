@@ -1,0 +1,47 @@
+﻿      //Clever trick. Since 'val' is going to be destroyed soon anyway,
+      //we swap his data with ours. His destructor will destroy our data.
+      std::swap(array_, val.array_);
+   }
+};
+Indeed, we can even make such a type non-copyable, if we want to forbid deep copies while still allowing the object
+to be moved around.
+struct Inner {int i;};
+constexpr auto NUM_INNER = 5;
+class Value
+{
+private:
+   Inner *array_; //Normally has reference semantics.
+public:
+   Value() : array_(new Inner[NUM_INNER]){}
+   //OK to delete even if nullptr
+   ~Value() {delete[] array_;}
+   Value(const Value &val) = delete;
+   Value &operator=(const Value &val) = delete;
+   //Movement means no memory allocation.
+   //Cannot throw exceptions.
+   Value(Value &&val) noexcept : array_(val.array_)
+   {
+     //We've stolen the old value.
+     val.array_ = nullptr;
+   }
+   //Cannot throw exceptions.
+   Value &operator=(Value &&val) noexcept
+   {
+     //Clever trick. Since 'val' is going to be destroyed soon anyway,
+     //we swap his data with ours. His destructor will destroy our data.
+     std::swap(array_, val.array_);
+   }
+};
+We can even apply the Rule of Zero, through the use of unique_ptr:
+struct Inner {int i;};
+constexpr auto NUM_INNER = 5;
+class Value
+{
+private:
+   unique_ptr<Inner []>array_; //Move-only type.
+public:
+   Value() : array_(new Inner[NUM_INNER]){}
+   //No need to explicitly delete. Or even declare.
+   ~Value() = default; {delete[] array_;}
+   //No need to explicitly delete. Or even declare.
+   Value(const Value &val) = default;

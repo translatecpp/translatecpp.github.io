@@ -1,0 +1,32 @@
+﻿Programs written in C++ need to be compiled before they can be run. There is a large variety of compilers available
+depending on your operating system.
+Section 138.1: Compiling with GCC
+Assuming a single source file named main. cpp, the command to compile and link an non-optimized executable is as
+follows (Compiling without optimization is useful for initial development and debugging, although -Og is officially
+recommended for newer GCC versions).
+g++ -o app -Wall main.cpp -O0
+To produce an optimized executable for use in production, use one of the -O options (see: -O1, -O2, -O3, -Os, -
+Ofast):
+g++ -o app -Wall -O2 main.cpp
+If the -O option is omitted, -O0, which means no optimizations, is used as default (specifying -O without a number
+resolves to -O1).
+Alternatively, use optimization flags from the O groups (or more experimental optimizations) directly. The following
+example builds with -O2 optimization, plus one flag from the -O3 optimization level:
+g++ -o app -Wall -O2 -ftree-partial-pre main.cpp
+To produce a platform-specific optimized executable (for use in production on the machine with the same
+architecture), use:
+g++ -o app -Wall -O2 -march=native main.cpp
+Either of the above will produce a binary file that can be run with .\app.exe on Windows and . /app on Linux, Mac
+OS, etc.
+The -o flag can also be skipped. In this case, GCC will create default output executable a.exe on Windows and
+a.out on Unix-like systems. To compile a file without linking it, use the -c option:
+g++ -o file.o -Wall -c file.cpp
+This produces an object file named file.o which can later be linked with other files to produce a binary:
+g++ -o app file.o otherfile.o
+More about optimization options can be found at gcc.gnu.org. Of particular note are -Og (optimization with an
+emphasis on debugging experience -- recommended for the standard edit-compile-debug cycle) and -Ofast (all
+optimizations, including ones disregarding strict standards compliance).
+The -Wall flag enables warnings for many common errors and should always be used. To improve code quality it is
+often encouraged also to use -Wextra and other warning flags which are not automatically enabled by -Wall and -
+Wextra.
+If the code expects a specific C++ standard, specify which standard to use by including the -std= flag. Supported

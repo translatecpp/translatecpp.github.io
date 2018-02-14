@@ -1,0 +1,44 @@
+﻿};
+     Outer();
+class Outer::Inner2 {};
+Outer::Outer() : in1(Inner1()), in2p(new Inner2) {}
+Outer::~Outer() {
+      if (in2p) { delete in2p; }
+}
+Version < C++11
+Prior to C++11, nested classes only had access to type names, static members, and enumerators from the
+enclosing class; all other members defined in the enclosing class were off-limits.
+Version > C++11
+As of C++11, nested classes, and members thereof, are treated as if they were friends of the enclosing class, and
+can access all of its members, according to the usual access rules; if members of the nested class require the ability
+to evaluate one or more non-static members of the enclosing class, they must therefore be passed an instance:
+class Outer {
+      struct Inner {
+          int get_sizeof_x() {
+              return sizeof(x); // Legal (C++11): x is unevaluated, so no instance is required.
+          }
+          int get_x() {
+              return x; // Illegal: Can't access non-static member without an instance.
+          }
+          int get_x(Outer& o) {
+              return o.x; // Legal (C++11): As a member of Outer, Inner can access private members.
+          }
+      };
+      int x;
+};
+Conversely, the enclosing class is not treated as a friend of the nested class, and thus cannot access its private
+members without explicitly being granted permission.
+class Outer {
+      class Inner {
+          // friend class Outer;
+          int x;
+      };
+      Inner in;
+   public:
+      int get_x() {
+          return in.x; // Error: int Outer::Inner::x is private.
+          // Uncomment "friend" line above to fix.
+      }
+};
+Friends of a nested class are not automatically considered friends of the enclosing class; if they need to be friends
+of the enclosing class as well, this must be declared separately. Conversely, as the enclosing class is not

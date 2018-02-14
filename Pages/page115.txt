@@ -1,0 +1,34 @@
+﻿Chapter 24: Keywords
+Keywords have fixed meaning defined by the C++ standard and cannot be used as identifiers. It is illegal to redefine
+keywords using the preprocessor in any translation unit that includes a standard library header. However,
+keywords lose their special meaning inside attributes.
+Section 24.1: asm
+The asm keyword takes a single operand, which must be a string literal. It has an implementation-defined meaning,
+but is typically passed to the implementation's assembler, with the assembler's output being incorporated into the
+translation unit.
+The asm statement is a definition, not an expression, so it may appear either at block scope or namespace scope
+(including global scope). However, since inline assembly cannot be constrained by the rules of the C++ language,
+asm may not appear inside a constexpr function.
+Example:
+[[noreturn]] void halt_system() {
+    asm("hlt");
+}
+Section 24.2: Different keywords
+    void C++
+    1. When used as a function return type, the void keyword specifies that the function does not return a value.
+       When used for a function's parameter list, void specifies that the function takes no parameters. When used
+       in the declaration of a pointer, void specifies that the pointer is "universal."
+    2. If a pointer's type is void *, the pointer can point to any variable that is not declared with the const or volatile
+       keyword. A void pointer cannot be dereferenced unless it is cast to another type. A void pointer can be
+       converted into any other type of data pointer.
+    3. A void pointer can point to a function, but not to a class member in C++.
+       void vobject; // C2182
+       void *pv; // okay
+       int *pint; int i;
+       int main() {
+       pv = &i;
+           // Cast optional in C required in C++
+       pint = (int *)pv;
+      Volatile C++
+   1. A type qualifier that you can use to declare that an object can be modified in the program by the hardware.
+       volatile declarator ;

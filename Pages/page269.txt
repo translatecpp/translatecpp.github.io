@@ -1,0 +1,52 @@
+﻿The front(), and back(), member functions allow easy reference access to the first and last element of the vector,
+respectively. These positions are frequently used, and the special accessors can be more readable than their
+alternatives using []:
+std::vector<int> v{ 4, 5, 6 }; // In pre-C++11 this is more verbose
+int a = v.front();
+v.front() = 3;
+int b = v.back();
+v.back() = 7;
+// a is 4, v.front() is equivalent to v[0]
+// v now contains {3, 5, 6}
+// b is 6, v.back() is equivalent to v[v.size() - 1]
+// v now contains {3, 5, 7}
+Note: It is undefined behavior to invoke front() or back() on an empty vector. You need to check that the
+container is not empty using the empty() member function (which checks if the container is empty) before calling
+front() or back(). A simple example of the use of 'empty()' to test for an empty vector follows:
+int main ()
+{
+   std::vector<int> v;
+   int sum (0);
+   for (int i=1;i<=10;i++) v.push_back(i);//create and initialize the vector
+   while (!v.empty())//loop through until the vector tests to be empty
+   {
+      sum += v.back();//keep a running total
+      v.pop_back();//pop out the element which removes it from the vector
+   }
+   std::cout << "total: " << sum << '\n';//output the total to the user
+   return 0;
+}
+The example above creates a vector with a sequence of numbers from 1 to 10. Then it pops the elements of the
+vector out until the vector is empty (using 'empty()') to prevent undefined behavior. Then the sum of the numbers
+in the vector is calculated and displayed to the user.
+Version > C++11
+The data() method returns a pointer to the raw memory used by the std ::vector to internally store its elements.
+This is most often used when passing the vector data to legacy code that expects a C-style array.
+std ::vector<int> v{ 1, 2 , 3, 4 }; // v  contains {1   
+int* p = v.data() ; //  p points to 1                   
+*p = 4;           //    v now contains {4 , 2, 3,   4}  
+++p;              //    p points to 2                   
+*p = 3;           //    v now contains {4 , 3, 3,   4}  
+p[1] = 2;         //    v now contains {4 , 3, 2,   4}  
+II                                                      
+CM                                                      
++                 //    v now contains {4 , 3,      1}  
+Q_                                                      
+*                                              2,       
+Version < C++11
+2, 3, 4}
+Before C++11, the data() method can be simulated by calling front() and taking the address of the returned
+value:
+std::vector<int> v(4);
+int* ptr = &(v.front()); // or &v[0]
+This works because vectors are always guaranteed to store their elements in contiguous memory locations,

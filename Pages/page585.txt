@@ -1,0 +1,32 @@
+﻿constexpr is a keyword that can be used to mark a variable's value as a constant expression, a function as
+potentially usable in constant expressions, or (since C++17) an if statement as having only one of its branches
+selected to be compiled.
+Section 119.1: constexpr variables
+A variable declared constexpr is implicitly const and its value may be used as a constant expression.
+Comparison with #define
+A constexpr is type-safe replacement for #define based compile-time expressions. With constexpr the compile-
+time evaluated expression is replaced with the result. For example:
+Version > C++11
+int main()
+{
+    constexpr int N = 10 + 2;
+    cout << N;
+}
+will produce the following code:
+cout << 12;
+A pre-processor based compile-time macro would be different. Consider:
+#define N 10 + 2
+int main()
+{
+     cout << N;
+}
+will produce:
+cout << 10 + 2;
+which will obviously be converted to cout << 10 + 2;. However, the compiler would have to do more work. Also, it
+creates a problem if not used correctly.
+For example (with #define):
+cout << N * 2;
+forms:
+cout << 10 + 2 * 2; // 14
+But a pre-evaluated constexpr would correctly give 24.
+Comparison with const

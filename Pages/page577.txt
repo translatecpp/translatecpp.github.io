@@ -1,0 +1,37 @@
+﻿Section 115.2: Placement new
+There are situations when we don't want to rely upon Free Store for allocating memory and we want to use custom
+memory allocations using new.
+For these situations we can use Placement New, where we can tell 'new' operator to allocate memory from a pre-
+allocated memory location
+For example
+int a4byteInteger;
+char *a4byteChar = new (&a4byteInteger) char[4];
+In this example, the memory pointed by a4byteChar is 4 byte allocated to 'stack' via integer variable a4byteInteger.
+The benefit of this kind of memory allocation is the fact that programmers control the allocation. In the example
+above, since a4byteInteger is allocated on stack, we don't need to make an explicit call to 'delete a4byteChar'.
+Same behavior can be achieved for dynamic allocated memory also. For example
+int *a8byteDynamicInteger = new int[2];
+char *a8byteChar = new (a8byteDynamicInteger) char[8];
+In this case, the memory pointer by a8byteChar will be referring to dynamic memory allocated by
+a8byteDynamicInteger. In this case however, we need to explicitly calldelete a8byteDynamicInteger to release the
+memory
+Another example for C++ Class
+struct ComplexType {
+     int a;
+     ComplexType() : a(0) {}
+     ~ComplexType() {}
+};
+int main() {
+     char* dynArray = new char[256];
+     //Calls ComplexType's constructor to initialize memory as a ComplexType
+     new((void*)dynArray) ComplexType();
+     //Clean up memory once we're done
+     reinterpret_cast<ComplexType*>(dynArray)->~ComplexType();
+     delete[] dynArray;
+     //Stack memory can also be used with placement new
+     alignas(ComplexType) char localArray[256]; //alignas() available since C++11
+     new((void*)localArray) ComplexType();
+     //Only need to call the destructor for stack memory
+     reinterpret_cast<ComplexType*>(localArray)->~ComplexType();
+     return 0;
+}

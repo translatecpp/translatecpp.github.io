@@ -1,0 +1,42 @@
+﻿struct ExConst {
+const  static int ci = 5;            // Good. 
+static const  E ce = VAL;            // Good. 
+const  static double cd = 5;         // Error 
+static const  volatile int cvi = 5;  // Error 
+const  static double good_cd;                 
+static const  volatile int good_cvi;          
+};
+const double ExConst::good_cd = 5;         // Good.
+const volatile int ExConst::good_cvi = 5; // Good.
+Version > C++11
+As of C++11, static member variables of LiteralType types (types that can be constructed at compile time,
+according to constexpr rules) can also be declared as constexpr; if so, they must be initialised within the class
+definition.
+struct ExConstexpr {
+     constexpr static int ci = 5;                        //  Good.
+     static constexpr double cd = 5;                     //  Good.
+     constexpr static int carr[] = {   1, 1,  2 };       //  Good.
+     static constexpr ConstexprConstructibleClass c{};   //  Good.
+     constexpr static int bad_ci;                        // Error.
+};
+constexpr int ExConstexpr::bad_ci = 5;                     // Still an error.
+If a const or constexpr static member variable is odr-used (informally, if it has its address taken or is assigned to a
+reference), then it must still have a separate definition, outside the class definition. This definition is not allowed to
+contain an initialiser.
+struct ExODR {
+      static const int odr_used = 5;
+};
+// const int ExODR::odr_used;
+const int* odr_user = & ExODR::odr_used; // Error; uncomment above line to resolve.
+As static members aren't tied to a given instance, they can be accessed using the scope operator, ::.
+std::string str = Example::static_str;
+They can also be accessed as if they were normal, non-static members. This is of historical significance, but is used
+less commonly than the scope operator to prevent confusion over whether a member is static or non-static.
+Example ex;
+std::string rts = ex.static_str;
+Class members are able to access static members without qualifying their scope, as with non-static class members.
+class ExTwo {
+     static int num_instances;
+     int my_num;
+   public:
+     ExTwo() : my_num(num_instances++) {}

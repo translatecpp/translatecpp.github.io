@@ -1,0 +1,47 @@
+﻿       **this = std::move(t);
+     } else {
+       *this = value_ptr(std::move(t));
+     }
+     return *this;
+   }
+   T& get() { return **this; }
+   T const& get() const { return **this; }
+   T* get_pointer() {
+     if (!*this) return nullptr;
+     return std::addressof(get());
+   }
+   T const* get_pointer() const {
+     if (!*this) return nullptr;
+     return std::addressof(get());
+   }
+   // operator-> from unique_ptr
+};
+template<class T, class...Args>
+value_ptr<T> make_value_ptr( Args&&... args ) {
+   return {std::make_unique<T>(std::forward<Args>(args)...)};
+}
+This particular value_ptr is only empty if you construct it with empty_ptr_t or if you move from it. It exposes the fact
+it is a unique_ptr, so explicit operator bool() const works on it. .get() has been changed to return a
+reference (as it is almost never empty), and .get_pointer() returns a pointer instead.
+This smart pointer can be useful for pImpl cases, where we want value-semantics but we also don't want to expose
+the contents of the pImpl outside of the implementation file.
+With a non-default Copier, it can even handle virtual base classes that know how to produce instances of their
+derived and turn them into value-types.
+Section 34.8: Getting a shared_ptr referring to this
+enable_shared_from_this enables you to get a valid shared_ptr instance to this.
+By deriving your class from the class template enable_shared_from_this, you inherit a method shared_from_this
+that returns a shared_ptr instance to this.
+Note that the object must be created as a shared_ptr in first place:
+#include <memory>
+class A: public enable_shared_from_this<A> {
+};
+A* ap1 =new A();
+shared_ptr<A> ap2(ap1); // First prepare a shared pointer to the object and hold it!
+// Then get a shared pointer to the object from the object itself
+shared_ptr<A> ap3 = ap1->shared_from_this();
+int c3 =ap3.use_count(); // =2: pointing to the same object
+Note(2) you cannot call enable_shared_from_this inside the constructor.
+#include <memory> // enable_shared_from_this
+class Widget : public std::enable_shared_from_this< Widget >
+{
+public:

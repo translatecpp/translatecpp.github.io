@@ -1,0 +1,40 @@
+﻿//Use it like this (R is return type, a and b are variables)
+R foo = object(a, b, ...);
+For example:
+struct Sum
+{
+      int operator()(int a, int b)
+      {
+          return a + b;
+      }
+};
+//Create instance of struct
+Sum sum;
+int result = sum(1, 1); //result == 2
+Section 37.10: Bitwise NOT operator
+Overloading the bitwise NOT (~) is fairly simple. Scroll down for explanation
+Overloading outside of class/struct:
+T operator~(T lhs)
+{
+     //Do operation
+     return lhs;
+}
+Overloading inside of class/struct:
+T operator~()
+{
+     T t(*this);
+     //Do operation
+     return t;
+}
+Note: operator^ returns by value, because it has to return a new value (the modified value), and not a reference to
+the value (it would be a reference to the temporary object, which would have garbage value in it as soon as the
+operator is done). Not const either because the calling code should be able to modify it afterwards (i.e. int a = ~a
++ 1; should be possible).
+Inside the class/struct you have to make a temporary object, because you can't modify this, as it would modify
+the original object, which shouldn't be the case.
+Section 37.11: Bit shift operators for I/O
+The operators << and >> are commonly used as "write" and "read" operators:
+    •  std ::ostream overloads << to write variables to the underlying stream (example: std ::cout)
+    •  std ::istream overloads >> to read from the underlying stream to a variable (example: std ::cin)
+The way they do this is similar if you wanted to overload them "normally" outside of the class/struct, except that
+specifying the arguments are not of the same type:

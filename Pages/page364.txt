@@ -1,0 +1,35 @@
+﻿numeric string like: "123" Let's use a n or more quantifier to ensure that we're getting at least 7 digits:
+regex_match(input, regex("\\d{7,}"))
+This will guarantee that we will get at least a phone number of digits, but input could also contain a numeric string
+that's too long like: "123456789012". So lets go with a between n and m quantifier so the input is at least 7 digits
+but not more than 11:
+regex_match(input, regex("\\d{7,11}"));
+This gets us closer, but illegal numeric strings that are in the range of [7, 11] are still accepted, like: "123456789" So
+let's make the country code optional with a lazy quantifier:
+regex_match(input, regex("\\d?\\d{7,10}"))
+It's important to note that the lazy quantifier matches as few characters as possible, so the only way this character
+will be matched is if there are already 10 characters that have been matched by \d{7,10}. (To match the first
+character greedily we would have had to do: \d{0,1}.) The lazy quantifier can be appended to any other
+quantifier.
+Now, how would we make the area code optional and only accept a country code if the area code was present?
+regex_match(input, regex("(?:\\d{3,4})?\\d{7}"))
+In this final regex, the \d{7} requires 7 digits. These 7 digits are optionally preceded by either 3 or 4 digits.
+Note that we did not append the lazy quantifier: \d{3,4}?\d{7}, the \d{3,4}? would have matched either 3 or 4
+characters, preferring 3. Instead we're making the non-capturing group match at most once, preferring not to
+match. Causing a mismatch if input didn't include the area code like: "1234567".
+In conclusion of the quantifier topic, I'd like to mention the other appending quantifier that you can use, the
+possessive quantifier. Either the lazy quantifier or the possessive quantifier can be appended to any quantifier.
+The possessive quantifier's only function is to assist the regex engine by telling it, greedily take these characters
+and don't ever give them up even if it causes the regex to fail. This for example doesn't make much sense:
+regex_match(input, regex( "\\d{3,4}+\\d{7})) Because an input like: "1234567890" wouldn't be matched as
+\d{3,4}+ will always match 4 characters even if matching 3 would have allowed the regex to succeed.
+The possessive quantifier is best used when the quantified token limits the number of matchable characters. For
+example:
+regex_match(input, regex("(?:.*\\d{3,4}+){3}"))
+Can be used to match if input contained any of the following:
+     123 456 7890
+     123-456-7890
+     (123)456-7890
+     (123) 456 - 7890
+But when this regex really shines is when input contains an illegal input:
+     12345 - 67890

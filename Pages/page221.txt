@@ -1,0 +1,43 @@
+﻿Chapter 40: Inline functions
+A function defined with the inline specifier is an inline function. An inline function can be multiply defined without
+violating the One Definition Rule, and can therefore be defined in a header with external linkage. Declaring a
+function inline hints to the compiler that the function should be inlined during code generation, but does not
+provide a guarantee.
+Section 40.1: Non-member inline function definition
+inline int add(int x, int y)
+{
+    return x + y;
+}
+Section 40.2: Member inline functions
+// header (.hpp)
+struct A
+{
+    void i_am_inlined()
+    {
+    }
+};
+struct B
+{
+    void i_am_NOT_inlined();
+};
+// source (.cpp)
+void B:: i_am_NOT_inlined ()
+{
+}
+Section 40.3: What is function inlining?
+inline int add(int x, int y)
+{
+      return x + y;
+}
+int main()
+{
+      int a = 1, b = 2;
+      int c = add(a, b);
+}
+In the above code, when add is inlined, the resulting code would become something like this
+int main()
+{
+      int a = 1, b = 2;
+      int c = a + b;
+}
+The inline function is nowhere to be seen, its body gets inlined into the caller's body. Had add not been inlined, a

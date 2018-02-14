@@ -1,0 +1,38 @@
+﻿     std::cout << r << "\n";
+In this example, the local variable x goes out of scope when getX returns. (Note that lifetime extension cannot
+extend the lifetime of a local variable past the scope of the block in which it is defined.) Therefore r is a dangling
+reference. This program has undefined behavior, although it may appear to work and print 42 in some cases.
+Section 104.9: Integer division by zero
+int x = 5 / 0;    // Undefined behavior
+Division by 0 is mathematically undefined, and as such it makes sense that this is undefined behavior.
+However:
+float x = 5.0f / 0.0f;   // x is +infinity
+Most implementation implement IEEE-754, which defines floating point division by zero to return NaN (if numerator
+is 0.0f), infinity (if numerator is positive) or -infinity (if numerator is negative).
+Section 104.10: Shifting by an invalid number of positions
+For the built-in shift operator, the right operand must be nonnegative and strictly less than the bit width of the
+promoted left operand. Otherwise, the behavior is undefined.
+const int a = 42;
+const int   b = a << -1; // UB
+const int   c = a << 0;  // ok
+const int   d = a << 32; // UB if int is 32 bits or less
+const int   e = a >> 32; // also UB if int is 32 bits or less
+const signed char f = 'x';
+const int g = f << 10; // ok even if signed char is 10 bits or less;
+                        // int must be at least 16 bits
+Section 104.11: Incorrect pairing of memory allocation and
+deallocation
+An object can only be deallocated by delete if it was allocated by new and is not an array. If the argument to delete
+was not returned by new or is an array, the behavior is undefined.
+An object can only be deallocated by delete[ ] if it was allocated by new and is an array. If the argument to delete[ ]
+was not returned by new or is not an array, the behavior is undefined.
+If the argument to free was not returned by malloc, the behavior is undefined.
+int* p1 = new int;
+delete p1;      // correct
+// delete[] p1;   // undefined
+// free(p1);      // undefined
+int* p2 = new int[10];
+delete[] p2;    // correct
+// delete p2;     // undefined
+// free(p2);      // undefined
+int* p3 = static_cast<int*>(malloc(sizeof(int)));

@@ -1,0 +1,45 @@
+﻿            CtorThisDerived's vtable until CtorThisDerived(). Therefore, virt_func() will call
+            CtorThis ::virt_func(), regardless of whether it is intended to call that or
+            CtorThisDerived ::virt_func().
+Section 33.2: Using the this Pointer to Access Member Data
+In this context, using the this pointer isn't entirely necessary, but it will make your code clearer to the reader, by
+indicating that a given function or variable is a member of the class. An example in this situation:
+// Example for this pointer
+#include <iostream>
+#include <string>
+using std::cout;
+using std::endl;
+class Class
+{
+   public:
+     Class();
+     ~Class();
+     int getPrivateNumber () const;
+   private:
+     int private_number = 42;
+};
+Class::Class(){}
+Class::~Class(){}
+int Class::getPrivateNumber() const
+{
+     return this->private_number;
+}
+int main()
+{
+     Class class_example;
+     cout << class_example.getPrivateNumber() << endl;
+}
+See it in action here.
+Section 33.3: Using the this Pointer to Differentiate Between
+Member Data and Parameters
+This is an actual useful strategy to differentiate member data from parameters... Lets take this example :
+// Dog Class Example
+#include <iostream>
+#include <string>
+using std::cout;
+using std::endl;
+/*
+*  @class Dog
+*   @member name
+*      Dog's name
+*   @function bark

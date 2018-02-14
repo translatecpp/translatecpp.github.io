@@ -1,0 +1,37 @@
+﻿For anyone more familiar with *nix systems and/or GCC/Clang, cl, link, and other Visual Studio command line
+tools can accept parameters specified with a hyphen (such as -c) instead of a slash (such as /c). Additionally,
+Windows recognises either a slash or a backslash as a valid path separator, so *nix-style paths can be used as well.
+This makes it easy to convert simple compiler command lines from g++ or clang++ to cl, or vice versa, with minimal
+changes.
+g++ -o app src/main.cpp
+cl -o app src/main.cpp
+Of course, when porting command lines that use more complex g++ or clang++ options, you need to look up
+equivalent commands in the applicable compiler documentations and/or on resource sites, but this makes it easier
+to get things started with minimal time spent learning about new compilers.
+In case you need specific language features for your code, a specific release of MSVC was required. From Visual C++
+2015 Update 3 on it is possible to choose the version of the standard to compile with via the /std flag. Possible
+values are /std:c++14 and /std:c++latest (/std:c++17 will follow soon).
+Note: In older versions of this compiler, specific feature flags were available however this was mostly used for
+previews of new features.
+Section 138.5: Compiling with Clang
+As the Clang front-end is designed for being compatible with GCC, most programs that can be compiled via GCC will
+compile when you swap g++ by clang++ in the build scripts. If no -std=version is given, gnu11 will be used.
+Windows users who are used to MSVC can swap cl.exe with clang-cl.exe. By default, clang tries to be compatible
+with the highest version of MSVC that has been installed.
+In the case of compiling with visual studio, clang-cl can be used by changing the Platform toolset in the project
+properties.
+In both cases, clang is only compatible via its front-end, though it also tries to generate binary compatible object
+files. Users of clang-cl should note that the compatibility with MSVC is not complete yet.
+To use clang or clang-cl, one could use the default installation on certain Linux distributions or those bundled with
+IDEs (like XCode on Mac). For other versions of this compiler or on platforms which don't have this installed, this
+can be download from the official download page.
+If you're using CMake to build your code you can usually switch the compiler by setting the CC and CXX environment
+variables like this:
+mkdir build
+cd build
+CC=clang CXX=clang++ cmake ..
+cmake --build .
+See also introduction to Cmake.
+Section 138.6: The C++ compilation process
+When you develop a C++ program, the next step is to compile the program before running it. The compilation is the
+process which converts the program written in human readable language like C, C++ etc into a machine code,

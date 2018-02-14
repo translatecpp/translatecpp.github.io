@@ -1,0 +1,47 @@
+﻿Success 1
+Section 83.3: ScopeFail (c++17)
+Version > C++17
+Thanks to int std ::uncaught_exceptions(), we can implement action which executes only on failure (thrown
+exception in scope). Previously bool std ::uncaught_exception() just allows to detect if any stack unwinding is
+running.
+#include <exception>
+#include <iostream>
+template <typename F>
+class ScopeFail
+{
+private:
+     F f;
+     int uncaughtExceptionCount = std::uncaught_exceptions();
+public:
+     explicit ScopeFail(const F& f) : f(f) {}
+     ScopeFail(const ScopeFail&) = delete;
+     ScopeFail& operator =(const ScopeFail&) = delete;
+     // f() should not throw, else std::terminate is called.
+     ~ScopeFail() {
+          if (uncaughtExceptionCount != std::uncaught_exceptions()) {
+              f();
+          }
+     }
+};
+struct Foo {
+     ~Foo() {
+          try {
+              ScopeFail logFailure{[](){std::cout << "Fail 1\n";}};
+              // Scope succeeds,
+              // even if Foo is destroyed during stack unwinding
+              // (so when 0 < std::uncaught_exceptions())
+              // (or previously std::uncaught_exception() == true)
+          } catch (...) {
+          }
+          try {
+              ScopeFail logFailure{[](){std::cout << "Failure 2\n";}};
+              throw std::runtime_error("Failed"); // returned value
+                                                   // of std::uncaught_exceptions increases
+          } catch (...) { // returned value of std::uncaught_exceptions decreases
+          }
+     }
+};
+int main()
+{
+      try {
+          Foo foo;

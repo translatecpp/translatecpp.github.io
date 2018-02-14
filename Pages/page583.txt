@@ -1,0 +1,9 @@
+﻿outer class, hides the first one.
+{
+      int x = 100;
+      {
+          int x = 200;
+          std::cout << x; // <- Output is 200
+      }
+      std::cout << x; // <- Output is 100
+}

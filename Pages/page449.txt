@@ -1,0 +1,42 @@
+﻿Since name was allocated in the constructor, the destructor deallocates it to avoid leaking memory. But what
+happens if such an object is copied?
+int main()
+{
+     Person pi("foo", 11);
+     Person p2 = pi ;
+}
+First, pi will be constructed. Then p2 will be copied from pi. However, the C++-generated copy constructor will copy
+each component of the type as-is. Which means that pl.name and p2.name both point to the same string.
+When main ends, destructors will be called. First p2's destructor will be called; it will delete the string. Then pi's
+destructor will be called. However, the string is already deleted. Calling delete on memory that was already deleted
+yields undefined behavior.
+To avoid this, it is necessary to provide a suitable copy constructor. One approach is to implement a reference
+counted system, where different Person instances share the same string data. Each time a copy is performed, the
+shared reference count is incremented. The destructor then decrements the reference count, only releasing the
+memory if the count is zero.
+Or we could implement value semantics and deep copying behavior:
+Person(Person const& other)
+     : name(new char[std::strlen(other.name) + 1])
+     , age(other.age)
+{
+     std::strcpy(name, other.name);
+}
+Person &operator=(Person const& other)
+{
+     // Use copy and swap idiom to implement assignment
+     Person copy(other);
+     swap(copy);             // assume swap() exchanges contents of *this and copy
+     return *this;
+}
+Implementation of the copy assignment operator is complicated by the need to release an existing buffer. The copy
+and swap technique creates a temporary object which holds a new buffer. Swapping the contents of *this and
+copy gives ownership to copy of the original buffer. Destruction of copy, as the function returns, releases the buffer
+previously owned by *this.
+Section 82.4: Self-assignment Protection
+When writing a copy assignment operator, it is very important that it be able to work in the event of self-
+assignment. That is, it has to allow this:
+SomeType t = ...;
+t = t;
+Self-assignment usually doesn't happen in such an obvious way. It typically happens via a circuitous route through
+various code systems, where the location of the assignment simply has two Person pointers or references and has
+no idea that they are the same object.

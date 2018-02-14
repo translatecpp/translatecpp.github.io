@@ -1,0 +1,16 @@
+﻿Section 72.9: Function Try Blocks In destructor
+struct A
+{
+      ~A() noexcept(false) try
+      {
+          // destructor body
+      }
+      catch (...)
+      {
+          // exceptions of destructor body are caught here
+          // if no exception is thrown here
+          // then the caught exception is re-thrown.
+      }
+};
+Note that, although this is possible, one needs to be very careful with throwing from destructor, as if a destructor
+called during stack unwinding throws an exception, std — terminate is called.

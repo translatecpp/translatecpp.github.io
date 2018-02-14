@@ -1,0 +1,48 @@
+﻿      void foo()
+      {
+          pi = 0; //well formed, pi is public in B
+          p2 = 0; //well formed, p2 is protected in B
+          p3 = 0; //ill formed, p3 is private in A
+      }
+};
+B b;
+b.p1 = 1; //well formed, p1 is public
+b.p2 = 1; //ill formed, p2 is protected
+b.p3 = 1; //ill formed, p3 is inaccessible
+private inheritance:
+struct B : private A
+{
+      void foo()
+      {
+          p1 = 0; //well formed, p1 is private in B
+          p2 = 0; //well formed, p2 is private in B
+          p3 = 0; //ill formed, p3 is private in A
+      }
+};
+B b;
+b.p1   = 1; //ill  formed, p1  is  private
+b.p2   = 1; //ill  formed, p2  is  private
+b.p3   = 1; //ill  formed, p3  is  inaccessible
+protected inheritance:
+struct B : protected A
+{
+      void foo()
+      {
+          p1 = 0; //well formed, p1 is protected in B
+          p2 = 0; //well formed, p2 is protected in B
+          p3 = 0; //ill formed, p3 is private in A
+      }
+};
+B b;
+b.p1   = 1; //ill  formed, p1  is  protected
+b.p2   = 1; //ill  formed, p2  is  protected
+b.p3   = 1; //ill  formed, p3  is  inaccessible
+Note that although protected inheritance is allowed, the actual use of it is rare. One instance of how protected
+inheritance is used in application is in partial base class specialization (usually referred to as "controlled
+polymorphism").
+When OOP was relatively new, (public) inheritance was frequently said to model an "IS-A" relationship. That is,
+public inheritance is correct only if an instance of the derived class is also an instance of the base class.
+This was later refined into the Liskov Substitution Principle: public inheritance should only be used when/if an
+instance of the derived class can be substituted for an instance of the base class under any possible circumstance
+(and still make sense).
+Private inheritance is typically said to embody a completely different relationship: "is implemented in terms of"

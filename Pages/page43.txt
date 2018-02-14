@@ -1,0 +1,29 @@
+﻿     ++(*this);
+     return r;
+   }
+   // generator iterators are only equal if they are both in the "end" state:
+   friend bool operator==( generator_iterator const& lhs, generator_iterator const& rhs ) {
+   if (!lhs.state && !rhs.state) return true;
+   return false;
+   }
+   friend bool operator!=( generator_iterator const& lhs, generator_iterator const& rhs ) {
+     return !(lhs==rhs);
+   }
+   // We implicitly construct from a std::function with the right signature:
+   generator_iterator( std::function< std::optional<T>() > f ):operation(std::move(f))
+   {
+     if (operation)
+       state = operation();
+   }
+   // default all special member functions:
+   generator_iterator( generator_iterator && ) =default;
+   generator_iterator( generator_iterator const& ) =default;
+   generator_iterator& operator=( generator_iterator && ) =default;
+   generator_iterator& operator=( generator_iterator const& ) =default;
+   generator_iterator() =default;
+};
+live example.
+We store the generated element early so we can more easily detect if we are already at the end.
+As the function of an end generator iterator is never used, we can create a range of generator iterators by only
+copying the std ::function once. A default constructed generator iterator compares equal to itself, and to all other
+end-generator-iterators.

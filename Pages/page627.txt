@@ -1,0 +1,43 @@
+﻿This topic covers the basics of concurrency in C++ using OpenMP. OpenMP is documented in more detail in the
+OpenMP tag.
+Parallelism or concurrency implies the execution of code at the same time.
+Section 131.1: OpenMP: Parallel Sections
+This example illustrates the basics of executing sections of code in parallel.
+As OpenMP is a built-in compiler feature, it works on any supported compilers without including any libraries. You
+may wish to include omp.h if you want to use any of the openMP API features.
+Sample Code
+std::cout << "begin ";
+//   This pragma statement hints the compiler that the
+//   contents within the { } are to be executed in as
+// parallel sections using openMP, the compiler will
+// generate this chunk of code for parallel execution
+#pragma omp parallel sections
+{
+     // This pragma statement hints the compiler that
+     // this is a section that can be executed in parallel
+     // with other section, a single section will be executed
+     // by a single thread.
+     // Note that it is "section" as opposed to "sections" above
+     #pragma omp section
+     {
+         std::cout << "hello " << std::endl;
+         /** Do something **/
+     }
+     #pragma omp section
+     {
+         std::cout << "world " << std::endl;
+         /** Do something **/
+     }
+}
+// This line will not be executed until all the
+// sections defined above terminates
+std::cout << "end" << std::endl;
+Outputs
+This example produces 2 possible outputs and is dependent on the operating system and hardware. The output
+also illustrates a race condition problem that would occur from such an implementation.
+     OUTPUT A          OUTPUTB
+begin hello world end begin world hello end
+Section 131.2: OpenMP: Parallel Sections
+This example shows how to execute chunks of code in parallel
+std::cout << "begin ";
+// Start of parallel sections

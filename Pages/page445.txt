@@ -1,0 +1,20 @@
+﻿     auto lock = buf.lock_for_reading();
+     for(auto c: buf)
+          sum = (sum << 8) | (((unsigned char) ((sum & 0xFF000000) >> 24)) A c);
+     return sum;
+}
+Clearing the object updates its internal data so it must be done using an exclusing lock.
+void clear(text_buffer& buf)
+{
+     auto lock = buf.lock_for_updates(); // exclusive lock
+     std::fill(std::begin(buf), std::end(buf), '\0');
+}
+When obtaining more than one lock care should be taken to always acquire the locks in the same order for all
+threads.
+void transfer(text_buffer const& input, text_buffer& output)
+{
+     auto lock1 = input.lock_for_reading();
+     auto lock2 = output.lock_for_updates();
+     std::copy(std::begin(input), std ::end(input), std ::begin(output));
+}
+note: This is best done using std::deferred::lock and calling std::lock

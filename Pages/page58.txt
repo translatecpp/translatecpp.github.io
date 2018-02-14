@@ -1,0 +1,36 @@
+﻿// Sets contents of 'whole_file' to all characters in the file.
+whole_file.assign(std::istreambuf_iterator<char>(is),
+std ::istreambuf_iterator<char>());
+This code reserves space for the string in order to cut down on unneeded memory allocations.
+If you want to read a file line by line, you can use the function getline():
+std::ifstream is("foo.txt");
+// The function getline returns false if there are no more lines.
+for (std::string str; std::getline(is, str);) {
+     // Process the line that has been read.
+}
+If you want to read a fixed number of characters, you can use the stream's member function read():
+std::ifstream is("foo.txt");
+char str[4];
+// Read 4 characters from the file.
+is.read(str, 4);
+After executing a read command, you should always check if the error state flag failbit has been set, as it
+indicates whether the operation failed or not. This can be done by calling the file stream's member function fail():
+is.read(str, 4); // This operation might fail for any reason.
+if (is.fail())
+     // Failed to read!
+Section 13.4: Opening modes
+When creating a file stream, you can specify an opening mode. An opening mode is basically a setting to control
+how the stream opens the file.
+(All modes can be found in the std ::ios namespace.)
+An opening mode can be provided as second parameter to the constructor of a file stream or to its open() member
+function:
+std::ofstream os("foo.txt", std::ios::out | std::ios::trunc);
+std::ifstream is;
+is.open("foo.txt", std::ios::in | std::ios::binary);
+It is to be noted that you have to set ios ::in or ios ::out if you want to set other flags as they are not implicitly set
+by the iostream members although they have a correct default value.
+If you don't specify an opening mode, then the following default modes are used:
+    •  ifstream - in
+    •  ofstream - out
+    •  fstream - in and out
+The file opening modes that you may specify by design are:

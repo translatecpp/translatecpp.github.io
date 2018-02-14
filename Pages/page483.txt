@@ -1,0 +1,45 @@
+﻿struct Base {};
+struct Derived : Base {};
+Derived d;
+Base* pi = &d;
+Derived* p2  =  pi;                      //   error; cast required
+Derived* p3  =  static_cast<Derived*>(p1); // OK; p2 now points to Derived object
+Base b;
+Base* p4 = &b;
+Derived* p5 = static_cast<Derived*>(p4); // undefined behaviour since p4 does not
+                                           // point to a Derived object
+Likewise, a reference to base class can be converted to a reference to derived class using static_cast.
+struct Base {};
+struct Derived : Base {};
+Derived d;
+Base& r1 = d;
+Derived& r2  =  r1;                      //   error; cast required
+Derived& r3  =  static_cast<Derived&>(r1); // OK; r3 now refers to Derived object
+If the source type is polymorphic, dynamic_cast can be used to perform a base to derived conversion. It performs a
+run-time check and failure is recoverable instead of producing undefined behaviour. In the pointer case, a null
+pointer is returned upon failure. In the reference case, an exception is thrown upon failure of type std ::bad_cast
+(or a class derived from std ::bad_cast).
+struct Base { virtual ~Base(); }; // Base is polymorphic
+struct Derived : Base {};
+Base* b1 = new Derived;
+Derived* d1 = dynamic_cast<Derived*>(b1); // OK; d1 points to Derived object
+Base* b2 = new Base;
+Derived* d2 = dynamic_cast<Derived*>(b2); // d2 is a null pointer
+Section 91.4: Conversion between pointer and integer
+An object pointer (including void*) or function pointer can be converted to an integer type using
+reinterpret_cast. This will only compile if the destination type is long enough. The result is implementation-
+defined and typically yields the numeric address of the byte in memory that the pointer pointers to.
+Typically, long or unsigned long is long enough to hold any pointer value, but this is not guaranteed by the
+standard.
+Version > C++11
+If the types std ::intptr_t and std ::uintptr_t exist, they are guaranteed to be long enough to hold a void* (and
+hence any pointer to object type). However, they are not guaranteed to be long enough to hold a function pointer.
+Similarly, reinterpret_cast can be used to convert an integer type into a pointer type. Again the result is
+implementation-defined, but a pointer value is guaranteed to be unchanged by a round trip through an integer
+type. The standard does not guarantee that the value zero is converted to a null pointer.
+void register_callback(void (*fp)(void*), void* arg); // probably a C API
+void my_callback(void* x) {
+     std::cout << "the value is: " << reinterpret_cast<long>(x); // will probably compile
+}
+long x;
+std::cin >> x;

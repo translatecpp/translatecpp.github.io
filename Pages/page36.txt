@@ -1,0 +1,36 @@
+﻿Chapter 10: Iterators
+Section 10.1: Overview
+Iterators are Positions
+Iterators are a means of navigating and operating on a sequence of elements and are a generalized extension of
+pointers. Conceptually it is important to remember that iterators are positions, not elements. For example, take the
+following sequence:
+A B C
+The sequence contains three elements and four positions
+ + — +—+ — + — +
+ I A | B | C |  |
+ + — + — + — + — +
+Elements are things within a sequence. Positions are places where meaningful operations can happen to the
+sequence. For example, one inserts into a position, before or after element A, not into an element. Even deletion of
+an element (erase(A)) is done by first finding its position, then deleting it.
+From Iterators to Values
+To convert from a position to a value, an iterator is dereferenced:
+ auto my_iterator = my_vector.begin(); // position
+ auto my_value = *my_iterator; // value
+One can think of an iterator as dereferencing to the value it refers to in the sequence. This is especially useful in
+understanding why you should never dereference the end() iterator in a sequence:
+ + — +—+ — + — +
+ I A | B | C |    |
+ + — + — + — + — +
+   f           f
+   |           +-- An iterator here has no value. Do not dereference it!
+   +--------------An iterator here dereferences to the value A.
+In all the sequences and containers found in the C++ standard library, begin() will return an iterator to the first
+position, and end() will return an iterator to one past the last position (not the last position!). Consequently, the
+names of these iterators in algorithms are oftentimes labelled first and last:
+  +---+---+---+---+
+  | A | B | C |    |
+  +---+---+---+---+
+   f             f
+   |            |
+   +- first +- last
+It is also possible to obtain an iterator to any sequence, because even an empty sequence contains at least one

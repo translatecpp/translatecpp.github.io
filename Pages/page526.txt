@@ -1,0 +1,34 @@
+﻿free(p3);      // correct
+// delete p3;  // undefined
+// delete[] p3; // undefined
+Such issues can be avoided by completely avoiding malloc and free in C++ programs, preferring the standard
+library smart pointers over raw new and delete, and preferring std ::vector and std ::string over raw new and
+delete[ ].
+Section 104.12: Signed Integer Overflow
+int x = INT_MAX + 1;
+// x can be anything -> Undefined behavior
+     If during the evaluation of an expression, the result is not mathematically defined or not in the range of
+     representable values for its type, the behavior is undefined.
+(C++11 Standard paragraph 5/4)
+This is one of the more nasty ones, as it usually yields reproducible, non-crashing behavior so developers may be
+tempted to rely heavily on the observed behavior.
+On the other hand:
+unsigned int x = UINT_MAX + 1;
+// x is 0
+is well defined since:
+      Unsigned integers, declared unsigned, shall obey the laws of arithmetic modulo 2An where n is the
+      number of bits in the value representation of that particular size of integer.
+(C++11 Standard paragraph 3.9.1/4)
+Sometimes compilers may exploit an undefined behavior and optimize
+signed int x ;
+if(x > x + 1)
+{
+     //do something
+}
+Here since a signed integer overflow is not defined, compiler is free to assume that it may never happen and hence
+it can optimize away the "if" block
+Section 104.13: Multiple non-identical definitions (the One
+Definition Rule)
+If a class, enum, inline function, template, or member of a template has external linkage and is defined in multiple
+translation units, all definitions must be identical or the behavior is undefined according to the One Definition Rule
+(ODR).

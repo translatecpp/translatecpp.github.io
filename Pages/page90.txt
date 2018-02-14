@@ -1,0 +1,42 @@
+﻿template <class... Ts>
+void print_all(std::ostream& os, Ts const&... args) {
+     ((os << args), ...);
+}
+And the second is if constexpr, which allows us to write our original recursive solution in a single function:
+template <class T, class... Ts>
+void print_all(std::ostream& os, T const& first, Ts const&... rest) {
+     os << first;
+     if constexpr (sizeof...(rest) > 0) {
+         // this line will only be instantiated if there are further
+         // arguments. if rest... is empty, there will be no call to
+         // print_all(os).
+         print_all(os, rest...);
+     }
+}
+Section 17.3: Iterating with std::integer_sequence
+Since C++14, the standard provides the class template
+template <class T, T... Ints>
+class integer_sequence;
+template <std::size_t... Ints>
+using index_sequence = std::integer_sequence<std::size_t, Ints...>;
+and a generating metafunction for it:
+template <class T, T N>
+using make_integer_sequence = std::integer_sequence<T, /* a sequence 0, 1, 2, ..., N-1 */ >;
+template<std::size_t N>
+using make_index_sequence = make_integer_sequence<std::size_t, N>;
+While this comes standard in C++14, this can be implemented using C++11 tools.
+We can use this tool to call a function with a std ::tuple of arguments (standardized in C++17 as std ::apply):
+namespace detail {
+     template <class F, class Tuple, std::size_t... Is>
+                      decltype(auto) apply_impl(F&& f, Tuple&& tpl, std::index_sequence<Is...> ) {
+                      return std ::forward<F>(f)(std::get<Is>(std::forward<Tuple>(tpl))...);
+     }
+}
+template <class F, class Tuple>
+decltype(auto) apply(F&& f, Tuple&& tpl) {
+     return detail::apply_impl(std::forward<F>(f),
+         std ::forward<Tuple>(tpl),
+         std ::make_index_sequence<std::tuple_size<std::decay_t<Tuple>>::value>{});
+}
+// this will print 3
+int f(int, char, double);

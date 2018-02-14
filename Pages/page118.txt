@@ -1,0 +1,43 @@
+﻿1. In some circumstances, it is more convenient to grant member-level access to functions that are not
+    members of a class or to all members in a separate class. Only the class implementer can declare who its
+    friends are. A function or class cannot declare itself as a friend of any class. In a class definition, use the
+    friend keyword and the name of a non-member function or other class to grant it access to the private and
+    protected members of your class. In a template definition, a type parameter can be declared as a friend.
+2. If you declare a friend function that was not previously declared, that function is exported to the enclosing
+    nonclass scope.
+    class friend F
+    friend F;
+    class ForwardDeclared;// Class name is known.
+    class HasFriends
+    {
+       friend int ForwardDeclared::IsAFriend();// C2039 error expected
+    };
+  friend functions
+1. A friend function is a function that is not a member of a class but has access to the class's private and
+    protected members.Friend functions are not considered class members; they are normal external functions
+    that are given special access privileges.
+2. Friends are not in the class's scope, and they are not called using the member-selection operators (. and ->)
+    unless they are members of another class.
+3. A friend function is declared by the class that is granting access. The friend declaration can be placed
+    anywhere in the class declaration. It is not affected by the access control keywords.
+    #include <iostream>
+    using namespace std;
+    class Point
+    {
+        friend void ChangePrivate( Point & );
+    public:
+        Point( void ) : m_i(0) {}
+        void PrintPrivate( void ){cout << m_i << endl; }
+    private:
+    int m_i;
+    };
+    void ChangePrivate ( Point &i ) { i.m_i++; }
+    int main()
+    {
+       Point sPoint;
+       sPoint.PrintPrivate();
+       ChangePrivate(sPoint);
+       sPoint.PrintPrivate();
+        // Output: 0
+               1
+    }

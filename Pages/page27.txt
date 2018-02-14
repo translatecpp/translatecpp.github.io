@@ -1,0 +1,30 @@
+﻿std ::bitset<5> num(std::string("00100"));
+num.set(0,true); // num is now 00101
+num.set(2,false); // num is now 00001
+Section 7.10: Bit Manipulation Application: Small to Capital
+Letter
+One of several applications of bit manipulation is converting a letter from small to capital or vice versa by choosing
+a mask and a proper bit operation. For example, the a letter has this binary representation 01 (1 )00001 while its
+capital counterpart has 01 (0)00001. They differ solely in the bit in parenthesis. In this case, converting the a letter
+from small to capital is basically setting the bit in parenthesis to one. To do so, we do the following:
+/****************************************
+convert small letter to captial letter.
+      a: 01100001
+   mask: 11011111   <-- (0xDF) 11(0)11111
+a&mask: 01000001   <-- A letter
+*****************************************/
+The code for converting a letter to A letter is
+#include <cstdio>
+int main()
+{
+     char op1  =   'a'; //  "a" letter (i.e. small case)
+     int  mask =  0xDF; //  choosing a proper mask
+     printf("a (AND) mask = A\n");
+     printf("%c & 0xDF = %c\n", op1, op1 & mask);
+     return 0;
+}
+The result is
+$ g++ main.cpp -o test1
+$ ./test1
+a   (AND) mask = A
+a     &   0xDF = A

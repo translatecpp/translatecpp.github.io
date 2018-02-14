@@ -1,0 +1,45 @@
+﻿      When called from base constructor, base::v() gets called.
+      When called from derived constructor, derived::v() gets called.
+      When called from derived destructor, derived::v() gets called.
+      When called from base destructor, base::v() gets called.
+The reasoning behind this is that the derived class may define additional members which are not yet initialized (in
+the constructor case) or already destroyed (in the destructor case), and calling its member functions would be
+unsafe. Therefore during construction and destruction of C++ objects, the dynamic type of *this is considered to be
+the constructor's or destructor's class and not a more-derived class.
+Example:
+#include <iostream>
+#include <memory>
+using namespace std;
+class base {
+public:
+base()
+     {
+          std::cout << "foo is " << foo() << std::endl;
+     }
+     virtual int foo() { return 42; }
+};
+class derived : public base {
+unique_ptr<int> ptr_;
+public:
+     derived(int i) : ptr_(new int(i*i)) { }
+     // The following cannot be called before derived::derived due to how C++ behaves,
+     // if it was possible... Kaboom!
+     int foo() override { return *ptr_; }
+};
+int main() {
+     derived d(4);
+}
+Section 39.5: Pure virtual functions
+We can also specify that a virtual function is pure virtual (abstract), by appending = 0 to the declaration. Classes
+with one or more pure virtual functions are considered to be abstract, and cannot be instantiated; only derived
+classes which define, or inherit definitions for, all pure virtual functions can be instantiated.
+struct Abstract {
+     virtual void f() = 0;
+};
+struct Concrete {
+     void f() override {}
+};
+Abstract a; // Error.
+Concrete c; // Good.
+Even if a function is specified as pure virtual, it can be given a default implementation. Despite this, the function will
+still be considered abstract, and derived classes will have to define it before they can be instantiated. In this case,

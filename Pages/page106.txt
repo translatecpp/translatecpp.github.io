@@ -1,0 +1,41 @@
+﻿         };
+       foo<class bar> x; // <- bar does not have to have previously appeared.
+Version > C++11
+    6.  In the declaration or definition of an enum, declares the enum to be a scoped enum.
+        enum class Format {
+            TEXT,
+            PDF,
+            OTHER,
+        };
+        Format f = F ::TEXT;
+Section 21.2: enum
+   1. Introduces the definition of an enumeration type.
+       enum Direction {
+           UP,
+           LEFT,
+           DOWN,
+           RIGHT
+       };
+       Direction d = UP;
+Version > C++11
+In C++11, enum may optionally be followed by class or struct to define a scoped enum. Furthermore, both scoped
+and unscoped enums can have their underlying type explicitly specified by : T following the enum name, where T
+refers to an integer type.
+    enum class Format : char {
+         TEXT,
+         PDF,
+         OTHER
+    };
+    Format f = Format::TEXT;
+    enum Language : int {
+         ENGLISH,
+         FRENCH,
+         OTHER
+    };
+Enumerators in normal enums may also be preceded by the scope operator, although they are still considered to be
+in the scope the enum was defined in.
+    Language l1, l2;
+    11  = ENGLISH;
+    12  = Language::OTHER;
+    2. Introduces an elaborated type specifier, which specifies that the following name is the name of a previously
+      declared enum type. (An elaborated type specifier cannot be used to forward-declare an enum type.) An

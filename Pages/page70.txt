@@ -1,0 +1,42 @@
+﻿std::setw(n). - changes the width of the next input/output field to exactly n.
+The width property n is resetting to 0 when some functions are called (full list is here).
+std::cout << "no setw:" << 51 << '\n'
+            << "setw(7): " << std::setw(7) << 51 << '\n'
+            << "setw(7), more output: " << 13
+            << std::setw(7) << std::setfill('*') << 67 << ' ' << 94 << '\n';
+char* input = "Hello, world!";
+char arr[10];
+std::cin >> std::setw(6) >> arr;
+std::cout << "Input from \"Hello, world!\" with setw(6) gave \"" << arr << "\"\n";
+// Output: 51
+// setw(7):       51
+// setw(7), more output: 13*****67 94
+// Input: Hello, world!
+// Output: Input from "Hello, world!" with setw(6) gave "Hello"
+Default is std ::setw(0).
+std::left, std:: right and std::internal - modify the default position of the fill characters by setting
+std::ios base::adjustfield to std::ios base::left, std::ios base::right and std::ios base::internal
+correspondingly. std ::left and std:: right apply to any output, std ::internal - for integer, floating-point and
+monetary output. Have no effect on input streams.
+#include <locale>
+std::cout.imbue(std::locale("en_US.utf8"));
+std::cout << std::left << std::showbase << std::setfill('*')
+           <<  "flt: " << std::setw(15) <<  -9.87 << '\n'
+           <<  "hex: " << std::setw(15) << 41 << '\n'
+           <<  " $:  " << std::setw(15) <<  std::put_money(367,  false) << '\n'
+           <<  "usd: " << std::setw(15) <<  std::put_money(367,  true) << '\n'
+           <<  "usd: " << std::setw(15)
+           << std::setfill(' ') << std::put_money(367, false) << '\n';
+// Output:
+// flt: -9.87**********
+// hex: 41*************
+//   $:  $3.67**********
+// usd: USD *3.67******
+// usd: $3.67
+std::cout << std::internal << std::showbase << std::setfill('*')
+<< "flt: " << std:: setw(15) << -9.87 << '\n'                      
+<< "hex: " << std:: setw(15) << 41 << '\n'                         
+<< " $:  " << std:: setw(15) << std::put_money(367, false) << ' \n 
+<< "usd: " << std:: setw(15) << std::put_money(367, true) << '\n'  
+<< "usd: " << std:: setw(15)                                       
+<< std::setfill(' ') << std::put_money(367, true) << '\n';

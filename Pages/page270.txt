@@ -1,0 +1,59 @@
+﻿assuming the contents of the vector doesn't override unary operators,. If it does, you'll have to re-implement
+std::addressof in pre-C++11. It also assumes that the vector isn't empty.
+Iterators:
+Iterators are explained in more detail in the example "Iterating over std ::vector" and the article Iterators. In short,
+they act similarly to pointers to the elements of the vector:
+Version > C++11
+std::vector<int> v{ 4, 5, 6 };
+auto it = v.begin();
+int i = *it;          //
+++it ;
+i = *it;              //
+*it = 6;              //
+auto e = v.end();     //
+                                                                                                                      //
+i is 4
+i is 5
+v contains { 4, 6, 6 }
+e points to the element after the end of v. It can be
+used to check whether an iterator reached the end of the vector:
+++it;
+it == v.end();       // false, it points to the element at position 2 (with value 6)
+++it;
+it == v.end();       // true
+It is consistent with the standard that a std ::vector<T>'s iterators actually be T*s, but most standard libraries do
+not do this. Not doing this both improves error messages, catches non-portable code, and can be used to
+instrument the iterators with debugging checks in non-release builds. Then, in release builds, the class wrapping
+around the underlying pointer is optimized away.
+You can persist a reference or a pointer to an element of a vector for indirect access. These references or pointers
+to elements in the vector remain stable and access remains defined unless you add/remove elements at or before
+the element in the vector, or you cause the vector capacity to change. This is the same as the rule for invalidating
+iterators.
+a undefined behavior.
+a undefined behavior.
+a undefined behavior.
+Section 50.2: Initializing a std::vector
+A std::vector can be initialized in several ways while declaring it:
+Version > C++11
+std::vector<int> v{ 1, 2, 3 };   // v becomes {1, 2, 3}
+// Different from std::vector<int> v(3, 6)
+std::vector<int> v{ 3, 6 };      // v becomes {3, 6}
+// Different from std::vector<int> v{3, 6} in C++11
+std::vector<int> v(3, 6); // v becomes {6, 6, 6}
+std::vector<int> v(4);     // v becomes {0, 0, 0, 0}
+A vector can be initialized from another container in several ways:
+Version > C++11
+  std::vector<int> v{ 1, 2,
+  int* p = v.data() + 1;
+  v.insert(v.begin(), 0);
+  p = v.data() + 1 ;
+  v. reserve(10);
+  p = v.data() + 1 ;
+  v.erase(v.begin());
+3 };
+  // p points to 2
+  // p is now invalid, accessing *p is
+  // p points to 1
+  // p is now invalid, accessing *p is
+  // p points to 1
+  // p is now invalid, accessing *p is

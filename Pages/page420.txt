@@ -1,0 +1,35 @@
+﻿// Compilation error: partial function specialization is not allowed.
+template<typename U>
+void foo<std::string, U>(std::string t, U u) {
+     std::cout << "General case: " << t << " " << u << std::endl;
+}
+Section 77.6: Template Specialization
+You can define implementation for specific instantiations of a template class/method.
+For example if you have:
+template <typename T>
+T sqrt(T t) { /* Some generic implementation */ }
+You can then write:
+template<>
+int sqrt<int>(int i) { /* Highly optimized integer implementation */ }
+Then a user that writes sqrt(4.0) will get the generic implementation whereas sqrt(4) will get the specialized
+implementation.
+Section 77.7: Alias template
+Version > C++11
+Basic example:
+template<typename T> using pointer = T*;
+This definition makes pointer<T> an alias of T*. For example:
+pointer<int> p = new int; // equivalent to: int* p = new int;
+Alias templates cannot be specialized. However, that functionality can be obtained indirectly by having them refer
+to a nested type in a struct:
+template<typename T>
+  struct nonconst_pointer_helper { typedef T* type; };
+template<typename T>
+  struct nonconst_pointer_helper<T const> { typedef T* type; };
+template<typename T> using nonconst_pointer = nonconst_pointer_helper<T>::type;
+Section 77.8: Explicit instantiation
+An explicit instantiation definition creates and declares a concrete class, function, or variable from a template,
+without using it just yet. An explicit instantiation can be referenced from other translation units. This can be used to
+avoid defining a template in a header file, if it will only be instantiated with a finite set of arguments. For example:
+// print_string.h
+template <class T>
+void print_string(const T* str);

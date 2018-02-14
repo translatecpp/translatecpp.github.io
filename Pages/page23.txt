@@ -1,0 +1,4 @@
+﻿The bit wise right shift does not change the value of the original values unless specifically assigned to using the bit
+wise assignment compound operator >>=:
+int a = 2;    // 0010b
+a >>= 1;      // a = a >> 1;

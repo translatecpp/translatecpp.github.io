@@ -1,0 +1,48 @@
+﻿Section 35.6: Virtual Inheritance
+When using inheritance, you can specify the virtual keyword:
+struct A{};
+struct B: public virtual A{};
+When class B has virtual base A it means that A will reside in most derived class of inheritance tree, and thus that
+most derived class is also responsible for initializing that virtual base:
+struct A
+{
+     int member;
+     A(int param)
+     {
+          member = param;
+      }
+};
+struct B: virtual A
+{
+      B(): A(5){}
+};
+struct C: B
+{
+      C(): /*A(88)*/ {}
+};
+void f()
+{
+      C object; //error since C is not initializing it's indirect virtual base 'A'
+}
+If we un-comment /*A(88)*/ we won't get any error since C is now initializing it's indirect virtual base A.
+Also note that when we're creating variable object, most derived class is C, so C is responsible for creating(calling
+constructor of) A and thus value of A::member is 88, not 5 (as it would be if we were creating object of type B).
+It is useful when solving the diamond problem.:
+    A                                               A A
+                                                                                                                                                  / \
+                                                                                                                                               B C
+                                                                                                                                               \ /
+    D
+B C
+  \ /
+   D
+virtual inheritance
+normal inheritance
+B and C both inherit from A, and D inherits from B and C, so there are 2 instances of A in D! This results in ambiguity
+when you're accessing member of A through D, as the compiler has no way of knowing from which class do you
+want to access that member (the one which B inherits, or the one that is inherited byC?).
+Virtual inheritance solves this problem: Since virtual base resides only in most derived object, there will be only one
+instance of A in D.
+struct A
+{
+     void foo() {}

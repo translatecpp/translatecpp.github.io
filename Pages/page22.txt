@@ -1,0 +1,35 @@
+﻿a = 7;
+while (a < 200) {
+      std::cout << "a = " << a << std::endl;
+      a *= 2;
+}
+But it should be noted that the left shift operation will shift all bits to the left, including the sign bit, example:
+int  a = 2147483647;   // 0111 1111 1111 1111 1111   1111 1111 1111 
+int  b = a << 1;       // 1111 1111 1111 1111 1111   1111 1111 1110 
+std: : :cout << "a = " << a << ", b = "  << b << std ::endl;        
+Possible output: a = 2147483647, b = -2
+While some compilers will yield results that seem expected, it should be noted that if you left shift a signed number
+so that the sign bit is affected, the result is undefined. It is also undefined if the number of bits you wish to shift by
+is a negative number or is larger than the number of bits the type on the left can hold, example:
+int a = 1;
+int b = a << -1;  // undefined behavior
+char c = a << 20; // undefined behavior
+The bit wise left shift does not change the value of the original values unless specifically assigned to using the bit
+wise assignment compound operator <<=:
+int a = 5;  // 0101b
+a <<= 1;    // a = a << 1;
+Section 6.5: >> - right shift
+int a = 2;      // 0010b
+int b = a >> 1; // 0001b
+std::cout << "a = " << a << ", b = " << b << std::endl;
+Output
+a = 2, b = 1
+Why
+The right bit wise shift will shift the bits of the left hand value (a) the number specified on the right (1); it should be
+noted that while the operation of a right shift is standard, what happens to the bits of a right shift on a signed
+negative number is implementation defined and thus cannot be guaranteed to be portable, example:
+int a = -2;
+int b = a >> 1; // the value of b will be depend on the compiler
+It is also undefined if the number of bits you wish to shift by is a negative number, example:
+int a = 1;
+int b = a >> -1;   // undefined behavior

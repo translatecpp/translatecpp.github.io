@@ -1,0 +1,45 @@
+﻿     deque.push_back(b);
+     list.push_back(a);
+     list.push_back(b);
+     // Now sort data using operator<(const Base &b) function
+     std::sort(vector.begin(), vector.end());
+     std::sort(deque.begin(), deque.end());
+     // List must be sorted differently due to its design
+     list.sort();
+     return 0;
+}
+Section 67.4: Sorting sequence containers using compare
+function
+// Include sequence containers
+#include <vector>
+#include <deque>
+#include <list>
+// Insert sorting algorithm
+#include <algorithm>
+class Base {
+  public:
+     // Constructor that set variable to the value of v
+     Base(int v): variable(v) {
+     }
+     int variable;
+};
+bool compare(const Base &a, const Base &b) {
+     return a.variable < b.variable;
+}
+int main() {
+     std::vector <Base> vector;
+     std::deque <Base> deque;
+     std::list <Base> list;
+     // Create 2 elements to sort
+     Base a(10);
+     Base b(5);
+     // Insert them into backs of containers
+     vector.push_back(a);
+     vector.push_back(b);
+     deque.push_back(a);
+     deque.push_back(b);
+     list.push_back(a);
+     list.push_back(b);
+     // Now sort data using comparing function
+     std::sort(vector.begin(), vector.end(), compare);
+     std::sort(deque.begin(), deque.end(), compare);

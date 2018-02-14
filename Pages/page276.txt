@@ -1,0 +1,38 @@
+﻿      proxy object that (imperfectly) simulates a reference to a bool by overloading its assignment operators. As an
+      example, the following code may not be valid for std ::vector<bool>, because dereferencing an iterator
+      does not return a reference:
+Version > C++11
+std::vector<bool> v = {true, false};
+for (auto &b: v) { } // error
+Similarly, functions expecting a bool& argument cannot be used with the result of operator [ ] or at() applied to
+vector<bool>, or with the result of dereferencing its iterator:
+   void f(bool& b);
+   f(v[0]);              // error
+   f(*v.begin());        // error
+The implementation of std ::vector<bool> is dependent on both the compiler and architecture. The specialisation
+is implemented by packing n Booleans into the lowest addressable section of memory. Here, n is the size in bits of
+the lowest addressable memory. In most modern systems this is 1 byte or 8 bits. This means that one byte can
+store 8 Boolean values. This is an improvement over the traditional implementation where 1 Boolean value is
+stored in 1 byte of memory.
+Note: The below example shows possible bitwise values of individual bytes in a traditional vs. optimized
+vector<bool>. This will not always hold true in all architectures. It is, however, a good way of visualising the
+optimization. In the below examples a byte is represented as [x, x, x, x, x, x, x, x].
+Traditional std::vector<char> storing 8 Boolean values:
+Version > C++11
+std::vector<char> trad_vect = {true, false, false, false, true, false, true, true};
+Bitwise representation:
+[0,0,0,0,0,0,0,1], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,1 ], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,1], [0,0,0,0,0,0,0,1]
+Specialized std::vector<bool> storing 8 Boolean values:
+Version > C++11
+std::vector<bool> optimized_vect = {true, false, false, false, true, false, true, true};
+Bitwise representation:
+[1,0,0,0,1,0,1,1 ]
+Notice in the above example, that in the traditional version of std ::vector<bool>, 8 Boolean values take up 8 bytes
+of memory, whereas in the optimized version of std ::vector<bool>, they only use 1 byte of memory. This is a
+significant improvement on memory usage. If you need to pass a vector<bool> to an C-style API, you may need to
+copy the values to an array, or find a better way to use the API, if memory and performance are at risk.
+Section 50.6: Inserting Elements
+Appending an element at the end of a vector (by copying/moving):
+                                                                                                      struct Point {
+                                                                                                      double x, y;

@@ -1,0 +1,22 @@
+﻿Friend class declaration is not reflexive. If classes need private access in both directions, both of them need friend
+declarations.
+class Accesser {
+public:
+     void private_accesser1();
+void private_accesser2();
+private:
+     int private_value = 0;
+};
+class PrivateHolder {
+public:
+     PrivateHolder(int val) : private_value(val) {}
+     // Accesser is a friend of PrivateHolder
+     friend class Accesser;
+     void reverse_accesse() {
+         // but PrivateHolder cannot access Accesser's members.
+         Accesser a;
+         std::cout << a.private_value;
+     }
+private:
+     int private_value;
+};

@@ -1,0 +1,18 @@
+﻿typedef int (&ra)[100];     // ra means "reference to array of 100 ints"
+ra g();                     // g returns reference to array of 100 ints
+Section 97.3: Declaring multiple types with typedef
+The typedef keyword is a specifier, so it applies separately to each declarator. Therefore, each name declared
+refers to the type that that name would have in the absence of typedef.
+int *x, (*p)();       // x has type int*, and p has type int(*)()
+typedef int *x, (*p)(); // x is an alias for int*, while p is an alias for int(*)()
+Section 97.4: Alias declaration with "using"
+Version > C++11
+The syntax of using is very simple: the name to be defined goes on the left hand side, and the definition goes on
+the right hand side. No need to scan to see where the name is.
+using I = int;
+using A = int[100];               // array of 100 ints
+using FP = void(*)(int);          // pointer to function of int returning void
+using MP = void (Foo::*)(int); // pointer to member function of Foo of int returning void
+Creating a type alias with using has exactly the same effect as creating a type alias with typedef. It is simply an
+alternative syntax for accomplishing the same thing.
+Unlike typedef, using can be templated. A "template typedef" created with using is called an alias template.

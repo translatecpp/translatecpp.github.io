@@ -1,0 +1,45 @@
+﻿auto some_args = std::make_tuple(42, 'x', 3.14);
+int r = apply(f, some_args); // calls f(42, 'x', 3.14)
+Section 17.4: Tag Dispatching
+A simple way of selecting between functions at compile time is to dispatch a function to an overloaded pair of
+functions that take a tag as one (usually the last) argument. For example, to implement std ::advance(), we can
+dispatch on the iterator category:
+namespace details {
+     template <class RAIter, class Distance>
+     void advance(RAIter& it, Distance n, std::random_access_iterator_tag) {
+         it += n;
+     }
+     template <class BidirIter, class Distance>
+     void advance(BidirIter& it, Distance n, std::bidirectional_iterator_tag) {
+         if (n > 0) {
+             while (n--) ++it;
+         }
+         else {
+             while (n++) --it;
+         }
+     }
+     template <class InputIter, class Distance>
+     void advance(InputIter& it, Distance n, std::input_iterator_tag) {
+         while (n--) {
+             ++it;
+         }
+     }
+}
+template <class Iter, class Distance>
+void advance(Iter& it, Distance n) {
+details::advance(it, n,
+             typename std::iterator_traits<Iter>::iterator_category{} );
+}
+The std ::XY_iterator_tag arguments of the overloaded details ::advance functions are unused function
+parameters. The actual implementation does not matter (actually it is completely empty). Their only purpose is to
+allow the compiler to select an overload based on which tag class details ::advance is called with.
+In this example, advance uses the iterator_traits<T> ::iterator_category metafunction which returns one of
+the iterator_tag classes, depending on the actual type of Iter. A default-constructed object of the
+iterator_category<Iter> ::type then lets the compiler select one of the different overloads of details ::advance.
+(This function parameter is likely to be completely optimized away, as it is a default-constructed object of an empty
+struct and never used.)
+Tag dispatching can give you code that's much easier to read than the equivalents using SFINAE and enable_if.
+Note: while C++17's if constexpr may simplify the implementation of advance in particular, it is not suitable for open
+implementations unlike tag dispatching.
+Section 17.5: Detect Whether Expression is Valid
+It is possible to detect whether an operator or function can be called on a type. To test if a class has an overload of

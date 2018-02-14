@@ -1,0 +1,40 @@
+﻿because 0 could also be a valid result, if for example the input string was "0", so it is impossible to determine if the
+conversion actually failed.
+The newer std ::sto* family of functions convert std ::strings to integer or floating-point types, and throw
+exceptions if they could not parse their input. You should use these functions if possible:
+Version > C++11
+std::string ten = "10";
+int numl = std::stoi(ten);
+long num2 = std::stol(ten);
+long long num3 = std::stoll(ten);
+float num4 = std ::stof(ten);
+double num5 = std::stod(ten);
+long double num6 = std::stold(ten);
+Furthermore, these functions also handle octal and hex strings unlike the std ::ato* family. The second parameter
+is a pointer to the first unconverted character in the input string (not illustrated here), and the third parameter is
+the base to use. 0 is automatic detection of octal (starting with 0) and hex (starting with 0x or 0X), and any other
+value is the base to use
+std::string ten = "10";
+std::string ten_octal = "12";
+std::string ten_hex = "0xA";
+int numl = std::stoi(ten, 0, 2); // Returns 2
+int num2 = std::stoi(ten_octal, 0, 8); // Returns 10
+long num3 = std::stol(ten_hex, 0, 16);  // Returns 10
+long num4 = std::stol(ten_hex); // Returns 0
+long num5 = std::stol(ten_hex, 0, 0); // Returns 10 as it detects the leading 0x
+Section 48.14: Concatenation
+You can concatenate std ::strings using the overloaded + and += operators. Using the + operator:
+std::string hello = "Hello";
+std::string world = "world";
+std::string helloworld = hello + world; // "Helloworld"
+Using the += operator:
+std::string hello = "Hello";
+std::string world = "world";
+hello += world; // "Helloworld"
+You can also append C strings, including string literals:
+std::string hello = "Hello";
+std::string world = "world";
+const char *comma = ", ";
+std::string newhelloworld = hello + comma + world + "!"; // "Hello, world!"
+You can also use push_back() to push back individual chars:
+std ::string s = "a, b, ";

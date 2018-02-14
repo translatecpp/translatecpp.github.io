@@ -1,0 +1,32 @@
+﻿(var->*print)(std::cout);
+and it will dispatch the call directly to A::print(std ::cout) for us. If we instead initialized the var with B{}, it would
+dispatch to B::print(std::cout).
+If we created a new type C:
+struct C {};
+then:
+std::variant<A,B,C> var = A{};
+(var->*print)(std::cout);
+will fail to compile, because there is no C.print(std::cout) method.
+Extending the above would permit free function prints to be detected and used, possibly with use of if constexpr
+within the print pseudo-method.
+live example currently using boost ::variant in place of std ::variant.
+Section 57.2: Basic std::variant use
+This creates a variant (a tagged union) that can store either an int or a string.
+std::variant< int, std::string > var;
+We can store one of either type in it:
+var = "hello"s;
+And we can access the contents via std ::visit:
+// Prints "hello\n":
+visit( [](auto&& e) {
+std::cout << e << '\n' ;
+}, var );
+by passing in a polymorphic lambda or similar function object.
+If we are certain we know what type it is, we can get it:
+auto str = std::get<std::string>(var);
+but this will throw if we get it wrong. get_if:
+auto* str = std::get_if<std::string>(&var);
+returns nullptr if you guess wrong.
+Variants guarantee no dynamic memory allocation (other than which is allocated by their contained types). Only
+one of the types in a variant is stored there, and in rare cases (involving exceptions while assigning and no safe way
+to back out) the variant can become empty.
+Variants let you store multiple value types in one variable safely and efficiently. They are basically smart, type-safe

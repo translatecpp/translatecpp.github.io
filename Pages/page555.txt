@@ -1,0 +1,36 @@
+﻿   //Do stuff
+   return my_lock;
+While this is a valid case for copy elision, C++17 rules do not eliminate the copy/move in this case. As such, the type
+must still have a copy/move constructor to use to initialize the return value. And since lock_guard does not, this is
+still a compile error. Implementations are allowed to refuse to elide copies when passing or returning an object of
+trivially-copyable type. This is to allow moving such objects around in registers, which some ABIs might mandate in
+their calling conventions.
+struct trivially_copyable {
+      int a;
+};
+void foo (trivially_copyable a) {}
+foo(trivially_copyable{}); //copy elision not mandated
+Section 109.3: Parameter elision
+When you pass an argument to a function, and the argument is a prvalue expression of the function's parameter
+type, and this type is not a reference, then the prvalue's construction can be elided.
+void func(std::string str) { ... }
+func(std::string("foo"));
+This says to create a temporary string, then move it into the function parameter str. Copy elision permits this
+expression to directly create the object in str, rather than using a temporary+move.
+This is a useful optimization for cases where a constructor is declared explicit. For example, we could have
+written the above as func("foo"), but only because string has an implicit constructor that converts from a const
+char* to a string. If that constructor was explicit, we would be forced to use a temporary to call the explicit
+constructor. Copy elision saves us from having to do a needless copy/move.
+Section 109.4: Return value elision
+If you return a prvalue expression from a function, and the prvalue expression has the same type as the function's
+return type, then the copy from the prvalue temporary can be elided:
+std ::string func()
+{
+   return std::string("foo");
+}
+Pretty much all compilers will elide the temporary construction in this case.
+Section 109.5: Named return value elision
+If you return an lvalue expression from a function, and this lvalue:
+    • represents an automatic variable local to that function, which will be destroyed after the return
+    • the automatic variable is not a function parameter
+    • and the type of the variable is the same type as the function's return type

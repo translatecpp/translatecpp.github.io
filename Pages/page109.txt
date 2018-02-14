@@ -1,0 +1,33 @@
+﻿Section 22.1: char
+An integer type which is "large enough to store any member of the implementation's basic character set". It is
+implementation-defined whether char is signed (and has a range of at least -127 to +127, inclusive) or unsigned
+(and has a range of at least 0 to 255, inclusive).
+const char zero = '0';
+const char one = zero + 1 ;
+const char newline = '\n';
+std::cout << one << newline; // prints 1 followed by a newline
+Section 22.2: char16 t
+Version > C++11
+An unsigned integer type with the same size and alignment as uint_least16_t, which is therefore large enough to
+hold a UTF-16 code unit.
+const char16_t message[] = u"DD                   // Chinese for "hello, world\\n"
+std::cout << sizeof(message)/sizeof(char16_t) << "\\n"; // prints 7
+Section 22.3: char32 t
+Version > C++11
+An unsigned integer type with the same size and alignment as uint_least32_t, which is therefore large enough to
+hold a UTF-32 code unit.
+const char32_t full_house[] = U"?????";              // non-BMP characters
+std::cout << sizeof(full_house)/sizeof(char32_t) << "\\n"; // prints 6
+Section 22.4: int
+Denotes a signed integer type with "the natural size suggested by the architecture of the execution environment",
+whose range includes at least -32767 to +32767, inclusive.
+int x = 2;
+int y = 3;
+int z = x + y;
+Can be combined with unsigned, short, long, and long long (q.v.) in order to yield other integer types.
+Section 22.5: void
+An incomplete type; it is not possible for an object to have type void, nor are there arrays of void or references to
+void. It is used as the return type of functions that do not return anything.
+Moreover, a function may redundantly be declared with a single parameter of type void; this is equivalent to
+declaring a function with no parameters (e.g. int main() and int main(void) declare the same function). This
+syntax is allowed for compatibility with C (where function declarations have a different meaning than in C++).

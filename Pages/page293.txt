@@ -1,0 +1,40 @@
+﻿Multi-Map
+Multimap allows multiple key-value pairs with the same key to be stored in the map. Otherwise, its interface and
+creation is very similar to the regular map.
+  #include <string>
+  #include <map>
+  std::multimap<std::string, size_t> fruits_count;
+  std::multimap<std::string, size_t, StrLess> fruits_count2;
+Hash-Map (Unordered Map)
+A hash map stores key-value pairs similar to a regular map. It does not order the elements with respect to the key
+though. Instead, a hash value for the key is used to quickly access the needed key-value pairs.
+#include <string>
+#include <unordered_map>
+std::unordered_map<std::string, size_t> fruits_count;
+Unordered maps are usually faster, but the elements are not stored in any predictable order. For example, iterating
+over all elements in an unordered_map gives the elements in a seemingly random order.
+Section 51.7: Deleting elements
+Removing all elements:
+std::multimap< int , int > mmp{ {1, 2}, {3, 4}, {6, 5}, {8, 9}, {3, 4}, {6, 7} };
+mmp.clear(); //empty multimap
+Removing element from somewhere with the help of iterator:
+std::multimap< int , int > mmp{ {1, 2}, {3, 4}, {6, 5}, {8, 9}, {3, 4}, {6, 7} };
+                              // {1, 2}, {3, 4}, {3, 4}, {6, 5}, {6, 7}, {8, 9}
+auto it = mmp.begin();
+std::advance(it,3); // moved cursor on first {6, 5}
+mmp.erase(it); // {1, 2}, {3, 4}, {3, 4}, {6, 7}, {8, 9}
+Removing all elements in a range:
+std::multimap< int , int > mmp{ {1, 2}, {3, 4}, {6, 5}, {8, 9}, {3, 4}, {6, 7} };
+                              // {1, 2}, {3, 4}, {3, 4}, {6, 5}, {6, 7}, {8, 9}
+auto it = mmp.begin();
+auto it2 = it;
+it++; //moved first cursor on first {3, 4}
+std::advance(it2,3); //moved second cursor on first {6, 5}
+mmp.erase(it,it2); // {1, 2}, {6, 5}, {6, 7}, {8, 9}
+Removing all elements having a provided value as key:
+std::multimap< int , int > mmp{ {1, 2}, {3, 4}, {6, 5}, {8, 9}, {3, 4}, {6, 7} };
+                              // {1, 2}, {3, 4}, {3, 4}, {6, 5}, {6, 7}, {8, 9}
+mmp.erase(6); // {1, 2}, {3, 4}, {3, 4}, {8, 9}
+Removing elements that satisfy a predicate pred:
+std::map<int,int> m;
+auto it = m.begin();

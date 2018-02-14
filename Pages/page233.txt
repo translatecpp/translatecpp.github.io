@@ -1,0 +1,44 @@
+﻿slicer(b); // Output: In Base.
+slicer(d); // Output: In Base.
+Note that while pd is Base*, and rd is a Base&, calling func() on either of the two calls Derived ::func() instead of
+Base ::func(); this is because the vtable for Derived updates the Base ::func() entry to instead point to
+Derived ::func(). Conversely, note how passing an instance to slicer() always results in Base ::func() being
+called, even when the passed instance is a Derived; this is because of something known as data slicing, where
+passing a Derived instance into a Base parameter by value renders the portion of the Derived instance that isn't a
+Base instance inaccessible.
+When a member function is defined as virtual, all derived class member functions with the same signature override
+it, regardless of whether the overriding function is specified as virtual or not. This can make derived classes
+harder for programmers to parse, however, as there's no indication as to which function(s) is/are virtual.
+struct B {
+     virtual void f() {}
+};
+struct D : B {
+    void f() {}
+};
+// Implicitly virtual, overrides B::f.
+// You'd have to check B to know that,
+though.
+Note, however, that a derived function only overrides a base function if their signatures match; even if a derived
+function is explicitly declared virtual, it will instead create a new virtual function if the signatures are mismatched.
+struct BadB {
+     virtual void f() {}
+};
+struct BadD : BadB {
+     virtual void f(int i) {} // Does NOT override BadB::f.
+};
+Version > C++11
+As of C++11, intent to override can be made explicit with the context-sensitive keyword override. This tells the
+compiler that the programmer expects it to override a base class function, which causes the compiler to omit an
+error if it doesn't override anything.
+struct CPP11B {
+      virtual void f() {}
+};
+                                                                                                struct CPP11D : CPP11B {
+                                                                                                void f() override {}
+      void f(int i) override {} // Error: Doesn't actually override anything.
+};
+This also has the benefit of telling programmers that the function is both virtual, and also declared in at least one
+base class, which can make complex classes easier to parse.
+When a function is declared virtual, and defined outside the class definition, the virtual specifier must be
+included in the function declaration, and not repeated in the definition.
+Version > C++11

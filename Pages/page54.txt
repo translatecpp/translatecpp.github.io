@@ -1,0 +1,4 @@
+﻿3
+4
+Be aware that intermediate objects generated in the for(:range_expression) part of the for loop will have
+expired by the time the for loop starts.

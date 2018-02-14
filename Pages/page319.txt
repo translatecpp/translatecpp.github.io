@@ -1,0 +1,43 @@
+﻿set is a type of container whose elements are sorted and unique. multiset is similar, but, in the case of multiset,
+multiple elements can have the same value.
+Section 60.1: Changing the default sort of a set
+set and multiset have default compare methods, but in some cases you may need to overload them.
+Let's imagine we are storing string values in a set, but we know those strings contain only numeric values. By
+default the sort will be a lexicographical string comparison, so the order won't match the numerical sort. If you
+want to apply a sort equivalent to what you would have with int values, you need a functor to overload the
+compare method:
+#include <iostream>
+#include <set>
+#include <stdlib.h>
+struct custom_compare final
+{
+     bool operator() (const std::string& left, const std::string& right) const
+     {
+         int nLeft = atoi(left.c_str());
+         int nRight = atoi(right.c_str());
+         return nLeft < nRight;
+     }
+};
+int main ()
+{
+     std::set<std::string> sut({"1", "2", "5", "23", "6", "290"});
+     std::cout << "### Default sort on std::set<std::string> :" << std::endl;
+     for (auto &&data: sut)
+         std::cout << data << std::endl;
+     std::set<std ::string, custom_compare>
+as its default constructible.
+sut_custom({"1", "2", "5", "23", "6", "290"},
+                                                                  custom_compare{}); //< Compare object optional
+     std::cout << std::endl << "### Custom sort on set :" << std::endl;
+     for (auto &&data : sut_custom)
+         std::cout << data << std::endl;
+     auto compare_via_lambda = [](auto &&lhs, auto &&rhs){ return lhs > rhs; };
+     using set_via_lambda = std::set<std::string, decltype(compare_via_lambda)>;
+     set_via_lambda sut_reverse_via_lambda({"1", "2", "5", "23", "6", "290"},
+                                            compare_via_lambda);
+     std::cout << std::endl << "### Lambda sort on set :" << std::endl;
+for (auto &&data : sut_reverse_via_lambda)
+std::cout << data << std::endl;
+     return 0;
+}
+Output will be:

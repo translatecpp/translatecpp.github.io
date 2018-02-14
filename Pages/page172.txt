@@ -1,0 +1,38 @@
+﻿// Compilation error: cannot derive from final class:
+class B : public A {
+};
+Final class may appear anywhere in class hierarchy:
+class A {
+};
+// OK.
+class B final : public A {
+};
+// Compilation error: cannot derive from final class B.
+class C : public B {
+};
+Section 35.3: Access specifiers
+There are three keywords that act as access specifiers. These limit the access to class members following the
+specifier, until another specifier changes the access level again:
+Keyword                       Description
+public Everyone has access
+protected Only the class itself, derived classes and friends have access
+private Only the class itself and friends have access
+When the type is defined using the class keyword, the default access specifier is private, but if the type is defined
+using the struct keyword, the default access specifier is public:
+struct MyStruct { int x; };
+class MyClass { int x; };
+MyStruct s;
+s.x = 9; // well formed, because x is public
+MyClass c;
+c.x = 9; // ill-formed, because x is private
+Access specifiers are mostly used to limit access to internal fields and methods, and force the programmer to use a
+specific interface, for example to force use of getters and setters instead of referencing a variable directly:
+class MyClass {
+public: /* Methods: */
+     int x() const noexcept { return m_x; }
+     void setX(int const x) noexcept { m_x = x; }
+private: /* Fields: */
+     int m_x;
+};
+Using protected is useful for allowing certain functionality of the type to be only accessible to the derived classes,
+for example, in the following code, the method calculateValue() is only accessible to classes deriving from the

@@ -1,0 +1,42 @@
+﻿};
+struct IHaveTypedefs {
+// typedef MyTypedef NonLinearTypedef; // Error if uncommented.
+     typedef int MyTypedef;
+     typedef Helper<MyTypedef> MyTypedefHelper;
+};
+IHaveTypedefs::MyTypedef         i; // x_i is an int.
+IHaveTypedefs::MyTypedefHelper hi; // x_hi is a Helper<int>.
+typedef IHaveTypedefs::MyTypedef TypedefBeFree;
+TypedefBeFree ii;                   // ii is an int.
+Member type aliases can be declared with any access level, and will respect the appropriate access modifier.
+                                            class TypedefAccessLevels {
+                                            typedef int PrvInt;
+   protected:
+                                                typedef int ProInt;
+   public:
+                                                typedef int PubInt;
+};
+TypedefAccessLevels::PrvInt prv_i;   //  Error: TypedefAccessLevels::PrvInt is private.
+TypedefAccessLevels::ProInt pro_i;   //  Error: TypedefAccessLevels::ProInt is protected.
+TypedefAccessLevels::PubInt pub_i;   //  Good.
+class Derived : public TypedefAccessLevels {
+     PrvInt prv_i; // Error: TypedefAccessLevels::PrvInt is private.
+     ProInt pro_i; // Good.
+     PubInt pub_i; // Good.
+};
+This can be used to provide a level of abstraction, allowing a class' designer to change its internal workings without
+breaking code that relies on it.
+class Something {
+     friend class SomeComplexType;
+     short s;
+     // ...
+   public:
+     typedef SomeComplexType MyHelper;
+     MyHelper get_helper() const { return MyHelper(8, s, 19.5, "shoe", false); }
+     // ...
+};
+// ...
+Something s;
+Something::MyHelper hlp = s.get_helper();
+In this situation, if the helper class is changed from SomeComplexType to some other type, only the typedef and the
+friend declaration would need to be modified; as long as the helper class provides the same functionality, any code

@@ -1,0 +1,52 @@
+﻿In the previous example, we already prevented lookups in the std::set, however the std ::vector still contains a
+growing algorithm, in which it will have to realloc its storage. This can be prevented by first reserving for the right
+size.
+std::vector<std::string> stableUnique(const std::vector<std::string> &v) {
+     std::vector<std::string> result;
+     // By reserving 'result', we can ensure that no copying or moving will be done in the vector
+     // as it will have capacity for the maximum number of elements we will be inserting
+     // If we make the assumption that no allocation occurs for size zero
+     // and allocating a large block of memory takes the same time as a small block of memory
+     // this will never slow down the program
+     // Side note: Compilers can even predict this and remove the checks the growing from the
+generated code
+     result.reserve(v.size());
+     std::set<std::string> checkUnique;
+     for (const auto &s : v) {
+         // See example above
+         if (checkUnique.insert(s).second)
+         result.push_back(s);
+     }
+     return result;
+}
+Section 143.4: Using efficient containers
+Optimizing by using the right data structures at the right time can change the time-complexity of the code.
+// This variant of stableUnique contains a complexity of N log(N)
+// N > number of elements in v
+// log(N) > insert complexity of std::set
+std::vector<std::string> stableUnique(const std::vector<std::string> &v) {
+     std::vector<std::string> result;
+     std::set<std::string> checkUnique;
+     for (const auto &s : v) {
+         // See Optimizing by executing less code
+         if (checkUnique.insert(s).second)
+         result.push_back(s);
+     }
+     return result;
+}
+By using a container which uses a different implementation for storing its elements (hash container instead of tree),
+we can transform our implementation to complexity N. As a side effect, we will call the comparison operator for
+std::string less, as it only has to be called when the inserted string should end up in the same bucket.
+// This variant of stableUnique contains a complexity of N
+// N > number of elements in v
+// 1 > insert complexity of std::unordered_set
+std::vector<std::string> stableUnique(const std::vector<std::string> &v) {
+     std::vector<std::string> result;
+     std::unordered_set<std::string> checkUnique;
+     for (const auto &s : v) {
+         // See Optimizing by executing less code
+         if (checkUnique.insert(s).second)
+         result.push_back(s);
+     }
+     return result;
+}

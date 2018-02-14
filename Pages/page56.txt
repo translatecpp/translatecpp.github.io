@@ -1,0 +1,36 @@
+﻿Alternatively, you can use the file stream's member function open():
+std::ifstream ifs;
+ifs.open("bar.txt");            // ifstream: Opens file "bar.txt" for reading only.
+std ::ofstream ofs;
+ofs.open("bar.txt");            // ofstream: Opens file "bar.txt" for writing only.
+std::fstream iofs;
+iofs.open("bar.txt");           // fstream: Opens file "bar.txt" for reading and writing.
+You should always check if a file has been opened successfully (even when writing). Failures can include: the file
+doesn't exist, file hasn't the right access rights, file is already in use, disk errors occurred, drive disconnected ...
+Checking can be done as follows:
+// Try to read the file 'foo.txt'.
+std::ifstream ifs("fooo.txt"); // Note the typo; the file can't be opened.
+// Check if the file has been opened successfully.
+if (!ifs.is_open()) {
+      // The file hasn't been opened; take appropriate actions here.
+      throw CustomException(ifs, "File could not be opened");
+}
+When file path contains backslashes (for example, on Windows system) you should properly escape them:
+// Open the file 'c:\folderWfoo.txt' on Windows.
+std::ifstream ifs("c:\\\\folder\\\\foo.txt"); // using escaped backslashes
+Version > C++11
+or use raw literal:
+// Open the file 'c:\folderWfoo.txt' on Windows.
+std::ifstream ifs(R"(c:\\folder\\foo.txt)"); // using raw literal
+or use forward slashes instead:
+// Open the file 'c:\folderWfoo.txt' on Windows.
+std ::ifstream ifs("c:/folder/foo.txt");
+Version > C++11
+If you want to open file with non-ASCII characters in path on Windows currently you can use non-standard wide
+character path argument:
+// Open the file 'npMMepWfoo.txt' on Windows.
+std::ifstream ifs(LR"(npMMep\\foo.txt)"); // using wide characters with raw literal
+Section 13.3: Reading from a file
+There are several ways to read data from a file.
+If you know how the data is formatted, you can use the stream extraction operator (>>). Let's assume you have a file
+named foo.txt which contains the following data:

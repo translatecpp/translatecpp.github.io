@@ -1,0 +1,50 @@
+﻿                                                                  Description
+                                              Bidirectionallterator is any character iterator that
+provides increment and decrement operators smatch may
+be cmatch or any other other variant of match_results that
+accepts the type of Bidirectionallterator the smatch
+argument may be ommitted if the results of the regex are
+not needed Returns whether re matches the entire
+character sequence defined by first and last
+string may be either a const char* or an L-Value string,
+the functions accepting an R-Value string are explicitly deleted
+smatch may be cmatch or any other other variant of
+match_results that accepts the type of str the smatch
+argument may be ommitted if the results of the regex are
+not needed Returns whether re matches the entire
+character sequence defined by str
+Regular Expressions (sometimes called regexs or regexps) are a textual syntax which represents the patterns which
+can be matched in the strings operated upon.
+Regular Expressions, introduced in c++11, may optionally support a return array of matched strings or another
+textual syntax defining how to replace matched patterns in strings operated upon.
+Section 70.1: Basic regex_match and regex_search Examples
+const auto input = "Some people, when confronted with a problem, think \"I know, I'll use regular
+expressions.\""s;
+smatch sm;
+cout << input << endl;
+// If input ends in a quotation that contains a word that begins with "reg" and another word
+begining with "ex" then capture the preceeding portion of input
+if (regex_match(input, sm, regex("(.*)\".*\\breg.*\\bex.*\"\\s*$"))) {
+const auto capture = sm[1].str();
+     cout << '\t' << capture << endl; // Outputs: "\tSome people, when confronted with a problem,
+think\n"
+bool regex_match(BidirectionalIterator first,
+BidirectionalIterator last, smatch& sm, const
+regex& re, regex_constraints::match_flag_type
+flags)
+bool regex_match(const string& str, smatch&
+sm, const regex re&,
+regex_constraints::match_flag_type flags)
+     // Search our capture for "a problem" or "# problems"
+if(regex_search(capture, sm, regex("(a|d+)\\s+problems?"))) {
+const auto count = sm[1] == "a"s ? 1 : stoi(sm[1]);
+          cout << '\t' << count << (count > 1 ? " problems\n" : " problem\n"); // Outputs: "\t1
+problem\n"
+          cout << "Now they have " << count + 1 << " problems.\n"; // Ouputs: "Now they have 2
+problems\n"
+      }
+}
+Live Example
+Section 70.2: regex_iterator Example
+When processing of captures has to be done iteratively a regex_iterator is a good choice. Dereferencing a
+regex_iterator returns a match_result. This is great for conditional captures or captures which have

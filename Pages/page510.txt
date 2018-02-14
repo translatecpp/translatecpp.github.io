@@ -1,0 +1,28 @@
+﻿Section 101.1: Factory functions
+Suppose we want to write a factory function that accepts an arbitrary list of arguments and passes those
+arguments unmodified to another function. An example of such a function is make_unique, which is used to safely
+construct a new instance of T and return a unique_ptr<T> that owns the instance.
+The language rules regarding variadic templates and rvalue references allows us to write such a function.
+template<class T, class... A>
+unique_ptr<T> make_unique(A&&... args)
+{
+    return unique_ptr<T>(new T(std::forward<A>(args)...));
+}
+The use of ellipses ... indicate a parameter pack, which represents an arbitrary number of types. The compiler will
+expand this parameter pack to the correct number of arguments at the call site. These arguments are then passed
+to T's constructor using std ::forward. This function is required to preserve the ref-qualifiers of the arguments.
+struct foo
+{
+     foo() {}
+     foo(const foo&) {}
+     foo(foo&&) {}
+     foo(int, int, int) {}
+};
+foo f;
+auto pi = make_unique<foo>(f);
+auto p2 = make_unique<foo>(std::move(f));
+auto p3 = make_unique<foo>(1, 2, 3);
+// copy constructor
+// copy constructor
+// calls foo::foo(const foo&)
+// calls foo::foo(foo&&)
